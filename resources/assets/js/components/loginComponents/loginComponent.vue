@@ -1,49 +1,57 @@
 <template>
-    <div class="container">
-        <div class="row mt-5">
-            <div class="col-sm-6 col-sm-offset-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2 class="text-center text-light">Login</h2>
-                    </div>
-                    <div class="panel-body">
-                        <form method="post" v-on:submit.prevent="submitForm">
-                            <div class="form-group">
-                                <input type="text" name="username" v-model="username" v-bind:class="{ 'is-invalid': missingUsername  }" class="form-control" placeholder="Username"  />
-                            </div>
-                            <div class="clearfix">
-                                <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingUsername ">
-                                    <p v-if="missingUsername">Preencher Username</p>
-                                </div>
-                            </div>
-                            <div class="form-group mb-0">
-                                <input type="password" name="password" v-model="password" v-bind:class="{ 'is-invalid': missingPassword }" class="form-control margin-bottom0" placeholder="Password"  />
-                            </div>
-                            <div class="clearfix">
-                                <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingPassword">
-                                    <p v-if="missingPassword">Preencher Password</p>
-                                </div>
-                            </div>
-                            <p v-if="serverError" class="alert alert-danger">{{serverErrorMessage}}</p>
 
-                            <router-link to="/password/reset" class="float-right text-muted mt-0 small font-italic" >Recuperar Password</router-link>
+    <div class="card card-container">
+        <img class="profile-img-card" v-bind:src="'/img/logo_ipl_header.png'" alt="Logotipo IPL">
+        <br>
+        <form class="form-signin" method="post" v-on:submit.prevent="submitForm">
 
-                            <button type="submit" class="btn btn-dark btn-block mt-4">Log in</button>
-                            <p class="text-center mb-0 pb-0 mt-2">
-                                <router-link to="/register" class="">Criar nova conta</router-link>
-                            </p>
-                        </form>
-                    </div>
+            <!-- USERNAME | EMAIL -->
+            <input type="text" id="inputAuth" class="form-control" name="username" v-model="username" v-bind:class="{ 'is-invalid': missingUsername  }" placeholder="Username or Email address" required autofocus />
+
+            <div class="clearfix">
+                <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingUsername ">
+                    <p v-if="missingUsername">Preencher Username / Email</p>
                 </div>
             </div>
-        </div>
-    </div>
+
+            <!-- PASSWORD -->
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" v-model="password" v-bind:class="{ 'is-invalid': missingPassword }" required />
+
+            <div class="clearfix">
+                <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingPassword">
+                    <p v-if="missingPassword">Preencher Password</p>
+                </div>
+            </div>
+
+            <!-- REMEMBER ME -->
+            <div id="remember" class="checkbox">
+                <label>
+                    <input type="checkbox" value="remember-me"> Lembrar-me
+                </label>
+            </div>
+               
+            <!-- LINKS --> 
+            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Iniciar Sessão</button>
+            <p class="text-center">
+                <router-link to="/password/reset">Recuperar Password</router-link>
+            </p>
+            <p class="text-center">
+                <router-link to="/register" class="">Criar nova conta</router-link>
+            </p>
+
+        </form><!-- /form -->
+        <p class="text-center">
+            <a href="/" class="text-muted"><small>← Voltar a IPL-Cibersegurança</small></a>
+        </p>
+    </div><!-- /card-container -->
+
 </template>
 
 <script>
 export default {
     data: function() {
         return {
+
             username: '',
             password: '',
             attemptSubmit: false,

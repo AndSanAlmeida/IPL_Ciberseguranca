@@ -16,9 +16,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-define('YOUR_SERVER_URL', 'http://final.rip');
+define('YOUR_SERVER_URL', 'http://projectofinal_ei.dad');
 define('CLIENT_ID', '2');
-define('CLIENT_SECRET', 'ozS5vpC5IAltONJja2g7FimFuSGOlbr5A5KnwMxJ');
+define('CLIENT_SECRET', 'kpjSeVrWhHdf9uZnaM1k0AGRJ7bhMti2eZQMCNIy');
 
 class LoginControllerAPI extends Controller
 {

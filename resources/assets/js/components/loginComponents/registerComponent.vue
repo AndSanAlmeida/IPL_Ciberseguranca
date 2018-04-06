@@ -1,77 +1,55 @@
 <template>
-    <div class="container">
-        <div class="row mt-5">
-            <div class="col-sm-6 col-sm-offset-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2 class="text-center text-light">Registo</h2>
-                    </div>
-                    <div class="panel-body">
-                        <form method="post" v-on:submit.prevent="validateForm">
 
-                            <div class="alert alert-success" role="alert" v-cloak v-show="success">
-                                <p>Utilizador criado, verifique o seu email para ativar a conta.</p>
-                            </div>
+    <div class="card card-container">
+        <img class="profile-img-card" v-bind:src="'/img/logo_ipl_header.png'" alt="Logotipo IPL">
+        <br>
+        <form class="form-signin" method="post" v-on:submit.prevent="validateForm">
 
-                            <div class="form-group">
-                                <input type="text" name="name" v-model="name" v-bind:class="{ 'is-invalid': missingName  }"
-                                class="form-control" placeholder="Name"/>
-                                <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid" ><p v-if="missingName">Preencher o Nome</p></div>
-                            </div>
-
-                            <div class="form-group">
-                                <input type="text" name="username" v-model="username" v-bind:class="{ 'is-invalid': missingUsername || usernameAlreadyUsed  }"
-                                class="form-control" placeholder="Username"/>
-                                <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="missingUsername">Preencher o Username</p></div>
-                            </div>
-
-                            <div class="form-group">
-                                <input type="text" name="email" v-model="email"
-                                v-bind:class="{ 'is-invalid': missingEmail || invalidEmail || emailAlreadyUsed  }" class="form-control"
-                                placeholder="Email"/>
-                                <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="missingEmail">Preencher o Email</p></div>
-                                <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="invalidEmail">Invalido Email</p></div>
-                            </div>
-
-                            <div class="form-group">
-                                <input type="password" name="password" autocomplete="new-password" v-model="password"
-                                v-bind:class="{ 'is-invalid': missingPassword || invalidPassword }" class="form-control"
-                                placeholder="Password"/>
-                                <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="missingPassword">Preencher a Password</p></div>
-                                <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="invalidPassword">Password deve ter 6 digitos</p></div>
-
-                            </div>
-                            <div class="form-group">
-                                <input type="password" name="passwordConfirmation" v-model="passwordConfirmation"
-                                v-bind:class="{ 'is-invalid': missingPasswordConfirmation || wrongPasswordConfirmation }"
-                                class="form-control" placeholder="Confirm Password"/>
-                                <div class=" alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="missingPasswordConfirmation">Confirma a Password</p></div>
-                                <div class=" alert-danger" role="alert" v-cloak v-show="isFormInvalid"> <p v-if="wrongPasswordConfirmation">Password não são iguais</p></div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-success  m-auto btn-block">Registar</button>
-
-                                </div>
-                                <div class="col-sm-6">
-                                    <button type="button" @click="clear" class="btn btn-danger m-auto btn-block">Cancelar</button>
-                                </div>
-                            </div>
-
-                            <div class="clearfix">
-                                <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="hasServerError">{{ serverErrorMessage }}</p></div>
-                            </div>
-
-                            <p class="text-center mt-4 pb-0">
-                                Voltar ao <router-link to="/login" class="text-primary">Login</router-link>
-                            </p>
-                        </form>
-                    </div>
-                </div>
+            <div class="alert alert-success" role="alert" v-cloak v-show="success">
+                <p>Utilizador criado, verifique o seu email para ativar a conta.</p>
             </div>
-        </div>
-    </div>
+            
+            <!-- NAME -->
+            <input type="text" name="name" v-model="name" v-bind:class="{ 'is-invalid': missingName  }"
+            class="form-control" placeholder="Name"/>
+            <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid" ><p v-if="missingName">Preencher o Nome</p></div>
+            
+            <!-- USERNAME -->
+            <input type="text" name="username" v-model="username" v-bind:class="{ 'is-invalid': missingUsername || usernameAlreadyUsed  }" class="form-control" placeholder="Username"/>
+            <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="missingUsername">Preencher o Username</p></div>
+
+            <!-- EMAIL -->
+            <input type="text" name="email" v-model="email"
+            v-bind:class="{ 'is-invalid': missingEmail || invalidEmail || emailAlreadyUsed  }" class="form-control" placeholder="Email"/>
+            <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="missingEmail">Preencher o Email</p></div>
+            <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="invalidEmail">Invalido Email</p></div>
+
+            <!-- PASSWORD -->
+            <input type="password" name="password" autocomplete="new-password" v-model="password"
+            v-bind:class="{ 'is-invalid': missingPassword || invalidPassword }" class="form-control"
+            placeholder="Password"/>
+            <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="missingPassword">Preencher a Password</p></div>
+            <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="invalidPassword">Password deve ter 6 digitos</p></div>
+
+            <!-- CONFIRM PASSWORD -->
+            <input type="password" name="passwordConfirmation" v-model="passwordConfirmation"
+            v-bind:class="{ 'is-invalid': missingPasswordConfirmation || wrongPasswordConfirmation }"
+            class="form-control" placeholder="Confirm Password"/>
+            <div class=" alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="missingPasswordConfirmation">Confirma a Password</p></div>
+            <div class=" alert-danger" role="alert" v-cloak v-show="isFormInvalid"> <p v-if="wrongPasswordConfirmation">Password não são iguais</p></div>
+
+            <!-- LINKS -->
+            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Registar</button>
+            <p class="text-center">
+                <router-link to="/login" class="">Voltar a Iniciar Sessão</router-link>
+            </p>
+
+        </form><!-- /form -->
+        <p class="text-center">
+            <a href="/" class="text-muted"><small>← Voltar a IPL-Cibersegurança</small></a>
+        </p>
+    </div><!-- /card-container -->
+
 </template>
 
 

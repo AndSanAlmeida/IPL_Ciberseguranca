@@ -1,4 +1,7 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/js/publicVue.js": "/js/publicVue.js",
+    "/css/app.css": "/css/app.css",
+    "/css/style.css": "/css/style.css",
+    "/js/authVue.js": "/js/authVue.js",
+    "/js/adminVue.js": "/js/adminVue.js"
 }

@@ -11,9 +11,6 @@
 |
 */
 
-
-Route::get('/', function () {
-    return view('vue.vue');
-})->name('home');
-
-Route::get('/user/{id}/confirmation', 'UserControllerAPI@activate');
+Route::get('/','VueController@index');
+Route::get('/admin','VueController@admin');
+Route::get('/auth','VueController@auth');
