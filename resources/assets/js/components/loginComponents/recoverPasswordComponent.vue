@@ -1,38 +1,37 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-5 col-sm-12 m-auto">
-                <div class="card ml-auto mr-auto mt-5">
-                    <div class="card-header bg-dark">
-                        <h1 class="text-center text-light">Recover Password</h1>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" v-on:submit.prevent="submitForm">
-                            <div class=" form-group">
-                                <input type="email" name="email" v-model="email" v-bind:class="{ 'is-invalid': missingEmail || invalidEmail  }" class="form-control" placeholder="Email"  />
-                                <div class="alert-danger" role="alert" v-cloak v-show="isFormInvalid">
-                                    <p v-if="missingEmail">Preencher Email</p>
-                                    <p v-if="invalidEmail">Email inválido</p>
-                                    <p v-if="serverError">{{ serverErrorMessage }}</p>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-dark btn-block mt-4">Recover</button>
+        <div class="card card-container">
+        <img class="profile-img-card" v-bind:src="'/img/logo_ipl_header.png'" alt="Logotipo IPL">
+        <br>
+        <form class="form-signin" method="post" v-on:submit.prevent="submitForm">
 
-                            <div class="clearfix">
-                                <div class="alert alert-success" role="alert" v-cloak v-show="success">
-                                    <p>Email enviado com o link para repor a password</p>
-                                </div>
+            <div class="alert alert-success" role="alert" v-cloak v-show="serverError">
+                <p>{{serverErrorMessage}}</p>
+            </div>
 
-                            </div>
+            <div class="alert alert-success" role="alert" v-cloak v-show="success">
+                <p class="text-center">Email com a informação para recuperar a password foi enviado. Verifique o seu email.</p>
+            </div>
+            
+            <!-- USERNAME | EMAIL -->
+            <input type="email" id="inputAuth" class="form-control" name="email" v-model="email" v-bind:class="{ 'is-invalid': missingEmail  }" placeholder="Email" required autofocus />
 
-                            <p class="text-center mb-0 pb-0 mt-2">Voltar ao <router-link to="/login" class="">login</router-link>
-                            </p>
-                        </form>
-                    </div>
+            <div class="clearfix">
+                <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingEmail ">
+                    <p v-if="missingEmail">Preencher Email</p>
                 </div>
             </div>
-        </div>
-    </div>
+
+            <!-- LINKS --> 
+            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Recuperar Password</button>
+            <p class="text-center">
+                <router-link to="/login" class="">Voltar a Iniciar Sessão</router-link>
+            </p>
+
+        </form><!-- /form -->
+        <p class="text-center">
+            <a href="/" class="text-muted"><small>← Voltar a IPL-Cibersegurança</small></a>
+        </p>
+    </div><!-- /card-container -->
 </template>
 
 <script>
@@ -89,13 +88,12 @@
                         .then((response) => {
                             this.success = true;
                             this.attemptSubmit = false;
-
+                            setTimeout( () => this.$router.push({ path: '/login'}), 5000);
                         })
                         .catch((error) => {
                             this.serverError = true;
                             this.serverErrorMessage = error.response.data.msg ;
                         });
-                    setTimeout( () => this.$router.push({ path: '/login'}), 5000);
                 }
             },
         }

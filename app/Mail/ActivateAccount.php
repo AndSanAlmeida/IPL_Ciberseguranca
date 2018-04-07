@@ -33,11 +33,10 @@ class ActivateAccount extends Mailable
     public function build()
     {
 
-        $name = 'Oficina de Cibersegurança';
+        $name = 'IPL-Cibersegurança';
 
         $subject = 'Ativação de conta';
 
         return $this->markdown('email.activateaccount');
-
     }
 }

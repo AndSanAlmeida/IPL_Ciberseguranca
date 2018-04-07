@@ -1,12 +1,15 @@
 <template>
-
     <div class="card card-container">
         <img class="profile-img-card" v-bind:src="'/img/logo_ipl_header.png'" alt="Logotipo IPL">
         <br>
         <form class="form-signin" method="post" v-on:submit.prevent="submitForm">
 
+            <div class="alert alert-success" role="alert" v-cloak v-show="serverError">
+                <p>{{serverErrorMessage}}</p>
+            </div>
+
             <!-- USERNAME | EMAIL -->
-            <input type="text" id="inputAuth" class="form-control" name="username" v-model="username" v-bind:class="{ 'is-invalid': missingUsername  }" placeholder="Username or Email address" required autofocus />
+            <input type="text" id="inputAuth" class="form-control" name="username" v-model="username" v-bind:class="{ 'is-invalid': missingUsername  }" placeholder="Username ou Email" required autofocus />
 
             <div class="clearfix">
                 <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingUsername ">
@@ -29,7 +32,7 @@
                     <input type="checkbox" value="remember-me"> Lembrar-me
                 </label>
             </div>
-               
+            
             <!-- LINKS --> 
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Iniciar Sessão</button>
             <p class="text-center">
@@ -44,7 +47,6 @@
             <a href="/" class="text-muted"><small>← Voltar a IPL-Cibersegurança</small></a>
         </p>
     </div><!-- /card-container -->
-
 </template>
 
 <script>

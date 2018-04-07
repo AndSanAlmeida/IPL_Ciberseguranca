@@ -9,14 +9,14 @@ window.Vue = require('vue');
 
 const login = Vue.component('login', require('./components/loginComponents/loginComponent.vue'));
 const register = Vue.component('register', require('./components/loginComponents/registerComponent.vue'));
-const recoverPassword = Vue.component('recoverPassword', require('./components/loginComponents/recoverPassword.vue'));
 
 /*ROUTES*/
 const routes = [
 	{ path: '/', redirect: '/login' },
 	{ path: '/login', component: login },
 	{ path: '/register', component: register },
-	{ path: '/recoverPassword', component: recoverPassword },
+	{ path: '/password/reset', component: require('./components/loginComponents/recoverPasswordComponent.vue') },
+	{ path: '/password/reset/:token', component: require('./components/loginComponents/newPasswordComponent.vue'), props: true }
 ];
 
 const router = new VueRouter({
@@ -26,4 +26,3 @@ const router = new VueRouter({
 new Vue({
     router
 }).$mount('#auth');
-

@@ -16,9 +16,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-define('YOUR_SERVER_URL', 'http://projectofinal_ei.dad');
+define('YOUR_SERVER_URL', 'http://final.rip');
 define('CLIENT_ID', '2');
-define('CLIENT_SECRET', 'kpjSeVrWhHdf9uZnaM1k0AGRJ7bhMti2eZQMCNIy');
+define('CLIENT_SECRET', 'ozS5vpC5IAltONJja2g7FimFuSGOlbr5A5KnwMxJ');
 
 class LoginControllerAPI extends Controller
 {
@@ -70,7 +70,7 @@ class LoginControllerAPI extends Controller
         return response()->json(['msg' => 'Token revoked'], 200);
     }
 
-    /*public function sendResetLinkEmail(Request $request)
+    public function sendResetLinkEmail(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email'
@@ -105,45 +105,39 @@ class LoginControllerAPI extends Controller
                 Mail::setSwiftMailer($mailer);
 
                 Mail::to($user->email)->queue(new RecoverPassword($token, $user->email, $config->platform_email));
-                return response()->json(['msg' => 'Email Sent.']);
+                return response()->json(['msg' => 'Email enviado.']);
             } catch (\Exception $e) {
-                return response()->json(['msg' => 'Error Sending Email.', 'exc' => $e->getMessage()], 400);
+                return response()->json(['msg' => 'Erro ao enviar email.', 'exc' => $e->getMessage()], 400);
             }
         } else {
-            return response()->json(['msg' => 'Invalid Request.'], 400);
+            return response()->json(['msg' => 'Request inválido.'], 400);
         }
     }
 
     public function resetPassword(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
             'token' => 'required',
             'password' => 'required'
         ]);
         if ($request->wantsJson() && !$validator->fails()) {
-            //CHECK IF USER EXISTs
             $user = User::where('email', $request->input('email'))->first();
             if (!$user) {
-                return response()->json(['msg' => trans('passwords.user')], 400);
+                return response()->json(['msg' => 'Nenhum utilizador encontrado com esse email.']);
             }
-
-            //CHECK IF TOKEN IS VALID
             $reminder = DB::table('password_resets')->where('email', $user->email)->first();
             if (!$reminder or !Hash::check($request->input('token'), $reminder->token)) {
-                return response()->json(['msg' => 'Token inválido.'], 400);
+                return response()->json(['data' => 'Token valido.'], 400);
             }
-
-            //CHANGE PASSWORD
             $user->password = Hash::make($request->input('password'));
             $user->save();
-
             DB::table('password_resets')->where('email', $user->email)->delete();
-            return response()->json(['msg' => 'Password alterada com sucesso.'], 200);
+            return response()->json(['data' => 'Password alterada.'], 200);
         } else {
-            return response()->json(['msg' => 'Request inválido.'], 400);
+            return response()->json(['data' => 'Request inválido.'], 400);
         }
-    }*/
+    }
 
 
 }

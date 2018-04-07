@@ -1,5 +1,5 @@
 @component('mail::message')
-# Bem-vindo ao Portal de Cibersegurança, {{$user->name}} !!
+# Bem-vindo ao IPL-Cibersegurança, {{$user->name}} !!
 
 Ative a sua conta no seguinte botão.
 
@@ -8,5 +8,5 @@ Ativar conta
 @endcomponent
 
 Obrigado,<br>
-Oficina de Cibersegurança
+IPL-Cibersegurança
 @endcomponent

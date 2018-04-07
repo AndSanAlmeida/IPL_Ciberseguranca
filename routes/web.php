@@ -14,3 +14,5 @@
 Route::get('/','VueController@index');
 Route::get('/admin','VueController@admin');
 Route::get('/auth','VueController@auth');
+
+Route::get('/user/{id}/confirmation', 'UserControllerAPI@activate');

@@ -617,7 +617,7 @@ module.exports = function normalizeComponent (
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.14.2
+ * @version 1.14.1
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -640,7 +640,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * SOFTWARE.
  */
 var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
-
 var longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
 var timeoutDuration = 0;
 for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
@@ -767,25 +766,40 @@ function getScrollParent(element) {
   return getScrollParent(getParentNode(element));
 }
 
-var isIE11 = isBrowser && !!(window.MSInputMethodContext && document.documentMode);
-var isIE10 = isBrowser && /MSIE 10/.test(navigator.userAgent);
-
 /**
- * Determines if the browser is Internet Explorer
+ * Tells if you are running Internet Explorer
  * @method
  * @memberof Popper.Utils
- * @param {Number} version to check
+ * @argument {number} version to check
  * @returns {Boolean} isIE
  */
-function isIE(version) {
-  if (version === 11) {
-    return isIE11;
+var cache = {};
+
+var isIE = function () {
+  var version = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'all';
+
+  version = version.toString();
+  if (cache.hasOwnProperty(version)) {
+    return cache[version];
   }
-  if (version === 10) {
-    return isIE10;
+  switch (version) {
+    case '11':
+      cache[version] = navigator.userAgent.indexOf('Trident') !== -1;
+      break;
+    case '10':
+      cache[version] = navigator.appVersion.indexOf('MSIE 10') !== -1;
+      break;
+    case 'all':
+      cache[version] = navigator.userAgent.indexOf('Trident') !== -1 || navigator.userAgent.indexOf('MSIE') !== -1;
+      break;
   }
-  return isIE11 || isIE10;
-}
+
+  //Set IE
+  cache.all = cache.all || Object.keys(cache).some(function (key) {
+    return cache[key];
+  });
+  return cache[version];
+};
 
 /**
  * Returns the offset parent of the given element
@@ -1502,27 +1516,6 @@ function runModifiers(modifiers, data, ends) {
 }
 
 /**
- * Get the prefixed supported property name
- * @method
- * @memberof Popper.Utils
- * @argument {String} property (camelCase)
- * @returns {String} prefixed property (camelCase or PascalCase, depending on the vendor prefix)
- */
-function getSupportedPropertyName(property) {
-  var prefixes = [false, 'ms', 'Webkit', 'Moz', 'O'];
-  var upperProp = property.charAt(0).toUpperCase() + property.slice(1);
-
-  for (var i = 0; i < prefixes.length; i++) {
-    var prefix = prefixes[i];
-    var toCheck = prefix ? '' + prefix + upperProp : property;
-    if (typeof document.body.style[toCheck] !== 'undefined') {
-      return toCheck;
-    }
-  }
-  return null;
-}
-
-/**
  * Updates the position of the popper, computing the new offsets and applying
  * the new style.<br />
  * Prefer `scheduleUpdate` over `update` because of performance reasons.
@@ -1543,14 +1536,6 @@ function update() {
     flipped: false,
     offsets: {}
   };
-
-  // NOTE: DOM access here
-  // resets the popper's position so that the document size can be calculated excluding
-  // the size of the popper element itself
-  var popperStyles = this.popper.style;
-  popperStyles.top = '';
-  popperStyles.left = '';
-  popperStyles[getSupportedPropertyName('transform')] = '';
 
   // compute reference element offsets
   data.offsets.reference = getReferenceOffsets(this.state, this.popper, this.reference, this.options.positionFixed);
@@ -1594,6 +1579,27 @@ function isModifierEnabled(modifiers, modifierName) {
         enabled = _ref.enabled;
     return enabled && name === modifierName;
   });
+}
+
+/**
+ * Get the prefixed supported property name
+ * @method
+ * @memberof Popper.Utils
+ * @argument {String} property (camelCase)
+ * @returns {String} prefixed property (camelCase or PascalCase, depending on the vendor prefix)
+ */
+function getSupportedPropertyName(property) {
+  var prefixes = [false, 'ms', 'Webkit', 'Moz', 'O'];
+  var upperProp = property.charAt(0).toUpperCase() + property.slice(1);
+
+  for (var i = 0; i < prefixes.length; i++) {
+    var prefix = prefixes[i];
+    var toCheck = prefix ? '' + prefix + upperProp : property;
+    if (typeof document.body.style[toCheck] !== 'undefined') {
+      return toCheck;
+    }
+  }
+  return null;
 }
 
 /**
@@ -1851,13 +1857,11 @@ function computeStyle(data, options) {
     position: popper.position
   };
 
-  // Avoid blurry text by using full pixel integers.
-  // For pixel-perfect positioning, top/bottom prefers rounded
-  // values, while left/right prefers floored values.
+  // floor sides to avoid blurry text
   var offsets = {
     left: Math.floor(popper.left),
-    top: Math.round(popper.top),
-    bottom: Math.round(popper.bottom),
+    top: Math.floor(popper.top),
+    bottom: Math.floor(popper.bottom),
     right: Math.floor(popper.right)
   };
 
