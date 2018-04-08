@@ -15,6 +15,9 @@
         <!-- Styles -->
         <link href="{{ URL::asset('css/auth.css') }}" rel="stylesheet">
 
+        <!-- Favicon-->
+        <link rel="shortcut icon" href="{{ URL::asset('img/favicon.png') }}">
+
     </head>
     <body>
         
