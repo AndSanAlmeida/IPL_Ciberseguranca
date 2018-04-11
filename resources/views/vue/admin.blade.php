@@ -7,14 +7,16 @@
 @endsection
 
 @section('pagescript')
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-    <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
-    <script src="{{ asset('vendor/datatables/jquery.dataTables.js') }}"></script>
-    <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.js') }}"></script>
-    <script src="{{ asset('js/sb-admin.min.js') }}"></script>
-    <script src="{{ asset('js/sb-admin-datatables.min.js') }}"></script>
-    <script src="{{ asset('js/sb-admin-charts.min.js') }}"></script>
+    
+    <!-- Não funciona bem com esta biblio -->
     <script src="{{ asset('js/adminVue.js') }}"></script>
+
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/popper.js/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('vendor/jquery.cookie/jquery.cookie.js') }}"></script>
+    <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('vendor/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('js/charts-home.js') }}"></script>
+    <script src="{{ asset('js/front.js') }}"></script>
 @stop

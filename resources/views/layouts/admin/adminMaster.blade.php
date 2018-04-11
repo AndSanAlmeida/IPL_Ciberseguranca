@@ -13,19 +13,32 @@
         <!-- CSS-->
         <link href="{{ URL::asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ URL::asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
-        <link href="{{ URL::asset('vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
+        <link href="{{ URL::asset('css/fontastic.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
         <link rel="stylesheet" href="{{ URL::asset('css/admin.css') }}" id="theme-stylesheet">
 
         <!-- Favicon-->
         <link rel="shortcut icon" href="{{ URL::asset('img/favicon.png') }}">
 
     </head>
-    <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-        @include('layouts.admin.partials.navbar')
-        <div id="admin" class="content-wrapper">
-            @yield('content')
-            @include('layouts.admin.partials.footer')
+    <body >
+        
+        <div class="page">
+            @include('layouts.admin.partials.navbarTop')
+            <div class="page-content d-flex align-items-stretch">
+                @include('layouts.admin.partials.navbarLeft')
+                <div id="admin" class="content-inner">
+                    @yield('content')
+                    @include('layouts.admin.partials.footer')
+                </div>
+            </div>
         </div>
+
+        <!-- 
+            <div id="admin">
+                @yield('content')
+            </div>
+        -->
 
         @yield('pagescript') 
 

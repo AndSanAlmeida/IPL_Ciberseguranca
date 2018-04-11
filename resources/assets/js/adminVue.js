@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 
 window.Vue = require('vue');
 
-const home = Vue.component('login', require('./components/adminComponents/home.vue'));
+const home = Vue.component('home', require('./components/adminComponents/homeComponent.vue'));
 
 /*ROUTES*/
 const routes = [
