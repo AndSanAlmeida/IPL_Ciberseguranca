@@ -34,12 +34,6 @@
             </div>
         </div>
 
-        <!-- 
-            <div id="admin">
-                @yield('content')
-            </div>
-        -->
-
         @yield('pagescript') 
 
     </body>

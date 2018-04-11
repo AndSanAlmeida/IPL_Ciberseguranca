@@ -50371,7 +50371,9 @@ var staticRenderFns = [
     return _c("div", [
       _c("header", { staticClass: "page-header" }, [
         _c("div", { staticClass: "container-fluid" }, [
-          _c("h2", { staticClass: "no-margin-bottom" }, [_vm._v("Dashboard")])
+          _c("h2", { staticClass: "no-margin-bottom" }, [
+            _vm._v("Painel de Administração")
+          ])
         ])
       ]),
       _vm._v(" "),

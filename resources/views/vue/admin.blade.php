@@ -8,7 +8,7 @@
 
 @section('pagescript')
     
-    <!-- Não funciona bem com esta biblio -->
+    <!-- Não funciona bem com esta biblioteca -->
     <script src="{{ asset('js/adminVue.js') }}"></script>
 
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
