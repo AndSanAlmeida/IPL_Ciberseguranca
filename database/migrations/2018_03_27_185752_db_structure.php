@@ -118,6 +118,8 @@ class DbStructure extends Migration
             $table->string('localization');
             $table->string('title');
             $table->string('text');
+            $table->date('date');
+            $table->interger('status');
             $table->integer('id_user');
             $table->integer('total_confirmed')->default(0);
             $table->timestamps();

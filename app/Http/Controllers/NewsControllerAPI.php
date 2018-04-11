@@ -18,15 +18,13 @@ class NewsControllerAPI extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // get all news
-        $news = News::all();
-
         if ($request->wantsJson()) {
             $news = News::all();
 
-            return DeckResource::collection($decks);
+            return NewsResource::collection($news);
         } else {
             return response()->json(['message' => 'Request inválido.'], 400);
         }

@@ -113,4 +113,14 @@ class UserControllerAPI extends Controller
 			'status' => 'success'
 		]);
 	}
+
+	public function getNewUsers(Request $request)
+	{
+		if ($request->wantsJson()) {
+			$users = User::where('admin', 0)->where('blocked', 0)->where('activated', 0)->get();
+			return UserResource::collection($users);
+		} else {
+			return response()->json(['message' => 'Request inválido.'], 400);
+		}
+	}
 }
