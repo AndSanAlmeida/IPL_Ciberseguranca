@@ -7,6 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>@yield('title')</title>
+
+        <link rel="shortcut icon" href="{{ URL::asset('img/favicon.png') }}">
         
         <!-- Bootstrap -->
         <link href="{{ URL::asset('css/bootstrap.min.css') }}"  rel="stylesheet">
@@ -15,6 +17,10 @@
         <!--Main css-->
         <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
         <link href="https://fonts.googleapis.com/css?family=Caesar+Dressing|Montserrat:400,700|Open+Sans|Righteous" rel="stylesheet">
+
+        <!-- Favicon-->
+        <link rel="shortcut icon" href="{{ URL::asset('img/favicon.png') }}">
+        
     </head>
     <body>
         

@@ -55,7 +55,7 @@ class DbStructure extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->string('text');
+            $table->longText('text');
             $table->string('image')->nullable();
             $table->string('video')->nullable();
             $table->integer('id_user');
