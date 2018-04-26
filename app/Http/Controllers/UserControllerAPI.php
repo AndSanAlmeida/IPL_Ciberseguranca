@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Activation;
 use App\Mail\ActivateAccount;
+use App\Http\Resources\UserResource;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -18,8 +19,41 @@ use Swift_Mailer;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Carbon\Carbon;
 use Input;
+
 class UserControllerAPI extends Controller
 {
+    public function getUsers(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'searchText' => 'nullable',
+            'stateOfAccount' => 'required'
+        ]);
+
+        if ($request->wantsJson() && !$validator->fails()) {
+            $users = User::where('admin', 0);
+            $searchText = $request->input('searchText');
+
+            if ($searchText) {
+                $users->where(function ($q) use ($searchText) {
+                    $q->where('email', 'like', '%' . $searchText . '%');
+                    $q->orWhere('nickname', 'like', '%' . $searchText . '%');
+                    $q->orWhere('name', 'like', '%' . $searchText . '%');
+                });
+            }
+            $state = $request->input('stateOfAccount');
+            if ($state == '-1') {
+                $users->onlyTrashed();
+            } else {
+                $users->where('blocked', $state);
+            }
+            $users = $users->get();
+            return UserResource::collection($users);
+        } else {
+            return response()->json(['msg' => 'Request inválido.'], 400);
+        }
+
+    }
+
 	public function store(Request $request) {
         // Validator
 		$validator = Validator::make($request->all(), [

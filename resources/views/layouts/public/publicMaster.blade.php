@@ -9,6 +9,9 @@
         <title>@yield('title')</title>
 
         <link rel="shortcut icon" href="{{ URL::asset('img/favicon.png') }}">
+
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         
         <!-- Bootstrap -->
         <link href="{{ URL::asset('css/bootstrap.min.css') }}"  rel="stylesheet">
@@ -27,6 +30,7 @@
         <div id="app">
             @yield('content')
         </div> 
+        @include('layouts.public.partials.footer')
 
         @yield('pagescript')         
     </body>

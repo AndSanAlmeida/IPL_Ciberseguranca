@@ -15,12 +15,11 @@
                 <div class="navbar-collapse collapse">
                     <nav>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><router-link to="/" class="page-scroll">Home</router-link></li>
-                            <li><router-link to="/" class="page-scroll">Posts</router-link></li>
-                            <li><router-link to="/" class="page-scroll">Eventos</router-link></li>
-                            <li><router-link to="/" class="page-scroll">Forum</router-link></li>
-                            <li><a href="/auth/" class="page-scroll">Login</a></li>
-                            <li><a href="/auth/#/register" class="page-scroll">Registar</a></li>
+                            <li><router-link to="/home" class="page-scroll" title="Home">Home</router-link></li>
+                            <li><router-link to="/resources" class="page-scroll" title="Recursos">Recursos</router-link></li>
+                            <li><router-link to="/forum" class="page-scroll" title="Fórum">Fórum</router-link></li>
+                            <li><router-link to="/activities" class="page-scroll" title="Actividades">Actividades</router-link></li>
+                            <li><router-link to="/aboutUs" class="page-scroll" title="Sobre Nós">Sobre Nós</router-link></li>
                         </ul>
                     </nav>
                 </div>
@@ -29,11 +28,11 @@
     </div><!--- END CONTAINER -->
     </div>
 </template>
-<script type="text/javascript">
-    export default {
 
-    }
+<script type="text/javascript">
+
 </script>
+
 <style type="text/css">
 
 </style>

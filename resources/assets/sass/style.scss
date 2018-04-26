@@ -8,8 +8,8 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
-  font: inherit;
+  //font-size: 100%;
+  //font: inherit;
   vertical-align: baseline;
 }
 
@@ -76,6 +76,8 @@ p {
   color: #2C3E50;
 }
 
+
+
 /*****************************************************
 *****************************************************/
 
@@ -84,7 +86,8 @@ p {
 }
 
 .navbar-default {
-  border: none;
+  position: relative;
+  border-bottom: inset;
   border-radius: 0;
   margin-bottom: 0;
   width: 100%;
@@ -98,13 +101,13 @@ p {
     .active > a {
       color: #fff;
       background-color: $ipl-red;
-      &:focus, &:hover {
+      &:hover {
         color: #fff;
         background-color: $ipl-red;
       }
     }
     li > a {
-      &:focus, &:hover {
+      &:hover {
         color: #fff;
         background-color: $ipl-red;
       }
@@ -118,26 +121,69 @@ p {
   }
 }
 
+.container-nav {
+  margin-top: 5em;
+  background-color: $container-nav-bg;
+  padding: 10px 35px;
+  .container-nav-title {
+    padding: 15px;
+    border-bottom: 1px solid #999;
+  }
+  .container-nav-list {
+    ul {
+      padding: 15px 0;
+    }
+    a {
+      font-size: 17px;
+      color: $ipl-link;
+      &:hover {
+        color: $ipl-red;
+      }
+    }
+  }
+}
+
+/*****************************************************
+*****************************************************/
+
+.breadcrumb {
+  padding: 10px 0;
+  margin-bottom: 20px;
+  list-style: none;
+  background-color: white;
+  a {
+      font-size: 17px;
+      color: $ipl-link;
+      &:hover {
+        color: $ipl-red;
+      }
+  }
+  > .active {
+    font-size: 17px;
+    color: #777;
+  }
+}
+
 /*****************************************************
 *****************************************************/
 
 #home {
-  background: url(/img/banner.jpg) no-repeat fixed;
+  background: url(/img/cybersecuriy.jpg) no-repeat fixed;
   background-size: cover;
-  min-height: 650px;
+  min-height: 500px;
   position: relative;
 }
 
 .bg-color {
-  background-color: rgba(0, 0, 0, 0.5);
-  min-height: 650px;
+  background-color: rgba(0, 0, 0, 0);
+  min-height: 500px;
 }
 
 .banner-content {
   width: 100%;
   height: auto;
   position: absolute;
-  top: 65%;
+  top: 50%;
   left: 0;
   -webkit-transform: translateY(-50%);
   -moz-transform: translateY(-50%);
@@ -146,10 +192,12 @@ p {
 }
 
 #home h1 {
-  font-size: 60px;
+  font-size: 36px;
   color: #fff;
-  margin: 0 0 25px;
-  font-weight: 600;
+  background-color: rgba(0, 0, 0, 0.7);
+  margin: 25px 3em;
+  padding: 10px;
+  font-weight: 900;
   text-transform: uppercase;
 }
 
@@ -259,16 +307,25 @@ h1 {
   text-transform: uppercase;
 }
 
+.left-highlight {
+  border-left: 8px solid #EC0044;
+  padding-left: 12px;
+}
+
 .marb-20 {
   margin-bottom: 20px;
 }
 
+.text {
+  padding: 10px;
+}
+
 p {
-  font-size: 15px;
+  font-size: 16px;
   margin: 0 0 15px;
   color: #333;
   font-weight: 300;
-  line-height: 24px;
+  line-height: 30px;
 }
 
 .fea-item i {
@@ -448,6 +505,9 @@ p {
 @media (min-width: 451px) and (max-width: 768px) {
   .single_teacher {
     margin-bottom: 50px;
+  }
+  .container-nav {
+    margin-top: 20px;
   }
 }
 

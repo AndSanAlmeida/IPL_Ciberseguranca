@@ -86,8 +86,6 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
-  font: inherit;
   vertical-align: baseline;
 }
 
@@ -177,7 +175,8 @@ p {
 }
 
 .navbar-default {
-  border: none;
+  position: relative;
+  border-bottom: inset;
   border-radius: 0;
   margin-bottom: 0;
   width: 100%;
@@ -194,7 +193,6 @@ p {
   background-color: #EC0044;
 }
 
-.navbar-default .navbar-nav > .active > a:focus,
 .navbar-default .navbar-nav > .active > a:hover {
   color: #fff;
   background-color: #EC0044;
@@ -204,7 +202,6 @@ p {
   font-size: 14px;
 }
 
-.navbar-default .navbar-nav > li > a:focus,
 .navbar-default .navbar-nav > li > a:hover {
   color: #fff;
   background-color: #EC0044;
@@ -216,36 +213,86 @@ p {
   font-size: 28px;
 }
 
+.container-nav {
+  margin-top: 5em;
+  background-color: #fbfbfb;
+  padding: 10px 35px;
+}
+
+.container-nav .container-nav-title {
+  padding: 15px;
+  border-bottom: 1px solid #999;
+}
+
+.container-nav .container-nav-list ul {
+  padding: 15px 0;
+}
+
+.container-nav .container-nav-list a {
+  font-size: 17px;
+  color: #EF4758;
+}
+
+.container-nav .container-nav-list a:hover {
+  color: #EC0044;
+}
+
+/*****************************************************
+*****************************************************/
+
+.breadcrumb {
+  padding: 10px 0;
+  margin-bottom: 20px;
+  list-style: none;
+  background-color: white;
+}
+
+.breadcrumb a {
+  font-size: 17px;
+  color: #EF4758;
+}
+
+.breadcrumb a:hover {
+  color: #EC0044;
+}
+
+.breadcrumb > .active {
+  font-size: 17px;
+  color: #777;
+}
+
 /*****************************************************
 *****************************************************/
 
 #home {
-  background: url(/img/banner.jpg) no-repeat fixed;
+  background: url(/img/cybersecuriy.jpg) no-repeat fixed;
   background-size: cover;
-  min-height: 650px;
+  min-height: 500px;
   position: relative;
 }
 
 .bg-color {
-  background-color: rgba(0, 0, 0, 0.5);
-  min-height: 650px;
+  background-color: transparent;
+  min-height: 500px;
 }
 
 .banner-content {
   width: 100%;
   height: auto;
   position: absolute;
-  top: 65%;
+  top: 50%;
   left: 0;
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 
 #home h1 {
-  font-size: 60px;
+  font-size: 36px;
   color: #fff;
-  margin: 0 0 25px;
-  font-weight: 600;
+  background-color: rgba(0, 0, 0, 0.7);
+  margin: 25px 3em;
+  padding: 10px;
+  font-weight: 900;
   text-transform: uppercase;
 }
 
@@ -352,16 +399,25 @@ h1 {
   text-transform: uppercase;
 }
 
+.left-highlight {
+  border-left: 8px solid #EC0044;
+  padding-left: 12px;
+}
+
 .marb-20 {
   margin-bottom: 20px;
 }
 
+.text {
+  padding: 10px;
+}
+
 p {
-  font-size: 15px;
+  font-size: 16px;
   margin: 0 0 15px;
   color: #333;
   font-weight: 300;
-  line-height: 24px;
+  line-height: 30px;
 }
 
 .fea-item i {
@@ -559,6 +615,10 @@ p {
 @media (min-width: 451px) and (max-width: 768px) {
   .single_teacher {
     margin-bottom: 50px;
+  }
+
+  .container-nav {
+    margin-top: 20px;
   }
 }
 

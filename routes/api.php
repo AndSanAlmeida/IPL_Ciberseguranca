@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
+
+/******************
+ LOGIN AND LOGOUT
+ *****************/
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -22,3 +27,10 @@ Route::post('login', 'LoginControllerAPI@login');
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 Route::post('password/email', 'LoginControllerAPI@sendResetLinkEmail');
 Route::post('password/reset', 'LoginControllerAPI@resetPassword');
+
+
+/******************
+	ADMIN ROUTES
+ *****************/
+	
+Route::middleware('auth:api', 'isAdmin')->post('users', 'UserControllerAPI@getUsers'); //GET LIST OF USERS TO MANAGE

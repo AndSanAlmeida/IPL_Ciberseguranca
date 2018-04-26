@@ -4,7 +4,8 @@ use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
 {
-    private $numberOfUsers = 30;
+    private $numberOfUsers = 10;
+    private $totalForumPosts = 0;
 
     /**
      * Run the database seeds.
@@ -22,27 +23,25 @@ class UsersTableSeeder extends Seeder
         }
     }
 
-    private function fakeUser(Faker\Generator $faker, $admin)
+    private function fakeUser(Faker\Generator $faker, $type)
     {
         static $password;
         $createdAt = Carbon\Carbon::now()->subDays(30);
         $updatedAt = $faker->dateTimeBetween($createdAt);
 
-        $nickname = $admin ? 'admin' : $faker->unique()->userName;
-        $email = $admin ? 'admin@mail.dad' : $faker->unique()->safeEmail;
+        $username = $type ? 'admin' : $faker->unique()->userName;
+        $email = $type ? 'admin@mail.test' : $faker->unique()->safeEmail;
         
         return [
             'name' => $faker->name,
             'email' => $email,
             'password' => $password ?: $password = bcrypt('secret'),
-            'nickname' => $nickname,
-            'admin' => $admin,
+            'username' => $username,
+            'type' => $type,
             'blocked' => false,
             'reason_blocked' => null,
             'reason_reactivated' => null,
-            'total_points' => 0,
             'activated' => true,
-            'total_games_played' => 0,
             'created_at' => $createdAt,
             'updated_at' => $updatedAt,
         ];
