@@ -67222,7 +67222,7 @@ exports = module.exports = __webpack_require__(13)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -67235,6 +67235,26 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_user_js__ = __webpack_require__(280);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_user_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__classes_user_js__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -67362,10 +67382,7 @@ var render = function() {
                     [
                       _c(
                         "router-link",
-                        {
-                          staticClass: "page-scroll",
-                          attrs: { to: "/home", title: "Home" }
-                        },
+                        { attrs: { to: "/home", title: "Home" } },
                         [_vm._v("Home")]
                       )
                     ],
@@ -67377,10 +67394,7 @@ var render = function() {
                     [
                       _c(
                         "router-link",
-                        {
-                          staticClass: "page-scroll",
-                          attrs: { to: "/resources", title: "Recursos" }
-                        },
+                        { attrs: { to: "/resources", title: "Recursos" } },
                         [_vm._v("Recursos")]
                       )
                     ],
@@ -67392,10 +67406,7 @@ var render = function() {
                     [
                       _c(
                         "router-link",
-                        {
-                          staticClass: "page-scroll",
-                          attrs: { to: "/forum", title: "Fórum" }
-                        },
+                        { attrs: { to: "/forum", title: "Fórum" } },
                         [_vm._v("Fórum")]
                       )
                     ],
@@ -67407,10 +67418,7 @@ var render = function() {
                     [
                       _c(
                         "router-link",
-                        {
-                          staticClass: "page-scroll",
-                          attrs: { to: "/activities", title: "Actividades" }
-                        },
+                        { attrs: { to: "/activities", title: "Actividades" } },
                         [_vm._v("Actividades")]
                       )
                     ],
@@ -67422,64 +67430,95 @@ var render = function() {
                     [
                       _c(
                         "router-link",
-                        {
-                          staticClass: "page-scroll",
-                          attrs: { to: "/aboutUs", title: "Sobre Nós" }
-                        },
+                        { attrs: { to: "/aboutUs", title: "Sobre Nós" } },
                         [_vm._v("Sobre Nós")]
                       )
                     ],
                     1
                   ),
                   _vm._v(" "),
-                  _c("li", [
-                    !_vm.logged
-                      ? _c(
+                  !_vm.logged
+                    ? _c("li", [
+                        _c(
                           "a",
-                          {
-                            staticClass: "page-scroll",
-                            attrs: { href: "/auth/" }
-                          },
+                          { staticClass: "login", attrs: { href: "/auth/" } },
                           [_vm._v("Login")]
                         )
-                      : _vm._e()
-                  ]),
+                      ])
+                    : _vm._e(),
                   _vm._v(" "),
-                  _c("li", [
-                    !_vm.logged
-                      ? _c(
+                  !_vm.logged
+                    ? _c("li", [
+                        _c(
                           "a",
                           {
-                            staticClass: "page-scroll",
+                            staticClass: "signup",
                             attrs: { href: "/auth/#/register" }
                           },
                           [_vm._v("Registar")]
                         )
-                      : _vm._e()
-                  ]),
+                      ])
+                    : _vm._e(),
                   _vm._v(" "),
-                  _c("li", [
-                    _vm.logged
-                      ? _c(
-                          "a",
-                          { staticClass: "page-scroll", attrs: { href: "/" } },
-                          [_vm._v(_vm._s(_vm.user.username))]
-                        )
-                      : _vm._e()
-                  ]),
-                  _vm._v(" "),
-                  _c("li", [
-                    _vm.logged
-                      ? _c(
-                          "a",
-                          {
-                            staticClass: "page-scroll",
-                            on: { click: _vm.logout }
-                          },
-                          [_vm._v("Logout")]
-                        )
-                      : _vm._e()
-                  ])
+                  _vm.logged
+                    ? _c("li", [
+                        _c("div", { staticClass: "dropdown" }, [
+                          _c(
+                            "span",
+                            {
+                              staticClass: "authDropdown dropdown-toggle",
+                              attrs: {
+                                id: "authDropdown",
+                                "data-toggle": "dropdown",
+                                "aria-haspopup": "false",
+                                "aria-expanded": "false"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                        Bem-vindo, " +
+                                  _vm._s(_vm.user.name) +
+                                  "\n                                        "
+                              ),
+                              _c("span", { staticClass: "caret" })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "ul",
+                            {
+                              staticClass: "dropdown-menu",
+                              attrs: { "aria-labelledby": "authDropdown" }
+                            },
+                            [
+                              _vm._m(1),
+                              _vm._v(" "),
+                              _c("li", {
+                                staticClass: "divider",
+                                attrs: { role: "separator" }
+                              }),
+                              _vm._v(" "),
+                              _c("li", [
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: { href: "#" },
+                                    on: { click: _vm.logout }
+                                  },
+                                  [
+                                    _c("strong", [_vm._v("Logout")]),
+                                    _vm._v(" "),
+                                    _c("i", {
+                                      staticClass: "fas fa-sign-out-alt"
+                                    })
+                                  ]
+                                )
+                              ])
+                            ]
+                          )
+                        ])
+                      ])
+                    : _vm._e()
                 ])
               ])
             ])
@@ -67514,6 +67553,12 @@ var staticRenderFns = [
         _c("span", { staticClass: "icon-bar" })
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Definições")])])
   }
 ]
 render._withStripped = true

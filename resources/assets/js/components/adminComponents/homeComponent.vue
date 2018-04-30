@@ -94,17 +94,12 @@
                 numUsers: 0,
                 blockedUsers: 0,
                 newUsers: 0,
-                activeUsers: 0,
-                config: {
-                    headers: {
-                      'Authorization': localStorage.getItem("access_token")
-                    }
-                }
+                activeUsers: 0
             }
         },
         methods: {
             getUsers: function () {
-                axios.get('http://ipl.test/api/users', this.config)
+                axios.get('/api/users')
                     .then(response => {
                         this.users = response.data.data;
                         this.numUsers = this.users.length;

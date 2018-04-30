@@ -1,4 +1,5 @@
 @import '_variables';
+@import '_mixins';
 
 /**************************************
 CSS RESET
@@ -92,21 +93,14 @@ p {
   margin-bottom: 0;
   width: 100%;
   padding: 25px 0;
-  transition: all 0.2s ease-in-out;
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
-  -ms-transition: all 0.2s ease-in-out;
-  .navbar-nav > {
+  @include transition(all , .2s, ease-in-out);
+  .navbar-nav {
     .active > a {
       color: #fff;
       background-color: $ipl-red;
-      &:hover {
-        color: #fff;
-        background-color: $ipl-red;
-      }
     }
     li > a {
+      @include transition(all , .1s, ease);
       &:hover {
         color: #fff;
         background-color: $ipl-red;
@@ -119,6 +113,29 @@ p {
     font-family: 'Righteous', cursive;
     font-size: 28px;
   }
+}
+
+/* PEDREIRO MAS RESULTOU */
+.nav > li > div.dropdown {
+  position: relative;
+  display: block;
+  padding: 15px;
+  line-height: 20px;
+
+  .authDropdown {
+    cursor: pointer;
+    color: #777;
+    font-weight: bold;
+    font-size: 16px;
+  }
+}
+
+.signup, .login {
+  font-weight: bold;
+}
+
+.show {
+  display: inline-block !important;
 }
 
 .container-nav {
@@ -185,10 +202,7 @@ p {
   position: absolute;
   top: 50%;
   left: 0;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+  @include transform(translateY(-50%));
 }
 
 #home h1 {
@@ -268,14 +282,8 @@ p {
   line-height: 45px;
   padding: 0 10px;
   display: inline-block;
-  -webkit-border-radius: 25px;
-  -moz-border-radius: 25px;
-  border-radius: 25px;
-  -webkit-transition: all 0.35s ease-in-out;
-  -moz-transition: all 0.35s ease-in-out;
-  -ms-transition: all 0.35s ease-in-out;
-  -o-transition: all 0.35s ease-in-out;
-  transition: all 0.35s ease-in-out;
+  @include border-radius(25px);
+  @include transition(all , .35s, ease-in-out);
 }
 
 /*****************************************************
@@ -289,12 +297,12 @@ p {
 
   .newsContent {
     padding: 15px;
-    transition: all .3s ease;
+    @include transition(all , .3s, ease);
     h3 {
       font-weight: bold;
       line-height: 30px;
       color: $ipl-red;
-      transition: all .3s ease;
+      @include transition(all , .3s, ease);
     }
     .newsBorderB {
       border-bottom: solid 1px #d0d0d0;
@@ -315,7 +323,7 @@ p {
     font-size: 16px;
     text-transform: uppercase;
     color: $ipl-red;
-    transition: all .5s ease;
+    @include transition(all , .5s, ease);
     &:hover {
       color: $ipl-contrast;
     }
@@ -410,7 +418,7 @@ p {
   width: 150px;
   height: 150px;
   background-color: #C6C6C6;
-  border-radius: 50%;
+  @include border-radius(50%);
   display: inline-block;
 }
 
@@ -444,7 +452,6 @@ p {
       a {
         font-size: 15px;
         color: white;
-        transition: all 0s;
         &:hover {
           border-bottom: 2px solid white;
         }
@@ -457,7 +464,7 @@ p {
       a {
         font-size: 2.3em;
         color: white;
-        transition: all .5s ease;
+        @include transition(all , .5s, ease-in-out);
         &:hover {
           color: $ipl-contrast;
         }
