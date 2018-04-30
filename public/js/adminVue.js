@@ -22671,7 +22671,7 @@ var staticRenderFns = [
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "title" }, [
-                  _c("span", [_vm._v("New"), _c("br"), _vm._v("Clientes")]),
+                  _c("span", [_vm._v("New"), _c("br"), _vm._v("Clients")]),
                   _vm._v(" "),
                   _c("div", { staticClass: "progress" }, [
                     _c("div", {
@@ -23082,7 +23082,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [_vm._v("Nome")]),
+        _c("th", [_vm._v("Nome Completo")]),
         _vm._v(" "),
         _c("th", [_vm._v("Email")]),
         _vm._v(" "),
@@ -23130,7 +23130,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("header", { staticClass: "page-header" }, [
       _c("div", { staticClass: "container-fluid" }, [
-        _c("h2", { staticClass: "no-margin-bottom" }, [_vm._v("Users")])
+        _c("h2", { staticClass: "no-margin-bottom" }, [_vm._v("Utilizadores")])
       ])
     ])
   }
