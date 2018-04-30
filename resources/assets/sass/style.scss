@@ -282,6 +282,11 @@ p {
 *****************************************************/
 
 #news {
+  
+  .borderB {
+    border-bottom: solid 2px #e8e8e8;
+  }
+
   .newsContent {
     padding: 15px;
     transition: all .3s ease;
@@ -290,9 +295,6 @@ p {
       line-height: 30px;
       color: $ipl-red;
       transition: all .3s ease;
-    }
-    .borderB {
-      border-bottom: solid 2px #e8e8e8;
     }
     .newsBorderB {
       border-bottom: solid 1px #d0d0d0;

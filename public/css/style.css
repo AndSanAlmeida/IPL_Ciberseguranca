@@ -372,6 +372,10 @@ p {
 /*****************************************************
 *****************************************************/
 
+#news .borderB {
+  border-bottom: solid 2px #e8e8e8;
+}
+
 #news .newsContent {
   padding: 15px;
   -webkit-transition: all .3s ease;
@@ -384,10 +388,6 @@ p {
   color: #EC0044;
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-}
-
-#news .newsContent .borderB {
-  border-bottom: solid 2px #e8e8e8;
 }
 
 #news .newsContent .newsBorderB {
