@@ -13,6 +13,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 window.Vue = require('vue');
 
 Vue.component('navbar', require('./components/publicComponents/navbarComponent.vue'));
+Vue.component('contact', require('./components/publicComponents/contactComponent.vue'));
 const home = Vue.component('home', require('./components/publicComponents/homeComponent.vue'));
 const aboutUs = Vue.component('aboutUs', require('./components/publicComponents/aboutUsComponent.vue'));
 const resources = Vue.component('resources', require('./components/publicComponents/resourcesComponent.vue'));

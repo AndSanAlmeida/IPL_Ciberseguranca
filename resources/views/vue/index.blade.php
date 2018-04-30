@@ -5,6 +5,7 @@
 @section('content')
 	<navbar></navbar>
 	<router-view></router-view>
+	<contact></contact>
 @endsection
 
 @section('pagescript')
