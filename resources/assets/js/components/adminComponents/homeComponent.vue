@@ -2,9 +2,11 @@
   <div>
     <header class="page-header">
       <div class="container-fluid">
-        <h2 class="no-margin-bottom">Painel de Administração</h2>
+        <h2 class="no-margin-bottom">Dashboard</h2>
       </div>
     </header>
+
+    <!-- Users -->
     <section class="dashboard-counts no-padding-bottom">
       <div class="container-fluid">
         <div class="row bg-white has-shadow">
@@ -12,58 +14,148 @@
           <div class="col-xl-3 col-sm-6">
             <div class="item d-flex align-items-center">
               <div class="icon bg-violet"><i class="icon-user"></i></div>
-              <div class="title"><span>New<br>Clients</span>
-                <div class="progress">
-                  <div role="progressbar" style="width: 25%; height: 4px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-violet"></div>
-                </div>
+              <div class="title"><span>Número de<br>Utilizadores</span>
               </div>
-              <div class="number"><strong>25</strong></div>
+              <div class="number"><strong>{{numUsers}}</strong></div>
             </div>
           </div>
           <!-- Item -->
           <div class="col-xl-3 col-sm-6">
             <div class="item d-flex align-items-center">
-              <div class="icon bg-red"><i class="icon-padnote"></i></div>
-              <div class="title"><span>Work<br>Orders</span>
-                <div class="progress">
-                  <div role="progressbar" style="width: 70%; height: 4px;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-red"></div>
-                </div>
+              <div class="icon bg-green"><i class="icon-user"></i></div>
+              <div class="title"><span>Novos<br>Utilizadores</span>
               </div>
-              <div class="number"><strong>70</strong></div>
+              <div class="number"><strong>{{newUsers}}</strong></div>
             </div>
           </div>
           <!-- Item -->
           <div class="col-xl-3 col-sm-6">
             <div class="item d-flex align-items-center">
-              <div class="icon bg-green"><i class="icon-bill"></i></div>
-              <div class="title"><span>New<br>Invoices</span>
-                <div class="progress">
-                  <div role="progressbar" style="width: 40%; height: 4px;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-green"></div>
-                </div>
+              <div class="icon bg-red"><i class="icon-user"></i></div>
+              <div class="title"><span>Utilizadores<br>Bloqueados</span>
               </div>
-              <div class="number"><strong>40</strong></div>
+              <div class="number"><strong>{{blockedUsers}}</strong></div>
             </div>
           </div>
           <!-- Item -->
           <div class="col-xl-3 col-sm-6">
             <div class="item d-flex align-items-center">
-              <div class="icon bg-orange"><i class="icon-check"></i></div>
-              <div class="title"><span>Open<br>Cases</span>
-                <div class="progress">
-                  <div role="progressbar" style="width: 50%; height: 4px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-orange"></div>
-                </div>
+              <div class="icon bg-red"><i class="icon-user"></i></div>
+              <div class="title"><span>Utilizadores<br>Ativos no Forum</span>
               </div>
-              <div class="number"><strong>50</strong></div>
+              <div class="number"><strong>{{activeUsers}}</strong></div>
             </div>
           </div>
         </div>
       </div>
     </section>
+    <section class="dashboard-counts no-padding-bottom">
+      <div class="container-fluid">
+        <div class="card">
+                    <div class="card-close">
+                     
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Lista de Eventos</h3>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">                       
+                        <table class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Nome</th>
+                              <th>Data</th>
+                              <th>Estado</th>
+                              <th>Utilizadores Interessados</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">1</th>
+                              <td>Mark</td>
+                              <td>Otto</td>
+                              <td>@mdo</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+      </div>
+    </section>
   </div>
 </template>
-<script>
-	
+<script type="text/javascript">
+  export default {
+        data: function () {
+            return {
+                users: [],
+                numUsers: 0,
+                blockedUsers: 0,
+                newUsers: 0,
+                activeUsers: 0,
+                config: {
+                    headers: {
+                      'Authorization': localStorage.getItem("access_token")
+                    }
+                }
+            }
+        },
+        methods: {
+            getUsers: function () {
+                axios.get('http://ipl.test/api/users', this.config)
+                    .then(response => {
+                        this.users = response.data.data;
+                        this.numUsers = this.users.length;
+                        this.getBlockedUsers();
+                        this.getNewUsers();
+                        this.getActiveUsers();
+                    })
+                    .catch(error => {
+                        console.log(error.response)
+                    });
+
+            },
+            getBlockedUsers: function () {
+                let blocked = 0;
+                this.users.forEach(function (user, key) {
+                    if (user.blocked === 1) {
+                        blocked++;
+                    }
+                });
+
+                this.blockedUsers = blocked;
+
+            },
+            getNewUsers: function () {
+                let newp = 0;
+                this.users.forEach(function (user, key) {
+                    if (user.activated === 0 && user.blocked === 0) {
+                        newp++;
+                    }
+                });
+
+                this.newUsers = newp;
+            },
+            getActiveUsers: function () {
+              let active = 0;
+                this.users.forEach(function (user, key) {
+                    if (user.total_forum_posts != 0 || user.total_forum_comments != 0 ) {
+                        active++;
+                    }
+                });
+
+                this.activeUsers = active;
+            }
+        },
+        computed: {},
+        components: {},
+        mounted: function () {
+            this.getUsers();
+        }
+    }
 </script>
 <style>
-	
+  
 </style>

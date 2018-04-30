@@ -10,21 +10,21 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Swift_Mailer;
-use GuzzleHttp\Client;
+use Auth;
+use GuzzleHttp\Client as Client;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-//define('YOUR_SERVER_URL', 'http://final.rip');
-define('YOUR_SERVER_URL', 'http://projectofinal_ei.test');
-define('CLIENT_ID', '2');
-define('CLIENT_SECRET', 'ozS5vpC5IAltONJja2g7FimFuSGOlbr5A5KnwMxJ');
+define('YOUR_SERVER_URL', 'http://ipl.test');
+define('CLIENT_ID', '4');
+define('CLIENT_SECRET', 'Kmgtqrif2rzLPah1sHP87EucZCNVOFWJerLARjBy');
 
 class LoginControllerAPI extends Controller
 {
     use SendsPasswordResetEmails;
-
+    
     public function login(Request $request)
     {
 
@@ -33,17 +33,17 @@ class LoginControllerAPI extends Controller
             return response()->json(['data' => 'Utilizador não encontrado.'],400);
             var_dump(response()->json(['data' => 'Utilizador não encontrado.'],401));
         }
-
+        
         if ($user->blocked == 1) {
             return response()->json(['data' => 'Utilizador bloqueado.'], 400);
         }
-
+        
         if ($user->activated == 0) {
             return response()->json(['data' => 'Utilizador não ativado.'], 400);
         }
         
-        $http = new Client;
-        $response = $http->post(YOUR_SERVER_URL . '/oauth/token', [
+        $http = new \GuzzleHttp\Client;
+        $response = $http->post(YOUR_SERVER_URL.'/oauth/token', [
             'form_params' => [
                 'grant_type' => 'password',
                 'client_id' => CLIENT_ID,
@@ -51,24 +51,22 @@ class LoginControllerAPI extends Controller
                 'username' => $request->username,
                 'password' => $request->password,
                 'scope' => ''
-            ],
-            'exceptions' => false,
-        ]);
+            ], 'exceptions' => false,]);
 
-
-        $errorCode = $response->getStatusCode();
-        if ($errorCode == '200') {
-            return json_decode((string)$response->getBody(), true);
+        $errorCode= $response->getStatusCode();
+        if ($errorCode=='200') {
+            return json_decode((string) $response->getBody(), true);
         } else {
-            return response()->json(['data' => 'Dados do utilizador incorretos.'], 400);
+            return response()->json(['data'=>'Credenciais do utilizador inválidas.'], $errorCode);
         }
+
     }
 
     public function logout()
     {
         \Auth::guard('api')->user()->token()->revoke();
         \Auth::guard('api')->user()->token()->delete();
-        return response()->json(['msg' => 'Token revoked'], 200);
+        return response()->json(['msg'=>'Token revoked'], 200);
     }
 
     public function sendResetLinkEmail(Request $request)

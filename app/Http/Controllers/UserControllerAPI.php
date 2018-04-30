@@ -22,6 +22,7 @@ use Input;
 
 class UserControllerAPI extends Controller
 {
+	/*
     public function getUsers(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -52,7 +53,18 @@ class UserControllerAPI extends Controller
             return response()->json(['msg' => 'Request inválido.'], 400);
         }
 
-    }
+    }*/
+
+    // Get Users without Admins
+	public function getUsers(Request $request)
+	{
+		if ($request->wantsJson()) {
+			$users = User::where('type', 0)->get();
+			return UserResource::collection($users);
+		} else {
+			return response()->json(['message' => 'Request inválido.'], 400);
+		}
+	}
 
 	public function store(Request $request) {
         // Validator

@@ -33,4 +33,4 @@ Route::post('password/reset', 'LoginControllerAPI@resetPassword');
 	ADMIN ROUTES
  *****************/
 	
-Route::middleware('auth:api', 'isAdmin')->post('users', 'UserControllerAPI@getUsers'); //GET LIST OF USERS TO MANAGE
+Route::middleware('auth:api')->get('users', 'UserControllerAPI@getUsers'); //GET LIST OF USERS TO MANAGE

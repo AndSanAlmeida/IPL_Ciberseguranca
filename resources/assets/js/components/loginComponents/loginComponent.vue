@@ -91,15 +91,17 @@ export default {
                 axios.post('/api/login', data)
                 .then((response) => {
                     localStorage.setItem('access_token', 'Bearer ' + response.data.access_token);
+
                     axios.get('/api/user', { headers: {"Authorization" : 'Bearer ' + response.data.access_token}})
                     .then((response) => {
                         console.log(response.data);
                         if(response.data.type == 1){
-                                        // ADIM
-                                    } else if (response.data.type == 0) {
-                                        window.location.href = '/'
-                                    }
-                                })
+                            // admin   
+                            window.location.href = '/admin/#/home'
+                        } else if (response.data.type == 0) {
+                            window.location.href = '/'
+                        }
+                    })
                     .catch((error) => {
                         this.serverError = true;
                         console.log(error);
@@ -114,6 +116,5 @@ export default {
             }
         },
     }
-
 }
 </script>

@@ -22,10 +22,11 @@ class DbStructure extends Migration
             $table->integer('type')->default(false);
             $table->boolean('blocked')->default(false);
             $table->boolean('activated')->default(false);
-            $table->string('avatar')->default('img/avatars/avatar.jpg');
+            $table->string('avatar')->default('img/avatars/empty.png');
             $table->string('reason_blocked')->nullable();
             $table->string('reason_reactivated')->nullable();
             $table->integer('total_forum_posts')->default(0);
+            $table->integer('total_forum_comments')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -119,7 +120,7 @@ class DbStructure extends Migration
             $table->string('title');
             $table->string('text');
             $table->date('date');
-            $table->interger('status');
+            $table->integer('status');
             $table->integer('id_user');
             $table->integer('total_confirmed')->default(0);
             $table->timestamps();
