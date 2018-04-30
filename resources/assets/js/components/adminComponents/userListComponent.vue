@@ -12,7 +12,7 @@
                   <table class="table table-striped table-hover">
                     <thead>
                       <tr>
-                        <th>Nome Completo</th>
+                        <th>Nome</th>
                         <th>Email</th>
                         <th>Username</th>
                       </tr>
