@@ -60,7 +60,6 @@
                 blockedUsers: 0,
                 newUsers: 0,
                 activeUsers: 0,
-        
             }
         },
         methods: {

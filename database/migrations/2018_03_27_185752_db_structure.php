@@ -118,7 +118,7 @@ class DbStructure extends Migration
             $table->increments('id');
             $table->string('localization');
             $table->string('name');
-            $table->string('text');
+            $table->string('description');
             $table->date('date');
             // 0 - por realizar
             // 1 - a decorrer

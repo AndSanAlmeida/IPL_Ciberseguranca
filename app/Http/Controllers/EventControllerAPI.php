@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
-
+use Auth;
 use Validator;
 
 
@@ -53,9 +53,7 @@ class EventControllerAPI extends Controller
             $event->name = $request->get('name');
             $event->localization = $request->get('localization');
             $event->description = $request->get('description');
-
-            $dateConverted = date('YYYY-MM-dd', $request->get('date'));
-            $event->date = $dateConverted;
+            $event->date = $request->get('date');
 
             $event->id_user = Auth::id();
             // 0 - por realizar
@@ -87,7 +85,8 @@ class EventControllerAPI extends Controller
      */
     public function show($id)
     {
-        //
+        $event = Events::findOrFail($id);
+        return $event;
     }
 
     /**
@@ -96,9 +95,29 @@ class EventControllerAPI extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'localization' => 'required|max:255',
+            'description' => 'required',
+            'date' => 'required',
+            'status' => 'required'
+        ]);
+
+        if ($request->wantsJson() && !$validator->fails()) {
+            $event = Events::findOrFail($id);
+            $event->name = $request->get('name');
+            $event->localization = $request->get('localization');
+            $event->description = $request->get('description');
+            $event->date = $request->get('date');
+            $event->status = $request->get('status');
+            $event->save();
+
+            return response()->json(['msg' => 'Evento editado.']);
+        } else {
+            return response()->json(['errorCode' => -1, 'msg' => 'Request Invalido.'], 400);
+        }
     }
 
     /**

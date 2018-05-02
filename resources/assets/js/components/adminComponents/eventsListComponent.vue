@@ -12,8 +12,7 @@
             <div class="card-body">
               <div class="table-responsive">                       
                 <div class="card">
-
-                        <p class="text-center" v-if="eventos.length == 0" >Não há eventos disponíveis.</p>
+                  <p class="text-center" v-if="eventos.length == 0" >Não há eventos disponíveis.</p>
                   <table class="table table-striped table-hover" v-if="eventos.length != 0" >
                     <thead>
                       <tr>
@@ -28,15 +27,15 @@
                     <tbody>
                       <tr v-for="evento in eventos"  :key="evento.id">
                         <td>{{evento.id}}</td>
-                        <td>{{evento.title}}</td>
+                        <td>{{evento.name}}</td>
                         <td>{{evento.date}}</td>
                         <td>{{evento.status == 0 ? 'Por Realizar' : evento.status == 0 ? 'A Decorrer' : 'Concluido'}}</td>
-                        <td>{{evento.total_confirmed}}</td>
+                        <td>{{evento.total_interested}}</td>
                         <td>
                           <div class="btn-group btn-group-sm" role="group" aria-label="Ações">
                             <button type="button" class="btn btn-primary">Ver detalhes</button>
-                            <button type="button" class="btn btn-warning">Editar</button>
-                            <button type="button" class="btn btn-danger" v-on:click="deleteEvento(evento.id)">Eliminar</button>
+                            <router-link :to="{ name: 'eventsEdit', params: {id: evento.id } }" class="btn btn-warning">Edit</router-link>
+                            <button type="button" class="btn btn-danger" v-on:click="deleteEvento(evento)">Eliminar</button>
                           </div>
                         </td>
                       </tr>
@@ -58,14 +57,11 @@ module.exports={
 
   },
   methods: {
-    deleteEvento : function(id){
-      axios.delete('/api/event/'+id+'/delete')
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-
-        });
+    editEvento: function(id) {
+      router.push("/events/edit/"+id);
+    },
+    deleteEvento: function(evento) {
+      this.$emit('delete-click', evento);
     }
   }
 }

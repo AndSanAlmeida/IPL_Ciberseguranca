@@ -15,15 +15,35 @@
                     <div class="navbar-collapse collapse">
                         <nav>
                             <ul class="nav navbar-nav navbar-right">
-                                <li><router-link to="/home" class="page-scroll" title="Home">Home</router-link></li>
-                                <li><router-link to="/resources" class="page-scroll" title="Recursos">Recursos</router-link></li>
-                                <li><router-link to="/forum" class="page-scroll" title="Fórum">Fórum</router-link></li>
-                                <li><router-link to="/activities" class="page-scroll" title="Actividades">Actividades</router-link></li>
-                                <li><router-link to="/aboutUs" class="page-scroll" title="Sobre Nós">Sobre Nós</router-link></li>
-                                <li><a href="/auth/" v-if="!logged" class="page-scroll">Login</a></li>
-                                <li><a href="/auth/#/register" v-if="!logged" class="page-scroll">Registar</a></li>
-                                <li><a href="/" v-if="logged" class="page-scroll">{{user.username}}</a></li>
-                                <li><a v-on:click="logout" v-if="logged" class="page-scroll">Logout</a></li>
+                                <li><router-link to="/home" title="Home">Home</router-link></li>
+                                <li><router-link to="/resources" title="Recursos">Recursos</router-link></li>
+                                <li><router-link to="/forum" title="Fórum">Fórum</router-link></li>
+                                <li><router-link to="/activities" title="Actividades">Actividades</router-link></li>
+                                <li><router-link to="/aboutUs" title="Sobre Nós">Sobre Nós</router-link></li>
+
+                                <!-- LOGIN | SIGN UP -->
+                                <li v-if="!logged"><a href="/auth/" class="login">Login</a></li>
+                                <li v-if="!logged"><a href="/auth/#/register" class="signup">Registar</a></li>
+
+                                <!-- DROPDOWN -->
+                                <li v-if="logged"> 
+                                    <div class="dropdown">
+                                        <span class="authDropdown dropdown-toggle" id="authDropdown" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+                                            Bem-vindo, {{user.name}}
+                                            <span class="caret"></span>
+                                        </span>
+                                        <ul class="dropdown-menu" aria-labelledby="authDropdown">
+                                            <li><a href="#">Definições</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li>
+                                                <a href="#" v-on:click="logout">
+                                                    <strong>Logout</strong> 
+                                                    <i class="fas fa-sign-out-alt"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
                             </ul>
                         </nav>
                     </div>

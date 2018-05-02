@@ -14,6 +14,7 @@ const home = Vue.component('home', require('./components/adminComponents/homeCom
 const users = Vue.component('users', require('./components/adminComponents/usersComponent.vue'));
 const eventos = Vue.component('events', require('./components/adminComponents/eventsComponent.vue'));
 const eventsCreate = Vue.component('eventsCreate', require('./components/adminComponents/eventsCreateComponent.vue'));
+const eventsEdit = Vue.component('eventsEdit', require('./components/adminComponents/eventsEditComponent.vue'));
 
 /*ROUTES*/
 const routes = [
@@ -22,6 +23,7 @@ const routes = [
 	{ path: '/users', component: users },
 	{ path: '/events', component: eventos},
 	{ path: '/events/create', component: eventsCreate},
+	{ path: '/events/edit/:id', component: eventsEdit, name: 'eventsEdit', props: { default: true}}
 ];
 
 const router = new VueRouter({

@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Support\Facades\Auth;
 use Closure;
-
+use Auth;
 class IsAdmin
 {
     /**
@@ -16,9 +16,9 @@ class IsAdmin
      */
     public function handle($request, Closure $next)
     {
-        /*if (Auth::user() &&  Auth::user()->type == 1) {
+        if (Auth::user() &&  Auth::user()->type == 1) {
             return $next($request);
-        }*/
+        }
 
         return response()->json(['msg'=>'Opção exclusiva de administrador.'], 401);
     }

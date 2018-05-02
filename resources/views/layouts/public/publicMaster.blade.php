@@ -29,8 +29,7 @@
         
         <div id="app">
             @yield('content')
-        </div> 
-        <!--@include('layouts.public.partials.footer')-->
+        </div>
 
         @yield('pagescript')         
     </body>

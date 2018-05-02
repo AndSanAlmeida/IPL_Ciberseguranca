@@ -6,7 +6,7 @@
 		  </div>
 		</header>
 
-		<eventsList :eventos="eventos"></eventsList>
+		<eventsList :eventos="eventos" @delete-click="deleteEvent"></eventsList>
 
 	</div>
 </template>
@@ -39,6 +39,42 @@
                     this.errorLoading = true;
                 });
             },
+            deleteEvent : function(evento){
+		      swal("Pertende realmente apagar o evento?", {
+		          icon: "warning",
+		          buttons: {
+		              no: "Não",
+		              yes: "Sim",
+		          },
+		      })
+		      .then((value) => {
+		          switch (value) {
+		              case "no":
+		                break;
+		           
+		              case "yes":
+		                axios.delete('/api/event/'+evento.id+'/delete')
+		                  .then((response) => {
+		                    swal("Evento apagado com sucesso.", {
+		                            buttons: {
+		                                ok: "Ok"
+		                            },
+		                        })
+		                        .then((value) => {
+		                            switch (value) {
+		                                case "ok":
+		                                	this.getEvents();
+		                                	break;
+		                            }
+		                        });
+		                  })
+		                  .catch((error) => {
+
+		                  });                  
+		                  break;
+		          }
+		      });
+		    }
         },
         components: {
             'eventsList': EventsList,

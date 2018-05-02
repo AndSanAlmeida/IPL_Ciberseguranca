@@ -18,8 +18,9 @@ use Illuminate\Support\Facades\DB;
 
 
 define('YOUR_SERVER_URL', 'http://ipl.test');
-define('CLIENT_ID', '4');
-define('CLIENT_SECRET', 'Kmgtqrif2rzLPah1sHP87EucZCNVOFWJerLARjBy');
+//define('YOUR_SERVER_URL', 'http://ipl_ciberseguranca.test');
+define('CLIENT_ID', '2');
+define('CLIENT_SECRET', 'ozS5vpC5IAltONJja2g7FimFuSGOlbr5A5KnwMxJ');
 
 class LoginControllerAPI extends Controller
 {
