@@ -16,7 +16,7 @@
     <li class="{{ url()->current()==url('/admin/#/users') ? 'active' : '' }}">
       <a href="{{ url('/admin/#/users') }}" title="Users"> <i class="icon-user"></i>Utilizadores</a>
     </li>
-    <li class="active"><a href="#"> <i class="icon-paper-airplane"></i>Eventos </a></li>
+    <li><a href="{{ url('/admin/#/events') }}"> <i class="icon-paper-airplane"></i>Eventos </a></li>
     <li><a href="#"> <i class="icon-padnote"></i>Posts </a></li>
     <li><a href="#"> <i class="icon-page"></i>Notícias </a></li>
     <li><a href="#"> <i class="icon-list"></i>Glossário </a></li>

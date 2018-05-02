@@ -49,41 +49,6 @@
         </div>
       </div>
     </section>
-    <section class="dashboard-counts no-padding-bottom">
-      <div class="container-fluid">
-        <div class="card">
-                    <div class="card-close">
-                     
-                    </div>
-                    <div class="card-header d-flex align-items-center">
-                      <h3 class="h4">Lista de Eventos</h3>
-                    </div>
-                    <div class="card-body">
-                      <div class="table-responsive">                       
-                        <table class="table table-striped table-hover">
-                          <thead>
-                            <tr>
-                              <th>#</th>
-                              <th>Nome</th>
-                              <th>Data</th>
-                              <th>Estado</th>
-                              <th>Utilizadores Interessados</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <th scope="row">1</th>
-                              <td>Mark</td>
-                              <td>Otto</td>
-                              <td>@mdo</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-      </div>
-    </section>
   </div>
 </template>
 <script type="text/javascript">
@@ -95,16 +60,12 @@
                 blockedUsers: 0,
                 newUsers: 0,
                 activeUsers: 0,
-                config: {
-                    headers: {
-                      'Authorization': localStorage.getItem("access_token")
-                    }
-                }
+        
             }
         },
         methods: {
             getUsers: function () {
-                axios.get('http://ipl.test/api/users', this.config)
+                axios.get('/api/users')
                     .then(response => {
                         this.users = response.data.data;
                         this.numUsers = this.users.length;

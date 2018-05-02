@@ -12,12 +12,16 @@ window.Vue = require('vue');
 
 const home = Vue.component('home', require('./components/adminComponents/homeComponent.vue'));
 const users = Vue.component('users', require('./components/adminComponents/usersComponent.vue'));
+const eventos = Vue.component('events', require('./components/adminComponents/eventsComponent.vue'));
+const eventsCreate = Vue.component('eventsCreate', require('./components/adminComponents/eventsCreateComponent.vue'));
 
 /*ROUTES*/
 const routes = [
 	{ path: '/', redirect: '/home' },
 	{ path: '/home', component: home },
 	{ path: '/users', component: users },
+	{ path: '/events', component: eventos},
+	{ path: '/events/create', component: eventsCreate},
 ];
 
 const router = new VueRouter({

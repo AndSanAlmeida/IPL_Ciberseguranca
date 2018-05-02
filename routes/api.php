@@ -34,3 +34,6 @@ Route::post('password/reset', 'LoginControllerAPI@resetPassword');
  *****************/
 	
 Route::middleware('auth:api')->get('users', 'UserControllerAPI@getUsers'); //GET LIST OF USERS TO MANAGE
+Route::middleware('auth:api')->get('events', 'EventControllerAPI@index'); //GET LIST OF EVENTS
+Route::middleware('auth:api')->post('events/create', 'EventControllerAPI@create'); // create event
+Route::middleware('auth:api')->delete('event/{id}/delete', 'EventControllerAPI@destroy'); // delete event

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events;
-
+use App\Http\Resources\EventsResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -26,7 +26,7 @@ class EventControllerAPI extends Controller
         if ($request->wantsJson()) {
             $events = Events::all();
 
-            return NewsResource::collection($events);
+            return EventsResource::collection($events);
         } else {
             return response()->json(['message' => 'Request inválido.'], 400);
         }
@@ -37,21 +37,25 @@ class EventControllerAPI extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string',
-            'text' => 'required|string',
+            'name' => 'required|string',
             'localization' => 'required|string',
-            'video' => 'required|date'
+            'description' => 'required|string',
+            'date' => 'required'
         ]);
 
         if ($validator->fails()) {
             return response()->json(['msg' => $validator->errors()]);
         } else {
             $event = new Events;
-            $event->title = $request->get('title');
-            $event->text = $request->get('text');
+            $event->name = $request->get('name');
+            $event->localization = $request->get('localization');
+            $event->description = $request->get('description');
+
+            $dateConverted = date('YYYY-MM-dd', $request->get('date'));
+            $event->date = $dateConverted;
 
             $event->id_user = Auth::id();
             // 0 - por realizar
@@ -60,7 +64,7 @@ class EventControllerAPI extends Controller
             $event->status = 0;
 
             $event->save();
-            return response()->json(['msg' => 'Evento criada com sucesso', 'error' => false]);
+            return response()->json(['msg' => 'Evento criado com sucesso', 'error' => false]);
         }
     }
 

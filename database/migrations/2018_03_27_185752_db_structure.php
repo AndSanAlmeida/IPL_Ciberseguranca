@@ -114,15 +114,18 @@ class DbStructure extends Migration
             $table->integer('id_user');
         });
 
-        Schema::create('event', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->increments('id');
             $table->string('localization');
-            $table->string('title');
+            $table->string('name');
             $table->string('text');
             $table->date('date');
+            // 0 - por realizar
+            // 1 - a decorrer
+            // 2 - concluido
             $table->integer('status');
             $table->integer('id_user');
-            $table->integer('total_confirmed')->default(0);
+            $table->integer('total_interested')->default(0);
             $table->timestamps();
         });
 
