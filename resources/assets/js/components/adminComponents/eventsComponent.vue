@@ -43,8 +43,14 @@
 		      swal("Pertende realmente apagar o evento?", {
 		          icon: "warning",
 		          buttons: {
-		              no: "Não",
-		              yes: "Sim",
+		              no: {
+		              	text: "Não",
+		              	className: "btn-light",
+		              },
+		              yes: {
+		              	text: "Sim",
+		              	className: "btn-info",
+		              },
 		          },
 		      })
 		      .then((value) => {
@@ -56,6 +62,7 @@
 		                axios.delete('/api/event/'+evento.id+'/delete')
 		                  .then((response) => {
 		                    swal("Evento apagado com sucesso.", {
+		                    	icon: "success",
 		                            buttons: {
 		                                ok: "Ok"
 		                            },

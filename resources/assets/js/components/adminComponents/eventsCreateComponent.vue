@@ -8,7 +8,7 @@
         <h3 class="mb-0">Criar Evento</h3>
       </div>
       <div class="card-body">
-        <form class="form" role="form" autocomplete="off" v-on:submit.prevent="submitForm">
+        <form class="form" role="form" autocomplete="off" v-on:submit.prevent="submitForm" enctype="multipart/form-data">
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Nome do Evento</label>
             <div class="col-lg-9">
@@ -36,6 +36,17 @@
            </div>
          </div>
          <div class="form-group row">
+          <label for="fileInput" class="col-sm-3 form-control-label">Imagem</label>
+          <div class="col-sm-9" v-if="!image">
+            <input id="fileInput" type="file" accept="image/x-png,image/gif,image/jpeg" class="form-control-file" v-on:change="onFileChange" required>
+          </div>
+          <div class="col-sm-9" v-if="image">
+            <img :src="image" class="img-fluid" alt="Imagem do evento"/>
+            <button class="btn btn-sm btn-danger mt-3 float-right" @click="removeImage"  type="button">Remover Imagem</button>
+          </div>
+        </div>
+
+        <div class="form-group row">
           <label class="col-lg-3 col-form-label form-control-label"></label>
           <div class="col-lg-9">
             <input class="btn btn-secondary" value="Cancelar" type="button" v-on:click="cancel">
@@ -60,6 +71,7 @@ export default {
       localization:'',
       description:'',
       date: new Date(),
+      image: '',
       attemptSubmit: false,
       serverError: false,
       serverErrorMessage: '',
@@ -101,6 +113,7 @@ export default {
           localization: this.localization,
           description: this.description,
           date: newDate,
+          image: this.image,
         };
 
 
@@ -170,7 +183,28 @@ export default {
               break;
             }
           });
+        },
+        onFileChange(e) {
+          var files = e.target.files || e.dataTransfer.files;
+          if (!files.length)
+            return;
+          this.createImage(files[0]);
+        },
+        createImage(file) {
+          var image = new Image();
+          var reader = new FileReader();
+          var vm = this;
+
+          reader.onload = (e) => {
+            vm.image = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        },
+        removeImage: function (e) {
+          this.image = '';
+
         }
+
       }
     }
     </script>

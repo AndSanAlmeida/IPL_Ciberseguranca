@@ -43,7 +43,8 @@ class EventControllerAPI extends Controller
             'name' => 'required|string',
             'localization' => 'required|string',
             'description' => 'required|string',
-            'date' => 'required'
+            'date' => 'required',
+            'image' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -54,6 +55,13 @@ class EventControllerAPI extends Controller
             $event->localization = $request->get('localization');
             $event->description = $request->get('description');
             $event->date = $request->get('date');
+
+            // image
+            $fileName = $event->name.'.png';
+            File::makeDirectory(public_path('img/eventos'), $mode = 0777, true, true);
+            $path = public_path('img/eventos');
+            Image::make($request->get('image'))->save($path . '/' . $fileName);
+            $event->image_path = 'img/eventos/' . $fileName;
 
             $event->id_user = Auth::id();
             // 0 - por realizar
@@ -102,16 +110,34 @@ class EventControllerAPI extends Controller
             'localization' => 'required|max:255',
             'description' => 'required',
             'date' => 'required',
-            'status' => 'required'
+            'status' => 'required',
+            'image' => 'required',
+
         ]);
 
         if ($request->wantsJson() && !$validator->fails()) {
+
             $event = Events::findOrFail($id);
+
+            // apagar caso o nome seja alterado
+            $fileName = $event->name.'.png';
+            File::makeDirectory(public_path('img/eventos'), $mode = 0777, true, true);
+            $path = public_path('img/eventos');
+            File::delete($path . '/' . $fileName);
+
             $event->name = $request->get('name');
             $event->localization = $request->get('localization');
             $event->description = $request->get('description');
             $event->date = $request->get('date');
             $event->status = $request->get('status');
+
+            // image
+            $fileName = $event->name.'.png';
+            File::makeDirectory(public_path('img/eventos'), $mode = 0777, true, true);
+            $path = public_path('img/eventos');
+            Image::make($request->get('image'))->save($path . '/' . $fileName);
+            $event->image_path = 'img/eventos/' . $fileName;
+
             $event->save();
 
             return response()->json(['msg' => 'Evento editado.']);

@@ -120,6 +120,7 @@ class DbStructure extends Migration
             $table->string('name');
             $table->string('description');
             $table->date('date');
+            $table->string('image_path');
             // 0 - por realizar
             // 1 - a decorrer
             // 2 - concluido

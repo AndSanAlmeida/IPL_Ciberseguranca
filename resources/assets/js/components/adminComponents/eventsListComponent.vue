@@ -34,7 +34,7 @@
                         <td>
                           <div class="btn-group btn-group-sm" role="group" aria-label="Ações">
                             <button type="button" class="btn btn-primary">Ver detalhes</button>
-                            <router-link :to="{ name: 'eventsEdit', params: {id: evento.id } }" class="btn btn-warning">Edit</router-link>
+                            <router-link :to="{ name: 'eventsEdit', params: {id: evento.id } }" class="btn btn-warning">Editar</router-link>
                             <button type="button" class="btn btn-danger" v-on:click="deleteEvento(evento)">Eliminar</button>
                           </div>
                         </td>

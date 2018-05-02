@@ -51222,69 +51222,76 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            eventos: [],
-            showSuccess: false,
-            successMessage: '',
-            loading: true,
-            errorLoading: false
-        };
-    },
-    methods: {
-        getEvents: function getEvents() {
-            var _this = this;
+				data: function data() {
+								return {
+												eventos: [],
+												showSuccess: false,
+												successMessage: '',
+												loading: true,
+												errorLoading: false
+								};
+				},
+				methods: {
+								getEvents: function getEvents() {
+												var _this = this;
 
-            this.loading = true;
-            this.errorLoading = false;
+												this.loading = true;
+												this.errorLoading = false;
 
-            axios.get('/api/events').then(function (response) {
-                _this.eventos = response.data.data;
-                _this.loading = false;
-            }).catch(function (error) {
-                _this.loading = false;
-                _this.errorLoading = true;
-            });
-        },
-        deleteEvent: function deleteEvent(evento) {
-            var _this2 = this;
+												axios.get('/api/events').then(function (response) {
+																_this.eventos = response.data.data;
+																_this.loading = false;
+												}).catch(function (error) {
+																_this.loading = false;
+																_this.errorLoading = true;
+												});
+								},
+								deleteEvent: function deleteEvent(evento) {
+												var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Pertende realmente apagar o evento?", {
-                icon: "warning",
-                buttons: {
-                    no: "Não",
-                    yes: "Sim"
-                }
-            }).then(function (value) {
-                switch (value) {
-                    case "no":
-                        break;
+												__WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Pertende realmente apagar o evento?", {
+																icon: "warning",
+																buttons: {
+																				no: {
+																								text: "Não",
+																								className: "btn-light"
+																				},
+																				yes: {
+																								text: "Sim",
+																								className: "btn-info"
+																				}
+																}
+												}).then(function (value) {
+																switch (value) {
+																				case "no":
+																								break;
 
-                    case "yes":
-                        axios.delete('/api/event/' + evento.id + '/delete').then(function (response) {
-                            __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Evento apagado com sucesso.", {
-                                buttons: {
-                                    ok: "Ok"
-                                }
-                            }).then(function (value) {
-                                switch (value) {
-                                    case "ok":
-                                        _this2.getEvents();
-                                        break;
-                                }
-                            });
-                        }).catch(function (error) {});
-                        break;
-                }
-            });
-        }
-    },
-    components: {
-        'eventsList': __WEBPACK_IMPORTED_MODULE_0__eventsListComponent_vue___default.a
-    },
-    mounted: function mounted() {
-        this.getEvents();
-    }
+																				case "yes":
+																								axios.delete('/api/event/' + evento.id + '/delete').then(function (response) {
+																												__WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Evento apagado com sucesso.", {
+																																icon: "success",
+																																buttons: {
+																																				ok: "Ok"
+																																}
+																												}).then(function (value) {
+																																switch (value) {
+																																				case "ok":
+																																								_this2.getEvents();
+																																								break;
+																																}
+																												});
+																								}).catch(function (error) {});
+																								break;
+																}
+												});
+								}
+				},
+				components: {
+								'eventsList': __WEBPACK_IMPORTED_MODULE_0__eventsListComponent_vue___default.a
+				},
+				mounted: function mounted() {
+								this.getEvents();
+				}
 });
 
 /***/ }),
@@ -51504,7 +51511,7 @@ var render = function() {
                                               }
                                             }
                                           },
-                                          [_vm._v("Edit")]
+                                          [_vm._v("Editar")]
                                         ),
                                         _vm._v(" "),
                                         _c(
@@ -51727,6 +51734,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -51738,6 +51756,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       localization: '',
       description: '',
       date: new Date(),
+      image: '',
       attemptSubmit: false,
       serverError: false,
       serverErrorMessage: ''
@@ -51780,7 +51799,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           name: this.name,
           localization: this.localization,
           description: this.description,
-          date: newDate
+          date: newDate,
+          image: this.image
         };
 
         axios.post('/api/events/create', data).then(function (response) {
@@ -51844,7 +51864,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             break;
         }
       });
+    },
+    onFileChange: function onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.createImage(files[0]);
+    },
+    createImage: function createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = function (e) {
+        vm.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+
+    removeImage: function removeImage(e) {
+      this.image = '';
     }
+
   }
 });
 
@@ -53160,7 +53200,11 @@ var render = function() {
           "form",
           {
             staticClass: "form",
-            attrs: { role: "form", autocomplete: "off" },
+            attrs: {
+              role: "form",
+              autocomplete: "off",
+              enctype: "multipart/form-data"
+            },
             on: {
               submit: function($event) {
                 $event.preventDefault()
@@ -53293,6 +53337,51 @@ var render = function() {
                   }
                 })
               ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-sm-3 form-control-label",
+                  attrs: { for: "fileInput" }
+                },
+                [_vm._v("Imagem")]
+              ),
+              _vm._v(" "),
+              !_vm.image
+                ? _c("div", { staticClass: "col-sm-9" }, [
+                    _c("input", {
+                      staticClass: "form-control-file",
+                      attrs: {
+                        id: "fileInput",
+                        type: "file",
+                        accept: "image/x-png,image/gif,image/jpeg",
+                        required: ""
+                      },
+                      on: { change: _vm.onFileChange }
+                    })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.image
+                ? _c("div", { staticClass: "col-sm-9" }, [
+                    _c("img", {
+                      staticClass: "img-fluid",
+                      attrs: { src: _vm.image, alt: "Imagem do evento" }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-danger mt-3 float-right",
+                        attrs: { type: "button" },
+                        on: { click: _vm.removeImage }
+                      },
+                      [_vm._v("Remover Imagem")]
+                    )
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group row" }, [
@@ -53472,6 +53561,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -53486,6 +53585,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             description: '',
             date: '',
             status: '',
+            image: '',
             attemptSubmit: false,
             serverError: false,
             serverErrorMessage: ''
@@ -53525,6 +53625,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.description = response.data.description;
                 _this.date = new Date(response.data.date);
                 _this.status = response.data.status;
+                _this.image = '/' + response.data.image_path;
             }).catch(function (error) {
                 _this.serverError = true;
                 console.log(error);
@@ -53543,7 +53644,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     localization: this.localization,
                     description: this.description,
                     date: newDate,
-                    status: this.status
+                    status: this.status,
+                    image: this.image
                 };
 
                 axios.post('/api/events/' + this.id + '/update', data).then(function (response) {
@@ -53560,7 +53662,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     });
                 }).catch(function (error) {
                     _this2.serverError = true;
-                    console.log(error);
                     _this2.serverErrorMessage = error.response.data.data;
                 });
             }
@@ -53606,6 +53707,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         break;
                 }
             });
+        },
+        onFileChange: function onFileChange(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length) return;
+            this.createImage(files[0]);
+        },
+        createImage: function createImage(file) {
+            var image = new Image();
+            var reader = new FileReader();
+            var vm = this;
+
+            reader.onload = function (e) {
+                vm.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+
+        removeImage: function removeImage(e) {
+            this.image = '';
         }
     },
     mounted: function mounted() {
@@ -53765,6 +53885,51 @@ var render = function() {
                   }
                 })
               ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-sm-3 form-control-label",
+                  attrs: { for: "fileInput" }
+                },
+                [_vm._v("Imagem")]
+              ),
+              _vm._v(" "),
+              !_vm.image
+                ? _c("div", { staticClass: "col-sm-9" }, [
+                    _c("input", {
+                      staticClass: "form-control-file",
+                      attrs: {
+                        id: "fileInput",
+                        type: "file",
+                        accept: "image/x-png,image/gif,image/jpeg",
+                        required: ""
+                      },
+                      on: { change: _vm.onFileChange }
+                    })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.image
+                ? _c("div", { staticClass: "col-sm-9" }, [
+                    _c("img", {
+                      staticClass: "img-fluid",
+                      attrs: { src: _vm.image, alt: "Imagem do evento" }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-danger mt-3 float-right",
+                        attrs: { type: "button" },
+                        on: { click: _vm.removeImage }
+                      },
+                      [_vm._v("Remover Imagem")]
+                    )
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group row" }, [
