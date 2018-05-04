@@ -1,0 +1,93 @@
+<template>
+    <div class="col-md-8 offset-md-2">
+        <span class="anchor" id="formUserEdit"></span>
+
+        <div class="card card-outline-secondary">
+            <div class="card-header">
+                <h1 class="mb-0 text-center">{{name}}</h1>
+            </div>
+            <div class="card-body">
+                
+                <div class="item">  
+                    <div class="col-sm-12" v-if="image">
+                        <img :src="image" class="mx-auto d-block img-fluid mb-2" alt="Imagem do evento"/>
+                    </div>
+                </div>
+
+                <p><b>Organizador do Evento: </b>{{organizer}}</p>
+
+                <p><b>Localização: </b>{{localization}}</p>
+
+                <p><b>Data do Evento: </b>{{shortDate}}</p>
+
+                <p><b>Descrição: </b>{{description}}</p>
+
+                <p><b>Estado: </b>{{status == 0 ? 'Por Realizar' : status == 0 ? 'A Decorrer' : 'Concluido'}}</p>
+     
+                <p><b>Total de interessados: </b>{{total_interested}}</p>
+ 
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label"></label>
+                    <div class="col-lg-9">
+                        <input class="btn btn-secondary float-right" value="Voltar" type="button" v-on:click="cancel">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script type="text/javascript">
+    export default {
+        data: function() {
+            return {
+                id: this.$route.params.id,
+                name: '',
+                organizer: '',
+                localization: '',
+                description: '',
+                date: new Date,
+                shortDate: new Date,
+                status: '',
+                image:'',
+                total_interested: '',
+                attemptSubmit: false,
+                serverError: false,
+                serverErrorMessage: '',
+            }
+        },
+        methods: {
+            getEvento: function(id) {
+                axios.get('/api/events/'+this.id)
+                .then((response) => {
+                    this.name = response.data.name;
+                    this.organizer = response.data.organizer;
+                    this.localization = response.data.localization;
+                    this.description = response.data.description;
+                    this.date = new Date(response.data.date);
+                    this.status = response.data.status;
+                    this.image = '/'+response.data.image_path;
+                    this.total_interested = response.data.total_interested;
+                    this.formatDate();
+                })
+                .catch((error) => {
+                    this.serverError = true;
+                    console.log(error);
+                    this.serverErrorMessage = error.response.data.data;
+                });
+            },
+            cancel: function() {
+                window.location.href = '/admin/#/events'
+            },
+            formatDate: function() {
+                var dateObj = this.date;
+                var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
+                var date = ('0' + dateObj.getDate()).slice(-2);
+                var year = dateObj.getFullYear();
+                this.shortDate = year + '-' + month + '-' + date;
+            },
+        },
+        mounted: function () {
+            this.getEvento();
+        }
+    }
+</script>

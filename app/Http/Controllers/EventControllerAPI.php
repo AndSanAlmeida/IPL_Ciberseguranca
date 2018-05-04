@@ -8,9 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Illuminate\Mail\TransportManager;
 use Auth;
 use Validator;
-
+use Storage;
 
 
 class EventControllerAPI extends Controller
@@ -40,8 +41,9 @@ class EventControllerAPI extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'localization' => 'required|string',
+            'name' => 'required|string|max:100',
+            'organizer' => 'required|string|max:100',
+            'localization' => 'required|string|max:100',
             'description' => 'required|string',
             'date' => 'required',
             'image' => 'required',
@@ -55,7 +57,7 @@ class EventControllerAPI extends Controller
             $event->localization = $request->get('localization');
             $event->description = $request->get('description');
             $event->date = $request->get('date');
-
+            $event->organizer = $request->get('organizer');
             // image
             $fileName = $event->name.'.png';
             File::makeDirectory(public_path('img/eventos'), $mode = 0777, true, true);
@@ -106,12 +108,12 @@ class EventControllerAPI extends Controller
     public function edit($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255',
-            'localization' => 'required|max:255',
-            'description' => 'required',
+            'name' => 'required|string|max:100',
+            'organizer' => 'required|string|max:100',
+            'localization' => 'required|string|max:100',
+            'description' => 'required|string',
             'date' => 'required',
             'status' => 'required',
-            'image' => 'required',
 
         ]);
 
@@ -119,30 +121,44 @@ class EventControllerAPI extends Controller
 
             $event = Events::findOrFail($id);
 
-            // apagar caso o nome seja alterado
-            $fileName = $event->name.'.png';
-            File::makeDirectory(public_path('img/eventos'), $mode = 0777, true, true);
-            $path = public_path('img/eventos');
-            File::delete($path . '/' . $fileName);
+            if (!empty($request->get('image'))) {
+                // apagar caso o nome seja alterado
+                $fileName = $event->name.'.png';
+                File::makeDirectory(public_path('img/eventos'), $mode = 0777, true, true);
+                $path = public_path('img/eventos');
+                File::delete($path . '/' . $fileName);
+            }
+
+            // caso a imagem nao seja alterada mas o nome sim
+            if (empty($request->get('image')) && $event->name != $request->get('name')) {
+                $path = public_path('img/eventos');
+                $fileNameNew = $path .'/'. $request->get('name').'.png';
+                $fileNameOld =  $path .'/'. $event->name.'.png';
+                
+                Image::make(public_path($event->image_path))->save($fileNameNew);
+                File::delete($fileNameOld);
+            }
 
             $event->name = $request->get('name');
             $event->localization = $request->get('localization');
             $event->description = $request->get('description');
             $event->date = $request->get('date');
             $event->status = $request->get('status');
-
-            // image
-            $fileName = $event->name.'.png';
-            File::makeDirectory(public_path('img/eventos'), $mode = 0777, true, true);
-            $path = public_path('img/eventos');
-            Image::make($request->get('image'))->save($path . '/' . $fileName);
-            $event->image_path = 'img/eventos/' . $fileName;
-
+            $event->organizer = $request->get('organizer');
+            
+            if (!empty($request->get('image'))) {
+                // image
+                $fileName = $event->name.'.png';
+                File::makeDirectory(public_path('img/eventos'), $mode = 0777, true, true);
+                $path = public_path('img/eventos');
+                Image::make($request->get('image'))->save($path . '/' . $fileName);
+                $event->image_path = 'img/eventos/' . $fileName;
+            }
             $event->save();
 
             return response()->json(['msg' => 'Evento editado.']);
         } else {
-            return response()->json(['errorCode' => -1, 'msg' => 'Request Invalido.'], 400);
+            return response()->json(['errorCode' => -1, 'msg' => $validator->errors()], 400);
         }
     }
 

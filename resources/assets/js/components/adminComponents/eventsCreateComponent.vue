@@ -16,6 +16,12 @@
             </div>
           </div>
           <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Organizador</label>
+            <div class="col-lg-9">
+              <input class="form-control" type="text" v-model="organizer" required>
+            </div>
+          </div>
+          <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Localização</label>
             <div class="col-lg-9">
               <input class="form-control" type="text" v-model="localization" required>
@@ -68,6 +74,7 @@ export default {
   data: function() {
     return {
       name:'',
+      organizer: '',
       localization:'',
       description:'',
       date: new Date(),
@@ -83,6 +90,9 @@ export default {
   computed: {
     missingName: function () {
       return this.name.trim() === '' && !this.hasServerError && this.attemptSubmit;
+    },
+    missiingOrganizer: function() {
+      return this.organizer.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
     missingLocalization: function () {
       return this.localization.trim() === '' && !this.hasServerError && this.attemptSubmit;
@@ -110,6 +120,7 @@ export default {
         var newDate = this.getDate();
         const data = {
           name: this.name,
+          organizer: this.organizer,
           localization: this.localization,
           description: this.description,
           date: newDate,
