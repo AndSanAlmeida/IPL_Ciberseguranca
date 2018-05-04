@@ -4,7 +4,7 @@
             <div class="bg-color">
                 <div class="container">
                     <div class="row banner-content">
-                        <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+                        <div class="col-xs-12 col-md-10 col-lg-8">
                             <div class="banner-inner text-center">
                                 <h1 class="banner-heading">Instituto Politécnico de Leiria</h1>
                                 <h3>Portal de Cibersegurança</h3>
@@ -60,7 +60,7 @@
                 </div>
             </div>
         </section>
-        <section id="portfolio" class="section-padding">
+        <!--<section id="portfolio" class="section-padding">
             <div class="row">
                 <div class="container">
                     <div class="col-12 marb-20">
@@ -201,7 +201,7 @@
                 </div>
             </div>
         </div>
-        </section>
+        </section>-->
     </div>
 </template>
 <script type="text/javascript">

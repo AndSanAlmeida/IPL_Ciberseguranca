@@ -63,8 +63,8 @@
             }
         },
         methods: {
-            getUsers: function () {
-                axios.get('/api/users')
+            getUsersForStatus: function () {
+                axios.post('/api/usersForStatus')
                     .then(response => {
                         this.users = response.data.data;
                         this.numUsers = this.users.length;
@@ -112,7 +112,7 @@
         computed: {},
         components: {},
         mounted: function () {
-            this.getUsers();
+            this.getUsersForStatus();
         }
     }
 </script>

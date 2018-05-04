@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Activation;
 use App\Mail\ActivateAccount;
+use App\Mail\ChangeState;
 use App\Http\Resources\UserResource;
-
+use App\Http\Resources\SmallerUserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\App;
@@ -22,25 +23,16 @@ use Input;
 
 class UserControllerAPI extends Controller
 {
-	/*
+	
     public function getUsers(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'searchText' => 'nullable',
             'stateOfAccount' => 'required'
         ]);
 
         if ($request->wantsJson() && !$validator->fails()) {
-            $users = User::where('admin', 0);
-            $searchText = $request->input('searchText');
+            $users = User::where('type', 0);
 
-            if ($searchText) {
-                $users->where(function ($q) use ($searchText) {
-                    $q->where('email', 'like', '%' . $searchText . '%');
-                    $q->orWhere('nickname', 'like', '%' . $searchText . '%');
-                    $q->orWhere('name', 'like', '%' . $searchText . '%');
-                });
-            }
             $state = $request->input('stateOfAccount');
             if ($state == '-1') {
                 $users->onlyTrashed();
@@ -48,15 +40,14 @@ class UserControllerAPI extends Controller
                 $users->where('blocked', $state);
             }
             $users = $users->get();
-            return UserResource::collection($users);
+            return SmallerUserResource::collection($users);
         } else {
             return response()->json(['msg' => 'Request inválido.'], 400);
         }
 
-    }*/
+    }
 
-    // Get Users without Admins
-	public function getUsers(Request $request)
+	public function getUsersForStatus(Request $request)
 	{
 		if ($request->wantsJson()) {
 			$users = User::where('type', 0)->get();
@@ -65,6 +56,76 @@ class UserControllerAPI extends Controller
 			return response()->json(['message' => 'Request inválido.'], 400);
 		}
 	}
+
+	public function delete($id)
+    {
+
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        $this->user = $user;
+        return response()->json(null, 204);
+    }
+
+
+    public function updateState(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'newState' => 'required',
+            'reason' => 'nullable'
+        ]);
+
+        
+        if ($request->wantsJson() && !$validator->fails()) {
+        	
+            try {
+            	error_log('Some message here.');
+                $user = User::findOrFail($id);
+
+                $newState = $request->input('newState');
+                $reason = nl2br($request->input('reason'));
+                $user->blocked = $newState;
+                if ($newState == '0') {
+                    $mensagem = "A sua conta foi reactivada.";
+                    $user->reason_reactivated = $reason;
+                } else {
+                    $mensagem = "A sua conta foi bloqueada.";
+                    $user->reason_blocked = $reason;
+                }
+
+                if ($reason != null) {
+                    $mensagem .= '<br/><br/>Razão: <br/>' . $reason;
+                }				
+
+				$config = DB::table('config')->first();
+				$mailConfigs = json_decode($config->platform_email_properties);
+				config([
+					'mail.host' => $mailConfigs->host,
+					'mail.port' => $mailConfigs->port,
+					'mail.encryption' => $mailConfigs->encryption,
+					'mail.username' => $config->platform_email,
+					'mail.password' => $mailConfigs->password
+				]);
+
+				$app = App::getInstance();
+				$app->singleton('swift.transport', function ($app) {
+					return new TransportManager($app);
+				});
+				$mailer = new Swift_Mailer($app['swift.transport']->driver());
+				Mail::setSwiftMailer($mailer);
+				Mail::to($user)->send(new ChangeState($mensagem, $user));
+
+				$user->save();
+                return response()->json(['msg' => 'Estado do utilizador alterado.']);
+
+			} catch (\Exception $e) {
+				return response()->json(['errorCode' => -1, 'msg' => 'Problema a enviar o email. Tente mais tarde novamente.', 'exc' => $e->getMessage()], 400);
+			}
+
+        } else {
+            return response()->json(['errorCode' => -1, 'msg' => 'Request Invalido.'], 400);
+        }
+    }
 
 	public function store(Request $request) {
         // Validator
@@ -158,15 +219,5 @@ class UserControllerAPI extends Controller
 		return response([
 			'status' => 'success'
 		]);
-	}
-
-	public function getNewUsers(Request $request)
-	{
-		if ($request->wantsJson()) {
-			$users = User::where('admin', 0)->where('blocked', 0)->where('activated', 0)->get();
-			return UserResource::collection($users);
-		} else {
-			return response()->json(['message' => 'Request inválido.'], 400);
-		}
 	}
 }

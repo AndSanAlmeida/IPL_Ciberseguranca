@@ -186,16 +186,10 @@ p {
   -moz-transition: all 0.2s ease-in-out;
 }
 
-.navbar-default .navbar-nav .active > a {
-  color: #fff;
-  background-color: #EC0044;
-}
-
 .navbar-default .navbar-nav li > a {
   transition: all 0.1s ease;
   -webkit-transition: all 0.1s ease;
   -moz-transition: all 0.1s ease;
-  font-size: 14px;
 }
 
 .navbar-default .navbar-nav li > a:hover {
@@ -209,13 +203,25 @@ p {
   font-size: 28px;
 }
 
-/* PEDREIRO MAS RESULTOU */
+/*.router-link-exact-active {
+  color: white;
+  background-color: $ipl-red;
+}*/
+
+.dropdown-menu {
+  padding: 0;
+  margin: 0;
+}
 
 .nav > li > div.dropdown {
   position: relative;
   display: block;
   padding: 15px;
   line-height: 20px;
+}
+
+.nav > li > div.dropdown li > a {
+  padding: 10px 20px;
 }
 
 .nav > li > div.dropdown .authDropdown {
@@ -301,7 +307,7 @@ p {
   width: 100%;
   height: auto;
   position: absolute;
-  top: 50%;
+  top: 75%;
   left: 0;
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
@@ -310,9 +316,9 @@ p {
 #home h1 {
   font-size: 2.2vw;
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.7);
-  margin: 15px 3em;
-  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin: 15px 4em 15px 3.1em;
+  padding: 20px 10px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -320,9 +326,9 @@ p {
 #home h3 {
   font-size: 1.7vw;
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.7);
-  margin: 15px 10em;
-  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin: 15px 18em 15px 4em;
+  padding: 20px 10px;
   font-weight: 700;
 }
 

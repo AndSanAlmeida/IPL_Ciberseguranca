@@ -10,7 +10,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <router-link to="/" class="navbar-brand">IPL-Cibersegurança</router-link>
+                        <router-link to="/" class="navbar-brand">IPL | Cibersegurança</router-link>
                     </div>
                     <div class="navbar-collapse collapse">
                         <nav>
