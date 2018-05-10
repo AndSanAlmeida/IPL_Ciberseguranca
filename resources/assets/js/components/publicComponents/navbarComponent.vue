@@ -10,14 +10,13 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <router-link to="/" class="navbar-brand">IPL | Cibersegurança</router-link>
+                        <router-link to="/" class="navbar-brand" style="font-weight: normal;">IPL | Cibersegurança</router-link>
                     </div>
                     <div class="navbar-collapse collapse">
                         <nav>
                             <ul class="nav navbar-nav navbar-right">
                                 <li><router-link to="/home" title="Home">Home</router-link></li>
                                 <li><router-link to="/resources" title="Recursos">Recursos</router-link></li>
-                                <li><router-link to="/forum" title="Fórum">Fórum</router-link></li>
                                 <li><router-link to="/activities" title="Actividades">Actividades</router-link></li>
                                 <li><router-link to="/aboutUs" title="Sobre Nós">Sobre Nós</router-link></li>
 
@@ -92,7 +91,7 @@
                     .then((response) => {
                         localStorage.removeItem("access_token");
                         this.logged = false;
-                        
+                        location.reload(true);
                     })
                     .catch((error) => {
                         
@@ -110,7 +109,6 @@
                 this.getUser();
                 this.logged = true;
             }
-            
         }
     }
 </script>

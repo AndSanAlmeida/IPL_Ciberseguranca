@@ -6,6 +6,7 @@
 	<navbar></navbar>
 	<router-view></router-view>
 	<contact></contact>
+	<newsletter></newsletter>
 @endsection
 
 @section('pagescript')
