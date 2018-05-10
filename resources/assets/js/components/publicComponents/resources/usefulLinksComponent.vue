@@ -1,5 +1,5 @@
 <template>
-	<section id="aboutUs" class="section-padding">
+	<section id="resources" class="section-padding">
 		<div class="row">
 			<div class="container">
 				<div class="col-md-8 col-sm-12 marb-20">
@@ -7,19 +7,21 @@
                     <div class="title-block left-highlight">
                      	<h1>{{ title }}</h1>
                  	</div>
-                 	<div class="text">
-                 		<p class="text-justify">
-                 			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                 		</p>
-                 	</div>
+                 	<div id="linksAndDocuments">
+                        <ul class="linksAndDocumentsList">
+                            <li><a href="#" title="Link 1" target="_blank">Link 1</a></li>
+                            <li><a href="#" title="Link 2" target="_blank">Link 2</a></li>
+                            <li><a href="#" title="Link 3" target="_blank">Link 3</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-md-4 col-sm-12 container-nav">
                     <div class="container-nav-title">
                         <h3><strong>{{ title }}</strong></h3>
                     </div>
-                    
-                    <aboutUsNav></aboutUsNav>
 
+                    <resourcesNav></resourcesNav>
+                    
                 </div>
 			</div>
 		</div>
@@ -30,12 +32,15 @@
     export default {
         data: function(){
             return {
-                title: 'Sobre Nós',
+                title: 'Links Úteis',
                 items: [{
                     text: 'Início',
                     href: '/#/home'
                 }, {
-                    text: 'Sobre Nós',
+                    text: 'Recursos',
+                    href: '/#/resources'
+                }, {
+                    text: 'Links Úteis',
                     active: true
                 }]
             }
