@@ -22,8 +22,9 @@
   "dependencies": {
     "bootstrap-vue": "^2.0.0-rc.9",
     "sweetalert": "^2.1.0",
+    "vue-clip": "^1.0.0",
     "vue-router": "^3.0.1",
-    "vuejs-datepicker": "^1.1.4",
+    "vuejs-datepicker": "^1.1.5",
     "vuetify": "^1.0.17"
   }
 }

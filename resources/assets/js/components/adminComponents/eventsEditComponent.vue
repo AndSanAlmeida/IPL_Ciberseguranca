@@ -33,7 +33,7 @@
                     </div>
                     <div class="clearfix">
                         <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingOrganizer ">
-                            <p v-if="missingOrganizer">Preencher organizador(Max: 100)</p>
+                            <p v-if="missingOrganizer">Preencher organizador</p>
                         </div>
                     </div>
                     <div class="clearfix">
@@ -49,7 +49,7 @@
                     </div>
                     <div class="clearfix">
                         <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingLocalization ">
-                            <p v-if="missingLocalization">Preencher localização(Max: 100)</p>
+                            <p v-if="missingLocalization">Preencher localização</p>
                         </div>
                     </div>
                     <div class="clearfix">
@@ -91,7 +91,7 @@
                     </div>
                     <div class="clearfix">
                         <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingDescription ">
-                            <p v-if="missingDescription">Inserir imagem</p>
+                            <p v-if="missingImage">Inserir imagem</p>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -166,8 +166,11 @@
             invalidSizeDescription: function () {
                 return this.localization.trim().length > 250 && !this.hasServerError && this.attemptSubmit;
             },
+            missingImage: function () {
+                return this.image.trim() === '' && !this.hasServerError && this.attemptSubmit;
+            },
             hasClientError: function () {
-                return (this.missingName || this.missingLocalization || this.missingDescription || this.invalidSizeName || this.invalidSizeOrganizer || this.invalidSizeLocalization);
+                return (this.missingName || this.missingLocalization || this.missingDescription || this.invalidSizeName || this.invalidSizeOrganizer || this.invalidSizeLocalization || this.missingImage);
             },
             hasServerError: function () {
                 return this.serverError;
@@ -212,6 +215,7 @@
                     axios.post('/api/events/'+ this.id +'/update', data)
                     .then((response) => {
                         swal("Evento alterado com sucesso.", {
+                            icon: 'success',
                             buttons: {
                                 ok: "Ok"
                             },

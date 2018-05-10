@@ -44,3 +44,25 @@ Route::middleware('auth:api')->post('events/create', 'EventControllerAPI@create'
 Route::middleware('auth:api')->delete('event/{id}/delete', 'EventControllerAPI@destroy'); // delete event
 Route::middleware('auth:api')->post('events/{id}/update', 'EventControllerAPI@edit'); // edit event
 
+Route::middleware('auth:api')->get('glossary', 'GlossaryControllerAPI@index'); //Get the glossary
+Route::middleware('auth:api')->get('glossary/{id}', 'GlossaryControllerAPI@show'); // get item of glossary by id 
+Route::middleware('auth:api')->post('glossary/create', 'GlossaryControllerAPI@store'); // create item of glossary
+Route::middleware('auth:api')->delete('glossary/{id}/delete', 'GlossaryControllerAPI@destroy'); // delete item of glossary
+Route::middleware('auth:api')->post('glossary/{id}/update', 'GlossaryControllerAPI@update'); // edit item of glossary
+
+Route::middleware('auth:api')->get('settings', 'ConfigControllerAPI@getPlatformData'); // get platform email
+Route::middleware('auth:api')->post('settings/update', 'ConfigControllerAPI@update'); // update platform email
+Route::middleware('auth:api')->get('settings/aboutUs', 'ConfigControllerAPI@getAboutUs'); // get about us
+Route::middleware('auth:api')->post('settings/aboutUs/update', 'ConfigControllerAPI@aboutUsUpdate'); // update about us
+
+Route::middleware('auth:api')->get('usefulLinks', 'UsefulLinksControllerAPI@index'); //Get the useful links
+Route::middleware('auth:api')->get('usefulLinks/{id}', 'UsefulLinksControllerAPI@show'); // get item of useful links by id 
+Route::middleware('auth:api')->post('usefulLinks/create', 'UsefulLinksControllerAPI@store'); // create item of useful links
+Route::middleware('auth:api')->delete('usefulLinks/{id}/delete', 'UsefulLinksControllerAPI@destroy'); // delete item of useful links
+Route::middleware('auth:api')->post('usefulLinks/{id}/update', 'UsefulLinksControllerAPI@update'); // edit item of useful links
+
+Route::middleware('auth:api')->get('documents', 'DocumentsControllerAPI@index'); //Get the useful links
+Route::middleware('auth:api')->get('documents/{id}', 'DocumentsControllerAPI@show'); // get item of useful links by id 
+Route::middleware('auth:api')->post('documents/create', 'DocumentsControllerAPI@store'); // create item of useful links
+Route::middleware('auth:api')->delete('documents/{id}/delete', 'DocumentsControllerAPI@destroy'); // delete item of useful links
+Route::middleware('auth:api')->post('documents/{id}/update', 'DocumentsControllerAPI@update'); // edit item of useful links

@@ -131,6 +131,7 @@ export default {
         axios.post('/api/events/create', data)
         .then((response) => {
           swal("Evento criado com sucesso.", {
+            icon: 'success',
             buttons: {
               ok: "Ok"
             },

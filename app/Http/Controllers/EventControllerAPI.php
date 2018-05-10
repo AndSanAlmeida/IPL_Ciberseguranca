@@ -13,7 +13,6 @@ use Auth;
 use Validator;
 use Storage;
 
-
 class EventControllerAPI extends Controller
 {
     /**

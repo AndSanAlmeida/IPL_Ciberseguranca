@@ -32,11 +32,9 @@
                         <td>{{evento.date}}</td>
                         <td>{{evento.status == 0 ? 'Por Realizar' : evento.status == 0 ? 'A Decorrer' : 'Concluido'}}</td>
                         <td>
-                          <div class="btn-group btn-group-sm" role="group" aria-label="Ações">
                             <router-link :to="{ name: 'eventsDetails', params: {id: evento.id } }" class="btn btn-primary">Ver detalhes</router-link>
                             <router-link :to="{ name: 'eventsEdit', params: {id: evento.id } }" class="btn btn-warning">Editar</router-link>
                             <button type="button" class="btn btn-danger" v-on:click="deleteEvento(evento)">Eliminar</button>
-                          </div>
                         </td>
                       </tr>
                     </tbody>

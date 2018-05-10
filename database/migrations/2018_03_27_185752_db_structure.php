@@ -56,10 +56,9 @@ class DbStructure extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->longText('text');
-            $table->string('image')->nullable();
-            $table->string('video')->nullable();
-            $table->integer('id_user');
+            $table->longText('description');
+            $table->string('source');
+            $table->date('pub_date');
             $table->timestamps();
         });
 
@@ -72,52 +71,23 @@ class DbStructure extends Migration
             $table->timestamps();
         });
 
-        Schema::create('forum_post', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title');
-            $table->string('text');
-            $table->integer('up_vote')->default(0);
-            $table->integer('down_vote')->default(0);
-            $table->integer('number_of_comments')->default(0);
-            $table->integer('id_user');
-            $table->timestamps();
-        });
-
-        Schema::create('forum_post_user_rating', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('id_user');
-            $table->integer('id_post');
-            $table->integer('rating');
-        });
-
-        Schema::create('forum_post_comment', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('comment');
-            $table->integer('id_user');
-            $table->integer('id_post');
-            $table->integer('up_vote')->default(0);
-            $table->integer('down_vote')->default(0);
-            $table->timestamps();
-        });
-
-        Schema::create('forum_post_comment_user_rating', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('id_user');
-            $table->integer('id_comment');
-            $table->integer('rating');
-        });
-
-        Schema::create('rss', function (Blueprint $table) {
+        Schema::create('rss_news', function (Blueprint $table) {
             $table->increments('id');
             $table->string('website');
             $table->string('url');
-            $table->integer('id_user');
+        });
+
+        Schema::create('rss_alerts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('website');
+            $table->string('url');
         });
 
         Schema::create('events', function (Blueprint $table) {
             $table->increments('id');
             $table->string('localization');
             $table->string('name');
+            $table->string('organizer');
             $table->string('description');
             $table->date('date');
             $table->string('image_path');
@@ -136,6 +106,35 @@ class DbStructure extends Migration
             $table->integer('id_event');
             $table->integer('status');
         });
+
+        Schema::create('glossaries', function(Blueprint $table){
+            $table->increments('id');
+            $table->string('name');
+            $table->string('definition');
+            $table->string('source');
+            $table->timestamps();
+        });
+
+        Schema::create('texts', function(Blueprint $table){
+            $table->increments('id');
+            $table->string('key');
+            $table->longText('description');
+            $table->timestamps();
+        });
+
+        Schema::create('useful_links', function(Blueprint $table){
+            $table->increments('id');
+            $table->string('description');
+            $table->string('link');
+            $table->timestamps();
+        });
+
+        Schema::create('documents', function(Blueprint $table){
+            $table->increments('id');
+            $table->string('description');
+            $table->longText('path');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -145,13 +144,14 @@ class DbStructure extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('documents');
+        Schema::dropIfExists('useful_links');
+        Schema::dropIfExists('texts');
+        Schema::dropIfExists('glossaries');
         Schema::dropIfExists('event_user');
         Schema::dropIfExists('event');
-        Schema::dropIfExists('rss');
-        Schema::dropIfExists('forum_post_comment_user_rating');
-        Schema::dropIfExists('forum_post_comment');
-        Schema::dropIfExists('forum_post_user_rating');
-        Schema::dropIfExists('forum_post');
+        Schema::dropIfExists('rss_alerts');
+        Schema::dropIfExists('rss_news');
         Schema::dropIfExists('posts');
         Schema::dropIfExists('news');
         Schema::dropIfExists('config');
