@@ -16,12 +16,15 @@
     <li class="{{ url()->current()==url('/admin/#/users') ? 'active' : '' }}">
       <a href="{{ url('/admin/#/users') }}" title="Users"> <i class="icon-user"></i>Utilizadores</a>
     </li>
-    <li><a href="{{ url('/admin/#/events') }}"> <i class="icon-paper-airplane"></i>Eventos </a></li>
+
     <li><a href="{{ url('/admin/#/news') }}"> <i class="icon-page"></i>Notícias </a></li>
     <li><a href="{{ url('/admin/#/alerts') }}"> <i class="icon-website"></i>Alertas </a></li>
+    <li><a href="{{ url('/admin/#/events') }}"> <i class="icon-paper-airplane"></i>Eventos </a></li>
     <li><a href="{{ url('/admin/#/glossary') }}"> <i class="icon-list"></i>Glossário </a></li>
-    <li><a href="{{ url('/admin/#/usefulLinks') }}"> <i class="icon-bill"></i>Links Úteis </a></li>
+    <li><a href="{{ url('/admin/#/newsletter') }}"> <i class="icon-bill"></i>Newsletter </a></li>
     <li><a href="{{ url('/admin/#/documents') }}"> <i class="icon-website"></i>Documentos</a></li>
+    <li><a href="{{ url('/admin/#/usefulLinks') }}"> <i class="icon-page"></i>Links Úteis </a></li>
+    <li><a href="{{ url('/admin/#/faqs') }}"> <i class="icon-list-1"></i>FAQ </a></li>
     <li><a href="{{ url('/admin/#/settings') }}"> <i class="icon-interface-windows"></i>Definições </a></li>
   </ul>
 </nav>

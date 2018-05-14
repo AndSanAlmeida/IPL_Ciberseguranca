@@ -18,9 +18,9 @@
         </div>
         <!-- Navbar Menu -->
         <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
-          <!-- Search-->
+          <!-- Search
           <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
-          <!-- Notifications-->
+          Notifications-->
           <!--<li class="nav-item dropdown"> <a id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-bell-o"></i><span class="badge bg-red badge-corner">12</span></a>
             <ul aria-labelledby="notifications" class="dropdown-menu">
               <li><a rel="nofollow" href="#" class="dropdown-item"> 
@@ -47,26 +47,8 @@
             </ul>
           </li>-->
           <!-- Messages                        -->
-          <!--<li class="nav-item dropdown"> <a id="messages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-envelope-o"></i><span class="badge bg-orange badge-corner">10</span></a>
-            <ul aria-labelledby="notifications" class="dropdown-menu">
-              <li><a rel="nofollow" href="#" class="dropdown-item d-flex"> 
-                  <div class="msg-profile"> <img src="{{ URL::asset('img/admin/avatar-1.jpg') }}" alt="..." class="img-fluid rounded-circle"></div>
-                  <div class="msg-body">
-                    <h3 class="h5">Jason Doe</h3><span>Sent You Message</span>
-                  </div></a></li>
-              <li><a rel="nofollow" href="#" class="dropdown-item d-flex"> 
-                  <div class="msg-profile"> <img src="{{ URL::asset('img/admin/avatar-2.jpg') }}" alt="..." class="img-fluid rounded-circle"></div>
-                  <div class="msg-body">
-                    <h3 class="h5">Frank Williams</h3><span>Sent You Message</span>
-                  </div></a></li>
-              <li><a rel="nofollow" href="#" class="dropdown-item d-flex"> 
-                  <div class="msg-profile"> <img src="{{ URL::asset('img/admin/avatar-3.jpg') }}" alt="..." class="img-fluid rounded-circle"></div>
-                  <div class="msg-body">
-                    <h3 class="h5">Ashley Wood</h3><span>Sent You Message</span>
-                  </div></a></li>
-              <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong>Read all messages   </strong></a></li>
-            </ul>
-          </li>-->
+          <li class="nav-item"> <a id="messages" rel="nofollow" data-target="#" href="{{ url('/admin/#/userQuestions') }}" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-envelope-o"></i><span class="badge bg-orange badge-corner">10</span></a>
+          </li>
           <!-- Logout    -->
           <li class="nav-item"><a href="/auth/" class="nav-link logout">Logout<i class="fa fa-sign-out"></i></a></li>
         </ul>

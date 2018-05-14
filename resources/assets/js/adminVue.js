@@ -11,11 +11,12 @@ axios.defaults.headers.common['Authorization'] = localStorage.getItem('access_to
 window.Vue = require('vue');
 
 const home = Vue.component('home', require('./components/adminComponents/homeComponent.vue'));
-const users = Vue.component('users', require('./components/adminComponents/usersComponent.vue'));
-const eventos = Vue.component('events', require('./components/adminComponents/eventsComponent.vue'));
-const eventsCreate = Vue.component('eventsCreate', require('./components/adminComponents/eventsCreateComponent.vue'));
-const eventsEdit = Vue.component('eventsEdit', require('./components/adminComponents/eventsEditComponent.vue'));
-const eventsDetails = Vue.component('eventsEdit', require('./components/adminComponents/eventsDetailsComponent.vue'));
+const users = Vue.component('users', require('./components/adminComponents/usersComponents/usersComponent.vue'));
+
+const eventos = Vue.component('events', require('./components/adminComponents/eventsComponents/eventsComponent.vue'));
+const eventsCreate = Vue.component('eventsCreate', require('./components/adminComponents/eventsComponents/eventsCreateComponent.vue'));
+const eventsEdit = Vue.component('eventsEdit', require('./components/adminComponents/eventsComponents/eventsEditComponent.vue'));
+const eventsDetails = Vue.component('eventsEdit', require('./components/adminComponents/eventsComponents/eventsDetailsComponent.vue'));
 
 const glossary = Vue.component('events', require('./components/adminComponents/glossaryComponents/glossaryComponent.vue'));
 const glossaryCreate = Vue.component('events', require('./components/adminComponents/glossaryComponents/glossaryCreateComponent.vue'));
@@ -35,6 +36,9 @@ const usefulLinksEdit = Vue.component('events', require('./components/adminCompo
 const documents = Vue.component('settings', require('./components/adminComponents/documentsComponents/documentsComponent.vue'));
 const documentsCreate = Vue.component('events', require('./components/adminComponents/documentsComponents/documentsCreateComponent.vue'));
 const documentsEdit = Vue.component('events', require('./components/adminComponents/documentsComponents/documentsEditComponent.vue'));
+
+const faqs = Vue.component('faqs', require('./components/adminComponents/faqsComponents/faqsComponent.vue'));
+const userQuestions = Vue.component('userQuestions', require('./components/adminComponents/userQuestionsComponents/userQuestionsComponent.vue'));
 
 /*ROUTES*/
 const routes = [
@@ -60,6 +64,8 @@ const routes = [
 	{ path: '/documents', component: documents},
 	{ path: '/documents/create', component: documentsCreate},
 	{ path: '/documents/edit/:id', component: documentsEdit, name: 'documentsEdit', props: { default: true}},
+	{ path: '/faqs', component: faqs},
+	{ path: '/userQuestions', component: userQuestions},
 ];
 
 const router = new VueRouter({
