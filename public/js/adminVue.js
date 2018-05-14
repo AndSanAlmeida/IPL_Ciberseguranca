@@ -50685,7 +50685,7 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 /*!
- * vuejs-datepicker v1.1.5
+ * vuejs-datepicker v1.2.0
  * (c) 2016-2018 Charlie Kassel
  * Released under the MIT License.
  */
@@ -50899,7 +50899,7 @@ var DateUtils = {
 
 (function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=""; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
 
-var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:{'input-group' : _vm.bootstrapStyling}},[(_vm.calendarButton)?_c('span',{staticClass:"vdp-datepicker__calendar-button",class:{'input-group-addon' : _vm.bootstrapStyling},style:({'cursor:not-allowed;' : _vm.disabled}),on:{"click":_vm.showCalendar}},[_c('i',{class:_vm.calendarButtonIcon},[_vm._v(" "+_vm._s(_vm.calendarButtonIconContent)+" "),(!_vm.calendarButtonIcon)?_c('span',[_vm._v("…")]):_vm._e()])]):_vm._e(),_vm._v(" "),_c('input',{ref:_vm.refName,class:_vm.computedInputClass,attrs:{"type":_vm.inline ? 'hidden' : 'text',"name":_vm.name,"id":_vm.id,"open-date":_vm.openDate,"placeholder":_vm.placeholder,"clear-button":_vm.clearButton,"disabled":_vm.disabled,"required":_vm.required},domProps:{"value":_vm.formattedValue},on:{"click":_vm.showCalendar,"keypress":_vm.allowTyping,"keyup":_vm.parseTypedDate,"blur":_vm.inputBlurred}}),_vm._v(" "),(_vm.clearButton && _vm.selectedDate)?_c('span',{staticClass:"vdp-datepicker__clear-button",class:{'input-group-addon' : _vm.bootstrapStyling},on:{"click":function($event){_vm.clearDate();}}},[_c('i',{class:_vm.clearButtonIcon},[(!_vm.clearButtonIcon)?_c('span',[_vm._v("×")]):_vm._e()])]):_vm._e()])},staticRenderFns: [],
+var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:{'input-group' : _vm.bootstrapStyling}},[(_vm.calendarButton)?_c('span',{staticClass:"vdp-datepicker__calendar-button",class:{'input-group-addon' : _vm.bootstrapStyling},style:({'cursor:not-allowed;' : _vm.disabled}),on:{"click":_vm.showCalendar}},[_c('i',{class:_vm.calendarButtonIcon},[_vm._v(" "+_vm._s(_vm.calendarButtonIconContent)+" "),(!_vm.calendarButtonIcon)?_c('span',[_vm._v("…")]):_vm._e()])]):_vm._e(),_vm._v(" "),_c('input',{ref:_vm.refName,class:_vm.computedInputClass,attrs:{"type":_vm.inline ? 'hidden' : 'text',"name":_vm.name,"id":_vm.id,"open-date":_vm.openDate,"placeholder":_vm.placeholder,"clear-button":_vm.clearButton,"disabled":_vm.disabled,"required":_vm.required},domProps:{"value":_vm.formattedValue},on:{"click":_vm.showCalendar,"keydown":_vm.allowTyping,"keyup":_vm.parseTypedDate,"blur":_vm.inputBlurred}}),_vm._v(" "),(_vm.clearButton && _vm.selectedDate)?_c('span',{staticClass:"vdp-datepicker__clear-button",class:{'input-group-addon' : _vm.bootstrapStyling},on:{"click":function($event){_vm.clearDate();}}},[_c('i',{class:_vm.clearButtonIcon},[(!_vm.clearButtonIcon)?_c('span',[_vm._v("×")]):_vm._e()])]):_vm._e()])},staticRenderFns: [],
   props: {
     selectedDate: Date,
     format: [String, Function],
@@ -50957,6 +50957,7 @@ var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _
     /**
      * Prevent typing if not typeable
      * @param {Event} event
+     * @return {Boolean}
      */
     allowTyping: function allowTyping (event) {
       if (!this.typeable) {
@@ -50976,15 +50977,14 @@ var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _
         13  // enter
       ].includes(event.keyCode)) {
         this.input.blur();
-        this.inputBlurred();
-        this.$emit('closeCalendar');
-        return false
       }
 
-      var typedDate = Date.parse(this.input.value);
-      if (!isNaN(typedDate)) {
-        this.typedDate = this.input.value;
-        this.$emit('typedDate', new Date(this.typedDate));
+      if (this.typeable) {
+        var typedDate = Date.parse(this.input.value);
+        if (!isNaN(typedDate)) {
+          this.typedDate = this.input.value;
+          this.$emit('typedDate', new Date(this.typedDate));
+        }
       }
     },
     /**
@@ -50992,14 +50992,17 @@ var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _
      * called once the input is blurred
      */
     inputBlurred: function inputBlurred () {
-      if (!this.typedDate) {
+      if (!this.typeable) {
+        this.$emit('closeCalendar');
         return
       }
+
       if (isNaN(Date.parse(this.input.value))) {
         this.clearDate();
       }
       this.input.value = null;
       this.typedDate = null;
+      this.$emit('closeCalendar');
     },
     /**
      * emit a clearDate event
@@ -51016,7 +51019,7 @@ var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _
 ;
 
 (function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=""; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
-var PickerDay = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDayView),expression:"showDayView"}],class:[_vm.calendarClass, 'vdp-datepicker__calendar'],style:(_vm.calendarStyle)},[_c('header',[_c('span',{staticClass:"prev",class:{ 'disabled' : _vm.isRtl ? _vm.isNextMonthDisabled(_vm.pageTimestamp) : _vm.isPreviousMonthDisabled(_vm.pageTimestamp) },on:{"click":function($event){_vm.isRtl ? _vm.nextMonth() : _vm.previousMonth();}}},[_vm._v("<")]),_vm._v(" "),_c('span',{staticClass:"day__month_btn",class:_vm.allowedToShowView('month') ? 'up' : '',on:{"click":_vm.showMonthCalendar}},[_vm._v(_vm._s(_vm.isYmd ? _vm.currYearName : _vm.currMonthName)+" "+_vm._s(_vm.isYmd ? _vm.currMonthName : _vm.currYearName))]),_vm._v(" "),_c('span',{staticClass:"next",class:{ 'disabled' : _vm.isRtl ? _vm.isPreviousMonthDisabled(_vm.pageTimestamp) : _vm.isNextMonthDisabled(_vm.pageTimestamp) },on:{"click":function($event){_vm.isRtl ? _vm.previousMonth() : _vm.nextMonth();}}},[_vm._v(">")])]),_vm._v(" "),_c('div',{class:_vm.isRtl ? 'flex-rtl' : ''},[_vm._l((_vm.daysOfWeek),function(d){return _c('span',{key:d.timestamp,staticClass:"cell day-header"},[_vm._v(_vm._s(d))])}),_vm._v(" "),(_vm.blankDays > 0)?_vm._l((_vm.blankDays),function(d){return _c('span',{key:d.timestamp,staticClass:"cell day blank"})}):_vm._e(),_vm._l((_vm.days),function(day){return _c('span',{key:day.timestamp,staticClass:"cell day",class:_vm.dayClasses(day),on:{"click":function($event){_vm.selectDate(day);}}},[_vm._v(_vm._s(day.date))])})],2)])},staticRenderFns: [],
+var PickerDay = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDayView),expression:"showDayView"}],class:[_vm.calendarClass, 'vdp-datepicker__calendar'],style:(_vm.calendarStyle),on:{"mousedown":function($event){$event.preventDefault();}}},[_c('header',[_c('span',{staticClass:"prev",class:{ 'disabled' : _vm.isRtl ? _vm.isNextMonthDisabled(_vm.pageTimestamp) : _vm.isPreviousMonthDisabled(_vm.pageTimestamp) },on:{"click":function($event){_vm.isRtl ? _vm.nextMonth() : _vm.previousMonth();}}},[_vm._v("<")]),_vm._v(" "),_c('span',{staticClass:"day__month_btn",class:_vm.allowedToShowView('month') ? 'up' : '',on:{"click":_vm.showMonthCalendar}},[_vm._v(_vm._s(_vm.isYmd ? _vm.currYearName : _vm.currMonthName)+" "+_vm._s(_vm.isYmd ? _vm.currMonthName : _vm.currYearName))]),_vm._v(" "),_c('span',{staticClass:"next",class:{ 'disabled' : _vm.isRtl ? _vm.isPreviousMonthDisabled(_vm.pageTimestamp) : _vm.isNextMonthDisabled(_vm.pageTimestamp) },on:{"click":function($event){_vm.isRtl ? _vm.previousMonth() : _vm.nextMonth();}}},[_vm._v(">")])]),_vm._v(" "),_c('div',{class:_vm.isRtl ? 'flex-rtl' : ''},[_vm._l((_vm.daysOfWeek),function(d){return _c('span',{key:d.timestamp,staticClass:"cell day-header"},[_vm._v(_vm._s(d))])}),_vm._v(" "),(_vm.blankDays > 0)?_vm._l((_vm.blankDays),function(d){return _c('span',{key:d.timestamp,staticClass:"cell day blank"})}):_vm._e(),_vm._l((_vm.days),function(day){return _c('span',{key:day.timestamp,staticClass:"cell day",class:_vm.dayClasses(day),on:{"click":function($event){_vm.selectDate(day);}}},[_vm._v(_vm._s(day.date))])})],2)])},staticRenderFns: [],
   props: {
     showDayView: Boolean,
     selectedDate: Date,
@@ -51331,7 +51334,7 @@ var PickerDay = {render: function(){var _vm=this;var _h=_vm.$createElement;var _
 ;
 
 (function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=""; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
-var PickerMonth = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMonthView),expression:"showMonthView"}],class:[_vm.calendarClass, 'vdp-datepicker__calendar'],style:(_vm.calendarStyle)},[_c('header',[_c('span',{staticClass:"prev",class:{ 'disabled' : _vm.isPreviousYearDisabled(_vm.pageTimestamp) },on:{"click":_vm.previousYear}},[_vm._v("<")]),_vm._v(" "),_c('span',{staticClass:"month__year_btn",class:_vm.allowedToShowView('year') ? 'up' : '',on:{"click":_vm.showYearCalendar}},[_vm._v(_vm._s(_vm.pageYearName))]),_vm._v(" "),_c('span',{staticClass:"next",class:{ 'disabled' : _vm.isNextYearDisabled(_vm.pageTimestamp) },on:{"click":_vm.nextYear}},[_vm._v(">")])]),_vm._v(" "),_vm._l((_vm.months),function(month){return _c('span',{key:month.timestamp,staticClass:"cell month",class:{'selected': month.isSelected, 'disabled': month.isDisabled},on:{"click":function($event){$event.stopPropagation();_vm.selectMonth(month);}}},[_vm._v(_vm._s(month.month))])})],2)},staticRenderFns: [],
+var PickerMonth = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showMonthView),expression:"showMonthView"}],class:[_vm.calendarClass, 'vdp-datepicker__calendar'],style:(_vm.calendarStyle),on:{"mousedown":function($event){$event.preventDefault();}}},[_c('header',[_c('span',{staticClass:"prev",class:{ 'disabled' : _vm.isPreviousYearDisabled(_vm.pageTimestamp) },on:{"click":_vm.previousYear}},[_vm._v("<")]),_vm._v(" "),_c('span',{staticClass:"month__year_btn",class:_vm.allowedToShowView('year') ? 'up' : '',on:{"click":_vm.showYearCalendar}},[_vm._v(_vm._s(_vm.pageYearName))]),_vm._v(" "),_c('span',{staticClass:"next",class:{ 'disabled' : _vm.isNextYearDisabled(_vm.pageTimestamp) },on:{"click":_vm.nextYear}},[_vm._v(">")])]),_vm._v(" "),_vm._l((_vm.months),function(month){return _c('span',{key:month.timestamp,staticClass:"cell month",class:{'selected': month.isSelected, 'disabled': month.isDisabled},on:{"click":function($event){$event.stopPropagation();_vm.selectMonth(month);}}},[_vm._v(_vm._s(month.month))])})],2)},staticRenderFns: [],
   props: {
     showMonthView: Boolean,
     selectedDate: Date,
@@ -51497,7 +51500,7 @@ var PickerMonth = {render: function(){var _vm=this;var _h=_vm.$createElement;var
 
 
 
-var PickerYear = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showYearView),expression:"showYearView"}],class:[_vm.calendarClass, 'vdp-datepicker__calendar'],style:(_vm.calendarStyle)},[_c('header',[_c('span',{staticClass:"prev",class:{ 'disabled' : _vm.isPreviousDecadeDisabled(_vm.pageTimestamp) },on:{"click":_vm.previousDecade}},[_vm._v("<")]),_vm._v(" "),_c('span',[_vm._v(_vm._s(_vm.getPageDecade))]),_vm._v(" "),_c('span',{staticClass:"next",class:{ 'disabled' : _vm.isNextDecadeDisabled(_vm.pageTimestamp) },on:{"click":_vm.nextDecade}},[_vm._v(">")])]),_vm._v(" "),_vm._l((_vm.years),function(year){return _c('span',{key:year.timestamp,staticClass:"cell year",class:{ 'selected': year.isSelected, 'disabled': year.isDisabled },on:{"click":function($event){$event.stopPropagation();_vm.selectYear(year);}}},[_vm._v(_vm._s(year.year))])})],2)},staticRenderFns: [],
+var PickerYear = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showYearView),expression:"showYearView"}],class:[_vm.calendarClass, 'vdp-datepicker__calendar'],style:(_vm.calendarStyle),on:{"mousedown":function($event){$event.preventDefault();}}},[_c('header',[_c('span',{staticClass:"prev",class:{ 'disabled' : _vm.isPreviousDecadeDisabled(_vm.pageTimestamp) },on:{"click":_vm.previousDecade}},[_vm._v("<")]),_vm._v(" "),_c('span',[_vm._v(_vm._s(_vm.getPageDecade))]),_vm._v(" "),_c('span',{staticClass:"next",class:{ 'disabled' : _vm.isNextDecadeDisabled(_vm.pageTimestamp) },on:{"click":_vm.nextDecade}},[_vm._v(">")])]),_vm._v(" "),_vm._l((_vm.years),function(year){return _c('span',{key:year.timestamp,staticClass:"cell year",class:{ 'selected': year.isSelected, 'disabled': year.isDisabled },on:{"click":function($event){$event.stopPropagation();_vm.selectYear(year);}}},[_vm._v(_vm._s(year.year))])})],2)},staticRenderFns: [],
   props: {
     showYearView: Boolean,
     selectedDate: Date,
@@ -51811,7 +51814,6 @@ var Datepicker = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
       }
       this.close();
       this.showDayView = true;
-      this.addOutsideClickListener();
       return true
     },
     /**
@@ -51824,7 +51826,6 @@ var Datepicker = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
       }
       this.close();
       this.showMonthView = true;
-      this.addOutsideClickListener();
       return true
     },
     /**
@@ -51837,7 +51838,6 @@ var Datepicker = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
       }
       this.close();
       this.showYearView = true;
-      this.addOutsideClickListener();
       return true
     },
     /**
@@ -51937,28 +51937,6 @@ var Datepicker = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
      */
     setTypedDate: function setTypedDate (date) {
       this.setDate(date.getTime());
-    },
-    /**
-     * Set up an event listener for clicks outside the picker
-     */
-    addOutsideClickListener: function addOutsideClickListener () {
-      var this$1 = this;
-
-      if (!this.isInline) {
-        setTimeout(function () {
-          document.addEventListener('click', this$1.clickOutside, false);
-        }, 100);
-      }
-    },
-    /**
-     * Close the calendar if clicked outside the datepicker
-     * @param  {Event} event
-     */
-    clickOutside: function clickOutside (event) {
-      if (this.$el && !this.$el.contains(event.target)) {
-        this.resetDefaultPageDate();
-        this.close(true);
-      }
     },
     /**
      * Close all calendar layers
