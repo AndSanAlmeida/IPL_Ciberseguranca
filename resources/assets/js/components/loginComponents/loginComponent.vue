@@ -27,11 +27,11 @@
             </div>
 
             <!-- REMEMBER ME -->
-            <div id="remember" class="checkbox">
+            <!--<div id="remember" class="checkbox">
                 <label>
                     <input type="checkbox" value="remember-me"> Lembrar-me
                 </label>
-            </div>
+            </div>-->
             
             <!-- LINKS --> 
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Iniciar Sessão</button>
