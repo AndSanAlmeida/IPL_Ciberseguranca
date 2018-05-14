@@ -7,13 +7,24 @@
                     <div class="left-highlight">
                      	<h1>{{ title }}</h1>
                  	</div>
+                    <br>
+                    <h3><b>IPL Cibersegurança newsletter:</b></h3>
                  	<div id="linksAndDocuments">
-                        <ul class="linksAndDocumentsList">
-                            <li><a href="#" title="Link 1" target="_blank">Link 1</a></li>
-                            <li><a href="#" title="Link 2" target="_blank">Link 2</a></li>
-                            <li><a href="#" title="Link 3" target="_blank">Link 3</a></li>
+                 		<ul class="linksAndDocumentsList">
+                            <li>
+                                <a href="#" title="Newsletter 1" target="_blank">Newsletter 1</a>
+                                <small>| 14 Maio 2018</small>
+                            </li>
+                            <li>
+                                <a href="#" title="Newsletter 2" target="_blank">Newsletter 2</a>
+                                <small>| 14 Maio 2018</small>
+                            </li>
+                            <li>
+                                <a href="#" title="Newsletter 3" target="_blank">Newsletter 3</a>
+                                <small>| 14 Maio 2018</small>
+                            </li>
                         </ul>
-                    </div>
+                 	</div>
                 </div>
                 <div class="col-md-4 col-sm-12 container-nav">
                     <div class="container-nav-title">
@@ -32,7 +43,7 @@
     export default {
         data: function(){
             return {
-                title: 'Links Úteis',
+                title: 'Newsletters',
                 items: [{
                     text: 'Início',
                     href: '/#/home'
@@ -40,7 +51,7 @@
                     text: 'Recursos',
                     href: '/#/resources'
                 }, {
-                    text: 'Links Úteis',
+                    text: 'Newsletters',
                     active: true
                 }]
             }

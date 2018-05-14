@@ -13,7 +13,7 @@
                             <ul class="footer-nav-list">
                                 <li><router-link to="/home" title="Home">Home</router-link></li>
                                 <li><router-link to="/resources" title="Recursos">Recursos</router-link></li>
-                                <li><router-link to="/activities" title="Actividades">Actividades</router-link></li>
+                                <li><router-link to="/activities" title="Actividades">Atividades</router-link></li>
                                 <li><router-link to="/aboutUs" title="Sobre Nós">Sobre Nós</router-link></li>
                             </ul>
                         </div>

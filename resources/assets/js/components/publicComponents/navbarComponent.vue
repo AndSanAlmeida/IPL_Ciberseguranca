@@ -17,11 +17,11 @@
                             <ul class="nav navbar-nav navbar-right">
                                 <li><router-link to="/home" title="Home">Home</router-link></li>
                                 <li><router-link to="/resources" title="Recursos">Recursos</router-link></li>
-                                <li><router-link to="/activities" title="Actividades">Actividades</router-link></li>
+                                <li><router-link to="/activities" title="Actividades">Atividades</router-link></li>
                                 <li><router-link to="/aboutUs" title="Sobre Nós">Sobre Nós</router-link></li>
 
                                 <!-- LOGIN | SIGN UP -->
-                                <li v-if="!logged"><a href="/auth/" class="login">Login</a></li>
+                                <li v-if="!logged"><a href="/auth/" class="login">Entrar</a></li>
                                 <li v-if="!logged"><a href="/auth/#/register" class="signup">Registar</a></li>
 
                                 <!-- DROPDOWN -->

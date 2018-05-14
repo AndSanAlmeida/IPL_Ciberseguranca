@@ -33,6 +33,7 @@ const news = Vue.component('news', require('./components/publicComponents/resour
 const usefulLinks = Vue.component('usefulLinks', require('./components/publicComponents/resources/usefulLinksComponent.vue'));
 const documents = Vue.component('documents', require('./components/publicComponents/resources/documentsComponent.vue'));
 const faq = Vue.component('faq', require('./components/publicComponents/resources/faqComponent.vue'));
+const newsletters = Vue.component('newsletters', require('./components/publicComponents/resources/newsletterComponent.vue'));
 
 // ACTIVITIES
 
@@ -54,6 +55,7 @@ const routes = [
 	{ path: '/resources/usefulLinks', component: usefulLinks },
 	{ path: '/resources/documents', component: documents },
 	{ path: '/resources/faq', component: faq },
+	{ path: '/resources/newsletters', component: newsletters },
 ];
 
 const router = new VueRouter({
