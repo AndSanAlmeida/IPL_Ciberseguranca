@@ -7,9 +7,22 @@
                     <div class="left-highlight">
                      	<h1>{{ title }}</h1>
                  	</div>
+                    <br>
+                    <h3><b>IPL Cibersegurança newsletter:</b></h3>
                  	<div id="linksAndDocuments">
                  		<ul class="linksAndDocumentsList">
-                            <li v-for="document in documents" :key="document.id" ><a :href="document.path" :download="document.description">{{document.description}}</a></li>
+                            <li>
+                                <a href="#" title="Newsletter 1" target="_blank">Newsletter 1</a>
+                                <small>| 14 Maio 2018</small>
+                            </li>
+                            <li>
+                                <a href="#" title="Newsletter 2" target="_blank">Newsletter 2</a>
+                                <small>| 14 Maio 2018</small>
+                            </li>
+                            <li>
+                                <a href="#" title="Newsletter 3" target="_blank">Newsletter 3</a>
+                                <small>| 14 Maio 2018</small>
+                            </li>
                         </ul>
                  	</div>
                 </div>
@@ -30,7 +43,7 @@
     export default {
         data: function(){
             return {
-                title: 'Documentos',
+                title: 'Newsletters',
                 items: [{
                     text: 'Início',
                     href: '/#/home'
@@ -38,29 +51,10 @@
                     text: 'Recursos',
                     href: '/#/resources'
                 }, {
-                    text: 'Documentos',
+                    text: 'Newsletters',
                     active: true
-                }],
-                documents: []
+                }]
             }
         },
-        methods: {
-            getDocuments: function () {
-                this.loading = true;
-                this.errorLoading = false;
-                
-                axios.get('/api/documents')
-                    .then(response => {
-                        this.documents = response.data.data;
-                        this.loading = false;
-                    }).catch((error) => {
-                    this.loading = false;
-                    this.errorLoading = true;
-                });
-            },
-        },
-        mounted() {
-            this.getDocuments();
-        }
     }
 </script>

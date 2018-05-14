@@ -1,8 +1,8 @@
 <template>
 	<section id="resources" class="section-padding">
-		<div class="row">
-			<div class="container">
-				<div class="col-md-8 col-sm-12 marb-20">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 col-sm-12">
                     <b-breadcrumb :items="items"/>
                     <div class="left-highlight">
                      	<h1>{{ title }}  <small><a href="#" title="RSS Alertas de Segurança" target="_blank" class="rss_color"><i class="fas fa-rss"></i></a></small></h1>

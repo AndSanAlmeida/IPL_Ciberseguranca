@@ -1,10 +1,10 @@
 <template>
 	<section id="aboutUs" class="section-padding">
-		<div class="row">
-			<div class="container">
-				<div class="col-md-8 col-sm-12 marb-20">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 col-sm-12">
                     <b-breadcrumb :items="items"/>
-                    <div class="title-block left-highlight">
+                    <div class="left-highlight">
                      	<h1>{{ title }}</h1>
                  	</div>
                  	<div class="text">

@@ -102,7 +102,7 @@ p {
 *****************************************************/
 
 .menu-top {
-  background: #fff;
+  background: white;
 }
 
 .navbar-default {
@@ -117,7 +117,7 @@ p {
     li > a {
       @include transition(all , .1s, ease);
       &:hover {
-        color: #fff;
+        color: white;
         background-color: $ipl-red;
       }
       &:focus {
@@ -157,6 +157,7 @@ p {
 
 .signup, .login {
   font-weight: bold;
+  font-size: 17px;
 }
 
 .show {
@@ -194,7 +195,7 @@ p {
 *****************************************************/
 
 .router-link-active {
-  font-weight:bold;
+  font-weight: bold;
 }
 
 /*****************************************************
@@ -272,7 +273,7 @@ p {
     @include transition(all , .3s, ease);
     &:hover{ 
       text-decoration:none !important;
-      color: #fff;
+      color: white;
       background-color: $ipl-red;
     }
     &:focus{
@@ -304,7 +305,7 @@ p {
   position: relative;
   h1 {
     font-size: 2.2vw;
-    color: #fff;
+    color: white;
     background-color: rgba(0, 0, 0, 0.5);
     margin: 15px 4em 15px 3.1em;
     padding: 20px 10px;
@@ -313,14 +314,14 @@ p {
   }
   h3 {
     font-size: 1.7vw;
-    color: #fff;
+    color: white;
     background-color: rgba(0, 0, 0, 0.5);
     margin: 15px 18em 15px 4em;
     padding: 20px 10px;
     font-weight: 700;
   }
   p {
-    color: #fff;
+    color: white;
     margin: 0 0 40px;
   }
   .btn {
@@ -346,7 +347,7 @@ p {
   &.btn-primary {
     border: 1px solid $ipl-red;
     background: $ipl-red;
-    color: #fff;
+    color: white;
   }
   font-size: 14px;
   text-transform: uppercase;
@@ -422,184 +423,206 @@ p {
   GLOSSARY
 *****************************************************/
 
-.site-content {
-  overflow: hidden;
-}
 
-.py-4 {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-}
+#glossary {
+  margin-top: 4em;
+  .card {
+    background: white;
+    overflow: hidden;
 
-.mb-6 {
-  margin-bottom: 6rem;
-}
+    &__content {
+      padding: 15px;
+      font-size: 14px;
+      line-height: 22px;
 
-.form-control {
-  box-shadow: none;
-  padding: 13px 10px;
-  height: 50px;
-  background: #FFF;
-  color: #3a404d;
-  border-radius: 5px;
-  border-color: #DFE2E8;
-
-  &:focus, &.input-focus {
-    box-shadow: none !important;
-    border-color: #2b98eb;
-  }
-}
-
-.card {
-  background: #FFF;
-  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.15);
-  border-radius: 5px;
-  overflow: hidden;
-
-  &__content {
-    padding: 15px;
-    font-size: 14px;
-    line-height: 22px;
-
-    p:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &__title {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 24px;
-
-    a {
-      color: #3a404d;
-      text-decoration: none;
-      &:hover, &:focus {
-        color: #2b98eb;
-        text-decoration: none;
-      }
-    }
-  }
-}
-
-.glossary {
-  &__nav {
-    &__item {
-      &.active {
-        a {
-          color: #FFF;
-          background-color: #2b98eb;
-        }
-      }
-
-      a {
-        width: 50px;
-        font-size: 16px;
-        color: #3a404d;
-        text-decoration: none;
-        text-align: center;
-        display: block;
-
-        &:hover, &:focus {
-          color: #FFF;
-          background-color: #2b98eb;
-        }
-
-        &.card__content {
-          padding: 13px 10px;
-          margin-bottom: 5px;
-          border-radius: 3px;
-        }
-      }
-    }
-  } // END Glossary nav
-
-  &__search {
-    &__form {
-      max-width: 500px;
-      position: relative;
-
-      &:before {
-        content: "\f002";
-        color: #aaa;
-        font-family: "FontAwesome";
-        position: absolute;
-        left: 15px;
-        top: 12px;
-        font-size: 18px;
-      }
-
-      .form-control {
-        padding-left: 40px;
-      }
-    }
-  } // END GLossary Search
-
-  &__results {
-    &__row {
-      overflow: hidden;
-      margin-bottom: 40px;
-      transition: all 0.4s ease-in-out;
-
-      &:last-child {
+      p:last-child {
         margin-bottom: 0;
       }
-      &.inactive {
-        opacity: 0;
-        height: 0;
-        margin: 0;
-        width: 100%;
-        // display: none;
-      }
     }
-    &__term {
-      color: #2b98eb;
-    }
-    &__item {
-      margin-bottom: 20px;
+
+    &__title {
+      margin-bottom: 10px;
+      font-weight: 500;
+      line-height: 1.5em;
 
       a {
-        display: block;
+        color: $ipl-grey;
         text-decoration: none;
-        color: #3a404d;
+        &:hover, &:focus {
+          color: $ipl-red;
+          text-decoration: none;
+        }
+      }
+    }
+  }
 
-        &.card {
-          border: 2px solid transparent;
+  .glossary {
+    &__nav {
+      margin-bottom: 1em;
+      &__item {
+        &.active {
+          a {
+            color: white;
+            background-color: $ipl-red;
+          }
         }
 
-        &:hover {
-          border-color: #2b98eb;
-          .card__title {
-            color: #2b98eb;
+        a {
+          width: 50px;
+          font-size: 16px;
+          color: $ipl-grey;
+          text-decoration: none;
+          text-align: center;
+          display: block;
+
+          &:hover, &:focus {
+            color: white;
+            background-color: $ipl-red;
+          }
+
+          &.card__content {
+            padding: 13px 10px;
           }
         }
       }
-    }
-  } // END Glossary Results
-} // END Glossary styles
+    } // END Glossary nav
 
-.title-style--three {
-  margin-bottom: 15px;
-  position: relative;
-  padding-top: 20px;
-  padding-bottom: 10px;
+    &__results {
+      &__row {
+        overflow: hidden;
+        margin-bottom: 40px;
+        @include transition(all , .4s, ease-in-out);
 
-  &:after {
-    content: "";
-    background: #2b98eb;
-    width: 60px;
-    height: 3px;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    border-radius: 30px;
-  }
+        &:last-child {
+          margin-bottom: 0;
+        }
+        &.inactive {
+          opacity: 0;
+          height: 0;
+          margin: 0;
+          width: 100%;
+          // display: none;
+        }
+      }
+      &__term {
+        color: $ipl-red;
+      }
+      &__item {
+        margin-bottom: 20px;
+      }
+    } // END Glossary Results
+  } // END Glossary styles
 }
-
 
 /*****************************************************
   FAQ
 *****************************************************/
+
+#faq {
+  margin-top: 4em;
+  .faqContent {
+    margin: 0 auto;
+  }
+
+  .faq-question {
+    padding: 20px 0;
+    border-bottom: 1px dotted #ccc;
+  }
+
+  .panel-title {
+    font-size: 20px;
+    padding: 5px 10px 0 48px;
+    display: block;
+    cursor: pointer;
+    color: $ipl-red;
+    @include transition(all , .4s, ease);
+    &:hover {
+      color: $ipl-contrast;
+    }
+  }
+
+  .panel-content {
+    font-size: 15px;
+    padding: 0px 14px;
+    margin: 0 40px;
+    height: 0;
+    overflow: hidden;
+    z-index: -1;
+    opacity: 0;
+    @include transition(all , .4s, ease);
+  }
+
+  .panel:checked ~ .panel-content {
+    height: auto;
+    opacity: 1;
+    padding: 10px;
+  }
+
+  .plus {
+    position: absolute;
+    margin-left: 20px;
+    margin-top: 4px;
+    z-index: 5;
+    font-size: 35px;
+    line-height: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    color: $ipl-red;
+    @include transition(all , .2s, ease);
+  }
+
+  .panel {
+    &:checked ~ .plus {
+      @include transform(rotate(45deg));
+    }
+    display: none;
+  }
+}
+
+#faqAuth, #faqSend {
+  margin-top: 5em;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  .faqRedirectBtn {
+    border: 0;
+    padding: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: white;
+    background: $ipl-contrast;
+  }
+  
+  .form-control {
+    margin-top: 20px;
+    padding: 12px;
+    font-size: 16px;
+    @include box-shadow(0, 0, 0, 0);
+    @include border-radius(0);
+    &:focus {
+      border-color: $ipl-grey;
+    }
+  }
+  .faqSendBtn {
+    border: 0;
+    padding: 5px 10px;
+    margin-top: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: white;
+    background: $ipl-contrast;
+    float: right;
+  }
+}
 
 /*****************************************************
   ALERTS
@@ -789,7 +812,7 @@ p {
       font-size: 39px;
     }
     p {
-      color: #fff;
+      color: white;
       margin: 0 0 30px;
     }
   }
