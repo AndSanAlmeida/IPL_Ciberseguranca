@@ -51,9 +51,7 @@ module.exports={
   methods: {
     deleteDocument: function(document) {
       this.$emit('delete-click', document);
-    }, 
-    seeFile: function(document) {
-    }
+    },
   }
 }
 </script>

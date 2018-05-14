@@ -1,9 +1,9 @@
 <template>
 	<form class="m-2" autocomplete="off" v-on:submit.prevent="validateForm" >
 		<div class="form-group row">
-			<label for="inputEmail3" class="col-sm-2 col-form-label">Sobre Nós</label>
+			<label for="inputEmail3" class="col-sm-2 col-form-label">Atividades</label>
 			<div class="col-sm-10">
-                  <quill-editor v-model="aboutUs.description"
+                  <quill-editor v-model="resources.description"
                                 ref="myQuillEditor"
                                 :options="editorOption">
                   </quill-editor>
@@ -26,7 +26,7 @@
 	export default {
         data: function(){
             return {
-                aboutUs: [],
+                resources: [],
                 attemptSubmit: false,
                 serverError: false,
                 serverErrorMessage: '',
@@ -40,11 +40,11 @@
             }
         },
         computed: {
-            missingAboutUs: function () {
-                return this.aboutUs.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
+            missingResources: function () {
+                return this.resources.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
             hasClientError: function () {
-                return this.missingAboutUs;
+                return this.missingResources;
             },
             hasServerError: function () {
                 return this.serverError;
@@ -83,15 +83,15 @@
                 //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
                 if (!this.isFormInvalid) {
                     const data = {
-                        aboutUs:  this.aboutUs,
+                        resources:  this.resources,
                     };
-                    axios.post('/api/settings/aboutUs/update', data)
+                    axios.post('/api/settings/resources/update', data)
                         .then((response) => {
                             this.success = true;
                             this.attemptSubmit = false;
                             this.serverError = true;
                             
-                            swal("Sobre Nós alterado com sucesso.", {
+                            swal("Recursos alterado com sucesso.", {
                             	icon: 'success',
 					            buttons: {
 					              ok: "Ok"
@@ -111,15 +111,15 @@
                         });
                 }
             },
-            getAboutUs: function () {
-                axios.get('/api/settings/aboutUs')
+            getResources: function () {
+                axios.get('/api/settings/resources')
                     .then(response=>{
-                        this.aboutUs = response.data;
+                        this.resources = response.data;
                     });
             },
             cancel: function () {
                 this.attemptSubmit = false;
-                this.getAboutUs();
+                this.getResources();
             }
         },
         computed: {
@@ -128,9 +128,10 @@
             }
         },
         created: function () {
-            this.getAboutUs();
+            this.getResources();
         },
         mounted() {
+            console.log('this is current quill instance object', this.editor)
         }
     }
 </script>

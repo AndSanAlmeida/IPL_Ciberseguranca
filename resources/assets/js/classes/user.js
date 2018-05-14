@@ -48,9 +48,7 @@ class User  {
         this.username = auth_user.username;
         this.type = auth_user.type;
         this.blocked = auth_user.blocked;
-        this.reason_blocked = auth.reason_blocked;
-        this.total_forum_post = auth_user.total_forum_post;
-        this.total_forum_comments = auth_user.total_forum_comments;
+        this.reason_blocked = auth_user.reason_blocked;
         this.avatar = auth_user.avatar;
     }
     

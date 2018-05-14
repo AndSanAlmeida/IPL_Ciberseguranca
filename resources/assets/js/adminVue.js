@@ -25,6 +25,8 @@ const glossaryDetails = Vue.component('events', require('./components/adminCompo
 const settings = Vue.component('settings', require('./components/adminComponents/settingsComponents/settingsComponent.vue'));
 const platformEmail = Vue.component('platformEmail', require('./components/adminComponents/settingsComponents/platformEmailComponent.vue'));
 const aboutUs = Vue.component('aboutUs', require('./components/adminComponents/settingsComponents/aboutUsComponent.vue'));
+const activities = Vue.component('activities', require('./components/adminComponents/settingsComponents/activitiesComponent.vue'));
+const resources = Vue.component('resources', require('./components/adminComponents/settingsComponents/resourcesComponent.vue'));
 
 const usefulLinks = Vue.component('settings', require('./components/adminComponents/usefulLinksComponents/usefulLinksComponent.vue'));
 const usefulLinksCreate = Vue.component('events', require('./components/adminComponents/usefulLinksComponents/usefulLinksCreateComponent.vue'));
@@ -50,6 +52,8 @@ const routes = [
 	{ path: '/settings', component: settings},
 	{ path: '/settings/platformEmail', component: platformEmail},
 	{ path: '/settings/aboutUs', component: aboutUs},
+	{ path: '/settings/resources', component: resources},
+	{ path: '/settings/activities', component: activities},
 	{ path: '/usefulLinks', component: usefulLinks},
 	{ path: '/usefulLinks/create', component: usefulLinksCreate},
 	{ path: '/usefulLinks/edit/:id', component: usefulLinksEdit, name: 'usefulLinksEdit', props: { default: true}},

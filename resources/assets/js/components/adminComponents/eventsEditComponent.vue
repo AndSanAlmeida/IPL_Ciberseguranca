@@ -104,9 +104,10 @@
                             </select>
                         </div>
                     </div>
+                    <hr>
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label"></label>
-                        <div class="col-lg-9">
+                        <div class="col-lg-9 text-right">
                             <input class="btn btn-secondary" value="Cancelar" type="button" v-on:click="cancel">
                             <input class="btn btn-primary" type="submit" value="Confirmar">
                         </div>

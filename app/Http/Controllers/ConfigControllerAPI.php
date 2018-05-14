@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Mail\TransportManager;
 use App\Http\Resources\ConfigurationResource;
 use App\Http\Resources\TextResource;
-use App\Texts;
+use App\Text;
 class ConfigControllerAPI extends Controller
 {
     //Get Platform data
@@ -57,20 +57,62 @@ class ConfigControllerAPI extends Controller
     }
 
     public function getAboutUs() {
-        $text = DB::table('texts')->where('key', 'AboutUs')->first();
-        return $text->description;
+        $text = Text::where('key', 'aboutUs')->first();
+        return $text;
     }
 
     public function aboutUsUpdate(Request $request) {
         $validator = Validator::make($request->all(), [
-            'aboutUs' => 'required',
+            'aboutUs.description' => 'required|string',
         ]);
 
         if ($request->wantsJson() && !$validator->fails()) {
 
-            $aboutUs = Texts::findOrFail(1);
-            $aboutUs->description = $request->get('aboutUs');
+            $aboutUs = Text::findOrFail($request->aboutUs['id']);
+            $aboutUs->description = $request->aboutUs['description'];
             $aboutUs->save();
+            return response()->json(['msg' => 'Alterações guardadas com sucesso.']);
+        } else {
+            return response()->json(['msg' => 'Request inválido.'], 400);
+        }
+    }
+
+    public function getActivities() {
+        $text = Text::where('key', 'activities')->first();
+        return $text;
+    }
+
+    public function ActivitiesUpdate(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'activities.description' => 'required|string',
+        ]);
+
+        if ($request->wantsJson() && !$validator->fails()) {
+
+            $activities = Text::findOrFail($request->activities['id']);
+            $activities->description = $request->activities['description'];
+            $activities->update();
+            return response()->json(['msg' => 'Alterações guardadas com sucesso.']);
+        } else {
+            return response()->json(['msg' => 'Request inválido.'], 400);
+        }
+    }
+
+    public function getResources() {
+        $text = Text::where('key', 'resources')->first();
+        return $text;
+    }
+
+    public function ResourcesUpdate(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'resources.description' => 'required|string',
+        ]);
+
+        if ($request->wantsJson() && !$validator->fails()) {
+
+            $resources = Text::findOrFail($request->resources['id']);
+            $resources->description = $request->resources['description'];
+            $resources->update();
             return response()->json(['msg' => 'Alterações guardadas com sucesso.']);
         } else {
             return response()->json(['msg' => 'Request inválido.'], 400);

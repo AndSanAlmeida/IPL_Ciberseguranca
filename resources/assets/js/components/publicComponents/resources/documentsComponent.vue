@@ -9,9 +9,7 @@
                  	</div>
                  	<div id="linksAndDocuments">
                  		<ul class="linksAndDocumentsList">
-                            <li><a href="#" title="Artigo 1" target="_blank">Artigo 1</a></li>
-                            <li><a href="#" title="Artigo 2" target="_blank">Artigo 2</a></li>
-                            <li><a href="#" title="Artigo 3" target="_blank">Artigo 3</a></li>
+                            <li v-for="document in documents" :key="document.id" ><a :href="document.path" :download="document.description">{{document.description}}</a></li>
                         </ul>
                  	</div>
                 </div>
@@ -42,8 +40,27 @@
                 }, {
                     text: 'Documentos',
                     active: true
-                }]
+                }],
+                documents: []
             }
         },
+        methods: {
+            getDocuments: function () {
+                this.loading = true;
+                this.errorLoading = false;
+                
+                axios.get('/api/documents')
+                    .then(response => {
+                        this.documents = response.data.data;
+                        this.loading = false;
+                    }).catch((error) => {
+                    this.loading = false;
+                    this.errorLoading = true;
+                });
+            },
+        },
+        mounted() {
+            this.getDocuments();
+        }
     }
 </script>

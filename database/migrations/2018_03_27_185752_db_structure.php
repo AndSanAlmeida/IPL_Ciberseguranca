@@ -25,8 +25,6 @@ class DbStructure extends Migration
             $table->string('avatar')->default('img/avatars/empty.png');
             $table->string('reason_blocked')->nullable();
             $table->string('reason_reactivated')->nullable();
-            $table->integer('total_forum_posts')->default(0);
-            $table->integer('total_forum_comments')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -59,15 +57,6 @@ class DbStructure extends Migration
             $table->longText('description');
             $table->string('source');
             $table->date('pub_date');
-            $table->timestamps();
-        });
-
-        Schema::create('posts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title');
-            $table->string('text');
-            $table->string('path_file');
-            $table->integer('id_user');
             $table->timestamps();
         });
 
@@ -135,6 +124,21 @@ class DbStructure extends Migration
             $table->longText('path');
             $table->timestamps();
         });
+
+        Schema::create('newsletter', function(Blueprint $table){
+            $table->increments('id');
+            $table->string('description');
+            $table->date('date');
+            $table->longText('path');
+            $table->timestamps();
+        });
+
+        Schema::create('newsletter_subscription', function(Blueprint $table){
+            $table->increments('id');
+            $table->string('name');
+            $table->string('email')->unique();;
+            $table->timestamps();
+        });
     }
 
     /**
@@ -144,6 +148,8 @@ class DbStructure extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('newsletter_subscription');
+        Schema::dropIfExists('newsletter');
         Schema::dropIfExists('documents');
         Schema::dropIfExists('useful_links');
         Schema::dropIfExists('texts');
@@ -152,7 +158,6 @@ class DbStructure extends Migration
         Schema::dropIfExists('event');
         Schema::dropIfExists('rss_alerts');
         Schema::dropIfExists('rss_news');
-        Schema::dropIfExists('posts');
         Schema::dropIfExists('news');
         Schema::dropIfExists('config');
         Schema::dropIfExists('password_resets');

@@ -9,9 +9,7 @@
                  	</div>
                  	<div id="linksAndDocuments">
                         <ul class="linksAndDocumentsList">
-                            <li><a href="#" title="Link 1" target="_blank">Link 1</a></li>
-                            <li><a href="#" title="Link 2" target="_blank">Link 2</a></li>
-                            <li><a href="#" title="Link 3" target="_blank">Link 3</a></li>
+                            <li v-for="link in usefulLinks" :key="link.id" ><a :href="link.link" target="_blank">{{link.description}}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -42,8 +40,27 @@
                 }, {
                     text: 'Links Úteis',
                     active: true
-                }]
+                }],
+                usefulLinks: [],
             }
         },
+        methods: {
+            getUsefulLinks: function () {
+                this.loading = true;
+                this.errorLoading = false;
+                
+                axios.get('/api/usefulLinks')
+                    .then(response => {
+                        this.usefulLinks = response.data.data;
+                        this.loading = false;
+                    }).catch((error) => {
+                    this.loading = false;
+                    this.errorLoading = true;
+                });
+            },
+        },
+        mounted() {
+            this.getUsefulLinks();
+        }
     }
 </script>

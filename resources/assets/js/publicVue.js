@@ -5,6 +5,8 @@ import VueRouter from 'vue-router';
 import BootstrapVue from 'bootstrap-vue';
  
 Vue.use(BootstrapVue);
+axios.defaults.headers.common['Accept'] = "application/json";
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('access_token');
 Vue.use(VueRouter);
 
 // CSS

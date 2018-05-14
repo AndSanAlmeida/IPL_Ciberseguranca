@@ -73,7 +73,8 @@ class DocumentsControllerAPI extends Controller
      */
     public function show($id)
     {
-        //
+        $usefulLink = Document::findOrFail($id);
+        return $usefulLink;
     }
 
     /**
@@ -96,7 +97,24 @@ class DocumentsControllerAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'description' => 'required|string|max:200',
+            'path' => 'required',
+        ]);
+
+        if ($request->wantsJson() && !$validator->fails()) {
+
+            $document = Document::findOrFail($id);
+
+            $document->description = $request->get('description');
+            $document->path = $request->get('path');
+
+            $document->save();
+
+            return response()->json(['msg' => 'Documento editado com sucesso.']);
+        } else {
+            return response()->json(['errorCode' => -1, 'msg' => $validator->errors()], 400);
+        }
     }
 
     /**

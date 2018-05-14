@@ -12,24 +12,31 @@
         <div class="col-lg-12">
           <div class="card mt-4">
             <ul class="nav nav-tabs ml-2 mt-2 mr-2" id="myTab" role="tablist">
-              <li class="nav-item col-lg-4 text-center">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Email da Plataforma</a>
+              <li class="nav-item col-lg-3 text-center">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#platformEmail" role="tab" aria-controls="platformEmail" aria-selected="true">Email da Plataforma</a>
               </li>
-              <li class="nav-item col-lg-4 text-center">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Sobre Nós</a>
+              <li class="nav-item col-lg-3 text-center">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#resources" role="tab" aria-controls="resources" aria-selected="false">Recursos</a>
               </li>
-              <li class="nav-item col-lg-4 text-center">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contactos</a>
+              <li class="nav-item col-lg-3 text-center">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="false">Atividades</a>
+              </li>
+              <li class="nav-item col-lg-3 text-center">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#aboutUs" role="tab" aria-controls="aboutUs" aria-selected="false">Sobre Nós</a>
               </li>
             </ul>
             <div class="tab-content ml-2 mt-2 mr-2" id="myTabContent">
-              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div class="tab-pane fade show active" id="platformEmail" role="tabpanel" aria-labelledby="platform-email-tab">
                 <platformEmail></platformEmail>
               </div>
-              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <aboutUs></aboutUs>
+              <div class="tab-pane fade" id="resources" role="tabpanel" aria-labelledby="resources-tab">
+                <resources></resources>
               </div>
-              <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+              <div class="tab-pane fade" id="activity" role="tabpanel" aria-labelledby="resources-tab">
+                <activities></activities>
+              </div>
+              <div class="tab-pane fade" id="aboutUs" role="tabpanel" aria-labelledby="about-us-tab">
+                <aboutUs></aboutUs>
               </div>
             </div>
           </div>
