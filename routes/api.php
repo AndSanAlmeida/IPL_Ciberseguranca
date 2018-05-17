@@ -32,12 +32,10 @@ Route::post('password/reset', 'LoginControllerAPI@resetPassword');
 /******************
 	ADMIN ROUTES
  *****************/
-	
-Route::middleware('auth:api')->post('users', 'UserControllerAPI@getUsers'); //GET LIST OF USERS TO MANAGE
-Route::middleware('auth:api')->post('usersForStatus', 'UserControllerAPI@getUsersForStatus'); //GET LIST OF USERS FOR STATUS TO MANAGE
+
 Route::middleware('auth:api')->put('users/{id}', 'UserControllerAPI@updateState'); //CHANGE STATE USER
 Route::middleware('auth:api')->delete('users/{id}', 'UserControllerAPI@delete'); //DELETE USER
-
+	
 Route::get('events', 'EventControllerAPI@index'); //GET LIST OF EVENTS
 Route::get('events/{id}', 'EventControllerAPI@show'); // get event by id 
 Route::middleware('auth:api')->post('events/create', 'EventControllerAPI@create'); // create event
@@ -79,3 +77,19 @@ Route::middleware('auth:api')->post('newsletter/{id}/update', 'NewsletterControl
 Route::post('newsletter/subscribe', 'NewsletterControllerAPI@subscribe'); // subscribe to newsletter
 Route::delete('newsletter/{email}/unsubcribe', 'NewsletterControllerAPI@unsubscribe'); // delete subscription of newsletter
 Route::post('newsletter/subscribed', 'NewsletterControllerAPI@subscribed'); // check if user is in newsletter subscription
+
+/******************
+	USER ROUTES
+ *****************/
+	
+Route::middleware('auth:api')->post('users', 'UserControllerAPI@getUsers'); //GET LIST OF USERS TO MANAGE
+Route::middleware('auth:api')->post('usersForStatus', 'UserControllerAPI@getUsersForStatus'); //GET LIST OF USERS FOR STATUS TO MANAGE
+Route::middleware('auth:api')->post('/user/update', 'UserControllerAPI@updateUserSettings'); //UPDATE USER INFO
+Route::middleware('auth:api')->delete('deleteOwnAccount', 'UserControllerAPI@deleteOwnAccount'); //DELETE USER
+
+/******************
+ USER/ADMIN ROUTES
+ *****************/
+
+Route::middleware('auth:api')->post('/user/avatar/update', 'UserControllerAPI@updateAvatar'); //UPDATE AVATAR
+Route::middleware('auth:api')->post('/user/password/update', 'UserControllerAPI@updatePassword'); //UPDATE PASSWORD

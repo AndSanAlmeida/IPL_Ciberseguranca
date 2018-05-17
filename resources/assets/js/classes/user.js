@@ -6,25 +6,15 @@ class User  {
 
     constructor(){
         this.id = '';
-
         this.name =  '';
-
         this.email = '';
-
         this.username = '';
-
         this.blocked = 0;
-
         this.reason_blocked = '';
-
         this.type = 0;
-
         this.total_forum_post = 0;
-
         this.total_forum_comments = 0;
-
-        this.avatar = 'img/avatars/empty.png';
-
+        this.avatar = 'empty.png';
         this.access_token = '';
     }
 

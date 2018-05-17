@@ -87,6 +87,7 @@ return [
     'unique'               => 'The :attribute has already been taken.',
     'uploaded'             => 'The :attribute failed to upload.',
     'url'                  => 'The :attribute format is invalid.',
+    'image64' => 'O :attribute tem de ser do tipo: :values.',
 
     /*
     |--------------------------------------------------------------------------
@@ -104,6 +105,7 @@ return [
             'rule-name' => 'custom-message',
         ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------

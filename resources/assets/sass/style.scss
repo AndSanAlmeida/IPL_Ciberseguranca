@@ -343,7 +343,7 @@ p {
   @include transform(translateY(-50%));
 }
 
-.btn {
+/*.btn {
   &.btn-primary {
     border: 1px solid $ipl-red;
     background: $ipl-red;
@@ -358,6 +358,20 @@ p {
   display: inline-block;
   @include border-radius(25px);
   @include transition(all , .35s, ease-in-out);
+}*/
+
+/*****************************************************
+  ABOUT US
+*****************************************************/
+
+#aboutUs {
+  address {
+    margin: 3em 2em 1em;
+    font-size: 16px;
+    h4 {
+      line-height: 25px;
+    }
+  }
 }
 
 /*****************************************************
@@ -407,6 +421,7 @@ p {
 /*****************************************************
   LINKS AND DOCUMENTS
 *****************************************************/
+
 #linksAndDocuments {
   .linksAndDocumentsList {
     margin: 30px 15px;
@@ -422,7 +437,6 @@ p {
 /*****************************************************
   GLOSSARY
 *****************************************************/
-
 
 #glossary {
   margin-top: 4em;
@@ -664,8 +678,8 @@ p {
       width: 330px;
       outline: 0;
       margin: 0;
-      padding: 15px 0 15px 10px;
-      border: 1px solid transparent;
+      padding: 10px 0 10px 10px;
+      border: 1px solid $ipl-grey;
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
       font-size: 24px;
@@ -689,7 +703,6 @@ p {
       }
       &:hover, &:focus {
         padding-left: 22px;
-        border: 1px solid #ccc;
         color: #333;
       }
       &:hover::-webkit-input-placeholder, &:focus::-webkit-input-placeholder {
@@ -713,10 +726,8 @@ p {
           /* Internet Explorer 10+ */
           color: #555;
         }
-        border-color: #999;
       }
     }
-
     .newsletter-send {
       border: 0;
       margin: 0 0 0 24px;
@@ -724,22 +735,13 @@ p {
       font-family: 'Montserrat', sans-serif;
       font-weight: bold;
       font-size: 24px;
-      line-height: 64px;
+      line-height: 54px;
       text-transform: uppercase;
       color: white;
       background: $ipl-contrast;
-      opacity: 0;
-      @include transition(all , .2s, ease);
-    }
-
-    .newsletter-input {
-      &:focus + .newsletter-send, 
-      &:hover + .newsletter-send, 
-      &:not(:empty) + .newsletter-send {
-        opacity: 1;
-      }
     }
   }
+  .newsletterContentNotLogged, 
   .newsletterContentLogged {
     span {
       font-size: 16px;
@@ -758,6 +760,43 @@ p {
   }
 }
 
+/*****************************************************
+  USER SETTINGS
+*****************************************************/
+#userSettings {
+  h3 {
+    margin: 15px 0;
+  }
+  .form-control {
+    padding: 12px;
+    font-size: 16px;
+    @include box-shadow(0, 0, 0, 0);
+    @include border-radius(0);
+    &:focus {
+      border-color: $ipl-grey;
+    }
+  }
+  .btn {
+    border: 0;
+    padding: 0 10x;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    text-transform: uppercase;
+    color: white;
+    @include border-radius(0);
+  }
+  .btnSave {
+    background: $ipl-contrast;
+  }
+  .btnCancel {
+    background: $ipl-red;
+  }
+  .modal-header .close {
+      margin-top: -22px;
+  }
+
+}
 
 /*****************************************************
   CONTACT

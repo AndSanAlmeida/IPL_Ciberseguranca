@@ -11,7 +11,7 @@
                     <div id="glossary">
                         <nav class="glossary__nav">
                             <ul class="list-inline text-center">
-                                <li class="glossary__nav__item active">
+                                <li class="glossary__nav__item">
                                     <a class="card card__content" data-nav="A" data-toggle="glossary" href="#">A</a>
                                 </li>
                                 <li class="glossary__nav__item">
@@ -87,8 +87,11 @@
         //On load set 'A' to 'active'
         $(document).ready(function(){
 
+            $('.glossary__nav li:first').addClass('active');
+
             //Get NAV Attribute
             var nav = $(".glossary__nav li.active a").attr("data-nav");
+            console.log(nav);
 
             // Loop through the row
             $(".glossary__results__row").each(function(){

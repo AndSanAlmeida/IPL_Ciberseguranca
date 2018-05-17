@@ -24,16 +24,16 @@
                     <div class="col-lg-6 offset-lg-3">
                         <div class="card">
                           <div class="card-header d-flex align-items-center">
-                            <h3 class="h4">Zona de Pesquisa</h3>
+                            <h3 class="h4">Listar Por</h3>
                           </div>
                           <div class="card-body">
                             <form class="form-horizontal">
-                              <div class="form-group row">
+                              <!--<div class="form-group row">
                                 <label class="col-sm-3 form-control-label" for="searchBy">Pesquisar</label>
                                 <div class="col-sm-9">
                                   <input id="searchBy" type="text" placeholder="Nome, Email, Username" class="form-control form-control-success">
                                 </div>
-                              </div>
+                              </div>-->
                               <div class="form-group row">
                                 <label for="stateOfAccount" class="col-sm-3 form-control-label">Estado da Conta</label>
                                 <div class="col-sm-6 select">
@@ -50,7 +50,7 @@
                             </form>
                           </div>
                         </div>
-                    </div> 
+                    </div>
 
                     <!-- LOADING -->
                     <div class="col-md-12">
@@ -59,7 +59,7 @@
                         
                     <!-- USER LIST -->
                     <userList :users="users" :state="stateOfAccountProp" v-if="hasUsers && canShowContent"
-                  @delete-click="deleteUser" @change-state-click="changeStateOfUser"></userList>
+                        @delete-click="deleteUser" @change-state-click="changeStateOfUser"></userList>
 
                 </div>
             </div>
@@ -83,7 +83,6 @@
                 options: [
                     {text: 'Activa', value: '0'},
                     {text: 'Bloqueada', value: '1'},
-                    {text: 'Apagada', value: '-1'}
                 ],
                 users: [],
                 loading: true,
