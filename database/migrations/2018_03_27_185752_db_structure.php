@@ -22,7 +22,7 @@ class DbStructure extends Migration
             $table->integer('type')->default(false);
             $table->boolean('blocked')->default(false);
             $table->boolean('activated')->default(false);
-            $table->string('avatar')->default('img/avatars/empty.png');
+            $table->string('avatar')->default('empty.png');
             $table->string('reason_blocked')->nullable();
             $table->string('reason_reactivated')->nullable();
             $table->rememberToken();

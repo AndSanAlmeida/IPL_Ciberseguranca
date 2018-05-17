@@ -10,15 +10,16 @@ use App\Http\Resources\UserResource;
 use App\Http\Resources\SmallerUserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\App;
 use Illuminate\Mail\TransportManager;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
-
-use Validator;
-use Swift_Mailer;
+use Intervention\Image\Facades\Image;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Carbon\Carbon;
+use Validator;
+use Swift_Mailer;
 use Input;
 
 class UserControllerAPI extends Controller
@@ -39,6 +40,7 @@ class UserControllerAPI extends Controller
             } else {
                 $users->where('blocked', $state);
             }
+
             $users = $users->get();
             return SmallerUserResource::collection($users);
         } else {
@@ -195,34 +197,113 @@ class UserControllerAPI extends Controller
 		}
 	}
 
-	public function activate($id) {
-		$user = User::where('id', $id)->first();
-		if(!is_null($user) ){
-			$user->activated = 1;
-			$user->save();
-			return redirect(url('/'))->with('status', "1");
-		}else{
-			return redirect(url('/'))->with('status', "0");
-		}
-	}
+	public function updateUserSettings(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'username' => 'required',
+            'email' => 'required|email',
+        ]);
+
+        if ($request->wantsJson() && !$validator->fails()) {
+
+            $checkEmailExists = User::where('id', '<>', $request->user()->id)
+                ->where('email', $request->input('email'))
+                ->first();
+
+            if ($checkEmailExists) {
+                return response()->json(
+                    ['errorCode' => 1, 'msg' => 'Email já se encontra a ser utilizado.'], 400);
+            }
+
+            $checkNicknameExists = User::where('id', '<>', $request->user()->id)
+                ->where('username', $request->input('username'))
+                ->first();
+
+            if ($checkNicknameExists) {
+                return response()->json(
+                    ['errorCode' => 2, 'msg' => 'Nome utilizador já se encontra a ser utilizado.'], 400);
+            }
+
+            $user = User::findOrFail($request->user()->id);
+
+            $user->name = $request->input('name');
+            $user->username = $request->input('username');
+            $user->email = $request->input('email');
+
+            $user->save();
+
+            return response()->json(['msg' => 'Utilizador atualizado.']);
+
+
+        } else {
+            return response()->json(['errorCode' => -1, 'msg' => 'Request inválido.'], 400);
+        }
+
+    }
+
+    public function updateAvatar(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'avatar' => 'required|image64:jpeg,jpg,png'
+        ]);
+
+        if ($request->wantsJson() && !$validator->fails()) {
+
+            $imageData = $request->get('avatar');
+            $user = Auth::user();
+
+            if ($user->avatar == "empty.png") {
+                $user->avatar = $user->id . ".png";
+                $user->save();
+            } else {
+                unlink("img/avatars/" . $user->id . ".png");
+            }
+
+            $img = Image::make($imageData);
+            $img->resize(200, 200)->save("img/avatars/" . $user->id . ".png");
+
+        } else {
+            return response()->json(['msg' => 'Request inválido.'], 400);
+        }
+
+        return response()->json(200);
+
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'currentPassword' => 'required',
+            'newPassword' => 'required'
+        ]);
+
+        if ($request->wantsJson() && !$validator->fails()) {
+
+
+            if (!Hash::check($request->input('currentPassword'), $request->user()->password)) {
+                return response()->json(
+                    ['errorCode' => 1, 'msg' => 'Password incorrecta.'], 400);
+            }
+
+            $request->user()->password = Hash::make($request->input('newPassword'));
+            $request->user()->save();
+
+            return response()->json(['msg' => 'Password alterada com sucesso.']);
+        } else {
+            return response()->json(['errorCode' => -1, 'msg' => 'Request inválido.'], 400);
+        }
+    }
+
+    public function deleteOwnAccount(Request $request)
+    {
+        $this->delete($request->user()->id);
+    }
 
 	public function getUserById($id) {
 		$user = User::where('id', $id)->first();
 		return $user;
 	}
 
-	public function user(Request $request)
-	{
-		$user = User::find(Auth::user()->id);
-		return response([
-			'status' => 'success',
-			'data' => $user
-		]);
-	}
-	public function refresh()
-	{
-		return response([
-			'status' => 'success'
-		]);
-	}
 }

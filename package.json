@@ -20,10 +20,11 @@
     "vue": "^2.5.7"
   },
   "dependencies": {
-    "bootstrap-vue": "^2.0.0-rc.9",
+    "bootstrap-vue": "^2.0.0-rc.10",
     "sweetalert": "^2.1.0",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.1",
-    "vuejs-datepicker": "^1.1.4"
+    "vuejs-datepicker": "^1.2.0",
+    "vuex": "^3.0.1"
   }
 }

@@ -32,10 +32,11 @@
                                             <span class="caret"></span>
                                         </span>
                                         <ul class="dropdown-menu" aria-labelledby="authDropdown">
-                                            <li><a href="#">Definições</a></li>
+                                            <li><router-link to="/userSettings" title="Ver Perfil">Ver Perfil</router-link></li>
                                             <li role="separator" class="divider"></li>
+                                            <li v-if="user.type == 1"><a href="/admin/#/" title="Administração">Administração</a></li>
                                             <li>
-                                                <a href="#" v-on:click="logout">
+                                                <a href="#" title="Logout" v-on:click="logout">
                                                     <strong>Logout</strong> 
                                                     <i class="fas fa-sign-out-alt"></i>
                                                 </a>
@@ -58,51 +59,26 @@
         data: function(){
             return {
                 user: new User(),
-                logged: false
+                logged: false,
             }
         },
         methods: {
             getUser: function () {
-                let config = {
-                    headers: {
-                    'Authorization': localStorage.getItem("access_token")
-                    }
-                }
-                axios.get('/api/user', config)
+                axios.get('/api/user')
                     .then((response) => {
-                        console.log(response.data);
+                        console.log('Navbar: ' + response.data);
                         this.logged = true;
                         this.user.parse(response.data);
-                    })
-                    .catch((error) => {
-                        
                     });
-            },
-            isLogged: function() {
-                return this.logged;
             },
             logout:function() {
-                let config = {
-                    headers: {
-                    'Authorization': localStorage.getItem("access_token")
-                    }
-                }
-                axios.post('/api/logout', null, config)
+                axios.post('/api/logout', null)
                     .then((response) => {
                         localStorage.removeItem("access_token");
+                        window.location.href = '/';
                         this.logged = false;
-                        location.reload(true);
-                    })
-                    .catch((error) => {
-                        
                     });
             }
-        },
-        computed: {
-            
-        },
-        components: {
-
         },
         created: function () {
             if(localStorage.getItem("access_token") != null) {
@@ -112,7 +88,3 @@
         }
     }
 </script>
-
-<style type="text/css">
-
-</style>

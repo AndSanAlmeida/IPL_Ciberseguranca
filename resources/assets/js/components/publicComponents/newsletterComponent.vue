@@ -4,16 +4,13 @@
             <div v-if="!logged" class="row">
                 <div class="col-md-12">
                     <div class="newsletterContentNotLogged text-center">
-                        <div class="newsletterContentLogged text-center">
-                            <span>Subscreva-se à nossa newsletter e seja o primeiro a receber as nossas notificações.</span> 
-                        </div>
-                        <div class="row">
-                            <form class="form" role="form" autocomplete="off" v-on:submit.prevent="submitNewsletterWhenNotLogged">
-                                <input type="text" placeholder="Nome" v-model="name" class="newsletter-input" />
-                                <input type="email" placeholder="Email" v-model="email" class="newsletter-input" />
-                                <input class="newsletter-send" type="submit" value="Subscrever">
-                            </form>
-                        </div>
+                        <span>Subscreva-se à nossa newsletter e seja o primeiro a receber as nossas notificações.</span>
+                        <br><br>
+                        <form class="form" role="form" autocomplete="off" v-on:submit.prevent="submitNewsletterWhenNotLogged">
+                            <input type="text" placeholder="Nome" v-model="name" class="newsletter-input" />
+                            <input type="email" placeholder="Email" v-model="email" class="newsletter-input" />
+                            <input class="newsletter-send" type="submit" value="Subscrever">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -147,7 +144,7 @@
                 
                 axios.get('/api/user')
                     .then((response) => {
-                        console.log(response.data);
+                        console.log('Newsletter: ' + response.data);
                         this.logged = true;
                         this.checkIfUserIsSubscribed(response.data.email);
                         this.user.parse(response.data);

@@ -2,11 +2,15 @@ require('./bootstrap');
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import BootstrapVue from 'bootstrap-vue';
 
 Vue.use(VueRouter);
-
+Vue.use(BootstrapVue);
 axios.defaults.headers.common['Accept'] = "application/json";
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('access_token');
+
+// CSS
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 window.Vue = require('vue');
 
