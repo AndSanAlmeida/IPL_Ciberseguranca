@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Glossary;
+use App\FAQ;
+use App\UserQuestion;
 use Illuminate\Http\Request;
-use App\Http\Resources\GlossaryResource;
+use App\Http\Resources\FAQResource;
 use Illuminate\Support\Facades\DB;
 use Validator;
 
-
-
-class GlossaryControllerAPI extends Controller
+class FAQControllerAPI extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,9 +19,9 @@ class GlossaryControllerAPI extends Controller
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
-            $glossary = Glossary::all();
+            $faqs = FAQ::all();
 
-            return GlossaryResource::collection($glossary);
+            return FAQResource::collection($faqs);
         } else {
             return response()->json(['message' => 'Request inválido.'], 400);
         }
@@ -35,8 +34,28 @@ class GlossaryControllerAPI extends Controller
      */
     public function create()
     {
-        
+        //
     }
+
+    public function cleanStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'question' => 'required|string',
+            'answer' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['msg' => $validator->errors()]);
+        } else {
+            $faq = new FAQ;
+            $faq->question = $request->get('question');
+            $faq->answer = $request->get('answer');
+            $faq->save();
+
+            return response()->json(['msg' => 'FAQ criada com sucesso', 'error' => false]);
+        }
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -47,22 +66,24 @@ class GlossaryControllerAPI extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:100',
-            'definition' => 'required|string|max:100',
-            'source' => 'required|string|max:100',
+            'id' => 'required|integer',
+            'question' => 'required|string',
+            'answer' => 'required|string',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['msg' => $validator->errors()]);
         } else {
-            $glossary = new Glossary;
-            $glossary->name = $request->get('name');
-            $glossary->key = strtoupper($request->get('name')[0]);
-            $glossary->definition = $request->get('definition');
-            $glossary->source = $request->get('source');
+            $faq = new FAQ;
+            $faq->question = $request->get('question');
+            $faq->answer = $request->get('answer');
+            $faq->save();
 
-            $glossary->save();
-            return response()->json(['msg' => 'Entrada do glossário criada com sucesso', 'error' => false]);
+            $userQuestion = UserQuestion::findOrFail($request->get('id'));
+            $userQuestion->isFAQ = 1;
+            $userQuestion->update();
+
+            return response()->json(['msg' => 'FAQ criada com sucesso', 'error' => false]);
         }
     }
 
@@ -74,8 +95,8 @@ class GlossaryControllerAPI extends Controller
      */
     public function show($id)
     {
-        $glossary = Glossary::findOrFail($id);
-        return $glossary;
+        $usefulLink = FAQ::findOrFail($id);
+        return $usefulLink;
     }
 
     /**
@@ -86,7 +107,7 @@ class GlossaryControllerAPI extends Controller
      */
     public function edit($id)
     {
-        
+        //
     }
 
     /**
@@ -99,23 +120,20 @@ class GlossaryControllerAPI extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:100',
-            'definition' => 'required|string|max:100',
-            'source' => 'required|string|max:100',
+            'question' => 'required|string',
+            'answer' => 'required|string',
         ]);
 
         if ($request->wantsJson() && !$validator->fails()) {
 
-            $glossary = Glossary::findOrFail($id);
+            $faq = FAQ::findOrFail($id);
 
-            $glossary->name = $request->get('name');
-            $glossary->key = strtoupper($request->get('name')[0]);
-            $glossary->definition = $request->get('definition');
-            $glossary->source = $request->get('source');
+            $faq->question = $request->get('question');
+            $faq->answer = $request->get('answer');
 
-            $glossary->update();
+            $faq->update();
 
-            return response()->json(['msg' => 'Entrada do glossário editada com sucesso.']);
+            return response()->json(['msg' => 'FAQ editada com sucesso.']);
         } else {
             return response()->json(['errorCode' => -1, 'msg' => $validator->errors()], 400);
         }
@@ -129,20 +147,10 @@ class GlossaryControllerAPI extends Controller
      */
     public function destroy($id)
     {
-        $glossary = Glossary::findOrFail($id);
+        $faq = FAQ::findOrFail($id);
 
-        $glossary->delete();
+        $faq->delete();
 
-        return response()->json(['msg' => 'Entrada do glossário apagada com sucesso.']);
-    }
-
-    public function getGlossaryItensByLetter(Request $request, $letter) {
-        $glossary = Glossary::where('key', $letter)->get();
-
-        return GlossaryResource::collection($glossary);
-    }
-
-    public function getLetterInGlossary(Request $request) {
-        return Glossary::groupBy('key')->pluck('key');
+        return response()->json(['msg' => 'FAQ apagada com sucesso.']);
     }
 }

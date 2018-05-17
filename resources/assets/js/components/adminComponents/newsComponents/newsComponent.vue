@@ -6,7 +6,7 @@
 		  </div>
 		</header>
 
-		<newsList :news="news" @delete-click="deleteNews"></newsList>
+		<button v-on:click="getRSS">rss</button>
 
 	</div>
 </template>
@@ -26,6 +26,23 @@
             }
         },
         methods: {
+        	getRSS:function () {
+        		axios.get('https://www.cncs.gov.pt/recursos/noticias/feed-rss/index.xml')
+                    .then(response => {
+                        $('item', response.data).each(function(){
+                     	title = $('title', this).text();
+                     	link = $('link', this).text();
+                     	description = $('description', this).text();
+                    }).catch((error) => {
+                    this.loading = false;
+                    this.errorLoading = true;
+                });
+
+                    //Here you can do anything you want with those temporary
+                    //variables, e.g. put them in some place in your html document
+                    //or store them in an associative array
+                })
+        	},/*
             getNews: function () {
                 this.loading = true;
                 this.errorLoading = false;
@@ -81,13 +98,10 @@
 		                  break;
 		          }
 		      });
-		    }
+		    }*/
         },
         components: {
             'newsList': NewsList,
         },
-        mounted() {
-            this.getNews();
-        }
     }
 </script>

@@ -5,34 +5,30 @@
     
         <div class="card card-outline-secondary">
             <div class="card-header">
-                <h3 class="mb-0">Editar Documento</h3>
+                <h3 class="mb-0">Editar FAQ</h3>
             </div>
             <div class="card-body">
                 <form class="form" role="form" autocomplete="off" v-on:submit.prevent="submitForm">
                     <div class="form-group row">
-                        <label class="col-lg-3 col-form-label form-control-label">Descrição</label>
+                        <label class="col-lg-3 col-form-label form-control-label">Questão</label>
                         <div class="col-lg-9">
-                            <input class="form-control" type="text" v-model="description" required>
+                            <input class="form-control" type="text" v-model="faqEdited.question" required>
                         </div>
                     </div>
                     <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingDescription ">
-                            <p v-if="missingDescription">Preencher descrição</p>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && invalidSizeDescription ">
-                            <p v-if="invalidSizeDescription">Tamanho da descrição excedido (Max: 100)</p>
+                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingQuestion ">
+                            <p v-if="missingQuestion">Preencher questão</p>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-lg-3 col-form-label form-control-label">Ficheiro</label>
-                        <div class="col-lg-9" v-if="path == null">
-                            <input id="fileInput" type="file" accept=".pdf" class="form-control-file" v-on:change="onFileChange" required>
+                        <label class="col-lg-3 col-form-label form-control-label">Resposta</label>
+                        <div class="col-lg-9">
+                            <input class="form-control" type="text" v-model="faqEdited.answer" required>
                         </div>
-                        <div class="col-lg-9" v-if="path != null">
-                            <a class="btn btn-success" :href="path" :download=description>Ver documento</a>
-                            <button class="btn btn-danger" type="button" v-on:click="deleteDocument">Remover</button>
+                    </div>
+                    <div class="clearfix">
+                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingAnswer ">
+                            <p v-if="missingAnswer">Preencher resposta</p>
                         </div>
                     </div>
                     <hr>
@@ -49,16 +45,13 @@
     </div>
 </template>
 <script type="text/javascript">
-
-    import Datepicker from 'vuejs-datepicker';
     import swal from 'sweetalert';
 
     export default {
-        props: ['document'],
+        props: ['faq'],
         data: function() {
             return {
-                description: '',
-                path: '',
+                faqEdited: this.faq,
                 attemptSubmit: false,
                 serverError: false,
                 serverErrorMessage: '',
@@ -67,14 +60,17 @@
         components: {
         },
         computed: {
-            missingDescription: function () {
-                return this.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
+            missingQuestion: function () {
+              return this.faqEdited.question.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
-            invalidSizeDescription: function() {
-                return this.description.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+            missingAnswer: function () {
+              return this.faqEdited.answer.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
             hasClientError: function () {
-                return (this.missingDescription || this.invalidSizeDescription);
+              return (this.missingQuestion || this.missingAnswer);
+            },
+            hasClientError: function () {
+                return (this.missingName || this.missingDefinition || this.missingSource || this.invalidSizeName || this.invalidSizeDefinition || this.invalidSizeSource);
             },
             hasServerError: function () {
                 return this.serverError;
@@ -84,30 +80,18 @@
             },
         },
         methods: {
-            getDocument: function() {
-                axios.get('/api/documents/'+this.document.id)
-                .then((response) => {
-                    this.description = response.data.description;
-                    this.path = response.data.path;
-                })
-                .catch((error) => {
-                    this.serverError = true;
-                    console.log(error);
-                    this.serverErrorMessage = error.response.data.data;
-                });
-            },
-            submitForm: function (glossaryItem) {
+            submitForm: function () {
                 this.serverError = false;
                 this.attemptSubmit = true;
                 if (!this.isFormInvalid) {
                     const data = {
-                        description: this.description,
-                        path: this.path,
+                        question: this.faqEdited.question,
+                        answer: this.faqEdited.answer,
                     };
 
-                    axios.post('/api/documents/'+ this.document.id +'/update', data)
+                    axios.post('/api/faqs/'+ this.faq.id +'/update', data)
                     .then((response) => {
-                        swal("Documento alterado com sucesso.", {
+                        swal("FAQ alterada com sucesso.", {
                             icon: 'success',
                             buttons: {
                                 ok: "Ok"
@@ -115,7 +99,8 @@
                         })
                         .then((value) => {
                             switch (value) {
-                                case "ok":this.exit();
+                                case "ok":
+                                this.exit();
                                 break;
                             }
                         });
@@ -139,33 +124,17 @@
                         case "no":
                         break;
 
-                        case "yes":this.exit();
+                        case "yes":
+                        this.exit();
                         break;
                     }
                 });
             },
-            deleteDocument: function() {
-                this.path=null;
-            },
-            onFileChange(e) {
-                var file1 = e.target.files[0];
-                var reader = new FileReader();
-                var vm = this;
-
-                reader.onload = (e) => {
-                    vm.path = e.target.result;
-                };
-                reader.readAsDataURL(file1);
-                console.log(this.path);
-        
-            },
             exit: function() {
-          this.$emit('exit');
-        },
-            
+                this.$emit('exit');
+            }
         },
         mounted: function () {
-            this.getDocument();
         }
     }
 </script>

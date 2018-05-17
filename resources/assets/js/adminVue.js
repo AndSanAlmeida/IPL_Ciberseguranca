@@ -39,6 +39,13 @@ const documentsEdit = Vue.component('events', require('./components/adminCompone
 
 const faqs = Vue.component('faqs', require('./components/adminComponents/faqsComponents/faqsComponent.vue'));
 const userQuestions = Vue.component('userQuestions', require('./components/adminComponents/userQuestionsComponents/userQuestionsComponent.vue'));
+const userNotAnsweredQuestionsListComponent = Vue.component('userNotAnsweredQuestionsListComponent', require('./components/adminComponents/userQuestionsComponents/userNotAnsweredQuestionsListComponent.vue'));
+const userAllQuestionsComponent = Vue.component('userAllQuestionsComponent', require('./components/adminComponents/userQuestionsComponents/userAllQuestionsComponent.vue'));
+const userAllQuestionsListComponent = Vue.component('userAllQuestionsListComponent', require('./components/adminComponents/userQuestionsComponents/userAllQuestionsListComponent.vue'));
+const userQuestionDetailsComponent = Vue.component('userAllQuestionsListComponent', require('./components/adminComponents/userQuestionsComponents/userQuestionDetailsComponent.vue'));
+
+const newsComponent = Vue.component('newsComponent', require('./components/adminComponents/newsComponents/newsComponent.vue'));
+
 
 /*ROUTES*/
 const routes = [
@@ -66,6 +73,10 @@ const routes = [
 	{ path: '/documents/edit/:id', component: documentsEdit, name: 'documentsEdit', props: { default: true}},
 	{ path: '/faqs', component: faqs},
 	{ path: '/userQuestions', component: userQuestions},
+	{ path: '/userQuestions/notAnswered', component: userNotAnsweredQuestionsListComponent},
+	{ path: '/userQuestions/all', component: userAllQuestionsComponent},
+	{ path: '/news', component: newsComponent},
+
 ];
 
 const router = new VueRouter({

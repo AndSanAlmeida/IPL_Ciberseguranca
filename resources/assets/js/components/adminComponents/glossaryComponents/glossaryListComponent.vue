@@ -4,7 +4,7 @@
       <div class="row">    
         
         <div class="col-lg-12">
-          <router-link to="/glossary/create" class="btn btn-primary">Adicionar Entrada do Glossário</router-link>
+          <button type="button" class="btn btn-primary" v-on:click="createGlossary()">Adicionar Entrada no Glossário</button>
           <div class="card mt-2">
             <div class="card-header d-flex align-items-center">
               <h3 class="h4">Entradas do Glossário</h3>
@@ -17,6 +17,7 @@
                     <thead>
                       <tr>
                         <th>#</th>
+                        <td>Chave</td>
                         <th>Nome</th>
                         <th>Definição</th>
                         <th>Ações</th>
@@ -25,13 +26,13 @@
                     <tbody>
                       <tr v-for="glossaryItem in glossary"  :key="glossaryItem.id">
                         <td>{{glossaryItem.id}}</td>
+                        <td>{{glossaryItem.key}}</td>
                         <td>{{glossaryItem.name}}</td>
                         <td>{{glossaryItem.definition}}</td>
                         <td>
-                          <router-link :to="{ name: 'glossaryDetails', params: {id: glossaryItem.id } }" class="btn btn-sm btn-primary">Ver detalhes</router-link>
-                            <router-link :to="{ name: 'glossaryEdit', params: {id: glossaryItem.id } }" class="btn btn-sm btn-warning">Editar</router-link>
+                            <button type="button" class="btn btn-sm btn-primary" v-on:click="viewGlossary(glossaryItem)">Ver Detalhes</button>
+                            <button type="button" class="btn btn-sm btn-warning" v-on:click="editGlossary(glossaryItem)">Editar</button>
                             <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteGlossary(glossaryItem)">Eliminar</button>
-                       
                         </td>
                       </tr>
                     </tbody>
@@ -53,7 +54,16 @@ module.exports={
   },
   methods: {
     deleteGlossary: function(glossary) {
-      this.$emit('delete-click', glossary);
+      this.$emit('deleteGlossary', glossary);
+    },
+    editGlossary: function(glossary) {
+      this.$emit('editGlossary', glossary);
+    },
+    createGlossary: function() {
+      this.$emit('createGlossary');
+    },
+    viewGlossary: function(glossary) {
+      this.$emit('viewGlossary', glossary);
     }
   }
 }

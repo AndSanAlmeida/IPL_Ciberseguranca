@@ -206,6 +206,11 @@ class UserControllerAPI extends Controller
 		}
 	}
 
+	public function getUserById($id) {
+		$user = User::where('id', $id)->first();
+		return $user;
+	}
+
 	public function user(Request $request)
 	{
 		$user = User::find(Auth::user()->id);

@@ -8,22 +8,16 @@
                      	<h1>{{ title }}</h1>
                  	</div>
                  	
-                    <div id="faq">
-                        <div class="faqContent">
+                    <h3 v-if="faqs.length == 0" class="text-danger mt-2">Não existe FAQs disponíveis</h3>
+
+                    <div v-if="faqs.lenght != 0" id="faq">
+                        <div v-for="faq in faqs" class="faqContent">
                             <div class="faq-question">
-                                <input id="q1" type="checkbox" class="panel">
+                                <input v-bind:id="faq.id" type="checkbox" class="panel">
                                 <div class="plus">+</div>
-                                <label for="q1" class="panel-title">Question One</label>
+                                <label v-bind:for="faq.id" class="panel-title">{{faq.question}}</label>
                                 <div class="panel-content">
-                                    <span class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
-                                </div>
-                            </div>
-                            <div class="faq-question">
-                                <input id="q2" type="checkbox" class="panel">
-                                <div class="plus">+</div>
-                                <label for="q2" class="panel-title">Question Two</label>
-                                <div class="panel-content">
-                                    <span class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+                                    <span class="text-justify">{{faq.answer}}</span>
                                 </div>
                             </div>
                         </div>
@@ -39,6 +33,7 @@
                     <div v-if="logged" id="faqSend" class="row">
                         <div class="col-md-12">
                             <h2>Envie-nos a sua Questão</h2>
+                            <form class="form" role="form" method="post" autocomplete="off" v-on:submit.prevent="submitForm">
                             <b-form-textarea id="faq"
                                              v-model="faqTextarea"
                                              placeholder="Coloque aqui a sua Questão!"
@@ -47,7 +42,8 @@
                                              :no-resize="true"
                                              required>
                             </b-form-textarea>
-                            <input type="submit" class="faqSendBtn" value="Enviar">
+                            <input class="faqSendBtn" type="submit" value="Enviar">
+                            </form>
                         </div>
                     </div>
 
@@ -84,12 +80,91 @@
                 }],
                 logged: false,
                 faqTextarea: '',
+                user_id: 0,
+                faqs: [],
             }
         },
+        computed: {
+            missingQuestion: function () {
+                return this.faqTextarea.trim() === '' && !this.hasServerError && this.attemptSubmit;
+            },
+            hasClientError: function () {
+                return (this.missingQuestion);
+            },
+            hasServerError: function () {
+                return this.serverError;
+            },
+            isFormInvalid: function () {
+                return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
+            },
+        },
         created: function() {
-            if(localStorage.getItem('access_token') != null) {
-                this.logged = true;
-            }
+            this.isLogged();
+                
+        },
+        methods: {
+            getFaqs: function () {
+                this.loading = true;
+                this.errorLoading = false;
+                
+                axios.get('/api/faqs')
+                    .then(response => {
+                        this.faqs = response.data.data;
+                        this.loading = false;
+                    }).catch((error) => {
+                    this.loading = false;
+                    this.errorLoading = true;
+                });
+            },
+            reset: function() {
+                this.faqTextarea = '';
+            },
+            submitForm: function() {
+                this.serverError = false;
+                this.attemptSubmit = true;
+                if (!this.isFormInvalid) {
+                    const data = {
+                        question: this.faqTextarea,
+                        user_id: this.user_id,
+                    };
+                    axios.post('/api/questions/create', data)
+                        .then((response) => {
+                            console.log(response);
+                            swal("Questão enviada com sucesso.", {
+                                icon: 'success',
+                                buttons: {
+                                ok: "Ok"
+                                },
+                            });
+                            this.reset();
+                        })
+                        .catch((error) => {
+                            this.serverError = true;
+                            console.log(error);
+                            this.serverErrorMessage = error.response.data.data;
+                        });
+                }
+            },
+            isLogged() {
+                if(localStorage.getItem('access_token') != null) {
+                    this.logged = true;
+                }
+            },
+            getUser: function () {
+                axios.get('/api/user')
+                    .then((response) => {
+                        console.log(response.data);
+                        this.logged = true;
+                        this.user_id = response.data.id;
+                    })
+                    .catch((error) => {
+                        
+                    });
+            },
+        }, 
+        created: function () {
+            this.getUser();
+            this.getFaqs();
         }
     }
 </script>

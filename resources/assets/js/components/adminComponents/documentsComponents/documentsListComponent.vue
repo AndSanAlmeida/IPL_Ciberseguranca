@@ -4,7 +4,7 @@
       <div class="row">    
         
         <div class="col-lg-12">
-          <router-link to="/documents/create" class="btn btn-primary">Adicionar Documento</router-link>
+          <button type="button" class="btn btn-primary" v-on:click="createDocument()">Adicionar Documento</button>
           <div class="card mt-2">
             <div class="card-header d-flex align-items-center">
               <h3 class="h4">Lista de Documentos</h3>
@@ -27,7 +27,7 @@
                         <td>{{document.description}}</td>
                         <td>
                             <a class="btn btn-sm btn-primary" :href="document.path" :download=document.description>Ver documento</a>
-                            <router-link :to="{ name: 'documentsEdit', params: {id: document.id } }" class="btn btn-sm btn-warning">Editar</router-link>
+                            <button type="button" class="btn btn-sm btn-warning" v-on:click="editDocument(document)">Editar</button>
                             <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteDocument(document)">Eliminar</button>
                         </td>
                       </tr>
@@ -50,8 +50,14 @@ module.exports={
   },
   methods: {
     deleteDocument: function(document) {
-      this.$emit('delete-click', document);
+      this.$emit('deleteDocument', document);
     },
+    editDocument: function(document) {
+      this.$emit('editDocument', document);
+    },
+    createDocument: function() {
+      this.$emit('createDocument');
+    }
   }
 }
 </script>

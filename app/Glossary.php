@@ -23,4 +23,6 @@ class Glossary extends Model
     protected $hidden = [
         
     ];
+
+    protected $table = 'glossary';
 }

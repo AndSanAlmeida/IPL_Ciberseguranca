@@ -5,29 +5,33 @@
     <!-- form user info -->
     <div class="card card-outline-secondary">
       <div class="card-header">
-        <h3 class="mb-0">Criar Entrada do Glossário</h3>
+        <h3 class="mb-0">Criar FAQ</h3>
       </div>
       <div class="card-body">
         <form class="form" role="form" autocomplete="off" v-on:submit.prevent="submitForm" enctype="multipart/form-data">
           <div class="form-group row">
-            <label class="col-lg-3 col-form-label form-control-label">Nome da Entrada</label>
+            <label class="col-lg-3 col-form-label form-control-label">Questão</label>
             <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="name" required>
+              <input class="form-control" type="text" v-model="question" required>
             </div>
           </div>
-          <div class="form-group row">
-            <label class="col-lg-3 col-form-label form-control-label">Definição</label>
-            <div class="col-lg-9">
-             <textarea class="form-control" v-model="definition" rows="7" required ></textarea>
-           </div>
-         </div>
+          <div class="clearfix">
+              <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingQuestion ">
+                  <p v-if="missingQuestion">Preencher questão</p>
+              </div>
+          </div>
          <div class="form-group row">
-          <label class="col-lg-3 col-form-label form-control-label">Fonte</label>
+          <label class="col-lg-3 col-form-label form-control-label">Resposta</label>
           <div class="col-lg-9">
-           <textarea class="form-control" v-model="source" rows="7" required ></textarea>
+              <input class="form-control" type="text" v-model="answer" required>
          </div>
        </div>
-       <hr>
+       <div class="clearfix">
+            <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingAnswer ">
+                <p v-if="missingAnswer">Preencher Link</p>
+            </div>
+        </div>
+        <hr>
        <div class="form-group row">
         <label class="col-lg-3 col-form-label form-control-label"></label>
         <div class="col-lg-9 text-right">
@@ -47,25 +51,21 @@
 export default {
   data: function() {
     return {
-      name:'',
-      definition: '',
-      source:'',
+      question:'',
+      answer: '',
     }
   },
   components: {
   },
   computed: {
-    missingName: function () {
-      return this.name.trim() === '' && !this.hasServerError && this.attemptSubmit;
+    missingQuestion: function () {
+      return this.question.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
-    missiingDefinition: function() {
-      return this.definition.trim() === '' && !this.hasServerError && this.attemptSubmit;
-    },
-    missingSource: function () {
-      return this.source.trim() === '' && !this.hasServerError && this.attemptSubmit;
+    missingAnswer: function () {
+      return this.answer.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
     hasClientError: function () {
-      return (this.missingName || this.missiingDefinition || this.missingSource);
+      return (this.missingQuestion || this.missingAnswer);
     },
     hasServerError: function () {
       return this.serverError;
@@ -77,23 +77,18 @@ export default {
   },
 
   methods: {
-    exit: function() {
-        this.$emit('exit');
-    },
     submitForm: function (event) {
       this.serverError = false;
       this.attemptSubmit = true;
       if (!this.isFormInvalid) {
         const data = {
-          name: this.name,
-          definition: this.definition,
-          source: this.source,
+          question: this.question,
+          answer: this.answer,
         };
 
-
-        axios.post('/api/glossary/create', data)
+        axios.post('/api/faqs/create/clean', data)
         .then((response) => {
-          swal("Entrada do glossário criada com sucesso.", {
+          swal("FAQ criada com sucesso.", {
             icon: 'success',
             buttons: {
               ok: "Ok"
@@ -101,7 +96,8 @@ export default {
           })
           .then((value) => {
             switch (value) {
-              case "ok":this.exit();
+              case "ok":
+              this.exit();
               break;
             }
           });
@@ -129,11 +125,14 @@ export default {
           break;
 
           case "yes":
-          this.exit();
-          break;
+            this.exit();
+            break;
         }
       });
     },
+    exit: function() {
+      this.$emit('exit');
+    }
 
 
   }

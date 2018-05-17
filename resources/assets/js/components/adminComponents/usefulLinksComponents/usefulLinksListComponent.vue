@@ -4,7 +4,7 @@
       <div class="row">    
         
         <div class="col-lg-12">
-          <router-link to="/usefulLinks/create" class="btn btn-primary">Adicionar Link Útil</router-link>
+          <button type="button" class="btn btn-primary" v-on:click="createLink()">Adicionar Link Útil</button>
           <div class="card mt-2">
             <div class="card-header d-flex align-items-center">
               <h3 class="h4">Lista de Links Uteis</h3>
@@ -28,8 +28,8 @@
                         <td>{{link.description}}</td>
                         <td>{{link.link}}</td>
                         <td>
-                            <router-link :to="{ name: 'usefulLinksEdit', params: {id: link.id } }" class="btn btn-sm btn-warning">Editar</router-link>
-                            <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteUsefulLink(link)">Eliminar</button>
+                            <button type="button" class="btn btn-sm btn-warning" v-on:click="editLink(link)">Editar</button>
+                            <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteLink(link)">Eliminar</button>
                         
                         </td>
                       </tr>
@@ -51,8 +51,14 @@ module.exports={
 
   },
   methods: {
-    deleteUsefulLink: function(link) {
-      this.$emit('delete-click', link);
+    editLink: function(link) {
+      this.$emit('editLink', link);
+    },
+    deleteLink: function(link) {
+      this.$emit('deleteLink', link);
+    },
+    createLink: function() {
+      this.$emit('createLink');
     }
   }
 }

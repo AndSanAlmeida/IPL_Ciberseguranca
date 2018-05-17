@@ -76,6 +76,7 @@
     import swal from 'sweetalert';
 
     export default {
+        props: ['item'],
         data: function() {
             return {
                 id: this.$route.params.id,
@@ -120,7 +121,7 @@
         },
         methods: {
             getGlossaryItem: function(id) {
-                axios.get('/api/glossary/'+this.id)
+                axios.get('/api/glossary/'+this.item.id)
                 .then((response) => {
                     this.name = response.data.name;
                     this.definition = response.data.definition;
@@ -142,7 +143,7 @@
                         source: this.source,
                     };
 
-                    axios.post('/api/glossary/'+ this.id +'/update', data)
+                    axios.post('/api/glossary/'+ this.item.id +'/update', data)
                     .then((response) => {
                         swal("Entrada do glossário alterada com sucesso.", {
                             icon: 'success',
@@ -153,7 +154,7 @@
                         .then((value) => {
                             switch (value) {
                                 case "ok":
-                                window.location.href = '/admin/#/glossary'
+                                this.exit();
                                 break;
                             }
                         });
@@ -178,11 +179,14 @@
                         break;
 
                         case "yes":
-                        window.location.href = '/admin/#/glossary'
+                        this.exit();
                         break;
                     }
                 });
             },
+            exit: function() {
+                this.$emit('exit');
+            }
             
         },
         mounted: function () {

@@ -1,60 +1,34 @@
 <template>
-	<section id="resources" class="section-padding">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-8 col-sm-12">
+    <section id="resources" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-sm-12">
                     <b-breadcrumb :items="items"/>
                     <div class="left-highlight">
-                     	<h1>{{ title }}</h1>
-                 	</div>
+                        <h1>{{ title }}</h1>
+                    </div>
 
                     <div id="glossary">
                         <nav class="glossary__nav">
                             <ul class="list-inline text-center">
-                                <li class="glossary__nav__item active">
-                                    <a class="card card__content" data-nav="A" data-toggle="glossary" href="#">A</a>
+                                <div  v-for="letter in letters" >
+                                <li class="glossary__nav__item"  v-if="lettersAvailable.includes(letter)">
+                                    <a class="card card__content aDisabled' : 'card card__content'" v-on:click="getGlossary(letter)" data-toggle="glossary" href="#">{{letter}}</a>
                                 </li>
-                                <li class="glossary__nav__item">
-                                    <a class="card card__content" data-nav="B" data-toggle="glossary" href="#">B</a>
-                                </li>
-                                <li class="glossary__nav__item">
-                                    <a class="card card__content" data-nav="C" data-toggle="glossary" href="#">C</a>
-                                </li>
-                                <li class="glossary__nav__item">
-                                    <a class="card card__content" data-nav="D" data-toggle="glossary" href="#">D</a>
-                                </li>
+                            </div>
                             </ul>
                         </nav>
                         <!--END Glossary Nav-->
 
                         <div class="glossary__results">
             
-                            <div class="glossary__results__row inactive" data-term="A">
+                            <div class="glossary__results__row inactive">
                                 <div class="row">
-                                    <div class="glossary__results__item col-sm-12">
-                                        <h2 class="card__title">Application Cycle Management</h2>
-                                        <p><strong>[Definição] </strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste vel, magnam incidunt obcaecati.</p>
-                                        <p><strong>[Fonte] </strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste vel, magnam incidunt obcaecati.</p>
+                                    <div class="glossary__results__item col-sm-12" v-for="glossaryItem in glossary">
+                                        <h2 class="card__title">{{glossaryItem.name}}</h2>
+                                        <p><strong>[Definição] </strong>{{glossaryItem.definition}}</p>
+                                        <p><strong>[Fonte] </strong>{{glossaryItem.source}}</p>
                                     </div>
-                                    <!--END Glossary Result item-->
-                                    <div class="glossary__results__item col-sm-12">
-                                        <h2 class="card__title">API</h2>
-                                        <p><strong>[Definição] </strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste vel, magnam incidunt obcaecati.</p>
-                                        <p><strong>[Fonte] </strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste vel, magnam incidunt obcaecati.</p>
-                                    </div>
-                                    <!--END Glossary Result item-->
-                                    <div class="glossary__results__item col-sm-12">
-                                        <h2 class="card__title">AVR</h2>
-                                        <p><strong>[Definição] </strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste vel, magnam incidunt obcaecati.</p>
-                                        <p><strong>[Fonte] </strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste vel, magnam incidunt obcaecati.</p>
-                                    </div>
-                                    <!--END Glossary Result item-->
-                                    <div class="glossary__results__item col-sm-12">
-                                        <h2 class="card__title">ARP</h2>
-                                        <p><strong>[Definição] </strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste vel, magnam incidunt obcaecati.</p>
-                                        <p><strong>[Fonte] </strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste vel, magnam incidunt obcaecati.</p>
-                                    </div>
-                                    <!--END Glossary Result item-->
                                 </div>
                             </div>
                             <!--END Glossary Results Row-->
@@ -74,9 +48,9 @@
                     <resourcesNav></resourcesNav>
                     
                 </div>
-			</div>
-		</div>
-	</section>
+            </div>
+        </div>
+    </section>
 </template>
 
 <script type="text/javascript">
@@ -85,10 +59,12 @@
     function initGlossaryFilter(){
 
         //On load set 'A' to 'active'
-        $(document).ready(function(){
+       $(document).ready(function(){
+
+            $(".glossary__nav li:first").addClass("active");
 
             //Get NAV Attribute
-            var nav = $(".glossary__nav li.active a").attr("data-nav");
+            var nav = $(".glossary__nav li a").attr("data-nav");
 
             // Loop through the row
             $(".glossary__results__row").each(function(){
@@ -100,31 +76,7 @@
             });
         });
         
-        // Filter using navigation
-        $(".glossary__nav a").click(function(){
-            var nav = $(this).attr("data-nav");
-
-            // Remove & Add active class
-            $(".glossary__nav__item").removeClass("active");
-            $(this).parent().toggleClass("active");
-
-            // Hide all the results
-            $(".glossary__results__row").addClass("inactive");
-
-            // Loop through the row
-            $(".glossary__results__row").each(function(){
-                var term = $(this).attr("data-term");
-
-                if(nav == term){
-                    $(this).removeClass("inactive");
-                }
-            });
-
-            // Only return false if data-toggle is glossary
-            if($(this).attr("data-toggle") == "glossary"){
-                return false;
-            }
-        });
+       
     }
 
 
@@ -141,11 +93,52 @@
                 }, {
                     text: 'Glossário',
                     active: true
-                }]
+                }],
+                glossary: [],
+                letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
+                          'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+                lettersAvailable : [],
+                loading: false,
+                
             }
+        },
+        methods: {
+            getGlossaryLetters: function() {
+                axios.get('/api/glossary/letters')
+                    .then(response => {
+                        this.lettersAvailable = response.data;
+                        this.getGlossary(this.lettersAvailable[0]);
+                    }).catch((error) => {
+                    this.loading = false;
+                    this.errorLoading = true;
+                });
+            },
+            getGlossary: function (letter) {
+                this.loading = true;
+                this.errorLoading = false;
+                
+                axios.get('/api/glossary/byLetter/'+letter.toLowerCase())
+                    .then(response => {
+                        this.glossary = response.data.data;
+                        this.loading = false;
+                    }).catch((error) => {
+                    this.loading = false;
+                    this.errorLoading = true;
+                });
+            },
         },
         mounted: function () {
             initGlossaryFilter();
+            this.getGlossaryLetters();
         }
     }
 </script>
+
+<style type="text/css" media="screen">
+
+.aDisabled {
+    pointer-events: none;
+    cursor: default;
+}
+   
+</style>

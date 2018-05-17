@@ -98,11 +98,10 @@ export default {
           .then((value) => {
             switch (value) {
               case "ok":
-              window.location.href = '/admin/#/usefulLinks'
+              this.exit();
               break;
             }
           });
-
         })
         .catch((error) => {
           this.serverError = true;
@@ -126,11 +125,14 @@ export default {
           break;
 
           case "yes":
-          window.location.href = '/admin/#/usefulLinks'
-          break;
+            this.exit();
+            break;
         }
       });
     },
+    exit: function() {
+      this.$emit('exit');
+    }
 
 
   }

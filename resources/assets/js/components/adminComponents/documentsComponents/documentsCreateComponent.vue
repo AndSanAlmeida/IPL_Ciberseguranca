@@ -70,6 +70,9 @@ export default {
   },
 
   methods: {
+    exit: function() {
+          this.$emit('exit');
+        },
     submitForm: function (event) {
       this.serverError = false;
       this.attemptSubmit = true;
@@ -88,14 +91,8 @@ export default {
             buttons: {
               ok: "Ok"
             },
-          })
-          .then((value) => {
-            switch (value) {
-              case "ok":
-              window.location.href = '/admin/#/documents'
-              break;
-            }
           });
+          this.exit();
 
         })
         .catch((error) => {
@@ -120,11 +117,12 @@ export default {
               break;
 
               case "yes":
-              window.location.href = '/admin/#/documents'
-              break;
+                this.exit();
+                break;
             }
           });
         },
+        
         onFileChange(e) {
           var file1 = e.target.files[0];
           var reader = new FileReader();

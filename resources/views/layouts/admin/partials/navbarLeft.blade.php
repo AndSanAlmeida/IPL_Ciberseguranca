@@ -24,6 +24,7 @@
     <li><a href="{{ url('/admin/#/newsletter') }}"> <i class="icon-bill"></i>Newsletter </a></li>
     <li><a href="{{ url('/admin/#/documents') }}"> <i class="icon-website"></i>Documentos</a></li>
     <li><a href="{{ url('/admin/#/usefulLinks') }}"> <i class="icon-page"></i>Links Úteis </a></li>
+    <li><a href="{{ url('/admin/#/userQuestions') }}"> <i class="icon-ios-email-outline"></i>Questões dos Utilizadores </a></li>
     <li><a href="{{ url('/admin/#/faqs') }}"> <i class="icon-list-1"></i>FAQ </a></li>
     <li><a href="{{ url('/admin/#/settings') }}"> <i class="icon-interface-windows"></i>Definições </a></li>
   </ul>

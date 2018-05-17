@@ -7,7 +7,10 @@
                     <div class="left-highlight">
                      	<h1>{{ title }}</h1>
                  	</div>
-                 	<div id="linksAndDocuments">
+
+                    <h3 v-if="documents.length == 0" class="text-danger mt-2">Não existe documentos disponíveis</h3>
+
+                 	<div v-if="documents.lenght != 0" id="linksAndDocuments">
                  		<ul class="linksAndDocumentsList">
                             <li v-for="document in documents" :key="document.id" ><a :href="document.path" :download="document.description">{{document.description}}</a></li>
                         </ul>

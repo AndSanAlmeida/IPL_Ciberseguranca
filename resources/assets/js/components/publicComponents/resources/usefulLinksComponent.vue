@@ -7,7 +7,10 @@
                     <div class="left-highlight">
                      	<h1>{{ title }}</h1>
                  	</div>
-                 	<div id="linksAndDocuments">
+
+                    <h3 v-if="usefulLinks.length == 0" class="text-danger mt-2">Não existe links úteis disponíveis</h3>
+
+                 	<div v-if="usefulLinks.length != 0" id="linksAndDocuments">
                         <ul class="linksAndDocumentsList">
                             <li v-for="link in usefulLinks" :key="link.id" ><a :href="link.link" target="_blank">{{link.description}}</a></li>
                         </ul>

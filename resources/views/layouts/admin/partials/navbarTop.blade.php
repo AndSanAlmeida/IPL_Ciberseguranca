@@ -47,7 +47,7 @@
             </ul>
           </li>-->
           <!-- Messages                        -->
-          <li class="nav-item"> <a id="messages" rel="nofollow" data-target="#" href="{{ url('/admin/#/userQuestions') }}" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-envelope-o"></i><span class="badge bg-orange badge-corner">10</span></a>
+          <li class="nav-item"> <a id="messages" rel="nofollow" data-target="#" href="{{ url('/admin/#/userQuestions') }}" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-envelope-o"></i><span class="badge bg-orange badge-corner">{!!$notAnswered!!}</span></a>
           </li>
           <!-- Logout    -->
           <li class="nav-item"><a href="/auth/" class="nav-link logout">Logout<i class="fa fa-sign-out"></i></a></li>

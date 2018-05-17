@@ -24,9 +24,9 @@
 </template>
 <script type="text/javascript">
     export default {
+        props: ['item'],
         data: function() {
             return {
-                id: this.$route.params.id,
                 name: '',
                 definition: '',
                 source: '',
@@ -36,7 +36,7 @@
         },
         methods: {
             getGlossaryItem: function(id) {
-                axios.get('/api/glossary/'+this.id)
+                axios.get('/api/glossary/'+this.item.id)
                 .then((response) => {
                     this.name = response.data.name;
                     this.definition = response.data.definition;
@@ -49,8 +49,11 @@
                 });
             },
             cancel: function() {
-                window.location.href = '/admin/#/glossary'
+                this.exit();
             },
+            exit: function() {
+                this.$emit('exit');
+            }
         },
         mounted: function () {
             this.getGlossaryItem();

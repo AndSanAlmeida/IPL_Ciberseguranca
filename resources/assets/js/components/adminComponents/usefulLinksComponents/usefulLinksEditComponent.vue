@@ -23,7 +23,7 @@
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">URL</label>
                         <div class="col-lg-9">
-                            <input class="form-control" type="url" v-model="link" required>
+                            <input class="form-control" type="url" v-model="linkURL" required>
                         </div>
                     </div>
                     <div class="clearfix">
@@ -48,11 +48,12 @@
     import swal from 'sweetalert';
 
     export default {
+        props: ['link'],
         data: function() {
             return {
                 id: this.$route.params.id,
                 description: '',
-                link: '',
+                linkURL: '',
                 attemptSubmit: false,
                 serverError: false,
                 serverErrorMessage: '',
@@ -65,7 +66,7 @@
               return this.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
             missingLink: function () {
-              return this.link.trim() === '' && !this.hasServerError && this.attemptSubmit;
+              return this.linkURL.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
             hasClientError: function () {
               return (this.missingDescription || this.missingLink);
@@ -82,10 +83,10 @@
         },
         methods: {
             getUsefulLink: function(id) {
-                axios.get('/api/usefulLinks/'+this.id)
+                axios.get('/api/usefulLinks/'+this.link.id)
                 .then((response) => {
                     this.description = response.data.description;
-                    this.link = response.data.link;
+                    this.linkURL = response.data.link;
                 })
                 .catch((error) => {
                     this.serverError = true;
@@ -99,10 +100,10 @@
                 if (!this.isFormInvalid) {
                     const data = {
                         description: this.description,
-                        link: this.link,
+                        link: this.linkURL,
                     };
 
-                    axios.post('/api/usefulLinks/'+ this.id +'/update', data)
+                    axios.post('/api/usefulLinks/'+ this.link.id +'/update', data)
                     .then((response) => {
                         swal("Link útil alterado com sucesso.", {
                             icon: 'success',
@@ -113,7 +114,7 @@
                         .then((value) => {
                             switch (value) {
                                 case "ok":
-                                window.location.href = '/admin/#/usefulLinks'
+                                this.exit();
                                 break;
                             }
                         });
@@ -138,12 +139,14 @@
                         break;
 
                         case "yes":
-                        window.location.href = '/admin/#/usefulLinks'
+                        this.exit();
                         break;
                     }
                 });
             },
-            
+            exit: function() {
+                this.$emit('exit');
+            }
         },
         mounted: function () {
             this.getUsefulLink();

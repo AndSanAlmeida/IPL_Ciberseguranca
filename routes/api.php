@@ -37,6 +37,7 @@ Route::middleware('auth:api')->post('users', 'UserControllerAPI@getUsers'); //GE
 Route::middleware('auth:api')->post('usersForStatus', 'UserControllerAPI@getUsersForStatus'); //GET LIST OF USERS FOR STATUS TO MANAGE
 Route::middleware('auth:api')->put('users/{id}', 'UserControllerAPI@updateState'); //CHANGE STATE USER
 Route::middleware('auth:api')->delete('users/{id}', 'UserControllerAPI@delete'); //DELETE USER
+Route::middleware('auth:api')->get('user/{id}', 'UserControllerAPI@getUserById'); // get user by id
 
 Route::get('events', 'EventControllerAPI@index'); //GET LIST OF EVENTS
 Route::get('events/{id}', 'EventControllerAPI@show'); // get event by id 
@@ -44,6 +45,8 @@ Route::middleware('auth:api')->post('events/create', 'EventControllerAPI@create'
 Route::middleware('auth:api')->delete('event/{id}/delete', 'EventControllerAPI@destroy'); // delete event
 Route::middleware('auth:api')->post('events/{id}/update', 'EventControllerAPI@edit'); // edit event
 
+Route::get('glossary/byLetter/{letter}', 'GlossaryControllerAPI@getGlossaryItensByLetter'); //Get the glossary by letter
+Route::get('glossary/letters', 'GlossaryControllerAPI@getLetterInGlossary'); // get all letter in glossary
 Route::get('glossary', 'GlossaryControllerAPI@index'); //Get the glossary
 Route::get('glossary/{id}', 'GlossaryControllerAPI@show'); // get item of glossary by id 
 Route::middleware('auth:api')->post('glossary/create', 'GlossaryControllerAPI@store'); // create item of glossary
@@ -79,3 +82,17 @@ Route::middleware('auth:api')->post('newsletter/{id}/update', 'NewsletterControl
 Route::post('newsletter/subscribe', 'NewsletterControllerAPI@subscribe'); // subscribe to newsletter
 Route::delete('newsletter/{email}/unsubcribe', 'NewsletterControllerAPI@unsubscribe'); // delete subscription of newsletter
 Route::post('newsletter/subscribed', 'NewsletterControllerAPI@subscribed'); // check if user is in newsletter subscription
+
+Route::middleware('auth:api')->post('questions/create', 'UserQuestionControllerAPI@store'); // edit newsletter
+Route::middleware('auth:api')->get('questions', 'UserQuestionControllerAPI@index'); // get all questions
+Route::middleware('auth:api')->get('questions/answered', 'UserQuestionControllerAPI@answered'); // get all questions
+Route::middleware('auth:api')->get('questions/notAnswered', 'UserQuestionControllerAPI@notAnswered'); // get questions with no answered
+Route::middleware('auth:api')->delete('questions/{id}/delete', 'UserQuestionControllerAPI@deleteQuestion'); // delete question
+Route::middleware('auth:api')->post('questions/answer', 'UserQuestionControllerAPI@answer'); // responde to a question
+
+Route::get('faqs', 'FAQControllerAPI@index'); //Get faqs
+Route::get('faqs/{id}', 'FAQControllerAPI@show'); // get faq by id 
+Route::middleware('auth:api')->post('faqs/create/clean', 'FAQControllerAPI@cleanStore'); // create clean faq 
+Route::middleware('auth:api')->post('faqs/create', 'FAQControllerAPI@store'); // create faq from user question
+Route::middleware('auth:api')->delete('faqs/{id}/delete', 'FAQControllerAPI@destroy'); // delete faq
+Route::middleware('auth:api')->post('faqs/{id}/update', 'FAQControllerAPI@update'); // edit faq

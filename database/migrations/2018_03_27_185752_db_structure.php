@@ -96,8 +96,9 @@ class DbStructure extends Migration
             $table->integer('status');
         });
 
-        Schema::create('glossaries', function(Blueprint $table){
+        Schema::create('glossary', function(Blueprint $table){
             $table->increments('id');
+            $table->string('key');
             $table->string('name');
             $table->string('definition');
             $table->string('source');
@@ -125,7 +126,7 @@ class DbStructure extends Migration
             $table->timestamps();
         });
 
-        Schema::create('newsletter', function(Blueprint $table){
+        Schema::create('newsletters', function(Blueprint $table){
             $table->increments('id');
             $table->string('description');
             $table->date('date');
@@ -136,7 +137,24 @@ class DbStructure extends Migration
         Schema::create('newsletter_subscription', function(Blueprint $table){
             $table->increments('id');
             $table->string('name');
-            $table->string('email')->unique();;
+            $table->string('email')->unique();
+            $table->timestamps();
+        });
+
+        Schema::create('user_questions', function(Blueprint $table){
+            $table->increments('id');
+            $table->string('question');
+            $table->string('answer')->nullable();;
+            $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('isAnswered')->default(0);;
+            $table->integer('isFAQ')->default(0);;
+            $table->timestamps();
+        });
+
+        Schema::create('faqs', function(Blueprint $table){
+            $table->increments('id');
+            $table->string('question');
+            $table->string('answer');
             $table->timestamps();
         });
     }
@@ -147,7 +165,9 @@ class DbStructure extends Migration
      * @return void
      */
     public function down()
-    {
+    {   
+        Schema::dropIfExists('faqs');
+        Schema::dropIfExists('user_questions');
         Schema::dropIfExists('newsletter_subscription');
         Schema::dropIfExists('newsletter');
         Schema::dropIfExists('documents');
