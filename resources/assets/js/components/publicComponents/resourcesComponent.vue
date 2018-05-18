@@ -27,8 +27,6 @@
 </template>
 
 <script type="text/javascript">
-    import ResourcesNav from './resources/resourcesNavComponent.vue'
-
     export default {
         data: function(){
             return {
@@ -42,9 +40,6 @@
                 }],
                 resources: []
             }
-        },
-        components: {
-            'resourcesNav': ResourcesNav
         },
          methods: {
             getResources: function () {

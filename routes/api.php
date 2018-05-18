@@ -35,12 +35,8 @@ Route::post('password/reset', 'LoginControllerAPI@resetPassword');
 
 Route::middleware('auth:api')->put('users/{id}', 'UserControllerAPI@updateState'); //CHANGE STATE USER
 Route::middleware('auth:api')->delete('users/{id}', 'UserControllerAPI@delete'); //DELETE USER
-<<<<<<< HEAD
 Route::middleware('auth:api')->get('user/{id}', 'UserControllerAPI@getUserById'); // get user by id
 
-=======
-	
->>>>>>> a3ca61185e0bc92bf71c1796701ffda8c1f459a9
 Route::get('events', 'EventControllerAPI@index'); //GET LIST OF EVENTS
 Route::get('events/{id}', 'EventControllerAPI@show'); // get event by id 
 Route::middleware('auth:api')->post('events/create', 'EventControllerAPI@create'); // create event
@@ -85,7 +81,7 @@ Route::post('newsletter/subscribe', 'NewsletterControllerAPI@subscribe'); // sub
 Route::delete('newsletter/{email}/unsubcribe', 'NewsletterControllerAPI@unsubscribe'); // delete subscription of newsletter
 Route::post('newsletter/subscribed', 'NewsletterControllerAPI@subscribed'); // check if user is in newsletter subscription
 
-<<<<<<< HEAD
+
 Route::middleware('auth:api')->post('questions/create', 'UserQuestionControllerAPI@store'); // edit newsletter
 Route::middleware('auth:api')->get('questions', 'UserQuestionControllerAPI@index'); // get all questions
 Route::middleware('auth:api')->get('questions/answered', 'UserQuestionControllerAPI@answered'); // get all questions
@@ -99,7 +95,7 @@ Route::middleware('auth:api')->post('faqs/create/clean', 'FAQControllerAPI@clean
 Route::middleware('auth:api')->post('faqs/create', 'FAQControllerAPI@store'); // create faq from user question
 Route::middleware('auth:api')->delete('faqs/{id}/delete', 'FAQControllerAPI@destroy'); // delete faq
 Route::middleware('auth:api')->post('faqs/{id}/update', 'FAQControllerAPI@update'); // edit faq
-=======
+
 /******************
 	USER ROUTES
  *****************/
@@ -115,4 +111,4 @@ Route::middleware('auth:api')->delete('deleteOwnAccount', 'UserControllerAPI@del
 
 Route::middleware('auth:api')->post('/user/avatar/update', 'UserControllerAPI@updateAvatar'); //UPDATE AVATAR
 Route::middleware('auth:api')->post('/user/password/update', 'UserControllerAPI@updatePassword'); //UPDATE PASSWORD
->>>>>>> a3ca61185e0bc92bf71c1796701ffda8c1f459a9
+

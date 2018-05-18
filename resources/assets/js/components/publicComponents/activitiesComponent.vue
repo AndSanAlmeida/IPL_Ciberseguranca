@@ -27,8 +27,6 @@
 </template>
 
 <script type="text/javascript">
-    import ActivitiesNav from './activities/activitiesNavComponent.vue'
-
     export default {
         data: function(){
             return {
@@ -42,9 +40,6 @@
                 }],
                 resources: []
             }
-        },
-        components: {
-            'activitiesNav': ActivitiesNav
         },
          methods: {
             getActivities: function () {

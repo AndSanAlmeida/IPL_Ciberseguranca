@@ -2,15 +2,17 @@
 	<div class="row">
  		<div class="col-md-8 col-xs-12">
             <form method="post" v-on:submit="validateForm" class="form-horizontal form-label-left">
-                <div class="alert alert-success" role="alert" v-cloak v-show="success">
-                    <p>Informação de conta alterada com sucesso!</p>
+                <div class="alert alert-success alert-dismissible" role="alert" v-cloak v-show="success">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p><strong>Successo: </strong>Informação de conta alterada com sucesso!</p>
                 </div>
-                <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid">
-                    <p v-if="missingName">Introduza o nome</p>
-                    <p v-if="missingEmail">Introduza o email</p>
-                    <p v-if="invalidEmail">Email inválido</p>
-                    <p v-if="missingUsername">Introduza o nome de utilizador</p>
-                    <p v-if="hasServerError">{{ serverErrorMessage }}</p>
+                <div class="alert alert-danger alert-dismissible" role="alert" v-cloak v-show="isFormInvalid">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p v-if="missingName"><strong>Erro: </strong>Introduza o nome</p>
+                    <p v-if="missingEmail"><strong>Erro: </strong>Introduza o email</p>
+                    <p v-if="invalidEmail"><strong>Erro: </strong>Email inválido</p>
+                    <p v-if="missingUsername"><strong>Erro: </strong>Introduza o nome de utilizador</p>
+                    <p v-if="hasServerError"><strong>Erro: </strong>{{ serverErrorMessage }}</p>
                 </div>
 
 

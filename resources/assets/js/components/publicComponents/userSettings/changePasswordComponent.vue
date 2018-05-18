@@ -2,12 +2,14 @@
 	<div class="row">
         <div class="col-md-8 col-xs-12">
 
-            <div class="alert alert-success" role="alert" v-cloak v-show="success">
-                <p>Password alterada com sucesso.</p>
+            <div class="alert alert-success alert-dismissible" role="alert" v-cloak v-show="success">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p><strong>Successo: </strong>Password alterada com sucesso.</p>
             </div>
-            <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid">
+            <div class="alert alert-danger alert-dismissible" role="alert" v-cloak v-show="isFormInvalid">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <p v-if="hasClientError"><strong>Erro:</strong> Reveja o formulário.</p>
-                <p v-if="hasServerError">{{ serverErrorMessage }}</p>
+                <p v-if="hasServerError"><strong>Erro: </strong>{{ serverErrorMessage }}</p>
             </div>
 
             <form id="formChangePassword" class="form-horizontal form-label-left" method="post" v-on:submit="validateForm">

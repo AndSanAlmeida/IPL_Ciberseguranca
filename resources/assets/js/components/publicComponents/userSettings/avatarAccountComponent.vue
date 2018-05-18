@@ -1,11 +1,13 @@
 <template>
 	<div class="row">
         <div class="col-md-8 col-xs-12">
-            <div class="alert alert-success " role="alert" v-cloak v-show="success">
-                <p>Imagem de Perfil alterada com sucesso!</p>
+            <div class="alert alert-success alert-dismissible" role="alert" v-cloak v-show="success">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p><strong>Successo: </strong>Imagem de Perfil alterada com sucesso!</p>
             </div>
-            <div class="alert alert-danger" role="alert" v-cloak v-show="wrongFormat">
-                <p>Formato de ficheiro Inválido - JPEG | JPG | PNG</p>
+            <div class="alert alert-danger alert-dismissible" role="alert" v-cloak v-show="wrongFormat">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p><strong>Erro: </strong>Formato de ficheiro Inválido - JPEG | JPG | PNG</p>
             </div>
 			<form class="form-horizontal">
 				<div class="form-group">

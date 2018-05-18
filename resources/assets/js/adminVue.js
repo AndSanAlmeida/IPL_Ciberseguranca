@@ -6,14 +6,21 @@ import BootstrapVue from 'bootstrap-vue';
 
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
-axios.defaults.headers.common['Accept'] = "application/json";
-axios.defaults.headers.common['Authorization'] = localStorage.getItem('access_token');
 
 // CSS
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 window.Vue = require('vue');
 
+axios.defaults.headers.common['Accept'] = "application/json";
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('access_token');
+
+// FIXED
+Vue.component('navbar-left', require('./components/adminComponents/partialsComponents/navbarLeftComponent.vue'));
+Vue.component('navbar-top', require('./components/adminComponents/partialsComponents/navbarTopComponent.vue'));
+Vue.component('admin-footer', require('./components/adminComponents/partialsComponents/footerComponent.vue'));
+
+//////////////////
 const home = Vue.component('home', require('./components/adminComponents/homeComponent.vue'));
 const users = Vue.component('users', require('./components/adminComponents/usersComponents/usersComponent.vue'));
 
