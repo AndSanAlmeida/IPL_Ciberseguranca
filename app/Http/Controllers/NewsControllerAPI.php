@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\News;
-
+use App\Http\Resources\NewsResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -37,37 +37,7 @@ class NewsControllerAPI extends Controller
      */
     public function create()
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string',
-            'text' => 'required|string',
-            'image' => 'image64:jpeg,jpg,png',
-            'video' => 'string'    
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['msg' => $validator->errors()]);
-        } else {
-            $fileName = $request->get('title') . '.png';
-
-            $news = new News;
-            $news->title = $request->get('title');
-            $news->text = $request->get('text');
-
-            $news->id_user = Auth::id();
-
-            // MUDAR O RESIZE DEPOIS DE FAZER A VIEW
-            if ($request->hasFile('image')) {
-                Image::make($request->get('image'))->resize(75, 125)->save($public_path('img/news/') . '/' . $fileName);
-                $news->image = 'img/news/' . $fileName;
-            }
-            
-            if ($request->has('video')) {
-                $news->video = $request->get('video');
-            }
-
-            $news->save();
-            return response()->json(['msg' => 'Notícia criada com sucesso', 'error' => false]);
-        }
+        
     }
 
     /**
@@ -78,7 +48,25 @@ class NewsControllerAPI extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'source' => 'required|string',
+            'pubDate' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['msg' => $validator->errors()]);
+        } else {
+            $news = new News;
+            $news->title = $request->get('title');
+            $news->description = $request->get('description');
+            $news->source = $request->get('source');
+            $news->pub_date = $request->get('pubDate');
+            $news->save();
+
+            return response()->json(['msg' => 'Notícia criada com sucesso', 'error' => false]);
+        }
     }
 
     /**
@@ -124,10 +112,6 @@ class NewsControllerAPI extends Controller
     public function destroy($id)
     {
         $news = News::findOrFail($id);
-        if (!empty($news->image)) {
-            File::deleteDirectory('img/news/' . $news->image);
-        }
-
         $news->delete();
 
         return response()->json(['msg' => 'Notícia apagada']);

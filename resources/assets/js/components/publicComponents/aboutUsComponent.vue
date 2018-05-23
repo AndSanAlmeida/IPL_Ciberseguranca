@@ -27,8 +27,6 @@
 </template>
 
 <script type="text/javascript">
-    import AboutUsNav from './aboutUs/aboutUsNavComponent.vue'
-
     export default {
         data: function(){
             return {
@@ -42,9 +40,6 @@
                 }],
                 aboutUs: []
             }
-        },
-        components: {
-            'aboutUsNav': AboutUsNav
         },
         methods: {
             getAboutUs: function () {

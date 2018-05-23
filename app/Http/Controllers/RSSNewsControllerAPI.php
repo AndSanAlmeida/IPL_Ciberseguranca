@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Document;
+use App\RSSNews;
 use Illuminate\Http\Request;
-use App\Http\Resources\DocumentResource;
+use App\Http\Resources\RSSNewsResource;
 use Illuminate\Support\Facades\DB;
 use Validator;
-use Illuminate\Support\Facades\Storage;
 
-use Illuminate\Support\Facades\File;
-
-class DocumentsControllerAPI extends Controller
+class RSSNewsControllerAPI extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,9 +18,9 @@ class DocumentsControllerAPI extends Controller
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
-            $documents = Document::all();
+            $rssNews = RSSNews::all();
 
-            return DocumentResource::collection($documents);
+            return RSSNewsResource::collection($rssNews);
         } else {
             return response()->json(['message' => 'Request inválido.'], 400);
         }
@@ -48,20 +45,19 @@ class DocumentsControllerAPI extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'description' => 'required|string|max:200',
-            'file' => 'required|string' 
+            'website' => 'required|string|max:200',
+            'url' => 'required|url',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['msg' => $validator->errors()]);
         } else {
-            $document = new Document;
-            $document->description = $request->get('description');
+            $rssNews = new RSSNews;
+            $rssNews->website = $request->get('website');
+            $rssNews->url = $request->get('url');
 
-            $document->path = $request->get('file');
-
-            $document->save();
-            return response()->json(['msg' => 'Documento criado com sucesso', 'error' => false]);
+            $rssNews->save();
+            return response()->json(['msg' => 'RSS de notícias adicionado com sucesso', 'error' => false]);
         }
     }
 
@@ -73,8 +69,8 @@ class DocumentsControllerAPI extends Controller
      */
     public function show($id)
     {
-        $document = Document::findOrFail($id);
-        return $document;
+        $rssNews = RSSNews::findOrFail($id);
+        return $rssNews;
     }
 
     /**
@@ -98,20 +94,20 @@ class DocumentsControllerAPI extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'description' => 'required|string|max:200',
-            'path' => 'required',
+            'website' => 'required|string|max:200',
+            'url' => 'required|url',
         ]);
 
         if ($request->wantsJson() && !$validator->fails()) {
 
-            $document = Document::findOrFail($id);
+            $rssNews = RSSNews::findOrFail($id);
 
-            $document->description = $request->get('description');
-            $document->path = $request->get('path');
+            $rssNews->website = $request->get('website');
+            $rssNews->url = $request->get('url');
 
-            $document->save();
+            $rssNews->update();
 
-            return response()->json(['msg' => 'Documento editado com sucesso.']);
+            return response()->json(['msg' => 'RSS editado com sucesso.']);
         } else {
             return response()->json(['errorCode' => -1, 'msg' => $validator->errors()], 400);
         }
@@ -125,10 +121,10 @@ class DocumentsControllerAPI extends Controller
      */
     public function destroy($id)
     {
-        $document = Document::findOrFail($id);
+        $rssNews = RSSNews::findOrFail($id);
 
-        $document->delete();
+        $rssNews->delete();
 
-        return response()->json(['msg' => 'Documento apagado com sucesso.']);
+        return response()->json(['msg' => 'RSS apagado com sucesso.']);
     }
 }

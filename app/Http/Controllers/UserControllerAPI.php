@@ -306,4 +306,15 @@ class UserControllerAPI extends Controller
 		return $user;
 	}
 
+    public function activate($id) {
+-       $user = User::where('id', $id)->first();
+-       if(!is_null($user)) {
+-           $user->activated = 1;
+-           $user->save();
+-           return redirect(url('/'))->with('status', "1");
+-       }else{
+-           return redirect(url('/'))->with('status', "0");
+-       }
+-   }
+
 }

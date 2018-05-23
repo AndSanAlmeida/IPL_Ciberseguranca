@@ -63,13 +63,15 @@ class DbStructure extends Migration
         Schema::create('rss_news', function (Blueprint $table) {
             $table->increments('id');
             $table->string('website');
-            $table->string('url');
+            $table->string('url')->unique();
+            $table->timestamps();
         });
 
         Schema::create('rss_alerts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('website');
-            $table->string('url');
+            $table->string('url')->unique();
+            $table->timestamps();
         });
 
         Schema::create('events', function (Blueprint $table) {
@@ -131,6 +133,7 @@ class DbStructure extends Migration
             $table->string('description');
             $table->date('date');
             $table->longText('path');
+            $table->integer('isPublished')->default(0);
             $table->timestamps();
         });
 
@@ -146,8 +149,8 @@ class DbStructure extends Migration
             $table->string('question');
             $table->string('answer')->nullable();;
             $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('isAnswered')->default(0);;
-            $table->integer('isFAQ')->default(0);;
+            $table->integer('isAnswered')->default(0);
+            $table->integer('isFAQ')->default(0);
             $table->timestamps();
         });
 

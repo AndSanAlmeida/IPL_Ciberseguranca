@@ -38,7 +38,7 @@
 
         </b-table>
 
-        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage"/>      
+        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" align="center"/>      
 
         <!--<div class="table-responsive">                       
           <table class="table table-striped table-hover">

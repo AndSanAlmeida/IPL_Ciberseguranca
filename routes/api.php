@@ -72,14 +72,15 @@ Route::middleware('auth:api')->post('documents/create', 'DocumentsControllerAPI@
 Route::middleware('auth:api')->delete('documents/{id}/delete', 'DocumentsControllerAPI@destroy'); // delete item of useful links
 Route::middleware('auth:api')->post('documents/{id}/update', 'DocumentsControllerAPI@update'); // edit item of useful links
 
-Route::get('newsletter', 'NewsletterControllerAPI@index'); // get all newsletter
-Route::get('newsletter/{id}', 'NewsletterControllerAPI@show'); // get newsletter
-Route::middleware('auth:api')->post('newsletter/create', 'NewsletterControllerAPI@store'); // create newsletter
-Route::middleware('auth:api')->delete('newsletter/{id}/delete', 'NewsletterControllerAPI@destroy'); // delete newsletter
-Route::middleware('auth:api')->post('newsletter/{id}/update', 'NewsletterControllerAPI@update'); // edit newsletter
+Route::get('newsletters', 'NewsletterControllerAPI@index'); // get all newsletter
+Route::get('newsletters/{id}', 'NewsletterControllersAPI@show'); // get newsletter
+Route::middleware('auth:api')->post('newsletters/create', 'NewsletterControllerAPI@store'); // create newsletter
+Route::middleware('auth:api')->delete('newsletters/{id}/delete', 'NewsletterControllerAPI@destroy'); // delete newsletter
+Route::middleware('auth:api')->post('newsletters/{id}/update', 'NewsletterControllerAPI@update'); // edit newsletter
 Route::post('newsletter/subscribe', 'NewsletterControllerAPI@subscribe'); // subscribe to newsletter
 Route::delete('newsletter/{email}/unsubcribe', 'NewsletterControllerAPI@unsubscribe'); // delete subscription of newsletter
 Route::post('newsletter/subscribed', 'NewsletterControllerAPI@subscribed'); // check if user is in newsletter subscription
+Route::middleware('auth:api')->post('newsletters/{id}/publish', 'NewsletterControllerAPI@publish'); // edit newsletter
 
 Route::middleware('auth:api')->post('questions/create', 'UserQuestionControllerAPI@store'); // edit newsletter
 Route::middleware('auth:api')->get('questions', 'UserQuestionControllerAPI@index'); // get all questions
@@ -95,6 +96,14 @@ Route::middleware('auth:api')->post('faqs/create', 'FAQControllerAPI@store'); //
 Route::middleware('auth:api')->delete('faqs/{id}/delete', 'FAQControllerAPI@destroy'); // delete faq
 Route::middleware('auth:api')->post('faqs/{id}/update', 'FAQControllerAPI@update'); // edit faq
 
+Route::get('rssNews', 'RSSNewsControllerAPI@index'); // get rss news
+Route::middleware('auth:api')->post('rssNews/create', 'RSSNewsControllerAPI@store'); // add rss of news
+Route::middleware('auth:api')->delete('rssNews/{id}/delete', 'RSSNewsControllerAPI@destroy'); // delete rss of news
+Route::get('rssNews/{id}', 'RSSNewsControllerAPI@show'); // get rss by id
+Route::middleware('auth:api')->post('rssNews/{id}/update', 'RSSNewsControllerAPI@update'); // edit rss 
+
+Route::middleware('auth:api')->post('news/create', 'NewsControllerAPI@store'); // add rss of news
+Route::get('news', 'NewsControllerAPI@index');
 /******************
 	USER ROUTES
  *****************/
@@ -110,3 +119,4 @@ Route::middleware('auth:api')->delete('deleteOwnAccount', 'UserControllerAPI@del
 
 Route::middleware('auth:api')->post('/user/avatar/update', 'UserControllerAPI@updateAvatar'); //UPDATE AVATAR
 Route::middleware('auth:api')->post('/user/password/update', 'UserControllerAPI@updatePassword'); //UPDATE PASSWORD
+

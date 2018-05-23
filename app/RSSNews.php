@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class NewsletterSubscription extends Model
+class RSSNews extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class NewsletterSubscription extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email'
+        'website', 'url'
     ];
 
     /**
@@ -24,5 +24,5 @@ class NewsletterSubscription extends Model
         
     ];
 
-    protected $table = 'newsletter_subscription';
+    protected $table = 'rss_news';
 }

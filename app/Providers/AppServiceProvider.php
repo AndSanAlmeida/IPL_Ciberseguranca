@@ -17,11 +17,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (Schema::hasTable('user_questions')) {
-            $notAnswered = UserQuestion::where('isAnswered', 0)->count();
-            View::share('notAnswered', $notAnswered);
-        }
-
         Schema::defaultStringLength(191);
 
         Validator::extend('image64', function ($attribute, $value, $parameters, $validator) {

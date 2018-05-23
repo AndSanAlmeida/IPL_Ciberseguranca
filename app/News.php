@@ -12,7 +12,7 @@ class News extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'text', 'image', 'video'
+        'title', 'description', 'source', 'pub_date'
     ];
 
     /**

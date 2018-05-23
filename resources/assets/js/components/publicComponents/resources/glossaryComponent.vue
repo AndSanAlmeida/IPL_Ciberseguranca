@@ -11,25 +11,11 @@
                     <div id="glossary">
                         <nav class="glossary__nav">
                             <ul class="list-inline text-center">
-<<<<<<< HEAD
                                 <div  v-for="letter in letters" >
-                                <li class="glossary__nav__item"  v-if="lettersAvailable.includes(letter)">
-                                    <a class="card card__content aDisabled' : 'card card__content'" v-on:click="getGlossary(letter)" data-toggle="glossary" href="#">{{letter}}</a>
-=======
-                                <li class="glossary__nav__item">
-                                    <a class="card card__content" data-nav="A" data-toggle="glossary" href="#">A</a>
-                                </li>
-                                <li class="glossary__nav__item">
-                                    <a class="card card__content" data-nav="B" data-toggle="glossary" href="#">B</a>
-                                </li>
-                                <li class="glossary__nav__item">
-                                    <a class="card card__content" data-nav="C" data-toggle="glossary" href="#">C</a>
-                                </li>
-                                <li class="glossary__nav__item">
-                                    <a class="card card__content" data-nav="D" data-toggle="glossary" href="#">D</a>
->>>>>>> a3ca61185e0bc92bf71c1796701ffda8c1f459a9
-                                </li>
-                            </div>
+                                    <li class="glossary__nav__item"  v-if="lettersAvailable.includes(letter)">
+                                        <a class="card card__content' : 'card card__content'" v-on:click="getGlossary(letter)" data-toggle="glossary" href="#">{{letter}}</a>
+                                    </li>
+                                </div>
                             </ul>
                         </nav>
                         <!--END Glossary Nav-->
@@ -147,12 +133,3 @@
         }
     }
 </script>
-
-<style type="text/css" media="screen">
-
-.aDisabled {
-    pointer-events: none;
-    cursor: default;
-}
-   
-</style>

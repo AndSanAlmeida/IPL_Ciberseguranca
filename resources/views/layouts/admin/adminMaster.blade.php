@@ -26,15 +26,8 @@
     </head>
     <body >
         
-        <div class="page">
-            @include('layouts.admin.partials.navbarTop')
-            <div class="page-content d-flex align-items-stretch">
-                @include('layouts.admin.partials.navbarLeft')
-                <div id="admin" class="content-inner">
-                    @yield('content')
-                    @include('layouts.admin.partials.footer')
-                </div>
-            </div>
+        <div id="admin" class="page">
+            @yield('content')
         </div>
 
         @yield('pagescript') 
