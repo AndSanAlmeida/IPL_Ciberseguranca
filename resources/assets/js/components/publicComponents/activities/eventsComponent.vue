@@ -34,13 +34,13 @@
                             <template slot="row-details" slot-scope="row">
                                 <b-card>
                                     <h2>{{row.item.name}} <small>Por: {{row.item.organizer}}</small></h2>
-                                    <div v-if="eventos.image_path" class="imgEvent text-center">
+                                    <div v-if="row.item.image_path" class="imgEvent text-center">
                                         <img class="img-responsive" :src="`${row.item.image_path}`" alt="Imagem do Evento">
                                     </div>
                                     <div class="infoEvent">
                                         <p><strong>Localização: </strong>{{row.item.localization}}</p>
                                         <p class="text-justify"><strong>Descrição: </strong>{{row.item.description}}</p>
-                                        <p v-if="eventos.path"><strong>Documento: </strong><a href="#" target="_blank">Ficheiro</a></p>
+                                        <p v-if="row.item.path"><strong>Documento: </strong><a href="#" target="_blank">Ficheiro</a></p>
                                         <div class="text-center">
                                             <button v-if="logged" type="button" class="btn btn-contrast">Inscrever</button>
                                             <a v-if="!logged" href="/auth/#/" class="btn btn-red">Inscrever</a>
