@@ -38,8 +38,6 @@
 </template>
 <script type="text/javascript">
 
-import Datepicker from 'vuejs-datepicker';
-
 export default {
   data: function() {
     return {
@@ -50,8 +48,6 @@ export default {
       serverError: false,
       serverErrorMessage: '',
     }
-  },
-  components: {
   },
   computed: {
     missingDescription: function () {
@@ -101,40 +97,39 @@ export default {
           this.serverErrorMessage = error.response.data.data;
         });
       }
+    },    
+    cancel: function() {
+      swal("Deseja realmente sair?", {
+        icon: "warning",
+        buttons: {
+          no: "Não",
+          yes: "Sim",
+        },
+      })
+      .then((value) => {
+        switch (value) {
+          case "no":
+          break;
+
+          case "yes":
+            this.exit();
+            break;
+        }
+      });
     },
     
-        cancel: function() {
-          swal("Deseja realmente sair?", {
-            icon: "warning",
-            buttons: {
-              no: "Não",
-              yes: "Sim",
-            },
-          })
-          .then((value) => {
-            switch (value) {
-              case "no":
-              break;
+    onFileChange(e) {
+      var file1 = e.target.files[0];
+      var reader = new FileReader();
+      var vm = this;
 
-              case "yes":
-                this.exit();
-                break;
-            }
-          });
-        },
-        
-        onFileChange(e) {
-          var file1 = e.target.files[0];
-          var reader = new FileReader();
-          var vm = this;
+      reader.onload = (e) => {
+        vm.file = e.target.result;
+      };
+      reader.readAsDataURL(file1);
+      console.log(this.file);
 
-          reader.onload = (e) => {
-            vm.file = e.target.result;
-          };
-          reader.readAsDataURL(file1);
-          console.log(this.file);
-    
-        },
-      }
-    }
-    </script>
+    },
+  }
+}
+</script>

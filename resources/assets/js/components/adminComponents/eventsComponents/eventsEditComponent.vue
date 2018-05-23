@@ -64,6 +64,17 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Lotação</label>
+                        <div class="col-lg-3">
+                            <input class="form-control" type="number" v-model="max_inscritos" required>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingLocalization ">
+                            <p v-if="missingLocalization">Preencher Lotação</p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">Descrição</label>
                         <div class="col-lg-9">
                             <textarea class="form-control" v-model="description" rows="7" required ></textarea>
@@ -80,18 +91,23 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="fileInput" class="col-sm-3 form-control-label">Imagem</label>
-                        <div class="col-sm-9" v-if="!imagePath">
-                            <input id="fileInput" type="file" accept="image/x-png,image/gif,image/jpeg" class="form-control-file" v-on:change="onFileChange" required>
+                        <label for="fileInput" class="col-lg-3 col-form-label form-control-label">Documento</label>
+                        <div class="col-lg-9" v-if="path == null">
+                            <input id="fileInput" type="file" accept=".pdf" class="form-control-file" v-on:change="onFileChange">
                         </div>
-                        <div class="col-sm-9" v-if="imagePath">
-                            <img :src="imagePath" class="img-fluid" alt="Imagem do evento"/>
-                            <button class="btn btn-sm btn-danger mt-3 float-right" @click="removeImage"  type="button">Remover Imagem</button>
+                        <div class="col-lg-9" v-if="path != null">
+                            <a class="btn btn-success" :href="path" :download=description>Ver documento</a>
+                            <button class="btn btn-danger" type="button" v-on:click="deleteDocument">Remover</button>
                         </div>
                     </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingDescription ">
-                            <p v-if="missingImage">Inserir imagem</p>
+                    <div class="form-group row">
+                        <label for="imageInput" class="col-lg-3 form-control-label">Imagem</label>
+                        <div class="col-lg-9" v-if="!imagePath || imagePath == null">
+                            <input id="imageInput" type="file" accept="image/x-png,image/gif,image/jpeg" class="form-control-file" v-on:change="onImageChange">
+                        </div>
+                        <div class="col-lg-9" v-if="imagePath">
+                            <img :src="imagePath" class="img-fluid" alt="Imagem do evento"/>
+                            <button class="btn btn-md btn-danger mt-3 float-right" @click="removeImage"  type="button">Remover Imagem</button>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -131,6 +147,8 @@
                 localization: '',
                 description: '',
                 date: '',
+                max_inscritos: 0,
+                path: '',
                 status: '',
                 image:'',
                 imagePath: '',
@@ -167,11 +185,8 @@
             invalidSizeDescription: function () {
                 return this.localization.trim().length > 250 && !this.hasServerError && this.attemptSubmit;
             },
-            missingImage: function () {
-                return this.image.trim() === '' && !this.hasServerError && this.attemptSubmit;
-            },
             hasClientError: function () {
-                return (this.missingName || this.missingLocalization || this.missingDescription || this.invalidSizeName || this.invalidSizeOrganizer || this.invalidSizeLocalization || this.missingImage);
+                return (this.missingName || this.missingLocalization || this.missingDescription || this.invalidSizeName || this.invalidSizeOrganizer || this.invalidSizeLocalization);
             },
             hasServerError: function () {
                 return this.serverError;
@@ -189,8 +204,14 @@
                     this.localization = response.data.localization;
                     this.description = response.data.description;
                     this.date = new Date(response.data.date);
+                    this.max_inscritos = response.data.max_inscritos;
+                    this.path = response.data.path;
                     this.status = response.data.status;
-                    this.imagePath = '/'+response.data.image_path;
+                    if (response.data.image_path == null) {
+                        this.imagePath = response.data.image_path;
+                    } else {
+                        this.imagePath = '/' + response.data.image_path;
+                    }                    
                 })
                 .catch((error) => {
                     this.serverError = true;
@@ -209,10 +230,11 @@
                         localization: this.localization,
                         description: this.description,
                         date: newDate,
+                        max_inscritos: this.max_inscritos,
                         status: this.status,
+                        path: this.path,
                         image: this.image,
                     };
-
                     axios.post('/api/events/'+ this.id +'/update', data)
                     .then((response) => {
                         swal("Evento alterado com sucesso.", {
@@ -278,11 +300,23 @@
                     }
                 });
             },
-            onFileChange(e) {
+            onImageChange(e) {
                 var files = e.target.files || e.dataTransfer.files;
                 if (!files.length)
                     return;
                 this.createImage(files[0]);
+            },
+            onFileChange(e) {
+                var file1 = e.target.files[0];
+                var reader = new FileReader();
+                var vm = this;
+
+                reader.onload = (e) => {
+                    vm.path = e.target.result;
+                };
+                reader.readAsDataURL(file1);
+                console.log(this.path);
+        
             },
             createImage(file) {
                 var image = new Image();
@@ -298,7 +332,10 @@
             removeImage: function (e) {
                 this.image = '';
                 this.imagePath ='';
-            }
+            },
+            deleteDocument: function() {
+                this.path = null;
+            },
         },
         mounted: function () {
             this.getEvento();

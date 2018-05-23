@@ -49,8 +49,8 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-3 col-md-9 col-xs-12">
-                        <button type="button" @click="getData" class="btn btnCancel">Cancelar</button>
-                        <button type="submit" class="btn btnSave">Guardar</button>
+                        <button type="button" @click="getData" class="btn btn-red">Cancelar</button>
+                        <button type="submit" class="btn btn-contrast">Guardar</button>
                     </div>
                 </div>
             </form>

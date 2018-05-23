@@ -7,6 +7,56 @@
                     <div class="left-highlight">
                         <h1>{{ title }}</h1>
                     </div>
+
+                    <div v-if="!hasItems && canShowContent" class="alert alert-danger" role="alert" style="margin-top: 2em;">
+                        <h4><strong>Erro: </strong>Não existe Eventos disponíveis.</h4>
+                    </div>
+
+                    <div v-if="loading" class="text-center" style="margin-top: 2em;">
+                        <h3>A carregar...</h3>
+                    </div>
+
+                    <div v-if="hasItems && canShowContent" id="events">
+
+                        <b-table  id="eventTable" responsive 
+                                  stacked="md"
+                                  :items="eventos" 
+                                  :fields="fields"
+                                  :current-page="currentPage"
+                                  :per-page="perPage"> 
+                        
+                            <template slot="actions" slot-scope="row">
+                                <button type="button" class="btn btn-red" @click.stop="row.toggleDetails">
+                                  {{ row.detailsShowing ? 'Esconder' : 'Mostrar' }} Detalhes
+                                </button>
+                            </template> 
+
+                            <template slot="row-details" slot-scope="row">
+                                <b-card>
+                                    <h2>{{row.item.name}} <small>Por: {{row.item.organizer}}</small></h2>
+                                    <div v-if="eventos.image_path" class="imgEvent text-center">
+                                        <img class="img-responsive" :src="`${row.item.image_path}`" alt="Imagem do Evento">
+                                    </div>
+                                    <div class="infoEvent">
+                                        <p><strong>Localização: </strong>{{row.item.localization}}</p>
+                                        <p class="text-justify"><strong>Descrição: </strong>{{row.item.description}}</p>
+                                        <p v-if="eventos.path"><strong>Documento: </strong><a href="#" target="_blank">Ficheiro</a></p>
+                                        <div class="text-center">
+                                            <button v-if="logged" type="button" class="btn btn-contrast">Inscrever</button>
+                                            <a v-if="!logged" href="/auth/#/" class="btn btn-red">Inscrever</a>
+                                        </div>                                        
+                                    </div>
+                                </b-card>
+                            </template>                          
+                            
+                        </b-table>
+                        
+                        <div class="text-center">
+                            <b-pagination :total-rows="totalRows" 
+                                          :per-page="perPage" 
+                                          v-model="currentPage"/> 
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4 col-sm-12 container-nav">
                     <div class="container-nav-title">
@@ -36,13 +86,53 @@
                     text: 'Eventos',
                     active: true
                 }],
+                eventos: [],
+                fields: [
+                  { key: 'date', label: 'Data'},
+                  { key: 'localization', label: 'Localização'},
+                  { key: 'name', label: 'Título'},                  
+                  { key: 'actions', label: ''}
+                ],
+                currentPage: 1,
+                perPage: 5,
+                totalRows: '',
+                logged: false,
+                loading: true,
+                errorLoading: false,
             }
         },
-        methods: {
-            
+        computed: {
+            hasItems: function () {
+                return this.eventos.length > 0;
+            },
+            canShowContent: function () {
+                return !this.errorLoading && !this.loading;
+            },
         },
-        mounted() {
-           
+        methods: {
+            getEvents: function () {
+                this.loading = true;
+                this.errorLoading = false; 
+                axios.get('/api/events')
+                    .then(response => {
+                        this.eventos = response.data.data;
+                        this.loading = false;
+                    }).catch((error) => {
+                        this.loading = false;
+                        this.errorLoading = true;
+                });
+            },
+            isLogged() {
+                if(localStorage.getItem('access_token') != null) {
+                    this.logged = true;
+                }
+            },
+        },
+        created() {
+            this.getEvents();
+            this.totalRows = this.eventos.length;
+            this.isLogged();
         }
+
     }
 </script>

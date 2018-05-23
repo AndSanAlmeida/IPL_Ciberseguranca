@@ -36,15 +36,28 @@
           </div>
 
           <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Lotação</label>
+            <div class="col-lg-3">
+              <input class="form-control" type="number" v-model="max_inscritos" required>
+            </div>
+          </div>
+
+          <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Descrição</label>
             <div class="col-lg-9">
              <textarea class="form-control" v-model="description" rows="7" required ></textarea>
            </div>
          </div>
          <div class="form-group row">
-          <label for="fileInput" class="col-sm-3 form-control-label">Imagem</label>
+            <label for="fileInput" class="col-sm-3 form-control-label">Documento</label>
+            <div class="col-sm-9">
+              <input id="fileInput" type="file" accept=".pdf" class="form-control-file" v-on:change="onFileChange" required>
+            </div>
+          </div>
+         <div class="form-group row">
+          <label for="imageInput" class="col-sm-3 form-control-label">Imagem</label>
           <div class="col-sm-9" v-if="!image">
-            <input id="fileInput" type="file" accept="image/x-png,image/gif,image/jpeg" class="form-control-file" v-on:change="onFileChange" required>
+            <input id="imageInput" type="file" accept="image/x-png,image/gif,image/jpeg" class="form-control-file" v-on:change="onImageChange" required>
           </div>
           <div class="col-sm-9" v-if="image">
             <img :src="image" class="img-fluid" alt="Imagem do evento"/>
@@ -78,6 +91,9 @@ export default {
       localization:'',
       description:'',
       date: new Date(),
+      max_inscritos: 0,
+      file: '',
+      fileName: '',
       image: '',
       attemptSubmit: false,
       serverError: false,
@@ -91,7 +107,7 @@ export default {
     missingName: function () {
       return this.name.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
-    missiingOrganizer: function() {
+    missingOrganizer: function() {
       return this.organizer.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
     missingLocalization: function () {
@@ -99,6 +115,9 @@ export default {
     },
     missingDescription: function () {
       return this.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
+    },
+    missingMaxInscritos: function () {
+      return this.max_inscritos.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
     hasClientError: function () {
       return (this.missingName || this.missingLocalization || this.missingDescription);
@@ -124,6 +143,8 @@ export default {
           localization: this.localization,
           description: this.description,
           date: newDate,
+          max_inscritos: this.max_inscritos,
+          file: this.file,
           image: this.image,
         };
 
@@ -161,8 +182,7 @@ export default {
           newdate = newdate.toISOString().slice(0, 19).replace('T', ' ');
 
           newdate = this.formatDate(newdate);
-
-          console.log(newdate);
+          
           return newdate;
         },
 
@@ -196,12 +216,23 @@ export default {
             }
           });
         },
-        onFileChange(e) {
+        onImageChange(e) {
           var files = e.target.files || e.dataTransfer.files;
           if (!files.length)
             return;
           this.createImage(files[0]);
         },
+        onFileChange(e) {
+          var file1 = e.target.files[0];
+          var reader = new FileReader();
+          var vm = this;
+
+          reader.onload = (e) => {
+            vm.file = e.target.result;
+          };
+          reader.readAsDataURL(file1);
+          console.log(this.file);
+        },  
         createImage(file) {
           var image = new Image();
           var reader = new FileReader();

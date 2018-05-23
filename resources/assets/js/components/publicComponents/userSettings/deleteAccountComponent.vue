@@ -6,7 +6,7 @@
 	        	<div class="form-group">
 	        		<div class="col-md-offset-3 col-md-9 col-xs-12">
 	        			<h3>Apagar Conta?</h3>
-	               		<button type="button" class="btn btnSave" data-toggle="modal" data-target="#accDeleteModal">Apagar</button>
+	               		<button type="button" class="btn btn-contrast" data-toggle="modal" data-target="#accDeleteModal">Apagar</button>
 	        		</div>
 	            </div> 
             </form>
@@ -23,8 +23,8 @@
 	                    </div>
 	                    <div class="modal-body text-center">
 	                        <p>Pretende realmente Apagar a sua Conta?</p>
-	                        <button type="button" class="btn btnCancel" data-dismiss="modal">Não</button>
-	                        <button type="button" class="btn btnSave" @click="deleteAccount">Sim</button>
+	                        <button type="button" class="btn btn-red" data-dismiss="modal">Não</button>
+	                        <button type="button" class="btn btn-contrast" @click="deleteAccount">Sim</button>
 	                    </div>
 	                </div>
 	            </div>

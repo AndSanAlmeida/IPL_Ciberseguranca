@@ -94,6 +94,25 @@ p {
   padding-left: 12px;
 }
 
+.btn {
+  border: 0;
+  padding: 0 10x;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  text-transform: uppercase;
+  color: white;
+  @include border-radius(0);
+  &:hover, &:focus {
+    color:white;
+  }
+}
+.btn-red {
+  background: $ipl-red;
+}
+.btn-contrast {
+  background: $ipl-contrast;
+}
 
 /*****************************************************
   NAV
@@ -112,6 +131,14 @@ p {
   padding: 25px 0;
   @include transition(all , .2s, ease-in-out);
   .navbar-nav {
+    .router-link-active {
+      color: #fff;
+      background-color: $ipl-red;
+      &:focus, &:hover {
+        color: #fff;
+        background-color: $ipl-red;
+      }
+    }
     li > a {
       @include transition(all , .1s, ease);
       &:hover {
@@ -126,7 +153,6 @@ p {
   }
   .navbar-brand {
     color: $ipl-grey;
-    font-family: 'Righteous', cursive;
     font-size: 28px;
   }
 }
@@ -185,15 +211,10 @@ p {
         color: $ipl-red;
       }
     }
+    .router-link-active {
+      font-weight: bold;
+    }
   }
-}
-
-/*****************************************************
-  ROUTER LINK ACTIVE
-*****************************************************/
-
-.router-link-active {
-  font-weight: bold;
 }
 
 /*****************************************************
@@ -341,23 +362,6 @@ p {
   @include transform(translateY(-50%));
 }
 
-/*.btn {
-  &.btn-primary {
-    border: 1px solid $ipl-red;
-    background: $ipl-red;
-    color: white;
-  }
-  font-size: 14px;
-  text-transform: uppercase;
-  font-weight: 700;
-  width: 225px;
-  line-height: 45px;
-  padding: 0 10px;
-  display: inline-block;
-  @include border-radius(25px);
-  @include transition(all , .35s, ease-in-out);
-}*/
-
 /*****************************************************
   ABOUT US
 *****************************************************/
@@ -481,7 +485,7 @@ p {
 
         a {
           width: 50px;
-          font-size: 16px;
+          font-size: 2em;
           color: $ipl-grey;
           text-decoration: none;
           text-align: center;
@@ -515,9 +519,6 @@ p {
           width: 100%;
           // display: none;
         }
-      }
-      &__term {
-        color: $ipl-red;
       }
       &__item {
         margin-bottom: 20px;
@@ -759,8 +760,59 @@ p {
 }
 
 /*****************************************************
+  EVENTS
+*****************************************************/
+
+#events {
+  margin: 0 1em;
+  margin-top: 4em;
+  #eventTable {
+    font-family: 'Montserrat', sans-serif;
+    thead {
+      background: $ipl-light-grey;
+      text-transform: uppercase;
+      th {
+        font-weight: inherit;
+      }
+    }
+    tbody {
+      td {
+        vertical-align: middle;
+        font-size: large;
+        line-height: 2.5;
+      }
+    }
+  }
+  .card-body {
+    padding: 20px;
+    h2 {
+      margin: 15px 0;
+      font-size: 3em;
+      small {
+        font-size: 16px; 
+      }
+    }
+    .imgEvent {
+      margin: 20px 0;
+      img {
+        width: 100%;
+        @include border-radius(10px);
+      }
+    }
+    .infoEvent {
+      padding: 15px;
+      p {
+        margin: 5px 0;
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+/*****************************************************
   USER SETTINGS
 *****************************************************/
+
 #userSettings {
   h3 {
     margin: 15px 0;
@@ -773,22 +825,6 @@ p {
     &:focus {
       border-color: $ipl-grey;
     }
-  }
-  .btn {
-    border: 0;
-    padding: 0 10x;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    font-size: 15px;
-    text-transform: uppercase;
-    color: white;
-    @include border-radius(0);
-  }
-  .btnSave {
-    background: $ipl-contrast;
-  }
-  .btnCancel {
-    background: $ipl-red;
   }
   .modal-header .close {
       margin-top: -22px;

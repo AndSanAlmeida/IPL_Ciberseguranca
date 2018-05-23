@@ -45,8 +45,8 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-3 col-md-9 col-xs-12">
-                        <button class="btn btnCancel" type="button" v-on:click="cancel">Cancelar</button>
-                        <button type="submit" class="btn btnSave">Guardar</button>
+                        <button class="btn btn-red" type="button" v-on:click="cancel">Cancelar</button>
+                        <button type="submit" class="btn btn-contrast">Guardar</button>
                     </div>
                 </div>
             </form>

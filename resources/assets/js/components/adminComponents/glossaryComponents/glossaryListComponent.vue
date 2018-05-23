@@ -17,7 +17,7 @@
                     <thead>
                       <tr>
                         <th>#</th>
-                        <td>Chave</td>
+                        <th>Chave</th>
                         <th>Nome</th>
                         <th>Definição</th>
                         <th>Ações</th>

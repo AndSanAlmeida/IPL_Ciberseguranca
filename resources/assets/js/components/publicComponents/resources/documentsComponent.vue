@@ -8,9 +8,18 @@
                      	<h1>{{ title }}</h1>
                  	</div>
 
-                    <h3 v-if="documents.length == 0" class="text-danger mt-2">Não existe documentos disponíveis</h3>
+                    <br>
+                    <h3><b>IPL Cibersegurança documentos:</b></h3>
 
-                 	<div v-if="documents.lenght != 0" id="linksAndDocuments">
+                    <div v-if="!hasItems && canShowContent" class="alert alert-danger" role="alert" style="margin-top: 2em;">
+                        <h4><strong>Erro: </strong>Não existe documentos disponíveis.</h4>
+                    </div>
+
+                    <div v-if="loading" class="text-center" style="margin-top: 2em;">
+                        <h3>A carregar...</h3>
+                    </div>
+
+                 	<div v-if="hasItems && canShowContent" id="linksAndDocuments">
                  		<ul class="linksAndDocumentsList">
                             <li v-for="document in documents" :key="document.id" ><a :href="document.path" :download="document.description">{{document.description}}</a></li>
                         </ul>
@@ -44,14 +53,15 @@
                     text: 'Documentos',
                     active: true
                 }],
-                documents: []
+                documents: [],
+                loading: true,
+                errorLoading: false,
             }
         },
         methods: {
             getDocuments: function () {
                 this.loading = true;
-                this.errorLoading = false;
-                
+                this.errorLoading = false;                
                 axios.get('/api/documents')
                     .then(response => {
                         this.documents = response.data.data;
@@ -60,6 +70,14 @@
                     this.loading = false;
                     this.errorLoading = true;
                 });
+            },
+        },
+        computed: {
+            hasItems: function () {
+                return this.documents.length > 0;
+            },
+            canShowContent: function () {
+                return !this.errorLoading && !this.loading;
             },
         },
         mounted() {

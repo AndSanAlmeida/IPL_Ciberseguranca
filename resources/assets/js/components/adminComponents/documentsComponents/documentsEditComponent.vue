@@ -49,8 +49,6 @@
     </div>
 </template>
 <script type="text/javascript">
-
-    import Datepicker from 'vuejs-datepicker';
     import swal from 'sweetalert';
 
     export default {

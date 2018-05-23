@@ -7,7 +7,16 @@
                     <div class="left-highlight">
                      	<h1>{{ title }}</h1>
                  	</div>
-                 	<div class="text">
+
+                    <div v-if="!hasItems && canShowContent" class="alert alert-danger" role="alert" style="margin-top: 2em;">
+                        <h4><strong>Erro: </strong>Não existe conteúdo disponível.</h4>
+                    </div>
+
+                    <div v-if="loading" class="text-center" style="margin-top: 2em;">
+                        <h3>A carregar...</h3>
+                    </div>
+
+                 	<div v-if="hasItems && canShowContent" class="text">
                  		<p class="text-justify">
                  			<span v-html="resources.description"></span>
                  		</p>
@@ -38,15 +47,31 @@
                     text: 'Recursos',
                     active: true
                 }],
-                resources: []
+                resources: [],
+                loading: true,
+                errorLoading: false,
             }
+        },
+        computed: {
+            hasItems: function () {
+                return Object.keys(this.resources).length !== 0;
+            },
+            canShowContent: function () {
+                return !this.errorLoading && !this.loading;
+            },
         },
          methods: {
             getResources: function () {
+                this.loading = true;
+                this.errorLoading = false; 
                 axios.get('/api/settings/resources')
                     .then(response=>{
                         this.resources = response.data;
-                    });
+                        this.loading = false;
+                    }).catch((error) => {
+                        this.loading = false;
+                        this.errorLoading = true;
+                });
             },
         },
         created: function () {

@@ -25,7 +25,7 @@
 		                    <span>Escolher Imagem</span>
 		                </label>
 
-		                <button type="button" @click="upload" class="btn btnSave">Guardar</button>
+		                <button type="button" @click="upload" class="btn btn-contrast">Guardar</button>
 		            </div>
 				</div>
 			</form>
