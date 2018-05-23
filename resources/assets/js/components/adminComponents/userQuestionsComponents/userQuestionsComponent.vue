@@ -71,7 +71,7 @@
                     content: "input",
                   })
                   .then((value) => {
-                    if (!value === '' || !value != null) {
+                    if (value != '') {
                         const data = {
                             id: question.id,
                             answer: value,

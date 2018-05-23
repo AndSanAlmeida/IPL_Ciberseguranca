@@ -14,6 +14,7 @@
         <div class="alert alert-danger" role="alert" v-if="errorLoading">
             <p>Erro ao pesquisar os dados tente novamente.</p>
         </div>
+        
         <!-- ============ -->
         
         <section>
@@ -28,12 +29,6 @@
                           </div>
                           <div class="card-body">
                             <form class="form-horizontal">
-                              <!--<div class="form-group row">
-                                <label class="col-sm-3 form-control-label" for="searchBy">Pesquisar</label>
-                                <div class="col-sm-9">
-                                  <input id="searchBy" type="text" placeholder="Nome, Email, Username" class="form-control form-control-success">
-                                </div>
-                              </div>-->
                               <div class="form-group row">
                                 <label for="stateOfAccount" class="col-sm-3 form-control-label">Estado da Conta</label>
                                 <div class="col-sm-6 select">
@@ -157,25 +152,14 @@
                             placeholder: "Mensagem"
                         },
                     },
-                    buttons: {
-                        no: {
-                              text: "Cancelar",
-                              className: "btn-light",
-                        },
-                        yes: {
-                              text: newStateString + "!",
-                              className: "btn-info",
-                        }
+                    button: {
+                        text: newStateString + "!"
                     },
                 }).then((result) => {
-
-                    switch(result) {
-                        case'no': break;
-                        case'yes': 
-
+                    if (result != '') {
                         const data = {
                             newState: newState,
-                            reason: result.value,
+                            reason: result,
                         };
                         axios.put('/api/users/' + user.id, data)
                             .then(response => {
@@ -186,7 +170,17 @@
                                 });
                                 this.getUsers();
                             });
-                        break;
+                    } else {
+                        swal("Preencher mensagem.", {
+                            icon: "warning",
+                            buttons: {
+                                ok: "Ok"
+                            },
+                        }).then((result) => {
+                            switch (result) {
+                                case "ok": break;
+                            }
+                        });
                     }
                 })
             }

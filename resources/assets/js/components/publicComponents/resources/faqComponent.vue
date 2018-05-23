@@ -8,9 +8,15 @@
                      	<h1>{{ title }}</h1>
                  	</div>
                  	
-                    <h3 v-if="faqs.length == 0" class="text-danger mt-2">Não existe FAQs disponíveis</h3>
+                    <div v-if="!hasItems && canShowContent" class="alert alert-danger" role="alert" style="margin-top: 2em;">
+                        <h4><strong>Erro: </strong>Não existe FAQ's disponíveis.</h4>
+                    </div>
 
-                    <div v-if="faqs.lenght != 0" id="faq">
+                    <div v-if="loading" class="text-center" style="margin-top: 2em;">
+                        <h3>A carregar...</h3>
+                    </div>
+
+                    <div v-if="hasItems && canShowContent" id="faq">
                         <div v-for="faq in faqs" class="faqContent">
                             <div class="faq-question">
                                 <input v-bind:id="faq.id" type="checkbox" class="panel">
@@ -45,9 +51,7 @@
                             <input class="faqSendBtn" type="submit" value="Enviar">
                             </form>
                         </div>
-                    </div>
-
-                    
+                    </div>                    
 
                 </div>
                 <div class="col-md-4 col-sm-12 container-nav">
@@ -82,6 +86,8 @@
                 faqTextarea: '',
                 user_id: 0,
                 faqs: [],
+                loading: true,
+                errorLoading: false,
             }
         },
         computed: {
@@ -97,6 +103,12 @@
             isFormInvalid: function () {
                 return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
             },
+            hasItems: function () {
+                return this.faqs.length > 0;
+            },
+            canShowContent: function () {
+                return !this.errorLoading && !this.loading;
+            },
         },
         created: function() {
             this.isLogged();
@@ -105,8 +117,7 @@
         methods: {
             getFaqs: function () {
                 this.loading = true;
-                this.errorLoading = false;
-                
+                this.errorLoading = false;                
                 axios.get('/api/faqs')
                     .then(response => {
                         this.faqs = response.data.data;

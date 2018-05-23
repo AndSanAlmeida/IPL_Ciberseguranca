@@ -56320,8 +56320,12 @@ var OBSERVER_CONFIG = {
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 108 */,
 /* 109 */
+=======
+/* 103 */
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56391,6 +56395,7 @@ var User = function () {
 module.exports = User;
 
 /***/ }),
+<<<<<<< HEAD
 /* 110 */,
 /* 111 */,
 /* 112 */,
@@ -56410,6 +56415,9 @@ module.exports = User;
 /* 126 */,
 /* 127 */,
 /* 128 */
+=======
+/* 104 */
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67320,6 +67328,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 245 */,
 /* 246 */,
 /* 247 */,
@@ -67336,6 +67345,22 @@ module.exports = function listToStyles (parentId, list) {
 /* 258 */,
 /* 259 */,
 /* 260 */
+=======
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(261);
@@ -68424,7 +68449,11 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_user_js__ = __webpack_require__(109);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_user_js__ = __webpack_require__(103);
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_user_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__classes_user_js__);
 //
 //
@@ -69024,19 +69053,6 @@ var render = function() {
           ],
           1
         )
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c(
-          "a",
-          { attrs: { title: "NOME" } },
-          [
-            _c("router-link", { attrs: { to: "/activities" } }, [
-              _vm._v("NOME")
-            ])
-          ],
-          1
-        )
       ])
     ])
   ])
@@ -69536,7 +69552,11 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_user_js__ = __webpack_require__(109);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_user_js__ = __webpack_require__(103);
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_user_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__classes_user_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_sweetalert__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_sweetalert___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_sweetalert__);
@@ -70260,6 +70280,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -70272,15 +70301,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 text: 'Sobre Nós',
                 active: true
             }],
-            aboutUs: []
+            aboutUs: [],
+            loading: true,
+            errorLoading: false
         };
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return Object.keys(this.aboutUs).length !== 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
     },
     methods: {
         getAboutUs: function getAboutUs() {
             var _this = this;
 
+            this.loading = true;
+            this.errorLoading = false;
             axios.get('/api/settings/aboutUs').then(function (response) {
                 _this.aboutUs = response.data;
+                _this.loading = false;
+            }).catch(function (error) {
+                _this.loading = false;
+                _this.errorLoading = true;
             });
         }
     },
@@ -70313,13 +70358,38 @@ var render = function() {
                 _c("h1", [_vm._v(_vm._s(_vm.title))])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "text" }, [
-                _c("p", { staticClass: "text-justify" }, [
-                  _c("span", {
-                    domProps: { innerHTML: _vm._s(_vm.aboutUs.description) }
-                  })
-                ])
-              ])
+              !_vm.hasItems && _vm.canShowContent
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-danger",
+                      staticStyle: { "margin-top": "2em" },
+                      attrs: { role: "alert" }
+                    },
+                    [_vm._m(0)]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.loading
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "text-center",
+                      staticStyle: { "margin-top": "2em" }
+                    },
+                    [_c("h3", [_vm._v("A carregar...")])]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.hasItems && _vm.canShowContent
+                ? _c("div", { staticClass: "text" }, [
+                    _c("p", { staticClass: "text-justify" }, [
+                      _c("span", {
+                        domProps: { innerHTML: _vm._s(_vm.aboutUs.description) }
+                      })
+                    ])
+                  ])
+                : _vm._e()
             ],
             1
           ),
@@ -70341,7 +70411,17 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h4", [
+      _c("strong", [_vm._v("Erro: ")]),
+      _vm._v("Não existe conteúdo disponível.")
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -70432,6 +70512,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -70444,15 +70533,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 text: 'Recursos',
                 active: true
             }],
-            resources: []
+            resources: [],
+            loading: true,
+            errorLoading: false
         };
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return Object.keys(this.resources).length !== 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
     },
     methods: {
         getResources: function getResources() {
             var _this = this;
 
+            this.loading = true;
+            this.errorLoading = false;
             axios.get('/api/settings/resources').then(function (response) {
                 _this.resources = response.data;
+                _this.loading = false;
+            }).catch(function (error) {
+                _this.loading = false;
+                _this.errorLoading = true;
             });
         }
     },
@@ -70485,13 +70590,40 @@ var render = function() {
                 _c("h1", [_vm._v(_vm._s(_vm.title))])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "text" }, [
-                _c("p", { staticClass: "text-justify" }, [
-                  _c("span", {
-                    domProps: { innerHTML: _vm._s(_vm.resources.description) }
-                  })
-                ])
-              ])
+              !_vm.hasItems && _vm.canShowContent
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-danger",
+                      staticStyle: { "margin-top": "2em" },
+                      attrs: { role: "alert" }
+                    },
+                    [_vm._m(0)]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.loading
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "text-center",
+                      staticStyle: { "margin-top": "2em" }
+                    },
+                    [_c("h3", [_vm._v("A carregar...")])]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.hasItems && _vm.canShowContent
+                ? _c("div", { staticClass: "text" }, [
+                    _c("p", { staticClass: "text-justify" }, [
+                      _c("span", {
+                        domProps: {
+                          innerHTML: _vm._s(_vm.resources.description)
+                        }
+                      })
+                    ])
+                  ])
+                : _vm._e()
             ],
             1
           ),
@@ -70513,7 +70645,17 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h4", [
+      _c("strong", [_vm._v("Erro: ")]),
+      _vm._v("Não existe conteúdo disponível.")
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -70604,6 +70746,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -70616,15 +70767,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 text: 'Atividades',
                 active: true
             }],
-            resources: []
+            activities: [],
+            loading: true,
+            errorLoading: false
         };
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return Object.keys(this.activities).length !== 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
     },
     methods: {
         getActivities: function getActivities() {
             var _this = this;
 
+            this.loading = true;
+            this.errorLoading = false;
             axios.get('/api/settings/activities').then(function (response) {
-                _this.resources = response.data;
+                _this.activities = response.data;
+                _this.loading = false;
+            }).catch(function (error) {
+                _this.loading = false;
+                _this.errorLoading = true;
             });
         }
     },
@@ -70657,13 +70824,40 @@ var render = function() {
                 _c("h1", [_vm._v(_vm._s(_vm.title))])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "text" }, [
-                _c("p", { staticClass: "text-justify" }, [
-                  _c("span", {
-                    domProps: { innerHTML: _vm._s(_vm.resources.description) }
-                  })
-                ])
-              ])
+              !_vm.hasItems && _vm.canShowContent
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-danger",
+                      staticStyle: { "margin-top": "2em" },
+                      attrs: { role: "alert" }
+                    },
+                    [_vm._m(0)]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.loading
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "text-center",
+                      staticStyle: { "margin-top": "2em" }
+                    },
+                    [_c("h3", [_vm._v("A carregar...")])]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.hasItems && _vm.canShowContent
+                ? _c("div", { staticClass: "text" }, [
+                    _c("p", { staticClass: "text-justify" }, [
+                      _c("span", {
+                        domProps: {
+                          innerHTML: _vm._s(_vm.activities.description)
+                        }
+                      })
+                    ])
+                  ])
+                : _vm._e()
             ],
             1
           ),
@@ -70685,7 +70879,17 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h4", [
+      _c("strong", [_vm._v("Erro: ")]),
+      _vm._v("Não existe conteúdo disponível.")
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -71061,7 +71265,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btnSave",
+                staticClass: "btn btn-contrast",
                 attrs: { type: "button" },
                 on: { click: _vm.upload }
               },
@@ -71575,7 +71779,7 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "btn btnCancel",
+                  staticClass: "btn btn-red",
                   attrs: { type: "button" },
                   on: { click: _vm.getData }
                 },
@@ -71584,7 +71788,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "button",
-                { staticClass: "btn btnSave", attrs: { type: "submit" } },
+                { staticClass: "btn btn-contrast", attrs: { type: "submit" } },
                 [_vm._v("Guardar")]
               )
             ])
@@ -72131,7 +72335,7 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "btn btnCancel",
+                  staticClass: "btn btn-red",
                   attrs: { type: "button" },
                   on: { click: _vm.cancel }
                 },
@@ -72140,7 +72344,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "button",
-                { staticClass: "btn btnSave", attrs: { type: "submit" } },
+                { staticClass: "btn btn-contrast", attrs: { type: "submit" } },
                 [_vm._v("Guardar")]
               )
             ])
@@ -72393,7 +72597,7 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "btn btnCancel",
+                      staticClass: "btn btn-red",
                       attrs: { type: "button", "data-dismiss": "modal" }
                     },
                     [_vm._v("Não")]
@@ -72402,7 +72606,7 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "btn btnSave",
+                      staticClass: "btn btn-contrast",
                       attrs: { type: "button" },
                       on: { click: _vm.deleteAccount }
                     },
@@ -72430,7 +72634,7 @@ var staticRenderFns = [
           _c(
             "button",
             {
-              staticClass: "btn btnSave",
+              staticClass: "btn btn-contrast",
               attrs: {
                 type: "button",
                 "data-toggle": "modal",
@@ -72967,31 +73171,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
-
-// Filter Glossary items
-function initGlossaryFilter() {
-
-    //On load set 'A' to 'active'
-    $(document).ready(function () {
-
-        $(".glossary__nav li:first").addClass("active");
-
-        //Get NAV Attribute
-        var nav = $(".glossary__nav li a").attr("data-nav");
-
-        // Loop through the row
-        $(".glossary__results__row").each(function () {
-            var term = $(this).attr("data-term");
-
-            if (nav == term) {
-                $(this).removeClass("inactive");
-            }
-        });
-    });
-}
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -73008,10 +73188,7 @@ function initGlossaryFilter() {
                 active: true
             }],
             glossary: [],
-            letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
-            lettersAvailable: [],
-            loading: false
-
+            lettersAvailable: []
         };
     },
     methods: {
@@ -73021,28 +73198,17 @@ function initGlossaryFilter() {
             axios.get('/api/glossary/letters').then(function (response) {
                 _this.lettersAvailable = response.data;
                 _this.getGlossary(_this.lettersAvailable[0]);
-            }).catch(function (error) {
-                _this.loading = false;
-                _this.errorLoading = true;
-            });
+            }).catch(function (error) {});
         },
         getGlossary: function getGlossary(letter) {
             var _this2 = this;
 
-            this.loading = true;
-            this.errorLoading = false;
-
             axios.get('/api/glossary/byLetter/' + letter.toLowerCase()).then(function (response) {
                 _this2.glossary = response.data.data;
-                _this2.loading = false;
-            }).catch(function (error) {
-                _this2.loading = false;
-                _this2.errorLoading = true;
-            });
+            }).catch(function (error) {});
         }
     },
     mounted: function mounted() {
-        initGlossaryFilter();
         this.getGlossaryLetters();
     }
 });
@@ -73076,68 +73242,54 @@ var render = function() {
                   _c(
                     "ul",
                     { staticClass: "list-inline text-center" },
-                    _vm._l(_vm.letters, function(letter) {
-                      return _c("div", [
-                        _vm.lettersAvailable.includes(letter)
-                          ? _c("li", { staticClass: "glossary__nav__item" }, [
-                              _c(
-                                "a",
-                                {
-                                  staticClass:
-                                    "card card__content' : 'card card__content'",
-                                  attrs: {
-                                    "data-toggle": "glossary",
-                                    href: "#"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.getGlossary(letter)
-                                    }
-                                  }
-                                },
-                                [_vm._v(_vm._s(letter))]
-                              )
-                            ])
-                          : _vm._e()
+                    _vm._l(_vm.lettersAvailable, function(letter) {
+                      return _c("li", { staticClass: "glossary__nav__item" }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "card card__content",
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                _vm.getGlossary(letter)
+                              }
+                            }
+                          },
+                          [_vm._v(_vm._s(letter))]
+                        )
                       ])
                     })
                   )
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "glossary__results" }, [
-                  _c(
-                    "div",
-                    { staticClass: "glossary__results__row inactive" },
-                    [
-                      _c(
-                        "div",
-                        { staticClass: "row" },
-                        _vm._l(_vm.glossary, function(glossaryItem) {
-                          return _c(
-                            "div",
-                            {
-                              staticClass: "glossary__results__item col-sm-12"
-                            },
-                            [
-                              _c("h2", { staticClass: "card__title" }, [
-                                _vm._v(_vm._s(glossaryItem.name))
-                              ]),
-                              _vm._v(" "),
-                              _c("p", [
-                                _c("strong", [_vm._v("[Definição] ")]),
-                                _vm._v(_vm._s(glossaryItem.definition))
-                              ]),
-                              _vm._v(" "),
-                              _c("p", [
-                                _c("strong", [_vm._v("[Fonte] ")]),
-                                _vm._v(_vm._s(glossaryItem.source))
-                              ])
-                            ]
-                          )
-                        })
-                      )
-                    ]
-                  )
+                  _c("div", { staticClass: "glossary__results__row" }, [
+                    _c(
+                      "div",
+                      { staticClass: "row" },
+                      _vm._l(_vm.glossary, function(item) {
+                        return _c(
+                          "div",
+                          { staticClass: "glossary__results__item col-sm-12" },
+                          [
+                            _c("h2", { staticClass: "card__title" }, [
+                              _vm._v(_vm._s(item.name))
+                            ]),
+                            _vm._v(" "),
+                            _c("p", [
+                              _c("strong", [_vm._v("[Definição] ")]),
+                              _vm._v(_vm._s(item.definition))
+                            ]),
+                            _vm._v(" "),
+                            _c("p", [
+                              _c("strong", [_vm._v("[Fonte] ")]),
+                              _vm._v(_vm._s(item.source))
+                            ])
+                          ]
+                        )
+                      })
+                    )
+                  ])
                 ])
               ])
             ],
@@ -73626,6 +73778,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -73641,16 +73802,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 text: 'Links Úteis',
                 active: true
             }],
-            usefulLinks: []
+            usefulLinks: [],
+            loading: true,
+            errorLoading: false
         };
     },
+
     methods: {
         getUsefulLinks: function getUsefulLinks() {
             var _this = this;
 
             this.loading = true;
             this.errorLoading = false;
-
             axios.get('/api/usefulLinks').then(function (response) {
                 _this.usefulLinks = response.data.data;
                 _this.loading = false;
@@ -73658,6 +73821,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.loading = false;
                 _this.errorLoading = true;
             });
+        }
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return this.usefulLinks.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
         }
     },
     mounted: function mounted() {
@@ -73689,13 +73860,34 @@ var render = function() {
                 _c("h1", [_vm._v(_vm._s(_vm.title))])
               ]),
               _vm._v(" "),
-              _vm.usefulLinks.length == 0
-                ? _c("h3", { staticClass: "text-danger mt-2" }, [
-                    _vm._v("Não existe links úteis disponíveis")
-                  ])
+              _c("br"),
+              _vm._v(" "),
+              _vm._m(0),
+              _vm._v(" "),
+              !_vm.hasItems && _vm.canShowContent
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-danger",
+                      staticStyle: { "margin-top": "2em" },
+                      attrs: { role: "alert" }
+                    },
+                    [_vm._m(1)]
+                  )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.usefulLinks.length != 0
+              _vm.loading
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "text-center",
+                      staticStyle: { "margin-top": "2em" }
+                    },
+                    [_c("h3", [_vm._v("A carregar...")])]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.hasItems && _vm.canShowContent
                 ? _c("div", { attrs: { id: "linksAndDocuments" } }, [
                     _c(
                       "ul",
@@ -73733,7 +73925,23 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", [_c("b", [_vm._v("IPL Cibersegurança links úteis:")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h4", [
+      _c("strong", [_vm._v("Erro: ")]),
+      _vm._v("Não existe links disponíveis.")
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -73827,6 +74035,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -73842,7 +74059,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 text: 'Documentos',
                 active: true
             }],
-            documents: []
+            documents: [],
+            loading: true,
+            errorLoading: false
         };
     },
     methods: {
@@ -73851,7 +74070,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.loading = true;
             this.errorLoading = false;
-
             axios.get('/api/documents').then(function (response) {
                 _this.documents = response.data.data;
                 _this.loading = false;
@@ -73859,6 +74077,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.loading = false;
                 _this.errorLoading = true;
             });
+        }
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return this.documents.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
         }
     },
     mounted: function mounted() {
@@ -73890,13 +74116,34 @@ var render = function() {
                 _c("h1", [_vm._v(_vm._s(_vm.title))])
               ]),
               _vm._v(" "),
-              _vm.documents.length == 0
-                ? _c("h3", { staticClass: "text-danger mt-2" }, [
-                    _vm._v("Não existe documentos disponíveis")
-                  ])
+              _c("br"),
+              _vm._v(" "),
+              _vm._m(0),
+              _vm._v(" "),
+              !_vm.hasItems && _vm.canShowContent
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-danger",
+                      staticStyle: { "margin-top": "2em" },
+                      attrs: { role: "alert" }
+                    },
+                    [_vm._m(1)]
+                  )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.documents.lenght != 0
+              _vm.loading
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "text-center",
+                      staticStyle: { "margin-top": "2em" }
+                    },
+                    [_c("h3", [_vm._v("A carregar...")])]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.hasItems && _vm.canShowContent
                 ? _c("div", { attrs: { id: "linksAndDocuments" } }, [
                     _c(
                       "ul",
@@ -73939,7 +74186,23 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", [_c("b", [_vm._v("IPL Cibersegurança documentos:")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h4", [
+      _c("strong", [_vm._v("Erro: ")]),
+      _vm._v("Não existe documentos disponíveis.")
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -74069,6 +74332,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
     data: function data() {
@@ -74087,7 +74354,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             logged: false,
             faqTextarea: '',
             user_id: 0,
-            faqs: []
+            faqs: [],
+            loading: true,
+            errorLoading: false
         };
     },
     computed: {
@@ -74102,6 +74371,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         },
         isFormInvalid: function isFormInvalid() {
             return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
+        },
+        hasItems: function hasItems() {
+            return this.faqs.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
         }
     },
     created: function created() {
@@ -74113,7 +74388,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
             this.loading = true;
             this.errorLoading = false;
-
             axios.get('/api/faqs').then(function (response) {
                 _this.faqs = response.data.data;
                 _this.loading = false;
@@ -74196,13 +74470,30 @@ var render = function() {
                 _c("h1", [_vm._v(_vm._s(_vm.title))])
               ]),
               _vm._v(" "),
-              _vm.faqs.length == 0
-                ? _c("h3", { staticClass: "text-danger mt-2" }, [
-                    _vm._v("Não existe FAQs disponíveis")
-                  ])
+              !_vm.hasItems && _vm.canShowContent
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-danger",
+                      staticStyle: { "margin-top": "2em" },
+                      attrs: { role: "alert" }
+                    },
+                    [_vm._m(0)]
+                  )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.faqs.lenght != 0
+              _vm.loading
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "text-center",
+                      staticStyle: { "margin-top": "2em" }
+                    },
+                    [_c("h3", [_vm._v("A carregar...")])]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.hasItems && _vm.canShowContent
                 ? _c(
                     "div",
                     { attrs: { id: "faq" } },
@@ -74238,7 +74529,7 @@ var render = function() {
               _vm._v(" "),
               !_vm.logged
                 ? _c("div", { staticClass: "row", attrs: { id: "faqAuth" } }, [
-                    _vm._m(0)
+                    _vm._m(1)
                   ])
                 : _vm._e(),
               _vm._v(" "),
@@ -74314,6 +74605,15 @@ var render = function() {
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h4", [
+      _c("strong", [_vm._v("Erro: ")]),
+      _vm._v("Não existe FAQ's disponíveis.")
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -74435,6 +74735,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -74449,9 +74759,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, {
                 text: 'Newsletters',
                 active: true
-            }]
+            }],
+            loading: true,
+            errorLoading: false
         };
     }
+    /*computed: {
+        hasItems: function () {
+            return this.newsletter.length > 0;
+        },
+        canShowContent: function () {
+            return !this.errorLoading && !this.loading;
+        },
+    },*/
 });
 
 /***/ }),
@@ -74482,7 +74802,20 @@ var render = function() {
               _vm._v(" "),
               _vm._m(0),
               _vm._v(" "),
-              _vm._m(1)
+              _vm._m(1),
+              _vm._v(" "),
+              _vm.loading
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "text-center",
+                      staticStyle: { "margin-top": "2em" }
+                    },
+                    [_c("h3", [_vm._v("A carregar...")])]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._m(2)
             ],
             1
           ),
@@ -74510,6 +74843,25 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("h3", [_c("b", [_vm._v("IPL Cibersegurança newsletter:")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "alert alert-danger",
+        staticStyle: { "margin-top": "2em" },
+        attrs: { role: "alert" }
+      },
+      [
+        _c("h4", [
+          _c("strong", [_vm._v("Erro: ")]),
+          _vm._v("Não existe newsletters disponíveis.")
+        ])
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -74635,6 +74987,56 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -74649,11 +75051,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, {
                 text: 'Eventos',
                 active: true
-            }]
+            }],
+            eventos: [],
+            fields: [{ key: 'date', label: 'Data' }, { key: 'localization', label: 'Localização' }, { key: 'name', label: 'Título' }, { key: 'actions', label: '' }],
+            currentPage: 1,
+            perPage: 5,
+            totalRows: '',
+            logged: false,
+            loading: true,
+            errorLoading: false
         };
     },
-    methods: {},
-    mounted: function mounted() {}
+    computed: {
+        hasItems: function hasItems() {
+            return this.eventos.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
+    },
+    methods: {
+        getEvents: function getEvents() {
+            var _this = this;
+
+            this.loading = true;
+            this.errorLoading = false;
+            axios.get('/api/events').then(function (response) {
+                _this.eventos = response.data.data;
+                _this.loading = false;
+            }).catch(function (error) {
+                _this.loading = false;
+                _this.errorLoading = true;
+            });
+        },
+        isLogged: function isLogged() {
+            if (localStorage.getItem('access_token') != null) {
+                this.logged = true;
+            }
+        }
+    },
+    created: function created() {
+        this.getEvents();
+        this.totalRows = this.eventos.length;
+        this.isLogged();
+    }
 });
 
 /***/ }),
@@ -74678,7 +75119,190 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "left-highlight" }, [
                 _c("h1", [_vm._v(_vm._s(_vm.title))])
-              ])
+              ]),
+              _vm._v(" "),
+              !_vm.hasItems && _vm.canShowContent
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-danger",
+                      staticStyle: { "margin-top": "2em" },
+                      attrs: { role: "alert" }
+                    },
+                    [_vm._m(0)]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.loading
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "text-center",
+                      staticStyle: { "margin-top": "2em" }
+                    },
+                    [_c("h3", [_vm._v("A carregar...")])]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.hasItems && _vm.canShowContent
+                ? _c(
+                    "div",
+                    { attrs: { id: "events" } },
+                    [
+                      _c("b-table", {
+                        attrs: {
+                          id: "eventTable",
+                          responsive: "",
+                          stacked: "md",
+                          items: _vm.eventos,
+                          fields: _vm.fields,
+                          "current-page": _vm.currentPage,
+                          "per-page": _vm.perPage
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "actions",
+                            fn: function(row) {
+                              return [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-red",
+                                    attrs: { type: "button" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.stopPropagation()
+                                        return row.toggleDetails($event)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                  " +
+                                        _vm._s(
+                                          row.detailsShowing
+                                            ? "Esconder"
+                                            : "Mostrar"
+                                        ) +
+                                        " Detalhes\n                                "
+                                    )
+                                  ]
+                                )
+                              ]
+                            }
+                          },
+                          {
+                            key: "row-details",
+                            fn: function(row) {
+                              return [
+                                _c("b-card", [
+                                  _c("h2", [
+                                    _vm._v(_vm._s(row.item.name) + " "),
+                                    _c("small", [
+                                      _vm._v(
+                                        "Por: " + _vm._s(row.item.organizer)
+                                      )
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm.eventos.image_path
+                                    ? _c(
+                                        "div",
+                                        { staticClass: "imgEvent text-center" },
+                                        [
+                                          _c("img", {
+                                            staticClass: "img-responsive",
+                                            attrs: {
+                                              src: "" + row.item.image_path,
+                                              alt: "Imagem do Evento"
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "infoEvent" }, [
+                                    _c("p", [
+                                      _c("strong", [_vm._v("Localização: ")]),
+                                      _vm._v(_vm._s(row.item.localization))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("p", { staticClass: "text-justify" }, [
+                                      _c("strong", [_vm._v("Descrição: ")]),
+                                      _vm._v(_vm._s(row.item.description))
+                                    ]),
+                                    _vm._v(" "),
+                                    _vm.eventos.path
+                                      ? _c("p", [
+                                          _c("strong", [_vm._v("Documento: ")]),
+                                          _c(
+                                            "a",
+                                            {
+                                              attrs: {
+                                                href: "#",
+                                                target: "_blank"
+                                              }
+                                            },
+                                            [_vm._v("Ficheiro")]
+                                          )
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "text-center" }, [
+                                      _vm.logged
+                                        ? _c(
+                                            "button",
+                                            {
+                                              staticClass: "btn btn-contrast",
+                                              attrs: { type: "button" }
+                                            },
+                                            [_vm._v("Inscrever")]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      !_vm.logged
+                                        ? _c(
+                                            "a",
+                                            {
+                                              staticClass: "btn btn-red",
+                                              attrs: { href: "/auth/#/" }
+                                            },
+                                            [_vm._v("Inscrever")]
+                                          )
+                                        : _vm._e()
+                                    ])
+                                  ])
+                                ])
+                              ]
+                            }
+                          }
+                        ])
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "text-center" },
+                        [
+                          _c("b-pagination", {
+                            attrs: {
+                              "total-rows": _vm.totalRows,
+                              "per-page": _vm.perPage
+                            },
+                            model: {
+                              value: _vm.currentPage,
+                              callback: function($$v) {
+                                _vm.currentPage = $$v
+                              },
+                              expression: "currentPage"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e()
             ],
             1
           ),
@@ -74700,7 +75324,17 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h4", [
+      _c("strong", [_vm._v("Erro: ")]),
+      _vm._v("Não existe Eventos disponíveis.")
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

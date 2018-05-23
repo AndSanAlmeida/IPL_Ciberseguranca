@@ -18,7 +18,7 @@
           </b-form-group>
         </div>
       
-        <b-table responsive striped hover 
+        <b-table responsive striped hover stacked="md"
                   :items="users" 
                   :fields="fields"
                   :current-page="currentPage"
@@ -38,7 +38,10 @@
 
         </b-table>
 
-        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" align="center"/>      
+        <b-pagination :total-rows="totalRows" 
+                      :per-page="perPage" 
+                      v-model="currentPage" 
+                      align="center"/>      
 
         <!--<div class="table-responsive">                       
           <table class="table table-striped table-hover">

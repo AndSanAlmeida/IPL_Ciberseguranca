@@ -23,8 +23,12 @@
                 <p><b>Descrição: </b>{{description}}</p>
 
                 <p><b>Estado: </b>{{status == 0 ? 'Por Realizar' : status == 0 ? 'A Decorrer' : 'Concluido'}}</p>
-     
+                 
+                <p><b>Lotação: </b>{{max_inscritos}}</p>
+    
                 <p><b>Total de interessados: </b>{{total_interested}}</p>
+
+                <p v-if="document"><b>Documento: </b><a :href="document" :download ="name" role="button">Ver Documento</a></p>
  
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label form-control-label"></label>
@@ -47,7 +51,9 @@
                 description: '',
                 date: new Date,
                 shortDate: new Date,
+                max_inscritos: 0,
                 status: '',
+                document: '',
                 image:'',
                 total_interested: '',
                 attemptSubmit: false,
@@ -64,8 +70,10 @@
                     this.localization = response.data.localization;
                     this.description = response.data.description;
                     this.date = new Date(response.data.date);
+                    this.max_inscritos = response.data.max_inscritos;
                     this.status = response.data.status;
-                    this.image = '/'+response.data.image_path;
+                    this.document = response.data.path;
+                    this.image = '/' + response.data.image_path;
                     this.total_interested = response.data.total_interested;
                     this.formatDate();
                 })

@@ -45,7 +45,8 @@ class EventControllerAPI extends Controller
             'localization' => 'required|string|max:100',
             'description' => 'required|string',
             'date' => 'required',
-            'image' => 'required',
+            'max_inscritos' => 'required|integer',
+            'file' => 'string',
         ]);
 
         if ($validator->fails()) {
@@ -56,13 +57,25 @@ class EventControllerAPI extends Controller
             $event->localization = $request->get('localization');
             $event->description = $request->get('description');
             $event->date = $request->get('date');
+            $event->max_inscritos = $request->get('max_inscritos');
             $event->organizer = $request->get('organizer');
-            // image
-            $fileName = $event->name.'.png';
-            File::makeDirectory(public_path('img/eventos'), $mode = 0777, true, true);
-            $path = public_path('img/eventos');
-            Image::make($request->get('image'))->save($path . '/' . $fileName);
-            $event->image_path = 'img/eventos/' . $fileName;
+
+            if (is_null($request->get('file'))) {
+                $event->path = null;
+            } else {
+                $event->path = $request->get('file');
+            }
+
+            if (is_null($request->get('image'))) {
+                $event->image_path = null;
+            } else {
+                // image
+                $fileName = $event->name.'.png';
+                File::makeDirectory(public_path('img/eventos'), $mode = 0777, true, true);
+                $path = public_path('img/eventos');
+                Image::make($request->get('image'))->save($path . '/' . $fileName);
+                $event->image_path = 'img/eventos/' . $fileName;
+            }           
 
             $event->id_user = Auth::id();
             // 0 - por realizar
@@ -111,9 +124,10 @@ class EventControllerAPI extends Controller
             'organizer' => 'required|string|max:100',
             'localization' => 'required|string|max:100',
             'description' => 'required|string',
+            'max_inscritos' => 'required|integer',
             'date' => 'required',
             'status' => 'required',
-
+            'file' => 'string',
         ]);
 
         if ($request->wantsJson() && !$validator->fails()) {
@@ -126,7 +140,7 @@ class EventControllerAPI extends Controller
                 File::makeDirectory(public_path('img/eventos'), $mode = 0777, true, true);
                 $path = public_path('img/eventos');
                 File::delete($path . '/' . $fileName);
-            }
+            } 
 
             // caso a imagem nao seja alterada mas o nome sim
             if (empty($request->get('image')) && $event->name != $request->get('name')) {
@@ -144,7 +158,8 @@ class EventControllerAPI extends Controller
             $event->date = $request->get('date');
             $event->status = $request->get('status');
             $event->organizer = $request->get('organizer');
-            
+            $event->max_inscritos = $request->get('max_inscritos');
+            $event->path = $request->get('path');
             if (!empty($request->get('image'))) {
                 // image
                 $fileName = $event->name.'.png';
@@ -152,7 +167,10 @@ class EventControllerAPI extends Controller
                 $path = public_path('img/eventos');
                 Image::make($request->get('image'))->save($path . '/' . $fileName);
                 $event->image_path = 'img/eventos/' . $fileName;
+            } else {
+                $event->image_path = null;
             }
+            
             $event->save();
 
             return response()->json(['msg' => 'Evento editado.']);

@@ -7,27 +7,25 @@
                     <div class="left-highlight">
                         <h1>{{ title }}</h1>
                     </div>
-
+                    
                     <div id="glossary">
                         <nav class="glossary__nav">
                             <ul class="list-inline text-center">
-                                <div  v-for="letter in letters" >
-                                    <li class="glossary__nav__item"  v-if="lettersAvailable.includes(letter)">
-                                        <a class="card card__content' : 'card card__content'" v-on:click="getGlossary(letter)" data-toggle="glossary" href="#">{{letter}}</a>
-                                    </li>
-                                </div>
+                                <li class="glossary__nav__item" v-for="letter in lettersAvailable">
+                                    <a href="#" class="card card__content" v-on:click="getGlossary(letter)">{{letter}}</a>
+                                </li>
                             </ul>
                         </nav>
                         <!--END Glossary Nav-->
 
                         <div class="glossary__results">
             
-                            <div class="glossary__results__row inactive">
+                            <div class="glossary__results__row">
                                 <div class="row">
-                                    <div class="glossary__results__item col-sm-12" v-for="glossaryItem in glossary">
-                                        <h2 class="card__title">{{glossaryItem.name}}</h2>
-                                        <p><strong>[Definição] </strong>{{glossaryItem.definition}}</p>
-                                        <p><strong>[Fonte] </strong>{{glossaryItem.source}}</p>
+                                    <div class="glossary__results__item col-sm-12" v-for="item in glossary">
+                                        <h2 class="card__title">{{item.name}}</h2>
+                                        <p><strong>[Definição] </strong>{{item.definition}}</p>
+                                        <p><strong>[Fonte] </strong>{{item.source}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -55,31 +53,6 @@
 
 <script type="text/javascript">
 
-    // Filter Glossary items
-    function initGlossaryFilter(){
-
-        //On load set 'A' to 'active'
-       $(document).ready(function(){
-
-            $(".glossary__nav li:first").addClass("active");
-            
-            //Get NAV Attribute
-            var nav = $(".glossary__nav li a").attr("data-nav");
-
-            // Loop through the row
-            $(".glossary__results__row").each(function(){
-                var term = $(this).attr("data-term");
-
-                if(nav == term){
-                    $(this).removeClass("inactive");
-                }
-            });
-        });
-        
-       
-    }
-
-
     export default {
         data: function(){
             return {
@@ -95,40 +68,29 @@
                     active: true
                 }],
                 glossary: [],
-                letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
-                          'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
-                lettersAvailable : [],
-                loading: false,
-                
+                lettersAvailable : [], 
             }
         },
         methods: {
             getGlossaryLetters: function() {
-                axios.get('/api/glossary/letters')
+                axios.get('/api/glossary/letters')                    
                     .then(response => {
                         this.lettersAvailable = response.data;
                         this.getGlossary(this.lettersAvailable[0]);
                     }).catch((error) => {
-                    this.loading = false;
-                    this.errorLoading = true;
+                        
                 });
             },
-            getGlossary: function (letter) {
-                this.loading = true;
-                this.errorLoading = false;
-                
-                axios.get('/api/glossary/byLetter/'+letter.toLowerCase())
+            getGlossary: function (letter) {                 
+                axios.get('/api/glossary/byLetter/' + letter.toLowerCase())
                     .then(response => {
                         this.glossary = response.data.data;
-                        this.loading = false;
-                    }).catch((error) => {
-                    this.loading = false;
-                    this.errorLoading = true;
+                }).catch((error) => {
+
                 });
             },
         },
-        mounted: function () {
-            initGlossaryFilter();
+        mounted: function () {      
             this.getGlossaryLetters();
         }
     }

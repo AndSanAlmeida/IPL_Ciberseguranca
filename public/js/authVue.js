@@ -60,7 +60,11 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 531);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = 447);
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -24677,16 +24681,28 @@ module.exports = Vue;
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+=======
+/***/ 447:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(448);
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 
 
 var bind = __webpack_require__(32);
 var isBuffer = __webpack_require__(59);
 
+<<<<<<< HEAD
 /*global toString:true*/
+=======
+/***/ 448:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 
 // utils is a library of generic helper functions non-specific to axios
 
@@ -24738,6 +24754,7 @@ function isArrayBufferView(val) {
   return result;
 }
 
+<<<<<<< HEAD
 /**
  * Determine if a value is a String
  *
@@ -24757,6 +24774,13 @@ function isString(val) {
 function isNumber(val) {
   return typeof val === 'number';
 }
+=======
+var login = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('login', __webpack_require__(449));
+var register = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('register', __webpack_require__(452));
+
+/*ROUTES*/
+var routes = [{ path: '/', redirect: '/login' }, { path: '/login', component: login }, { path: '/register', component: register }, { path: '/password/reset', component: __webpack_require__(455) }, { path: '/password/reset/:token', component: __webpack_require__(458), props: true }];
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 
 /**
  * Determine if a value is undefined
@@ -24788,6 +24812,7 @@ function isDate(val) {
   return toString.call(val) === '[object Date]';
 }
 
+<<<<<<< HEAD
 /**
  * Determine if a value is a File
  *
@@ -24807,6 +24832,34 @@ function isFile(val) {
 function isBlob(val) {
   return toString.call(val) === '[object Blob]';
 }
+=======
+/***/ 449:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(450)
+/* template */
+var __vue_template__ = __webpack_require__(451)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\loginComponents\\loginComponent.vue"
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 
 /**
  * Determine if a value is a Function
@@ -24848,6 +24901,7 @@ function trim(str) {
   return str.replace(/^\s*/, '').replace(/\s*$/, '');
 }
 
+<<<<<<< HEAD
 /**
  * Determine if we're running in a standard browser environment
  *
@@ -24870,6 +24924,10 @@ function isStandardBrowserEnv() {
     typeof document !== 'undefined'
   );
 }
+=======
+/***/ 450:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 
 /**
  * Iterate over an Array or an Object invoking a function for each item.
@@ -25262,7 +25320,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 535:
+=======
+/***/ 451:
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -25471,15 +25533,25 @@ if (false) {
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 536:
+=======
+/***/ 452:
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(537)
 /* template */
 var __vue_template__ = __webpack_require__(538)
+=======
+var __vue_script__ = __webpack_require__(453)
+/* template */
+var __vue_template__ = __webpack_require__(454)
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -25519,7 +25591,11 @@ module.exports = Component.exports
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 537:
+=======
+/***/ 453:
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25695,7 +25771,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 538:
+=======
+/***/ 454:
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -26099,15 +26179,25 @@ if (false) {
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 539:
+=======
+/***/ 455:
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
+<<<<<<< HEAD
 var __vue_script__ = __webpack_require__(540)
 /* template */
 var __vue_template__ = __webpack_require__(541)
+=======
+var __vue_script__ = __webpack_require__(456)
+/* template */
+var __vue_template__ = __webpack_require__(457)
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -26147,8 +26237,13 @@ module.exports = Component.exports
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 54:
 /***/ (function(module, exports, __webpack_require__) {
+=======
+/***/ 456:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
  * @license
@@ -26182,10 +26277,15 @@ module.exports = Component.exports
   /** Used as the internal argument placeholder. */
   var PLACEHOLDER = '__lodash_placeholder__';
 
+<<<<<<< HEAD
   /** Used to compose bitmasks for cloning. */
   var CLONE_DEEP_FLAG = 1,
       CLONE_FLAT_FLAG = 2,
       CLONE_SYMBOLS_FLAG = 4;
+=======
+/***/ 457:
+/***/ (function(module, exports, __webpack_require__) {
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 
   /** Used to compose bitmasks for value comparisons. */
   var COMPARE_PARTIAL_FLAG = 1,
@@ -26203,6 +26303,7 @@ module.exports = Component.exports
       WRAP_REARG_FLAG = 256,
       WRAP_FLIP_FLAG = 512;
 
+<<<<<<< HEAD
   /** Used as default options for `_.truncate`. */
   var DEFAULT_TRUNC_LENGTH = 30,
       DEFAULT_TRUNC_OMISSION = '...';
@@ -26210,6 +26311,34 @@ module.exports = Component.exports
   /** Used to detect hot functions by number of calls within a span of milliseconds. */
   var HOT_COUNT = 800,
       HOT_SPAN = 16;
+=======
+/***/ 458:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(459)
+/* template */
+var __vue_template__ = __webpack_require__(460)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\loginComponents\\newPasswordComponent.vue"
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 
   /** Used to indicate the type of lazy iteratees. */
   var LAZY_FILTER_FLAG = 1,
@@ -26240,6 +26369,7 @@ module.exports = Component.exports
     ['rearg', WRAP_REARG_FLAG]
   ];
 
+<<<<<<< HEAD
   /** `Object#toString` result references. */
   var argsTag = '[object Arguments]',
       arrayTag = '[object Array]',
@@ -26263,6 +26393,10 @@ module.exports = Component.exports
       undefinedTag = '[object Undefined]',
       weakMapTag = '[object WeakMap]',
       weakSetTag = '[object WeakSet]';
+=======
+/***/ 459:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 
   var arrayBufferTag = '[object ArrayBuffer]',
       dataViewTag = '[object DataView]',
@@ -26304,10 +26438,15 @@ module.exports = Component.exports
   var reRegExpChar = /[\\^$.*+?()[\]{}|]/g,
       reHasRegExpChar = RegExp(reRegExpChar.source);
 
+<<<<<<< HEAD
   /** Used to match leading and trailing whitespace. */
   var reTrim = /^\s+|\s+$/g,
       reTrimStart = /^\s+/,
       reTrimEnd = /\s+$/;
+=======
+/***/ 460:
+/***/ (function(module, exports, __webpack_require__) {
+>>>>>>> 30ff15cdb23f301a899a3034f20a92ee6746fdb2
 
   /** Used to match wrap detail comments. */
   var reWrapComment = /\{(?:\n\/\* \[wrapped with .+\] \*\/)?\n?/,

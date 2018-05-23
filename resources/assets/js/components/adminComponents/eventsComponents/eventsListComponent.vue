@@ -20,6 +20,7 @@
                         <th>Nome</th>
                         <th>Orgazinador</th>
                         <th>Data</th>
+                        <th>Lotação</th>
                         <th>Estado</th>
                         <th>Ações</th>
                       </tr>
@@ -30,10 +31,11 @@
                         <td>{{evento.name}}</td>
                         <td>{{evento.organizer}}</td>
                         <td>{{evento.date}}</td>
+                        <td>{{evento.max_inscritos}}</td>
                         <td>{{evento.status == 0 ? 'Por Realizar' : evento.status == 0 ? 'A Decorrer' : 'Concluido'}}</td>
                         <td>
-                            <router-link :to="{ name: 'eventsDetails', params: {id: evento.id } }" class="btn btn-primary">Ver detalhes</router-link>
-                            <router-link :to="{ name: 'eventsEdit', params: {id: evento.id } }" class="btn btn-warning">Editar</router-link>
+                            <router-link role="button" :to="{ name: 'eventsDetails', params: {id: evento.id } }" class="btn btn-primary">Ver detalhes</router-link>
+                            <router-link role="button" :to="{ name: 'eventsEdit', params: {id: evento.id } }" class="btn btn-warning">Editar</router-link>
                             <button type="button" class="btn btn-danger" v-on:click="deleteEvento(evento)">Eliminar</button>
                         </td>
                       </tr>

@@ -12,7 +12,7 @@ class Glossary extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'definition', 'source'
+        'name', 'definition', 'source', 'key'
     ];
 
     /**

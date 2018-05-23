@@ -7,8 +7,18 @@
                     <div class="left-highlight">
                      	<h1>{{ title }}</h1>
                  	</div>
+
                     <br>
                     <h3><b>IPL Cibersegurança newsletter:</b></h3>
+
+                    <div class="alert alert-danger" role="alert" style="margin-top: 2em;">
+                        <h4><strong>Erro: </strong>Não existe newsletters disponíveis.</h4>
+                    </div>
+
+                    <div v-if="loading" class="text-center" style="margin-top: 2em;">
+                        <h3>A carregar...</h3>
+                    </div>
+
                  	<div id="linksAndDocuments">
                  		<ul class="linksAndDocumentsList">
                             <li>
@@ -53,8 +63,18 @@
                 }, {
                     text: 'Newsletters',
                     active: true
-                }]
+                }],
+                loading: true,
+                errorLoading: false,
             }
         },
+        /*computed: {
+            hasItems: function () {
+                return this.newsletter.length > 0;
+            },
+            canShowContent: function () {
+                return !this.errorLoading && !this.loading;
+            },
+        },*/
     }
 </script>

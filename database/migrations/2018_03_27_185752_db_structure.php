@@ -81,11 +81,13 @@ class DbStructure extends Migration
             $table->string('organizer');
             $table->string('description');
             $table->date('date');
-            $table->string('image_path');
+            $table->string('image_path')->nullable();
             // 0 - por realizar
             // 1 - a decorrer
             // 2 - concluido
             $table->integer('status');
+            $table->integer('max_inscritos');
+            $table->longText('path')->nullable();
             $table->integer('id_user');
             $table->integer('total_interested')->default(0);
             $table->timestamps();
@@ -95,7 +97,6 @@ class DbStructure extends Migration
             $table->increments('id');
             $table->integer('id_user');
             $table->integer('id_event');
-            $table->integer('status');
         });
 
         Schema::create('glossary', function(Blueprint $table){

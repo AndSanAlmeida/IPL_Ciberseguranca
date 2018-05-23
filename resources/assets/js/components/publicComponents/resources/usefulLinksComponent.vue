@@ -8,9 +8,18 @@
                      	<h1>{{ title }}</h1>
                  	</div>
 
-                    <h3 v-if="usefulLinks.length == 0" class="text-danger mt-2">Não existe links úteis disponíveis</h3>
+                    <br>
+                    <h3><b>IPL Cibersegurança links úteis:</b></h3>
 
-                 	<div v-if="usefulLinks.length != 0" id="linksAndDocuments">
+                    <div v-if="!hasItems && canShowContent" class="alert alert-danger" role="alert" style="margin-top: 2em;">
+                        <h4><strong>Erro: </strong>Não existe links disponíveis.</h4>
+                    </div>
+
+                    <div v-if="loading" class="text-center" style="margin-top: 2em;">
+                        <h3>A carregar...</h3>
+                    </div>
+
+                 	<div v-if="hasItems && canShowContent" id="linksAndDocuments">
                         <ul class="linksAndDocumentsList">
                             <li v-for="link in usefulLinks" :key="link.id" ><a :href="link.link" target="_blank">{{link.description}}</a></li>
                         </ul>
@@ -45,13 +54,15 @@
                     active: true
                 }],
                 usefulLinks: [],
+                loading: true,
+                errorLoading: false,
             }
         },
+
         methods: {
             getUsefulLinks: function () {
                 this.loading = true;
-                this.errorLoading = false;
-                
+                this.errorLoading = false;                
                 axios.get('/api/usefulLinks')
                     .then(response => {
                         this.usefulLinks = response.data.data;
@@ -60,6 +71,14 @@
                     this.loading = false;
                     this.errorLoading = true;
                 });
+            },
+        },
+        computed: {
+            hasItems: function () {
+                return this.usefulLinks.length > 0;
+            },
+            canShowContent: function () {
+                return !this.errorLoading && !this.loading;
             },
         },
         mounted() {
