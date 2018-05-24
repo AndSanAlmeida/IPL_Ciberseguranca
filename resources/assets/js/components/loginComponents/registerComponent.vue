@@ -9,7 +9,7 @@
                 <p>Utilizador criado, verifique o seu email para ativar a conta.</p>
             </div>
             
-            <div class="alert alert-success" role="alert" v-cloak v-show="serverErrorCode != 0">
+            <div class="alert alert-danger" role="alert" v-cloak v-show="serverErrorCode != 0">
                 <p>{{serverErrorMessage}}</p>
             </div>
 

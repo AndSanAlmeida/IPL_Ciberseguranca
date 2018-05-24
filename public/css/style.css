@@ -156,6 +156,7 @@ a {
 *****************************************************/
 
 .section-padding {
+  min-height: calc(100vh - 353px);
   padding: 80px 0px;
 }
 
@@ -261,6 +262,7 @@ p {
 
 .navbar-default .navbar-brand {
   color: #777;
+  font-family: righteous, cursive;
   font-size: 28px;
 }
 
@@ -851,6 +853,7 @@ p {
 
 #newsletter {
   border-top: outset;
+  min-height: 100%;
 }
 
 #newsletter .newsletterContentNotLogged .newsletter-input {
@@ -1047,6 +1050,7 @@ p {
 
 #contact {
   background-color: #EC0044;
+  min-height: 100%;
 }
 
 #contact .footer-sec p {

@@ -238,4 +238,18 @@ class EventControllerAPI extends Controller
             return response()->json(['message' => 'Request inválido.'], 400);
         }
     }
+
+    public function subscribe(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer',
+            'event_id' => 'required|integer',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['msg' => $validator->errors()]);
+        } else {
+
+        }
+    }
 }

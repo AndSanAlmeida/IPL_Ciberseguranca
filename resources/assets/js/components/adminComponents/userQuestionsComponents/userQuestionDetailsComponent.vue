@@ -1,6 +1,7 @@
 <template>
     <div class="col-md-8 offset-md-2">
         <span class="anchor" id="formUserEdit"></span>
+        
 
         <div class="card card-outline-secondary mt-2">
             <div class="card-header">
@@ -12,10 +13,10 @@
 
                 <p v-if="question.answer"><b>Resposta: </b>{{question.answer}}</p>
  				<hr>
- 				<p><b>Utilizador que realizou a questou:</b></p>
+ 				<p><b>Utilizador que realizou a questão:</b></p>
  				<p><b>Nome: </b>{{this.user.name}}</p>
  				<p><b>Email: </b>{{this.user.email}}</p>
-                <a class="btn btn-primary" :href="`mailto:${this.user.email}`"">Enviar Email</a>
+                <a class="btn btn-primary" :href="`mailto:${this.user.email}`">Enviar Email</a>
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label form-control-label"></label>
                     <div class="col-lg-9">

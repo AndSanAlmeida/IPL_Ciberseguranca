@@ -55,9 +55,9 @@ module.exports={
     editDocument: function(document) {
       this.$emit('editDocument', document);
     },
-    createDocument: function() {
+    /*createDocument: function() {
       this.$emit('createDocument');
-    }
+    }*/
   }
 }
 </script>

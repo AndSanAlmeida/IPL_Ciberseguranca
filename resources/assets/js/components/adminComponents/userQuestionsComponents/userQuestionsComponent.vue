@@ -1,12 +1,34 @@
 <template>
 	<div>
 		<header class="page-header">
-		  <div class="container-fluid">
-		    <h2 class="no-margin-bottom">Questões dos Utilizadores</h2>
-		  </div>
-		</header>
+          <div class="container-fluid">
+            <h2 class="no-margin-bottom">{{title}}</h2>
+          </div>
+        </header>
+        
+        <!-- ERRORS -->
+        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent">
+            <h2 class="alert-heading">Opss!</h2>
+            <p>Não foram encontrados {{title}}.</p>
+        </div>
+
+        <div class="alert alert-danger" role="alert" v-if="errorLoading">
+            <p>Erro ao pesquisar os dados tente novamente.</p>
+        </div>
+
+        <!-- LOADING -->
+        <div class="col-md-12">
+            <h1 class="m-5 text-center" v-if="loading">A carregar...</h1>
+        </div>
+        
+        <!-- ============ -->
+
+        <div class="text-center">
+            <router-link v-if="hasQuestions" to="/userQuestions/all" class="mt-5 btn btn-primary btn-lg">Ver histórico de questões</router-link>
+        </div>
 
         <userNotAnsweredQuestionsListComponent 
+            v-show="hasItems && canShowContent"
             v-if="showList"
             :notAnswered="notAnswered" 
             @seeMoreDetails="seeMoreDetails"
@@ -31,15 +53,26 @@
     export default {
         data: function () {
             return {
+                title: 'Questões dos Utilizadores',
                 question: [],
                 notAnswered: [],
+                allQuestions: [],
                 showList: true,
                 showDetails: false,
-                showSuccess: false,
-                successMessage: '',
                 loading: true,
                 errorLoading: false,
             }
+        },
+        computed: {
+            hasItems: function () {
+                return this.notAnswered.length > 0;
+            },
+            hasQuestions: function () {
+                return this.allQuestions.length > 0;
+            },
+            canShowContent: function () {
+                return !this.errorLoading && !this.loading;
+            },
         },
         methods: {
             cancel: function() {
@@ -52,6 +85,12 @@
                 this.question = question;
                 this.showDetails = true;
                 this.showList = false;
+            },
+            getAllQuestions: function () {                
+                axios.get('/api/questions/answered')
+                    .then(response => {
+                        this.allQuestions=  response.data.data;
+                });
             },
             getNotAnsweredQuestions: function () {
                 this.loading = true;
@@ -88,6 +127,7 @@
                                         switch (value) {
                                             case "ok":
                                                 this.getNotAnsweredQuestions();
+                                                this.getAllQuestions();
                                                 break;
                                         }
                                     });
@@ -162,6 +202,7 @@
         },
         mounted() {
             this.getNotAnsweredQuestions();
+            this.getAllQuestions();
         }
     }
 </script>

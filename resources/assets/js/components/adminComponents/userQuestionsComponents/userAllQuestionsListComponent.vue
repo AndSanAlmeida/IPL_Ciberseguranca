@@ -35,6 +35,9 @@
                   </table>
                 </div>
               </div>
+              <div class="text-right">
+                <button v-on:click="redirect()" class="btn btn-primary" >Voltar</button>
+              </div>              
             </div>
           </div>
         </div>
@@ -57,6 +60,9 @@ module.exports={
     },
     seeMoreDetails: function(question) {
       this.$emit('seeMoreDetails', question);
+    },
+    redirect: function() {
+      this.$router.push("/userQuestions");
     }
   }
 }

@@ -4,7 +4,6 @@
       <div class="row">    
         
         <div class="col-lg-12">
-          <router-link to="/userQuestions/all" class="btn btn-primary">Ver histórico de questões</router-link>
           <div class="card mt-2">
             <div class="card-header d-flex align-items-center">
               <h3 class="h4">Questões dos Utilizadores - Por Responder</h3>
@@ -18,7 +17,6 @@
                       <tr>
                         <th>#</th>
                         <th>Pergunta</th>
-                        <th>Utilizador</th>
                         <th>Ações</th>
                       </tr>
                     </thead>
@@ -26,7 +24,6 @@
                       <tr v-for="question in notAnswered" :key="question.id">
                         <td>{{question.id}}</td>
                         <td>{{question.question}}</td>
-                        <td>{{question.user_id}}</td>
                         <td>
                           <button type="button" class="btn btn-sm btn-primary" v-on:click="seeMoreDetails(question)">Ver mais detalhes</button>
                           <button type="button" class="btn btn-sm btn-success" v-on:click="answerQuestion(question)">Responder</button>

@@ -1,12 +1,32 @@
 <template>
 	<div>
 		<header class="page-header">
-		  <div class="container-fluid">
-		    <h2 class="no-margin-bottom">FAQs</h2>
-		  </div>
-		</header>
+          <div class="container-fluid">
+            <h2 class="no-margin-bottom">{{title}}</h2>
+          </div>
+        </header>
+        
+        <!-- ERRORS -->
+        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent">
+            <h2 class="alert-heading">Opss!</h2>
+            <p>Não foram encontrados {{title}}.</p>
+            <hr>
+            <p class="mb-0"><a href="#" class="alert-link" title="Criar FAQs" v-on:click="createFaq()">Criar {{title}}</a></p>
+        </div>
+
+        <div class="alert alert-danger" role="alert" v-if="errorLoading">
+            <p>Erro ao pesquisar os dados tente novamente.</p>
+        </div>
+
+        <!-- LOADING -->
+        <div class="col-md-12">
+            <h1 class="m-5 text-center" v-if="loading">A carregar...</h1>
+        </div>
+        
+        <!-- ============ -->
 
         <faqsList 
+            v-show="hasItems && canShowContent"
             :faqs="faqs" 
             v-if="showList"
             @seeMoreDetails="seeMoreDetails"
@@ -46,17 +66,24 @@
     export default {
         data: function () {
             return {
+                title: 'FAQs',
                 faq: '',
                 faqs: [],
                 showList: true,
                 showCreate: false,
                 showEdit: false,
                 showDetails: false,
-                showSuccess: false,
-                successMessage: '',
                 loading: true,
                 errorLoading: false,
             }
+        },
+        computed: {
+            hasItems: function () {
+                return this.faqs.length > 0;
+            },
+            canShowContent: function () {
+                return !this.errorLoading && !this.loading;
+            },
         },
         methods: {
             seeMoreDetails: function(faq) {

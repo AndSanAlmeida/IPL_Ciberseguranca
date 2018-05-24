@@ -40,9 +40,9 @@
                                     <div class="infoEvent">
                                         <p><strong>Localização: </strong>{{row.item.localization}}</p>
                                         <p class="text-justify"><strong>Descrição: </strong>{{row.item.description}}</p>
-                                        <p v-if="row.item.path"><strong>Documento: </strong><a href="#" target="_blank">Ficheiro</a></p>
+                                        <p v-if="row.item.path"><strong>Documento: </strong><a href="#" target="_blank">{{row.item.name}}</a></p>
                                         <div class="text-center">
-                                            <button v-if="logged" type="button" class="btn btn-contrast">Inscrever</button>
+                                            <button v-if="logged" type="button" class="btn btn-contrast" v-on:click="inscreverEvento(row.item)">Inscrever</button>
                                             <a v-if="!logged" href="/auth/#/" class="btn btn-red">Inscrever</a>
                                         </div>                                        
                                     </div>
@@ -99,6 +99,7 @@
                 logged: false,
                 loading: true,
                 errorLoading: false,
+                userId: 0,
             }
         },
         computed: {
@@ -110,7 +111,16 @@
             },
         },
         methods: {
-            getEvents: function () {
+            getUserId() {
+                axios.get('/api/user')
+                    .then((response) => {
+                        this.userId = response.data.id;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            },
+            getEvents() {
                 this.loading = true;
                 this.errorLoading = false; 
                 axios.get('/api/events')
@@ -126,6 +136,19 @@
                 if(localStorage.getItem('access_token') != null) {
                     this.logged = true;
                 }
+            },
+            inscreverEvento(evento) {
+                this.getUserId();
+                const data = {
+                    userId: this.userId,
+                    eventId: evento.id
+                }
+                axios.post('/api/events/subscribe', data) 
+                    .then(response => {
+
+                    }).catch((error) => {
+                        
+                });
             },
         },
         created() {
