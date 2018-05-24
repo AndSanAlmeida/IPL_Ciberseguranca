@@ -58,7 +58,7 @@ module.exports={
         { key: 'actions', label:'Ações'},
       ],
       currentPage: 1,
-      perPage: 300,
+      perPage: 20,
       sortBy: 'pubDate',
       sortDesc: true,
     }

@@ -39,7 +39,7 @@ Route::middleware('auth:api')->get('user/{id}', 'UserControllerAPI@getUserById')
 
 Route::get('events', 'EventControllerAPI@index'); //GET LIST OF EVENTS
 Route::get('events/{id}', 'EventControllerAPI@show'); // get event by id 
-Route::middleware('auth:api')->post('events/create', 'EventControllerAPI@create'); // create event
+Route::middleware(['auth:api','isAdmin'])->post('events/create', 'EventControllerAPI@create'); // create event
 Route::middleware('auth:api')->delete('event/{id}/delete', 'EventControllerAPI@destroy'); // delete event
 Route::middleware('auth:api')->post('events/{id}/update', 'EventControllerAPI@edit'); // edit event
 
@@ -109,7 +109,7 @@ Route::get('news', 'NewsControllerAPI@index');
  *****************/
 	
 Route::middleware('auth:api')->post('users', 'UserControllerAPI@getUsers'); //GET LIST OF USERS TO MANAGE
-Route::middleware('auth:api')->post('usersForStatus', 'UserControllerAPI@getUsersForStatus'); //GET LIST OF USERS FOR STATUS TO MANAGE
+Route::middleware(['auth:api','isAdmin'])->post('usersForStatus', 'UserControllerAPI@getUsersForStatus'); //GET LIST OF USERS FOR STATUS TO MANAGE
 Route::middleware('auth:api')->post('/user/update', 'UserControllerAPI@updateUserSettings'); //UPDATE USER INFO
 Route::middleware('auth:api')->delete('deleteOwnAccount', 'UserControllerAPI@deleteOwnAccount'); //DELETE USER
 
