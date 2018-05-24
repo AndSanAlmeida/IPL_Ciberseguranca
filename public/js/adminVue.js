@@ -75582,14 +75582,30 @@ var aboutUs = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('aboutUs', _
 var rssNews = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('rssNews', __webpack_require__(519));
 
 /*ROUTES*/
-var routes = [{ path: '/', redirect: '/home' }, { path: '/home', component: home }, { path: '/users', component: users }, { path: '/events', component: eventos }, { path: '/events/create', component: eventsCreate }, { path: '/events/edit/:id', component: eventsEdit, name: 'eventsEdit', props: { default: true } }, { path: '/events/:id', component: eventsDetails, name: 'eventsDetails', props: { default: true } }, { path: '/glossary', component: glossary }, { path: '/settings', component: settings }, { path: '/usefulLinks', component: usefulLinks }, { path: '/documents', component: documents }, { path: '/faqs', component: faqs }, { path: '/userQuestions', component: userQuestions }, { path: '/userQuestions/all', component: userAllQuestionsComponent }, { path: '/news', component: newsComponent }, { path: '/newsletters', component: newslettersComponent }, { path: '/rssNews', component: rssNews }];
+var routes = [{ path: '/', redirect: '/home' }, { path: '/home', component: home }, { path: '/users', component: users }, { path: '/events', component: eventos }, { path: '/events/create', component: eventsCreate
+	/*beforeEnter: (to, from, next) => {
+ 	axios.get('/api/user')
+     .then(response => {
+     	next();
+     })
+     .catch(error => {
+ 	    next(false);
+ 	});
+ } */
+}, { path: '/events/edit/:id', component: eventsEdit, name: 'eventsEdit', props: { default: true } }, { path: '/events/:id', component: eventsDetails, name: 'eventsDetails', props: { default: true } }, { path: '/glossary', component: glossary }, { path: '/settings', component: settings }, { path: '/usefulLinks', component: usefulLinks }, { path: '/documents', component: documents }, { path: '/faqs', component: faqs }, { path: '/userQuestions', component: userQuestions }, { path: '/userQuestions/all', component: userAllQuestionsComponent }, { path: '/news', component: newsComponent }, { path: '/newsletters', component: newslettersComponent }, { path: '/rssNews', component: rssNews }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
-				routes: routes
+	routes: routes
 });
 
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-				router: router
+	router: router,
+	data: function data() {
+		return {};
+	},
+	methods: {},
+	created: function created() {}
+
 }).$mount('#admin');
 
 /***/ }),

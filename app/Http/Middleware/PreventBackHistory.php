@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Middleware;
-use Auth;
+
 use Closure;
 
-class IsAdmin
+class PreventBackHistory
 {
     /**
      * Handle an incoming request.
@@ -15,9 +15,6 @@ class IsAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user() && Auth::user()->type == 1) 
-        { 
-            return $next($request) ;
-        }
+        return $next($request);
     }
 }

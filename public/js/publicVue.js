@@ -75172,7 +75172,7 @@ var render = function() {
                                     ])
                                   ]),
                                   _vm._v(" "),
-                                  _vm.eventos.image_path
+                                  row.item.image_path
                                     ? _c(
                                         "div",
                                         { staticClass: "imgEvent text-center" },
@@ -75199,7 +75199,7 @@ var render = function() {
                                       _vm._v(_vm._s(row.item.description))
                                     ]),
                                     _vm._v(" "),
-                                    _vm.eventos.path
+                                    row.item.path
                                       ? _c("p", [
                                           _c("strong", [_vm._v("Documento: ")]),
                                           _c(

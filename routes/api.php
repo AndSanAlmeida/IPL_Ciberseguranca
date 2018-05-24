@@ -22,11 +22,19 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['middleware' => 'prevent-back-history'],function(){
+	Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
+	Route::get('/', function() {
+		return view('vue.index');
+	});
+});
+
 Route::post('register', 'UserControllerAPI@store');
 Route::post('login', 'LoginControllerAPI@login');
-Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 Route::post('password/email', 'LoginControllerAPI@sendResetLinkEmail');
 Route::post('password/reset', 'LoginControllerAPI@resetPassword');
+
+
 
 
 /******************
