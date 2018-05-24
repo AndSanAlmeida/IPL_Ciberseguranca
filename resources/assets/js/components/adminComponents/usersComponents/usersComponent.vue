@@ -2,13 +2,13 @@
 	<div>
 		<header class="page-header">
 		  <div class="container-fluid">
-		    <h2 class="no-margin-bottom">Utilizadores</h2>
+		    <h2 class="no-margin-bottom">{{title}}</h2>
 		  </div>
 		</header>
         
         <!-- ERRORS -->
-        <div class="alert alert-warning" role="alert" v-if="!hasUsers && canShowContent">
-            <p>Não foram encontrados utilizadores.</p>
+        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent">
+            <p>Não foram encontrados {{title}}.</p>
         </div>
 
         <div class="alert alert-danger" role="alert" v-if="errorLoading">
@@ -53,7 +53,7 @@
                     </div>
                         
                     <!-- USER LIST -->
-                    <userList :users="users" :state="stateOfAccountProp" v-if="hasUsers && canShowContent"
+                    <userList :users="users" :state="stateOfAccountProp" v-if="hasItems && canShowContent"
                         @delete-click="deleteUser" @change-state-click="changeStateOfUser"></userList>
 
                 </div>
@@ -73,6 +73,7 @@
     export default {
         data: function () {
             return {
+                title: 'Utilizadores',
                 stateOfAccount: '0',
                 stateOfAccountProp: '0',
                 options: [
@@ -85,7 +86,7 @@
             }
         },
         computed: {
-            hasUsers: function () {
+            hasItems: function () {
                 return this.users.length > 0;
             },
             canShowContent: function () {

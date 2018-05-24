@@ -50,6 +50,7 @@ Route::get('events/{id}', 'EventControllerAPI@show'); // get event by id
 Route::middleware(['auth:api','isAdmin'])->post('events/create', 'EventControllerAPI@create'); // create event
 Route::middleware('auth:api')->delete('event/{id}/delete', 'EventControllerAPI@destroy'); // delete event
 Route::middleware('auth:api')->post('events/{id}/update', 'EventControllerAPI@edit'); // edit event
+Route::middleware('auth:api')->post('events/subscribe', 'EventControllerAPI@subscribe'); // subscribe to event
 
 Route::get('glossary/byLetter/{letter}', 'GlossaryControllerAPI@getGlossaryItensByLetter'); //Get the glossary by letter
 Route::get('glossary/letters', 'GlossaryControllerAPI@getLetterInGlossary'); // get all letter in glossary

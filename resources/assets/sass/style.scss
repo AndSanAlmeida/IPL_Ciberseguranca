@@ -64,6 +64,7 @@ a {
 *****************************************************/
 
 .section-padding {
+  min-height: calc(100vh - 353px);
   padding: 80px 0px;
 }
 
@@ -153,6 +154,7 @@ p {
   }
   .navbar-brand {
     color: $ipl-grey;
+    font-family: righteous, cursive;
     font-size: 28px;
   }
 }
@@ -672,6 +674,7 @@ p {
 
 #newsletter {
   border-top: outset;
+  min-height:100%;
   .newsletterContentNotLogged {
     .newsletter-input {
       width: 330px;
@@ -838,6 +841,7 @@ p {
 
 #contact {
   background-color: $ipl-red;
+  min-height: 100%;
   .footer-sec {
     p {
       color: white;

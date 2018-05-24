@@ -75969,6 +75969,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -76035,16 +76044,18 @@ var render = function() {
               [
                 _vm._m(1),
                 _vm._v(" "),
+                _vm._m(2),
+                _vm._v(" "),
                 _c("li", { staticClass: "nav-item" }, [
                   _c(
                     "a",
                     {
                       staticClass: "nav-link logout",
-                      attrs: { href: "#" },
+                      attrs: { href: "#", title: "Sair" },
                       on: { click: _vm.logout }
                     },
                     [
-                      _vm._v("Logout"),
+                      _vm._v("Logout "),
                       _c("i", { staticClass: "fa fa-sign-out" })
                     ]
                   )
@@ -76092,17 +76103,29 @@ var staticRenderFns = [
         "a",
         {
           staticClass: "nav-link",
-          attrs: {
-            id: "messages",
-            rel: "nofollow",
-            "data-target": "#",
-            href: "#",
-            "aria-haspopup": "true",
-            "aria-expanded": "false"
-          }
+          attrs: { href: "/", title: "Página Oficial" }
         },
         [
+          _c("i", {
+            staticClass: "fa fa-arrow-circle-left",
+            attrs: { "aria-hidden": "true" }
+          }),
+          _vm._v(" Página Oficial")
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "nav-item" }, [
+      _c(
+        "a",
+        { staticClass: "nav-link", attrs: { href: "#", title: "Mensagens" } },
+        [
           _c("i", { staticClass: "fa fa-envelope-o" }),
+          _vm._v(" "),
           _c("span", { staticClass: "badge bg-orange badge-corner" }, [
             _vm._v("5")
           ])
@@ -76708,6 +76731,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            title: 'Utilizadores',
             stateOfAccount: '0',
             stateOfAccountProp: '0',
             options: [{ text: 'Activa', value: '0' }, { text: 'Bloqueada', value: '1' }],
@@ -76717,7 +76741,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     computed: {
-        hasUsers: function hasUsers() {
+        hasItems: function hasItems() {
             return this.users.length > 0;
         },
         canShowContent: function canShowContent() {
@@ -77198,13 +77222,23 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
+    _c("header", { staticClass: "page-header" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("h2", { staticClass: "no-margin-bottom" }, [
+          _vm._v(_vm._s(_vm.title))
+        ])
+      ])
+    ]),
     _vm._v(" "),
-    !_vm.hasUsers && _vm.canShowContent
+    !_vm.hasItems && _vm.canShowContent
       ? _c(
           "div",
           { staticClass: "alert alert-warning", attrs: { role: "alert" } },
-          [_c("p", [_vm._v("Não foram encontrados utilizadores.")])]
+          [
+            _c("p", [
+              _vm._v("Não foram encontrados " + _vm._s(_vm.title) + ".")
+            ])
+          ]
         )
       : _vm._e(),
     _vm._v(" "),
@@ -77224,7 +77258,7 @@ var render = function() {
           [
             _c("div", { staticClass: "col-lg-6 offset-lg-3" }, [
               _c("div", { staticClass: "card" }, [
-                _vm._m(1),
+                _vm._m(0),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body" }, [
                   _c("form", { staticClass: "form-horizontal" }, [
@@ -77312,7 +77346,7 @@ var render = function() {
                 : _vm._e()
             ]),
             _vm._v(" "),
-            _vm.hasUsers && _vm.canShowContent
+            _vm.hasItems && _vm.canShowContent
               ? _c("userList", {
                   attrs: { users: _vm.users, state: _vm.stateOfAccountProp },
                   on: {
@@ -77329,16 +77363,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "page-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("h2", { staticClass: "no-margin-bottom" }, [_vm._v("Utilizadores")])
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -77427,81 +77451,107 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-				data: function data() {
-								return {
-												eventos: [],
-												showSuccess: false,
-												successMessage: '',
-												loading: true,
-												errorLoading: false
-								};
-				},
-				methods: {
-								getEvents: function getEvents() {
-												var _this = this;
+    data: function data() {
+        return {
+            title: 'Eventos',
+            eventos: [],
+            loading: true,
+            errorLoading: false
+        };
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return this.eventos.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
+    },
+    methods: {
+        getEvents: function getEvents() {
+            var _this = this;
 
-												this.loading = true;
-												this.errorLoading = false;
+            this.loading = true;
+            this.errorLoading = false;
+            axios.get('/api/events').then(function (response) {
+                _this.eventos = response.data.data;
+                _this.loading = false;
+            }).catch(function (error) {
+                _this.loading = false;
+                _this.errorLoading = true;
+            });
+        },
+        deleteEvent: function deleteEvent(evento) {
+            var _this2 = this;
 
-												axios.get('/api/events').then(function (response) {
-																_this.eventos = response.data.data;
-																_this.loading = false;
-												}).catch(function (error) {
-																_this.loading = false;
-																_this.errorLoading = true;
-												});
-								},
-								deleteEvent: function deleteEvent(evento) {
-												var _this2 = this;
+            __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Pertende realmente apagar o evento?", {
+                icon: "warning",
+                buttons: {
+                    no: {
+                        text: "Não",
+                        className: "btn-light"
+                    },
+                    yes: {
+                        text: "Sim",
+                        className: "btn-info"
+                    }
+                }
+            }).then(function (value) {
+                switch (value) {
+                    case "no":
+                        break;
 
-												__WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Pertende realmente apagar o evento?", {
-																icon: "warning",
-																buttons: {
-																				no: {
-																								text: "Não",
-																								className: "btn-light"
-																				},
-																				yes: {
-																								text: "Sim",
-																								className: "btn-info"
-																				}
-																}
-												}).then(function (value) {
-																switch (value) {
-																				case "no":
-																								break;
-
-																				case "yes":
-																								axios.delete('/api/event/' + evento.id + '/delete').then(function (response) {
-																												__WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Evento apagado com sucesso.", {
-																																icon: "success",
-																																buttons: {
-																																				ok: "Ok"
-																																}
-																												}).then(function (value) {
-																																switch (value) {
-																																				case "ok":
-																																								_this2.getEvents();
-																																								break;
-																																}
-																												});
-																								}).catch(function (error) {});
-																								break;
-																}
-												});
-								}
-				},
-				components: {
-								'eventsList': __WEBPACK_IMPORTED_MODULE_0__eventsListComponent_vue___default.a
-				},
-				mounted: function mounted() {
-								this.getEvents();
-				}
+                    case "yes":
+                        axios.delete('/api/event/' + evento.id + '/delete').then(function (response) {
+                            __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Evento apagado com sucesso.", {
+                                icon: "success",
+                                buttons: {
+                                    ok: "Ok"
+                                }
+                            }).then(function (value) {
+                                switch (value) {
+                                    case "ok":
+                                        _this2.getEvents();
+                                        break;
+                                }
+                            });
+                        }).catch(function (error) {});
+                        break;
+                }
+            });
+        }
+    },
+    components: {
+        'eventsList': __WEBPACK_IMPORTED_MODULE_0__eventsListComponent_vue___default.a
+    },
+    mounted: function mounted() {
+        this.getEvents();
+    }
 });
 
 /***/ }),
@@ -77810,28 +77860,53 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._m(0),
+      _c("header", { staticClass: "page-header" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("h2", { staticClass: "no-margin-bottom" }, [
+            _vm._v(_vm._s(_vm.title))
+          ])
+        ])
+      ]),
       _vm._v(" "),
-      _c("eventsList", {
-        attrs: { eventos: _vm.eventos },
-        on: { "delete-click": _vm.deleteEvent }
-      })
+      !_vm.hasItems && _vm.canShowContent
+        ? _c(
+            "div",
+            { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+            [
+              _c("p", [
+                _vm._v("Não foram encontrados " + _vm._s(_vm.title) + ".")
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errorLoading
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_c("p", [_vm._v("Erro ao pesquisar os dados tente novamente.")])]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _vm.loading
+          ? _c("h1", { staticClass: "m-5 text-center" }, [
+              _vm._v("A carregar...")
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _vm.hasItems && _vm.canShowContent
+        ? _c("eventsList", {
+            attrs: { eventos: _vm.eventos },
+            on: { "delete-click": _vm.deleteEvent }
+          })
+        : _vm._e()
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "page-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("h2", { staticClass: "no-margin-bottom" }, [_vm._v("Eventos")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -79862,6 +79937,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -79873,17 +79968,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            title: 'Glossário',
             item: '',
             glossary: [],
             showList: true,
             showCreate: false,
             showView: false,
             showEdit: false,
-            showSuccess: false,
-            successMessage: '',
             loading: true,
             errorLoading: false
         };
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return this.glossary.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
     },
     methods: {
         exit: function exit() {
@@ -79918,7 +80020,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.loading = true;
             this.errorLoading = false;
-
             axios.get('/api/glossary').then(function (response) {
                 _this.glossary = response.data.data;
                 _this.loading = false;
@@ -80075,8 +80176,6 @@ module.exports = Component.exports
 //
 //
 //
-//
-//
 
 module.exports = {
   props: ['glossary'],
@@ -80151,10 +80250,6 @@ var render = function() {
                                 _c("td", [_vm._v(_vm._s(glossaryItem.key))]),
                                 _vm._v(" "),
                                 _c("td", [_vm._v(_vm._s(glossaryItem.name))]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(_vm._s(glossaryItem.definition))
-                                ]),
                                 _vm._v(" "),
                                 _c("td", [
                                   _c(
@@ -80234,8 +80329,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Chave")]),
         _vm._v(" "),
         _c("th", [_vm._v("Nome")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Definição")]),
         _vm._v(" "),
         _c("th", [_vm._v("Ações")])
       ])
@@ -81354,10 +81447,72 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._m(0),
+      _c("header", { staticClass: "page-header" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("h2", { staticClass: "no-margin-bottom" }, [
+            _vm._v(_vm._s(_vm.title))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      !_vm.hasItems && _vm.canShowContent
+        ? _c(
+            "div",
+            { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+            [
+              _c("h2", { staticClass: "alert-heading" }, [_vm._v("Opss!")]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v("Não foram encontrados " + _vm._s(_vm.title) + ".")
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-0" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "alert-link",
+                    attrs: { href: "#", title: "Criar Entrada" },
+                    on: {
+                      click: function($event) {
+                        _vm.createGlossary()
+                      }
+                    }
+                  },
+                  [_vm._v("Criar " + _vm._s(_vm.title))]
+                )
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errorLoading
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_c("p", [_vm._v("Erro ao pesquisar os dados tente novamente.")])]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _vm.loading
+          ? _c("h1", { staticClass: "m-5 text-center" }, [
+              _vm._v("A carregar...")
+            ])
+          : _vm._e()
+      ]),
       _vm._v(" "),
       _vm.showList
         ? _c("glossaryList", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.hasItems && _vm.canShowContent,
+                expression: "hasItems && canShowContent"
+              }
+            ],
             attrs: { glossary: _vm.glossary },
             on: {
               createGlossary: _vm.createGlossary,
@@ -81389,18 +81544,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "page-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("h2", { staticClass: "no-margin-bottom" }, [_vm._v("Glossário")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -81796,6 +81940,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -81805,16 +81969,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            title: 'Links Úteis',
             link: '',
             usefulLinks: [],
             showList: true,
             showCreate: false,
             showEdit: false,
-            showSuccess: false,
-            successMessage: '',
             loading: true,
             errorLoading: false
         };
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return this.usefulLinks.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
     },
     methods: {
         exit: function exit() {
@@ -82927,10 +83098,72 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._m(0),
+      _c("header", { staticClass: "page-header" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("h2", { staticClass: "no-margin-bottom" }, [
+            _vm._v(_vm._s(_vm.title))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      !_vm.hasItems && _vm.canShowContent
+        ? _c(
+            "div",
+            { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+            [
+              _c("h2", { staticClass: "alert-heading" }, [_vm._v("Opss!")]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v("Não foram encontrados " + _vm._s(_vm.title) + ".")
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-0" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "alert-link",
+                    attrs: { href: "#", title: "Criar Links Úteis" },
+                    on: {
+                      click: function($event) {
+                        _vm.createLink()
+                      }
+                    }
+                  },
+                  [_vm._v("Criar " + _vm._s(_vm.title))]
+                )
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errorLoading
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_c("p", [_vm._v("Erro ao pesquisar os dados tente novamente.")])]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _vm.loading
+          ? _c("h1", { staticClass: "m-5 text-center" }, [
+              _vm._v("A carregar...")
+            ])
+          : _vm._e()
+      ]),
       _vm._v(" "),
       _vm.showList
         ? _c("usefulLinksList", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.hasItems && _vm.canShowContent,
+                expression: "hasItems && canShowContent"
+              }
+            ],
             attrs: { usefulLinks: _vm.usefulLinks },
             on: {
               createLink: _vm.createLink,
@@ -82954,18 +83187,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "page-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("h2", { staticClass: "no-margin-bottom" }, [_vm._v("Links Úteis")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -83066,6 +83288,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -83076,16 +83318,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            title: 'Documentos',
             document: '',
             documents: [],
             showList: true,
             showCreate: false,
             showEdit: false,
-            showSuccess: false,
-            successMessage: '',
             loading: true,
             errorLoading: false
         };
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return this.documents.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
     },
     methods: {
         exit: function exit() {
@@ -83110,7 +83359,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.loading = true;
             this.errorLoading = false;
-
             axios.get('/api/documents').then(function (response) {
                 _this.documents = response.data.data;
                 _this.loading = false;
@@ -83274,10 +83522,10 @@ module.exports = {
     },
     editDocument: function editDocument(document) {
       this.$emit('editDocument', document);
-    },
-    createDocument: function createDocument() {
-      this.$emit('createDocument');
     }
+    /*createDocument: function() {
+      this.$emit('createDocument');
+    }*/
   }
 };
 
@@ -84181,10 +84429,72 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._m(0),
+      _c("header", { staticClass: "page-header" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("h2", { staticClass: "no-margin-bottom" }, [
+            _vm._v(_vm._s(_vm.title))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      !_vm.hasItems && _vm.canShowContent
+        ? _c(
+            "div",
+            { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+            [
+              _c("h2", { staticClass: "alert-heading" }, [_vm._v("Opss!")]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v("Não foram encontrados " + _vm._s(_vm.title) + ".")
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-0" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "alert-link",
+                    attrs: { href: "#", title: "Criar Documentos" },
+                    on: {
+                      click: function($event) {
+                        _vm.createDocument()
+                      }
+                    }
+                  },
+                  [_vm._v("Criar " + _vm._s(_vm.title))]
+                )
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errorLoading
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_c("p", [_vm._v("Erro ao pesquisar os dados tente novamente.")])]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _vm.loading
+          ? _c("h1", { staticClass: "m-5 text-center" }, [
+              _vm._v("A carregar...")
+            ])
+          : _vm._e()
+      ]),
       _vm._v(" "),
       _vm.showList
         ? _c("documentsList", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.hasItems && _vm.canShowContent,
+                expression: "hasItems && canShowContent"
+              }
+            ],
             attrs: { documents: _vm.documents },
             on: {
               createDocument: _vm.createDocument,
@@ -84208,18 +84518,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "page-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("h2", { staticClass: "no-margin-bottom" }, [_vm._v("Documentos")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -84329,6 +84628,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -84340,17 +84659,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            title: 'FAQs',
             faq: '',
             faqs: [],
             showList: true,
             showCreate: false,
             showEdit: false,
             showDetails: false,
-            showSuccess: false,
-            successMessage: '',
             loading: true,
             errorLoading: false
         };
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return this.faqs.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
     },
     methods: {
         seeMoreDetails: function seeMoreDetails(faq) {
@@ -85620,10 +85946,72 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._m(0),
+      _c("header", { staticClass: "page-header" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("h2", { staticClass: "no-margin-bottom" }, [
+            _vm._v(_vm._s(_vm.title))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      !_vm.hasItems && _vm.canShowContent
+        ? _c(
+            "div",
+            { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+            [
+              _c("h2", { staticClass: "alert-heading" }, [_vm._v("Opss!")]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v("Não foram encontrados " + _vm._s(_vm.title) + ".")
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-0" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "alert-link",
+                    attrs: { href: "#", title: "Criar FAQs" },
+                    on: {
+                      click: function($event) {
+                        _vm.createFaq()
+                      }
+                    }
+                  },
+                  [_vm._v("Criar " + _vm._s(_vm.title))]
+                )
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errorLoading
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_c("p", [_vm._v("Erro ao pesquisar os dados tente novamente.")])]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _vm.loading
+          ? _c("h1", { staticClass: "m-5 text-center" }, [
+              _vm._v("A carregar...")
+            ])
+          : _vm._e()
+      ]),
       _vm._v(" "),
       _vm.showList
         ? _c("faqsList", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.hasItems && _vm.canShowContent,
+                expression: "hasItems && canShowContent"
+              }
+            ],
             attrs: { faqs: _vm.faqs },
             on: {
               seeMoreDetails: _vm.seeMoreDetails,
@@ -85647,18 +86035,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "page-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("h2", { staticClass: "no-margin-bottom" }, [_vm._v("FAQs")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -85752,6 +86129,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -85760,15 +86159,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            title: 'Questões dos Utilizadores',
             question: [],
             notAnswered: [],
+            allQuestions: [],
             showList: true,
             showDetails: false,
-            showSuccess: false,
-            successMessage: '',
             loading: true,
             errorLoading: false
         };
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return this.notAnswered.length > 0;
+        },
+        hasQuestions: function hasQuestions() {
+            return this.allQuestions.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
     },
     methods: {
         cancel: function cancel() {
@@ -85782,22 +86192,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.showDetails = true;
             this.showList = false;
         },
-        getNotAnsweredQuestions: function getNotAnsweredQuestions() {
+        getAllQuestions: function getAllQuestions() {
             var _this = this;
+
+            axios.get('/api/questions/answered').then(function (response) {
+                _this.allQuestions = response.data.data;
+            });
+        },
+        getNotAnsweredQuestions: function getNotAnsweredQuestions() {
+            var _this2 = this;
 
             this.loading = true;
             this.errorLoading = false;
 
             axios.get('/api/questions/notAnswered').then(function (response) {
-                _this.notAnswered = response.data.data;
-                _this.loading = false;
+                _this2.notAnswered = response.data.data;
+                _this2.loading = false;
             }).catch(function (error) {
-                _this.loading = false;
-                _this.errorLoading = true;
+                _this2.loading = false;
+                _this2.errorLoading = true;
             });
         },
         answerQuestion: function answerQuestion(question) {
-            var _this2 = this;
+            var _this3 = this;
 
             __WEBPACK_IMPORTED_MODULE_0_sweetalert___default()("Pergunta: " + question.question, {
                 content: "input"
@@ -85816,7 +86233,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         }).then(function (value) {
                             switch (value) {
                                 case "ok":
-                                    _this2.getNotAnsweredQuestions();
+                                    _this3.getNotAnsweredQuestions();
+                                    _this3.getAllQuestions();
                                     break;
                             }
                         });
@@ -85830,7 +86248,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }).then(function (value) {
                         switch (value) {
                             case "ok":
-                                _this2.getNotAnsweredQuestions();
+                                _this3.getNotAnsweredQuestions();
                                 break;
                         }
                     });
@@ -85838,7 +86256,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         deleteNotAnswered: function deleteNotAnswered(question) {
-            var _this3 = this;
+            var _this4 = this;
 
             __WEBPACK_IMPORTED_MODULE_0_sweetalert___default()("Pertende realmente apagar esta pergunta?", {
                 icon: "warning",
@@ -85867,7 +86285,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }).then(function (value) {
                                 switch (value) {
                                     case "ok":
-                                        _this3.getNotAnsweredQuestions();
+                                        _this4.getNotAnsweredQuestions();
                                         break;
                                 }
                             });
@@ -85883,6 +86301,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.getNotAnsweredQuestions();
+        this.getAllQuestions();
     }
 });
 
@@ -85980,9 +86399,6 @@ module.exports = Component.exports
 //
 //
 //
-//
-//
-//
 
 module.exports = {
   props: ['notAnswered'],
@@ -86011,104 +86427,88 @@ var render = function() {
   return _c("section", { staticClass: "tables" }, [
     _c("div", { staticClass: "container-fluid" }, [
       _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          { staticClass: "col-lg-12" },
-          [
-            _c(
-              "router-link",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { to: "/userQuestions/all" }
-              },
-              [_vm._v("Ver histórico de questões")]
-            ),
+        _c("div", { staticClass: "col-lg-12" }, [
+          _c("div", { staticClass: "card mt-2" }, [
+            _vm._m(0),
             _vm._v(" "),
-            _c("div", { staticClass: "card mt-2" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "table-responsive" }, [
-                  _c("div", { staticClass: "card" }, [
-                    _vm.notAnswered.length == 0
-                      ? _c("p", { staticClass: "text-center" }, [
-                          _vm._v("Não existem perguntas por responder")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.notAnswered.length != 0
-                      ? _c(
-                          "table",
-                          { staticClass: "table table-striped table-hover" },
-                          [
-                            _vm._m(1),
-                            _vm._v(" "),
-                            _c(
-                              "tbody",
-                              _vm._l(_vm.notAnswered, function(question) {
-                                return _c("tr", { key: question.id }, [
-                                  _c("td", [_vm._v(_vm._s(question.id))]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(question.question))]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(question.user_id))]),
-                                  _vm._v(" "),
-                                  _c("td", [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-sm btn-primary",
-                                        attrs: { type: "button" },
-                                        on: {
-                                          click: function($event) {
-                                            _vm.seeMoreDetails(question)
-                                          }
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "table-responsive" }, [
+                _c("div", { staticClass: "card" }, [
+                  _vm.notAnswered.length == 0
+                    ? _c("p", { staticClass: "text-center" }, [
+                        _vm._v("Não existem perguntas por responder")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.notAnswered.length != 0
+                    ? _c(
+                        "table",
+                        { staticClass: "table table-striped table-hover" },
+                        [
+                          _vm._m(1),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            _vm._l(_vm.notAnswered, function(question) {
+                              return _c("tr", { key: question.id }, [
+                                _c("td", [_vm._v(_vm._s(question.id))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(question.question))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-sm btn-primary",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.seeMoreDetails(question)
                                         }
-                                      },
-                                      [_vm._v("Ver mais detalhes")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-sm btn-success",
-                                        attrs: { type: "button" },
-                                        on: {
-                                          click: function($event) {
-                                            _vm.answerQuestion(question)
-                                          }
+                                      }
+                                    },
+                                    [_vm._v("Ver mais detalhes")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-sm btn-success",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.answerQuestion(question)
                                         }
-                                      },
-                                      [_vm._v("Responder")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-sm btn-danger",
-                                        attrs: { type: "button" },
-                                        on: {
-                                          click: function($event) {
-                                            _vm.deleteNotAnswered(question)
-                                          }
+                                      }
+                                    },
+                                    [_vm._v("Responder")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-sm btn-danger",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.deleteNotAnswered(question)
                                         }
-                                      },
-                                      [_vm._v("Eliminar")]
-                                    )
-                                  ])
+                                      }
+                                    },
+                                    [_vm._v("Eliminar")]
+                                  )
                                 ])
-                              })
-                            )
-                          ]
-                        )
-                      : _vm._e()
-                  ])
+                              ])
+                            })
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ])
             ])
-          ],
-          1
-        )
+          ])
+        ])
       ])
     ])
   ])
@@ -86134,8 +86534,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Pergunta")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Utilizador")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Ações")])
       ])
     ])
@@ -86156,6 +86554,7 @@ if (false) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -86290,7 +86689,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", [_c("b", [_vm._v("Utilizador que realizou a questou:")])])
+    return _c("p", [_c("b", [_vm._v("Utilizador que realizou a questão:")])])
   }
 ]
 render._withStripped = true
@@ -86313,10 +86712,72 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._m(0),
+      _c("header", { staticClass: "page-header" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("h2", { staticClass: "no-margin-bottom" }, [
+            _vm._v(_vm._s(_vm.title))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      !_vm.hasItems && _vm.canShowContent
+        ? _c(
+            "div",
+            { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+            [
+              _c("h2", { staticClass: "alert-heading" }, [_vm._v("Opss!")]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v("Não foram encontrados " + _vm._s(_vm.title) + ".")
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errorLoading
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_c("p", [_vm._v("Erro ao pesquisar os dados tente novamente.")])]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _vm.loading
+          ? _c("h1", { staticClass: "m-5 text-center" }, [
+              _vm._v("A carregar...")
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "text-center" },
+        [
+          _vm.hasQuestions
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "mt-5 btn btn-primary btn-lg",
+                  attrs: { to: "/userQuestions/all" }
+                },
+                [_vm._v("Ver histórico de questões")]
+              )
+            : _vm._e()
+        ],
+        1
+      ),
       _vm._v(" "),
       _vm.showList
         ? _c("userNotAnsweredQuestionsListComponent", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.hasItems && _vm.canShowContent,
+                expression: "hasItems && canShowContent"
+              }
+            ],
             attrs: { notAnswered: _vm.notAnswered },
             on: {
               seeMoreDetails: _vm.seeMoreDetails,
@@ -86336,20 +86797,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "page-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("h2", { staticClass: "no-margin-bottom" }, [
-          _vm._v("Questões dos Utilizadores")
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -86451,6 +86899,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -86460,15 +86926,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            title: 'Questões dos Utilizadores',
             question: [],
             questions: [],
             showList: true,
             showDetails: false,
             showEdit: false,
-            successMessage: '',
             loading: true,
             errorLoading: false
         };
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return this.questions.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
     },
     methods: {
         cancel: function cancel() {
@@ -86696,6 +87170,9 @@ module.exports = Component.exports
 //
 //
 //
+//
+//
+//
 
 module.exports = {
   props: ['questions'],
@@ -86709,6 +87186,9 @@ module.exports = {
     },
     seeMoreDetails: function seeMoreDetails(question) {
       this.$emit('seeMoreDetails', question);
+    },
+    redirect: function redirect() {
+      this.$router.push("/userQuestions");
     }
   }
 };
@@ -86806,6 +87286,21 @@ var render = function() {
                       )
                     : _vm._e()
                 ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "text-right" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    on: {
+                      click: function($event) {
+                        _vm.redirect()
+                      }
+                    }
+                  },
+                  [_vm._v("Voltar")]
+                )
               ])
             ])
           ])
@@ -87222,10 +87717,54 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._m(0),
+      _c("header", { staticClass: "page-header" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("h2", { staticClass: "no-margin-bottom" }, [
+            _vm._v(_vm._s(_vm.title))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      !_vm.hasItems && _vm.canShowContent
+        ? _c(
+            "div",
+            { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+            [
+              _c("h2", { staticClass: "alert-heading" }, [_vm._v("Opss!")]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v("Não foram encontrados " + _vm._s(_vm.title) + ".")
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errorLoading
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_c("p", [_vm._v("Erro ao pesquisar os dados tente novamente.")])]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _vm.loading
+          ? _c("h1", { staticClass: "m-5 text-center" }, [
+              _vm._v("A carregar...")
+            ])
+          : _vm._e()
+      ]),
       _vm._v(" "),
       _vm.showList
         ? _c("userAllQuestionsListComponent", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.hasItems && _vm.canShowContent,
+                expression: "hasItems && canShowContent"
+              }
+            ],
             attrs: { questions: _vm.questions },
             on: {
               deleteQuestion: _vm.deleteQuestion,
@@ -87252,20 +87791,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "page-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("h2", { staticClass: "no-margin-bottom" }, [
-          _vm._v("Questões dos Utilizadores")
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -87366,6 +87892,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -87376,6 +87922,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            title: 'Notícias',
             news: [],
             rssNews: [],
             showList: false,
@@ -87383,11 +87930,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             showView: false,
             xhr: '',
             xml: '',
-            showSuccess: false,
-            successMessage: '',
             loading: true,
             errorLoading: false
         };
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return this.news.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
     },
     methods: {
         createNews: function createNews() {
@@ -87400,7 +87953,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.loading = true;
             this.errorLoading = false;
-
             axios.get('/api/rssNews').then(function (response) {
                 _this.rssNews = response.data.data;
                 for (var i = 0; i < _this.rssNews.length; i++) {
@@ -103603,10 +104155,72 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._m(0),
+      _c("header", { staticClass: "page-header" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("h2", { staticClass: "no-margin-bottom" }, [
+            _vm._v(_vm._s(_vm.title))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      !_vm.hasItems && _vm.canShowContent
+        ? _c(
+            "div",
+            { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+            [
+              _c("h2", { staticClass: "alert-heading" }, [_vm._v("Opss!")]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v("Não foram encontrados " + _vm._s(_vm.title) + ".")
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-0" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "alert-link",
+                    attrs: { href: "#", title: "Criar Notícias" },
+                    on: {
+                      click: function($event) {
+                        _vm.createNews()
+                      }
+                    }
+                  },
+                  [_vm._v("Criar " + _vm._s(_vm.title))]
+                )
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errorLoading
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_c("p", [_vm._v("Erro ao pesquisar os dados tente novamente.")])]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _vm.loading
+          ? _c("h1", { staticClass: "m-5 text-center" }, [
+              _vm._v("A carregar...")
+            ])
+          : _vm._e()
+      ]),
       _vm._v(" "),
       _vm.showList
         ? _c("newsList", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.hasItems && _vm.canShowContent,
+                expression: "hasItems && canShowContent"
+              }
+            ],
             attrs: { news: _vm.news },
             on: {
               createNews: _vm.createNews,
@@ -103625,18 +104239,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "page-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("h2", { staticClass: "no-margin-bottom" }, [_vm._v("Notícias")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -103738,6 +104341,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -103748,16 +104371,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
 				data: function data() {
 								return {
+												title: 'Newsletters',
 												newsletter: '',
 												newsletters: [],
 												showList: true,
 												showCreate: false,
 												showEdit: false,
-												showSuccess: false,
-												successMessage: '',
 												loading: true,
 												errorLoading: false
 								};
+				},
+				computed: {
+								hasItems: function hasItems() {
+												return this.newsletters.length > 0;
+								},
+								canShowContent: function canShowContent() {
+												return !this.errorLoading && !this.loading;
+								}
 				},
 				methods: {
 								publishNewsletter: function publishNewsletter(newsletter) {
@@ -103821,7 +104451,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 												this.loading = true;
 												this.errorLoading = false;
-
 												axios.get('/api/newsletters').then(function (response) {
 																_this2.newsletters = response.data.data;
 																_this2.loading = false;
@@ -104596,10 +105225,72 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._m(0),
+      _c("header", { staticClass: "page-header" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("h2", { staticClass: "no-margin-bottom" }, [
+            _vm._v(_vm._s(_vm.title))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      !_vm.hasItems && _vm.canShowContent
+        ? _c(
+            "div",
+            { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+            [
+              _c("h2", { staticClass: "alert-heading" }, [_vm._v("Opss!")]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v("Não foram encontrados " + _vm._s(_vm.title) + ".")
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-0" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "alert-link",
+                    attrs: { href: "#", title: "Criar Newsletters" },
+                    on: {
+                      click: function($event) {
+                        _vm.createNewsletter()
+                      }
+                    }
+                  },
+                  [_vm._v("Criar " + _vm._s(_vm.title))]
+                )
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errorLoading
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_c("p", [_vm._v("Erro ao pesquisar os dados tente novamente.")])]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _vm.loading
+          ? _c("h1", { staticClass: "m-5 text-center" }, [
+              _vm._v("A carregar...")
+            ])
+          : _vm._e()
+      ]),
       _vm._v(" "),
       _vm.showList
         ? _c("newslettersList", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.hasItems && _vm.canShowContent,
+                expression: "hasItems && canShowContent"
+              }
+            ],
             attrs: { newsletters: _vm.newsletters },
             on: {
               createNewsletter: _vm.createNewsletter,
@@ -104624,18 +105315,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "page-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("h2", { staticClass: "no-margin-bottom" }, [_vm._v("Newsletters")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -106197,6 +106877,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -106207,16 +106907,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            title: 'RSS de Notícias',
             rss: '',
             rssNews: [],
             showList: true,
             showCreate: false,
             showEdit: false,
-            showSuccess: false,
-            successMessage: '',
             loading: true,
             errorLoading: false
         };
+    },
+    computed: {
+        hasItems: function hasItems() {
+            return this.rssNews.length > 0;
+        },
+        canShowContent: function canShowContent() {
+            return !this.errorLoading && !this.loading;
+        }
     },
     methods: {
         addRSSNews: function addRSSNews() {
@@ -107355,10 +108062,72 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._m(0),
+      _c("header", { staticClass: "page-header" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("h2", { staticClass: "no-margin-bottom" }, [
+            _vm._v(_vm._s(_vm.title))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      !_vm.hasItems && _vm.canShowContent
+        ? _c(
+            "div",
+            { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+            [
+              _c("h2", { staticClass: "alert-heading" }, [_vm._v("Opss!")]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v("Não foram encontrados " + _vm._s(_vm.title) + ".")
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-0" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "alert-link",
+                    attrs: { href: "#", title: "Adicionar RSS de Notícias" },
+                    on: {
+                      click: function($event) {
+                        _vm.addRSSNews()
+                      }
+                    }
+                  },
+                  [_vm._v("Criar " + _vm._s(_vm.title))]
+                )
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.errorLoading
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [_c("p", [_vm._v("Erro ao pesquisar os dados tente novamente.")])]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12" }, [
+        _vm.loading
+          ? _c("h1", { staticClass: "m-5 text-center" }, [
+              _vm._v("A carregar...")
+            ])
+          : _vm._e()
+      ]),
       _vm._v(" "),
       _vm.showList
         ? _c("rssNewsList", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.hasItems && _vm.canShowContent,
+                expression: "hasItems && canShowContent"
+              }
+            ],
             attrs: { rssNews: _vm.rssNews },
             on: {
               addRSSNews: _vm.addRSSNews,
@@ -107380,20 +108149,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "page-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("h2", { staticClass: "no-margin-bottom" }, [
-          _vm._v("RSS de Notícias")
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

@@ -69431,10 +69431,6 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(281)
-}
 var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(283)
@@ -69443,7 +69439,7 @@ var __vue_template__ = __webpack_require__(284)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -69478,46 +69474,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 281 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(282);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(30)("570bb74e", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-e7415cc4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./newsletterComponent.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-e7415cc4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./newsletterComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 282 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(11)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 281 */,
+/* 282 */,
 /* 283 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -75026,7 +74984,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             totalRows: '',
             logged: false,
             loading: true,
-            errorLoading: false
+            errorLoading: false,
+            userId: 0
         };
     },
     computed: {
@@ -75038,23 +74997,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
-        getEvents: function getEvents() {
+        getUserId: function getUserId() {
             var _this = this;
+
+            axios.get('/api/user').then(function (response) {
+                _this.userId = response.data.id;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        getEvents: function getEvents() {
+            var _this2 = this;
 
             this.loading = true;
             this.errorLoading = false;
             axios.get('/api/events').then(function (response) {
-                _this.eventos = response.data.data;
-                _this.loading = false;
+                _this2.eventos = response.data.data;
+                _this2.loading = false;
             }).catch(function (error) {
-                _this.loading = false;
-                _this.errorLoading = true;
+                _this2.loading = false;
+                _this2.errorLoading = true;
             });
         },
         isLogged: function isLogged() {
             if (localStorage.getItem('access_token') != null) {
                 this.logged = true;
             }
+        },
+        inscreverEvento: function inscreverEvento(evento) {
+            this.getUserId();
+            var data = {
+                userId: this.userId,
+                eventId: evento.id
+            };
+            axios.post('/api/events/subscribe', data).then(function (response) {}).catch(function (error) {});
         }
     },
     created: function created() {
@@ -75210,7 +75186,7 @@ var render = function() {
                                                 target: "_blank"
                                               }
                                             },
-                                            [_vm._v("Ficheiro")]
+                                            [_vm._v(_vm._s(row.item.name))]
                                           )
                                         ])
                                       : _vm._e(),
@@ -75221,7 +75197,12 @@ var render = function() {
                                             "button",
                                             {
                                               staticClass: "btn btn-contrast",
-                                              attrs: { type: "button" }
+                                              attrs: { type: "button" },
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.inscreverEvento(row.item)
+                                                }
+                                              }
                                             },
                                             [_vm._v("Inscrever")]
                                           )

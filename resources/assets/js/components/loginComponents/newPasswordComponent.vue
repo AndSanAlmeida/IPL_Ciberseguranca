@@ -4,7 +4,7 @@
         <br>
         <form class="form-signin" method="post" v-on:submit.prevent="validateForm">
 
-            <div class="alert alert-success" role="alert" v-cloak v-show="serverError">
+            <div class="alert alert-danger" role="alert" v-cloak v-show="serverError">
                 <p>{{serverErrorMessage}}</p>
             </div>
 

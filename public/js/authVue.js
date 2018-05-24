@@ -42415,7 +42415,7 @@ var render = function() {
                 expression: "serverError"
               }
             ],
-            staticClass: "alert alert-success",
+            staticClass: "alert alert-danger",
             attrs: { role: "alert" }
           },
           [_c("p", [_vm._v(_vm._s(_vm.serverErrorMessage))])]
@@ -42871,7 +42871,7 @@ var render = function() {
                 expression: "serverErrorCode != 0"
               }
             ],
-            staticClass: "alert alert-success",
+            staticClass: "alert alert-danger",
             attrs: { role: "alert" }
           },
           [_c("p", [_vm._v(_vm._s(_vm.serverErrorMessage))])]
@@ -43439,7 +43439,7 @@ var render = function() {
                 expression: "serverError"
               }
             ],
-            staticClass: "alert alert-success",
+            staticClass: "alert alert-danger",
             attrs: { role: "alert" }
           },
           [_c("p", [_vm._v(_vm._s(_vm.serverErrorMessage))])]
@@ -43799,7 +43799,7 @@ var render = function() {
                 expression: "serverError"
               }
             ],
-            staticClass: "alert alert-success",
+            staticClass: "alert alert-danger",
             attrs: { role: "alert" }
           },
           [_c("p", [_vm._v(_vm._s(_vm.serverErrorMessage))])]

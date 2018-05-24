@@ -19,7 +19,6 @@
                         <th>#</th>
                         <th>Chave</th>
                         <th>Nome</th>
-                        <th>Definição</th>
                         <th>Ações</th>
                       </tr>
                     </thead>
@@ -28,7 +27,6 @@
                         <td>{{glossaryItem.id}}</td>
                         <td>{{glossaryItem.key}}</td>
                         <td>{{glossaryItem.name}}</td>
-                        <td>{{glossaryItem.definition}}</td>
                         <td>
                             <button type="button" class="btn btn-sm btn-primary" v-on:click="viewGlossary(glossaryItem)">Ver Detalhes</button>
                             <button type="button" class="btn btn-sm btn-warning" v-on:click="editGlossary(glossaryItem)">Editar</button>

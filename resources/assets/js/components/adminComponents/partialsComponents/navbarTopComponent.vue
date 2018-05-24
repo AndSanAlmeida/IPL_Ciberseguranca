@@ -12,11 +12,20 @@
 	        </div>
 	        <!-- Navbar Menu -->
 	        <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
-	          <!-- Messages-->
-	          <li class="nav-item"> <a id="messages" rel="nofollow" data-target="#" href="#" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-envelope-o"></i><span class="badge bg-orange badge-corner">5</span></a>
-	          </li>
-	          <!-- Logout    -->
-	          <li class="nav-item"><a href="#" class="nav-link logout" v-on:click="logout">Logout<i class="fa fa-sign-out"></i></a></li>
+                <li class="nav-item"> 
+                    <a href="/" class="nav-link" title="Página Oficial"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Página Oficial</a>
+                </li>
+                <!-- Messages-->
+	            <li class="nav-item"> 
+                    <a href="#" class="nav-link" title="Mensagens">
+                        <i class="fa fa-envelope-o"></i>
+                        <span class="badge bg-orange badge-corner">5</span>
+                    </a>
+	            </li>
+	            <!-- Logout    -->
+	            <li class="nav-item">
+                    <a href="#" class="nav-link logout" v-on:click="logout" title="Sair">Logout <i class="fa fa-sign-out"></i></a>
+                </li>
 	        </ul>
 	      </div>
 	    </div>
