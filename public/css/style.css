@@ -457,6 +457,10 @@ p {
   position: relative;
 }
 
+#home .bg-color {
+  min-height: 500px;
+}
+
 #home h1 {
   font-size: 2.2vw;
   color: white;
@@ -476,19 +480,6 @@ p {
   font-weight: 700;
 }
 
-#home p {
-  color: white;
-  margin: 0 0 40px;
-}
-
-#home .btn {
-  margin: 0 8px;
-}
-
-.bg-color {
-  min-height: 500px;
-}
-
 .banner-content {
   width: 100%;
   height: auto;
@@ -497,6 +488,79 @@ p {
   left: 0;
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
+}
+
+#mission {
+  background: url(/img/mission.jpg) no-repeat fixed;
+  background-size: cover;
+  min-height: 400px;
+  position: relative;
+}
+
+#mission .bg-color {
+  background-color: rgba(0, 0, 0, 0.5);
+  min-height: 400px;
+}
+
+#mission .missionContent {
+  margin-top: 10%;
+}
+
+#mission h1 {
+  font-size: 4em;
+  color: white;
+}
+
+#mission p {
+  font-size: 21px;
+  line-height: 32px;
+  color: white;
+}
+
+#homeEvents .borderB {
+  border-bottom: solid 2px #e8e8e8;
+}
+
+#homeEvents .homeEventsContainer {
+  margin-top: 2em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#homeEvents .thumbnail {
+  margin: 20px;
+  border: none;
+}
+
+#homeEvents .thumbnail img {
+  opacity: 1;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  transition: opacity 0.5s ease-in-out;
+  -webkit-transition: opacity 0.5s ease-in-out;
+  -moz-transition: opacity 0.5s ease-in-out;
+}
+
+#homeEvents .thumbnail:hover img {
+  opacity: 0.8;
+}
+
+#homeEvents .thumbnail p {
+  margin: 0;
 }
 
 /*****************************************************

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 531);
+/******/ 	return __webpack_require__(__webpack_require__.s = 474);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2591,7 +2591,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(9)))
 
 /***/ }),
 
@@ -2705,14 +2705,14 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
-/***/ 21:
+/***/ 20:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(5);
-var normalizeHeaderName = __webpack_require__(60);
+var normalizeHeaderName = __webpack_require__(56);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -2728,10 +2728,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(33);
+    adapter = __webpack_require__(31);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(33);
+    adapter = __webpack_require__(31);
   }
   return adapter;
 }
@@ -2802,202 +2802,11 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
 
 /***/ }),
 
-/***/ 22:
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-
-/***/ 23:
+/***/ 24:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
@@ -3050,7 +2859,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(75);
+__webpack_require__(71);
 // On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -3061,11 +2870,11 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
 
-/***/ 31:
+/***/ 28:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -13437,7 +13246,7 @@ return jQuery;
 
 /***/ }),
 
-/***/ 32:
+/***/ 29:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13456,19 +13265,210 @@ module.exports = function bind(fn, thisArg) {
 
 /***/ }),
 
-/***/ 33:
+/***/ 30:
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+
+/***/ 31:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(5);
-var settle = __webpack_require__(61);
-var buildURL = __webpack_require__(63);
-var parseHeaders = __webpack_require__(64);
-var isURLSameOrigin = __webpack_require__(65);
-var createError = __webpack_require__(34);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(66);
+var settle = __webpack_require__(57);
+var buildURL = __webpack_require__(59);
+var parseHeaders = __webpack_require__(60);
+var isURLSameOrigin = __webpack_require__(61);
+var createError = __webpack_require__(32);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(62);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -13565,7 +13565,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(67);
+      var cookies = __webpack_require__(63);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -13644,13 +13644,13 @@ module.exports = function xhrAdapter(config) {
 
 /***/ }),
 
-/***/ 34:
+/***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var enhanceError = __webpack_require__(62);
+var enhanceError = __webpack_require__(58);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -13670,7 +13670,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 /***/ }),
 
-/***/ 35:
+/***/ 33:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13683,7 +13683,7 @@ module.exports = function isCancel(value) {
 
 /***/ }),
 
-/***/ 36:
+/***/ 34:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13710,7 +13710,7 @@ module.exports = Cancel;
 
 /***/ }),
 
-/***/ 37:
+/***/ 35:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24673,326 +24673,486 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(23).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(24).setImmediate))
 
 /***/ }),
 
-/***/ 5:
+/***/ 474:
 /***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(475);
+
+
+/***/ }),
+
+/***/ 475:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(72);
+__webpack_require__(48);
 
 
-var bind = __webpack_require__(32);
-var isBuffer = __webpack_require__(58);
 
-/*global toString:true*/
 
-// utils is a library of generic helper functions non-specific to axios
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
 
-var toString = Object.prototype.toString;
+window.Vue = __webpack_require__(35);
 
-/**
- * Determine if a value is an Array
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is an Array, otherwise false
- */
-function isArray(val) {
-  return toString.call(val) === '[object Array]';
-}
+var login = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('login', __webpack_require__(476));
+var register = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('register', __webpack_require__(479));
 
-/**
- * Determine if a value is an ArrayBuffer
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is an ArrayBuffer, otherwise false
- */
-function isArrayBuffer(val) {
-  return toString.call(val) === '[object ArrayBuffer]';
-}
+/*ROUTES*/
+var routes = [{ path: '/', redirect: '/login' }, { path: '/login', component: login }, { path: '/register', component: register }, { path: '/password/reset', component: __webpack_require__(482) }, { path: '/password/reset/:token', component: __webpack_require__(485), props: true }];
 
-/**
- * Determine if a value is a FormData
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is an FormData, otherwise false
- */
-function isFormData(val) {
-  return (typeof FormData !== 'undefined') && (val instanceof FormData);
-}
+var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
+				routes: routes
+});
 
-/**
- * Determine if a value is a view on an ArrayBuffer
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
- */
-function isArrayBufferView(val) {
-  var result;
-  if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
-    result = ArrayBuffer.isView(val);
+new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+				router: router
+}).$mount('#auth');
+
+/***/ }),
+
+/***/ 476:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(477)
+/* template */
+var __vue_template__ = __webpack_require__(478)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\loginComponents\\loginComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-347d0248", Component.options)
   } else {
-    result = (val) && (val.buffer) && (val.buffer instanceof ArrayBuffer);
+    hotAPI.reload("data-v-347d0248", Component.options)
   }
-  return result;
-}
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
 
-/**
- * Determine if a value is a String
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a String, otherwise false
- */
-function isString(val) {
-  return typeof val === 'string';
-}
-
-/**
- * Determine if a value is a Number
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Number, otherwise false
- */
-function isNumber(val) {
-  return typeof val === 'number';
-}
-
-/**
- * Determine if a value is undefined
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if the value is undefined, otherwise false
- */
-function isUndefined(val) {
-  return typeof val === 'undefined';
-}
-
-/**
- * Determine if a value is an Object
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is an Object, otherwise false
- */
-function isObject(val) {
-  return val !== null && typeof val === 'object';
-}
-
-/**
- * Determine if a value is a Date
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Date, otherwise false
- */
-function isDate(val) {
-  return toString.call(val) === '[object Date]';
-}
-
-/**
- * Determine if a value is a File
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a File, otherwise false
- */
-function isFile(val) {
-  return toString.call(val) === '[object File]';
-}
-
-/**
- * Determine if a value is a Blob
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Blob, otherwise false
- */
-function isBlob(val) {
-  return toString.call(val) === '[object Blob]';
-}
-
-/**
- * Determine if a value is a Function
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Function, otherwise false
- */
-function isFunction(val) {
-  return toString.call(val) === '[object Function]';
-}
-
-/**
- * Determine if a value is a Stream
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Stream, otherwise false
- */
-function isStream(val) {
-  return isObject(val) && isFunction(val.pipe);
-}
-
-/**
- * Determine if a value is a URLSearchParams object
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a URLSearchParams object, otherwise false
- */
-function isURLSearchParams(val) {
-  return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
-}
-
-/**
- * Trim excess whitespace off the beginning and end of a string
- *
- * @param {String} str The String to trim
- * @returns {String} The String freed of excess whitespace
- */
-function trim(str) {
-  return str.replace(/^\s*/, '').replace(/\s*$/, '');
-}
-
-/**
- * Determine if we're running in a standard browser environment
- *
- * This allows axios to run in a web worker, and react-native.
- * Both environments support XMLHttpRequest, but not fully standard globals.
- *
- * web workers:
- *  typeof window -> undefined
- *  typeof document -> undefined
- *
- * react-native:
- *  navigator.product -> 'ReactNative'
- */
-function isStandardBrowserEnv() {
-  if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
-    return false;
-  }
-  return (
-    typeof window !== 'undefined' &&
-    typeof document !== 'undefined'
-  );
-}
-
-/**
- * Iterate over an Array or an Object invoking a function for each item.
- *
- * If `obj` is an Array callback will be called passing
- * the value, index, and complete array for each item.
- *
- * If 'obj' is an Object callback will be called passing
- * the value, key, and complete object for each property.
- *
- * @param {Object|Array} obj The object to iterate
- * @param {Function} fn The callback to invoke for each item
- */
-function forEach(obj, fn) {
-  // Don't bother if no value provided
-  if (obj === null || typeof obj === 'undefined') {
-    return;
-  }
-
-  // Force an array if not already something iterable
-  if (typeof obj !== 'object') {
-    /*eslint no-param-reassign:0*/
-    obj = [obj];
-  }
-
-  if (isArray(obj)) {
-    // Iterate over array values
-    for (var i = 0, l = obj.length; i < l; i++) {
-      fn.call(null, obj[i], i, obj);
-    }
-  } else {
-    // Iterate over object keys
-    for (var key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        fn.call(null, obj[key], key, obj);
-      }
-    }
-  }
-}
-
-/**
- * Accepts varargs expecting each argument to be an object, then
- * immutably merges the properties of each object and returns result.
- *
- * When multiple objects contain the same key the later object in
- * the arguments list will take precedence.
- *
- * Example:
- *
- * ```js
- * var result = merge({foo: 123}, {foo: 456});
- * console.log(result.foo); // outputs 456
- * ```
- *
- * @param {Object} obj1 Object to merge
- * @returns {Object} Result of all merge properties
- */
-function merge(/* obj1, obj2, obj3, ... */) {
-  var result = {};
-  function assignValue(val, key) {
-    if (typeof result[key] === 'object' && typeof val === 'object') {
-      result[key] = merge(result[key], val);
-    } else {
-      result[key] = val;
-    }
-  }
-
-  for (var i = 0, l = arguments.length; i < l; i++) {
-    forEach(arguments[i], assignValue);
-  }
-  return result;
-}
-
-/**
- * Extends object a by mutably adding to it the properties of object b.
- *
- * @param {Object} a The object to be extended
- * @param {Object} b The object to copy properties from
- * @param {Object} thisArg The object to bind function to
- * @return {Object} The resulting value of object a
- */
-function extend(a, b, thisArg) {
-  forEach(b, function assignValue(val, key) {
-    if (thisArg && typeof val === 'function') {
-      a[key] = bind(val, thisArg);
-    } else {
-      a[key] = val;
-    }
-  });
-  return a;
-}
-
-module.exports = {
-  isArray: isArray,
-  isArrayBuffer: isArrayBuffer,
-  isBuffer: isBuffer,
-  isFormData: isFormData,
-  isArrayBufferView: isArrayBufferView,
-  isString: isString,
-  isNumber: isNumber,
-  isObject: isObject,
-  isUndefined: isUndefined,
-  isDate: isDate,
-  isFile: isFile,
-  isBlob: isBlob,
-  isFunction: isFunction,
-  isStream: isStream,
-  isURLSearchParams: isURLSearchParams,
-  isStandardBrowserEnv: isStandardBrowserEnv,
-  forEach: forEach,
-  merge: merge,
-  extend: extend,
-  trim: trim
-};
+module.exports = Component.exports
 
 
 /***/ }),
 
-/***/ 52:
+/***/ 477:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+
+            username: '',
+            password: '',
+            attemptSubmit: false,
+            serverError: false,
+            serverErrorMessage: ''
+        };
+    },
+    computed: {
+        missingUsername: function missingUsername() {
+            return this.username.trim() === '' && !this.hasServerError && this.attemptSubmit;
+        },
+        missingPassword: function missingPassword() {
+            return this.password.trim() === '' && !this.hasServerError && this.attemptSubmit;
+        },
+        hasClientError: function hasClientError() {
+            return this.missingUsername || this.missingPassword;
+        },
+        hasServerError: function hasServerError() {
+            return this.serverError;
+        },
+        isFormInvalid: function isFormInvalid() {
+            return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
+        }
+    },
+    methods: {
+        submitForm: function submitForm(event) {
+            var _this = this;
+
+            this.serverError = false;
+            this.attemptSubmit = true;
+
+            if (!this.isFormInvalid) {
+                var data = {
+                    username: this.username,
+                    password: this.password
+                };
+                axios.post('/api/login', data).then(function (response) {
+                    localStorage.setItem('access_token', 'Bearer ' + response.data.access_token);
+
+                    axios.get('/api/user', { headers: { "Authorization": 'Bearer ' + response.data.access_token } }).then(function (response) {
+                        console.log(response.data);
+                        if (response.data.type == 1) {
+                            // admin   
+                            window.location.href = '/admin/#/home';
+                        } else if (response.data.type == 0) {
+                            window.location.href = '/';
+                        }
+                    }).catch(function (error) {
+                        _this.serverError = true;
+                        console.log(error);
+                        _this.serverErrorMessage = error.response.data.data;
+                    });
+                }).catch(function (error) {
+                    _this.serverError = true;
+                    console.log(error);
+                    _this.serverErrorMessage = error.response.data.data;
+                });
+            }
+        }
+    }
+});
+
+/***/ }),
+
+/***/ 478:
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card card-container" }, [
+    _c("img", {
+      staticClass: "profile-img-card",
+      attrs: { src: "/img/logo_ipl_header.png", alt: "Logotipo IPL" }
+    }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "form-signin",
+        attrs: { method: "post" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.submitForm($event)
+          }
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.serverError,
+                expression: "serverError"
+              }
+            ],
+            staticClass: "alert alert-danger",
+            attrs: { role: "alert" }
+          },
+          [_c("p", [_vm._v(_vm._s(_vm.serverErrorMessage))])]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.username,
+              expression: "username"
+            }
+          ],
+          staticClass: "form-control",
+          class: { "is-invalid": _vm.missingUsername },
+          attrs: {
+            type: "text",
+            id: "inputAuth",
+            name: "username",
+            placeholder: "Username ou Email",
+            required: "",
+            autofocus: ""
+          },
+          domProps: { value: _vm.username },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.username = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" }, [
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.isFormInvalid && _vm.missingUsername,
+                  expression: "isFormInvalid && missingUsername "
+                }
+              ],
+              staticClass: "alert alert-danger",
+              attrs: { role: "alert" }
+            },
+            [
+              _vm.missingUsername
+                ? _c("p", [_vm._v("Preencher Username / Email")])
+                : _vm._e()
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.password,
+              expression: "password"
+            }
+          ],
+          staticClass: "form-control",
+          class: { "is-invalid": _vm.missingPassword },
+          attrs: {
+            type: "password",
+            id: "inputPassword",
+            placeholder: "Password",
+            name: "password",
+            required: ""
+          },
+          domProps: { value: _vm.password },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.password = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" }, [
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.isFormInvalid && _vm.missingPassword,
+                  expression: "isFormInvalid && missingPassword"
+                }
+              ],
+              staticClass: "alert alert-danger",
+              attrs: { role: "alert" }
+            },
+            [
+              _vm.missingPassword
+                ? _c("p", [_vm._v("Preencher Password")])
+                : _vm._e()
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-lg btn-primary btn-block btn-signin",
+            attrs: { type: "submit" }
+          },
+          [_vm._v("Iniciar Sessão")]
+        ),
+        _vm._v(" "),
+        _c(
+          "p",
+          { staticClass: "text-center" },
+          [
+            _c("router-link", { attrs: { to: "/password/reset" } }, [
+              _vm._v("Recuperar Password")
+            ])
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "p",
+          { staticClass: "text-center" },
+          [
+            _c("router-link", { attrs: { to: "/register" } }, [
+              _vm._v("Criar nova conta")
+            ])
+          ],
+          1
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _vm._m(0)
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "text-center" }, [
+      _c("a", { staticClass: "text-muted", attrs: { href: "/" } }, [
+        _c("small", [_vm._v("← Voltar a IPL-Cibersegurança")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-347d0248", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ 479:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(480)
+/* template */
+var __vue_template__ = __webpack_require__(481)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\loginComponents\\registerComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-77927f96", Component.options)
+  } else {
+    hotAPI.reload("data-v-77927f96", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ 48:
 /***/ (function(module, exports, __webpack_require__) {
 
 
-window._ = __webpack_require__(53);
+window._ = __webpack_require__(49);
 window.Popper = __webpack_require__(15).default;
 
 /**
@@ -25002,8 +25162,8 @@ window.Popper = __webpack_require__(15).default;
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(31);
-  __webpack_require__(55);
+  window.$ = window.jQuery = __webpack_require__(28);
+  __webpack_require__(51);
 } catch (e) {}
 
 /**
@@ -25012,7 +25172,7 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(56);
+window.axios = __webpack_require__(52);
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
@@ -25048,7 +25208,1403 @@ if (token) {
 
 /***/ }),
 
-/***/ 53:
+/***/ 480:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            name: '',
+            username: '',
+            email: '',
+            password: '',
+            passwordConfirmation: '',
+            attemptSubmit: false,
+            serverErrorCode: 0,
+            serverErrorMessage: '',
+            success: false
+        };
+    },
+    computed: {
+        missingName: function missingName() {
+            return this.name.trim() === '' && !this.hasServerError && this.attemptSubmit;
+        },
+        missingEmail: function missingEmail() {
+            return this.email.trim() === '' && !this.hasServerError && this.attemptSubmit;
+        },
+        invalidEmail: function invalidEmail() {
+            return !this.missingEmail && !this.validateEmail(this.email.trim()) && !this.hasServerError && this.attemptSubmit;
+        },
+        emailAlreadyUsed: function emailAlreadyUsed() {
+            return this.serverErrorCode == 1;
+        },
+        missingUsername: function missingUsername() {
+            return this.username.trim() === '' && !this.hasServerError && this.attemptSubmit;
+        },
+        usernameAlreadyUsed: function usernameAlreadyUsed() {
+            return this.serverErrorCode == 2;
+        },
+        missingPassword: function missingPassword() {
+            return this.password.trim() === '' && !this.hasServerError && this.attemptSubmit;
+        },
+        invalidPassword: function invalidPassword() {
+            return !this.missingPassword && !this.validatePasswordStructure(this.password.trim()) && !this.hasServerError && this.attemptSubmit;
+        },
+        missingPasswordConfirmation: function missingPasswordConfirmation() {
+            return !this.missingPassword && !this.invalidPassword && this.passwordConfirmation.trim() === '' && !this.hasServerError && this.attemptSubmit;
+        },
+        wrongPasswordConfirmation: function wrongPasswordConfirmation() {
+            return !this.missingPassword && !this.invalidPassword && !this.missingPasswordConfirmation && this.passwordConfirmation.trim() != this.password.trim() && !this.hasServerError && this.attemptSubmit;
+        },
+        hasClientError: function hasClientError() {
+            return this.missingName || this.missingEmail || this.missingUsername || this.missingPassword || this.invalidPassword || this.wrongPasswordConfirmation || this.missingPasswordConfirmation || this.invalidEmail;
+        },
+        hasServerError: function hasServerError() {
+            return this.serverErrorCode == -1 || this.emailAlreadyUsed || this.usernameAlreadyUsed;
+        },
+        isFormInvalid: function isFormInvalid() {
+            return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
+        }
+    },
+    methods: {
+        validateEmail: function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        },
+        validatePasswordStructure: function validatePasswordStructure(password) {
+            var re = /^[a-zA-Z0-9]{6,}$/;
+            return re.test(password);
+        },
+        clear: function clear() {
+            this.name = '';
+            this.username = '';
+            this.email = '';
+            this.password = '';
+            this.passwordConfirmation = '';
+            this.attemptSubmit = false;
+            this.serverErrorCode = 0;
+        },
+        validateForm: function validateForm() {
+            var _this = this;
+
+            //CLEARS SERVER ERROR'S
+            this.serverErrorCode = 0;
+            this.success = false;
+
+            //PREVENT FORM
+            event.preventDefault();
+
+            //FORM SUBMITED
+            this.attemptSubmit = true;
+
+            //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
+            if (!this.isFormInvalid) {
+                var data = {
+                    name: this.name,
+                    username: this.username,
+                    email: this.email,
+                    password: this.password
+                };
+                axios.post('/api/register', data).then(function (response) {
+                    _this.success = true;
+                    _this.clear();
+                    setTimeout(function () {
+                        return _this.$router.push({ path: '/login' });
+                    }, 5000);
+                }).catch(function (error) {
+                    _this.serverErrorCode = error.response.data.errorCode;
+                    _this.serverErrorMessage = error.response.data.msg;
+                });
+            }
+        }
+    }
+});
+
+/***/ }),
+
+/***/ 481:
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card card-container" }, [
+    _c("img", {
+      staticClass: "profile-img-card",
+      attrs: { src: "/img/logo_ipl_header.png", alt: "Logotipo IPL" }
+    }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "form-signin",
+        attrs: { method: "post" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.validateForm($event)
+          }
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.success,
+                expression: "success"
+              }
+            ],
+            staticClass: "alert alert-success",
+            attrs: { role: "alert" }
+          },
+          [
+            _c("p", [
+              _vm._v(
+                "Utilizador criado, verifique o seu email para ativar a conta."
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.serverErrorCode != 0,
+                expression: "serverErrorCode != 0"
+              }
+            ],
+            staticClass: "alert alert-danger",
+            attrs: { role: "alert" }
+          },
+          [_c("p", [_vm._v(_vm._s(_vm.serverErrorMessage))])]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.name,
+              expression: "name"
+            }
+          ],
+          staticClass: "form-control",
+          class: { "is-invalid": _vm.missingName },
+          attrs: { type: "text", name: "name", placeholder: "Name" },
+          domProps: { value: _vm.name },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.name = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: "alert-danger",
+            attrs: { role: "alert" }
+          },
+          [_vm.missingName ? _c("p", [_vm._v("Preencher o Nome")]) : _vm._e()]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.username,
+              expression: "username"
+            }
+          ],
+          staticClass: "form-control",
+          class: {
+            "is-invalid": _vm.missingUsername || _vm.usernameAlreadyUsed
+          },
+          attrs: { type: "text", name: "username", placeholder: "Username" },
+          domProps: { value: _vm.username },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.username = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: "alert-danger",
+            attrs: { role: "alert" }
+          },
+          [
+            _vm.missingUsername
+              ? _c("p", [_vm._v("Preencher o Username")])
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.email,
+              expression: "email"
+            }
+          ],
+          staticClass: "form-control",
+          class: {
+            "is-invalid":
+              _vm.missingEmail || _vm.invalidEmail || _vm.emailAlreadyUsed
+          },
+          attrs: { type: "text", name: "email", placeholder: "Email" },
+          domProps: { value: _vm.email },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.email = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: "alert-danger",
+            attrs: { role: "alert" }
+          },
+          [_vm.missingEmail ? _c("p", [_vm._v("Preencher o Email")]) : _vm._e()]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: "alert-danger",
+            attrs: { role: "alert" }
+          },
+          [_vm.invalidEmail ? _c("p", [_vm._v("Invalido Email")]) : _vm._e()]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.password,
+              expression: "password"
+            }
+          ],
+          staticClass: "form-control",
+          class: { "is-invalid": _vm.missingPassword || _vm.invalidPassword },
+          attrs: {
+            type: "password",
+            name: "password",
+            autocomplete: "new-password",
+            placeholder: "Password"
+          },
+          domProps: { value: _vm.password },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.password = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: "alert-danger",
+            attrs: { role: "alert" }
+          },
+          [
+            _vm.missingPassword
+              ? _c("p", [_vm._v("Preencher a Password")])
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: "alert-danger",
+            attrs: { role: "alert" }
+          },
+          [
+            _vm.invalidPassword
+              ? _c("p", [_vm._v("Password deve ter 6 digitos")])
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.passwordConfirmation,
+              expression: "passwordConfirmation"
+            }
+          ],
+          staticClass: "form-control",
+          class: {
+            "is-invalid":
+              _vm.missingPasswordConfirmation || _vm.wrongPasswordConfirmation
+          },
+          attrs: {
+            type: "password",
+            name: "passwordConfirmation",
+            placeholder: "Confirm Password"
+          },
+          domProps: { value: _vm.passwordConfirmation },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.passwordConfirmation = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: " alert-danger",
+            attrs: { role: "alert" }
+          },
+          [
+            _vm.missingPasswordConfirmation
+              ? _c("p", [_vm._v("Confirma a Password")])
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: " alert-danger",
+            attrs: { role: "alert" }
+          },
+          [
+            _vm.wrongPasswordConfirmation
+              ? _c("p", [_vm._v("Password não são iguais")])
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-lg btn-primary btn-block btn-signin",
+            attrs: { type: "submit" }
+          },
+          [_vm._v("Registar")]
+        ),
+        _vm._v(" "),
+        _c(
+          "p",
+          { staticClass: "text-center" },
+          [
+            _c("router-link", { attrs: { to: "/login" } }, [
+              _vm._v("Voltar a Iniciar Sessão")
+            ])
+          ],
+          1
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _vm._m(0)
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "text-center" }, [
+      _c("a", { staticClass: "text-muted", attrs: { href: "/" } }, [
+        _c("small", [_vm._v("← Voltar a IPL-Cibersegurança")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-77927f96", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ 482:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(483)
+/* template */
+var __vue_template__ = __webpack_require__(484)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\loginComponents\\recoverPasswordComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4744a35c", Component.options)
+  } else {
+    hotAPI.reload("data-v-4744a35c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ 483:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            email: '',
+            attemptSubmit: false,
+            serverError: false,
+            serverErrorMessage: '',
+            success: false
+        };
+    },
+    computed: {
+        missingEmail: function missingEmail() {
+            return this.email.trim() === '' && !this.hasServerError && this.attemptSubmit;
+        },
+        invalidEmail: function invalidEmail() {
+            return !this.missingEmail && !this.validateEmail(this.email.trim()) && !this.hasServerError && this.attemptSubmit;
+        },
+        hasClientError: function hasClientError() {
+            return this.missingEmail || this.invalidEmail;
+        },
+        hasServerError: function hasServerError() {
+            return this.serverError;
+        },
+        isFormInvalid: function isFormInvalid() {
+            return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
+        }
+    },
+    methods: {
+        validateEmail: function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        },
+        submitForm: function submitForm(event) {
+            var _this = this;
+
+            //CLEARS SERVER ERROR'S
+            this.serverError = false;
+            this.success = false;
+
+            //PREVENT FORM
+
+            event.preventDefault();
+
+            //FORM SUBMITED
+            this.attemptSubmit = true;
+
+            //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
+            if (!this.isFormInvalid) {
+                var data = {
+                    email: this.email
+                };
+                axios.post('/api/password/email', data).then(function (response) {
+                    _this.success = true;
+                    _this.attemptSubmit = false;
+                    setTimeout(function () {
+                        return _this.$router.push({ path: '/login' });
+                    }, 5000);
+                }).catch(function (error) {
+                    _this.serverError = true;
+                    _this.serverErrorMessage = error.response.data.msg;
+                });
+            }
+        }
+    }
+});
+
+/***/ }),
+
+/***/ 484:
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card card-container" }, [
+    _c("img", {
+      staticClass: "profile-img-card",
+      attrs: { src: "/img/logo_ipl_header.png", alt: "Logotipo IPL" }
+    }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "form-signin",
+        attrs: { method: "post" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.submitForm($event)
+          }
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.serverError,
+                expression: "serverError"
+              }
+            ],
+            staticClass: "alert alert-danger",
+            attrs: { role: "alert" }
+          },
+          [_c("p", [_vm._v(_vm._s(_vm.serverErrorMessage))])]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.success,
+                expression: "success"
+              }
+            ],
+            staticClass: "alert alert-success",
+            attrs: { role: "alert" }
+          },
+          [
+            _c("p", { staticClass: "text-center" }, [
+              _vm._v(
+                "Email com a informação para recuperar a password foi enviado. Verifique o seu email."
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.email,
+              expression: "email"
+            }
+          ],
+          staticClass: "form-control",
+          class: { "is-invalid": _vm.missingEmail },
+          attrs: {
+            type: "email",
+            id: "inputAuth",
+            name: "email",
+            placeholder: "Email",
+            required: "",
+            autofocus: ""
+          },
+          domProps: { value: _vm.email },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.email = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" }, [
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.isFormInvalid && _vm.missingEmail,
+                  expression: "isFormInvalid && missingEmail "
+                }
+              ],
+              staticClass: "alert alert-danger",
+              attrs: { role: "alert" }
+            },
+            [_vm.missingEmail ? _c("p", [_vm._v("Preencher Email")]) : _vm._e()]
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-lg btn-primary btn-block btn-signin",
+            attrs: { type: "submit" }
+          },
+          [_vm._v("Recuperar Password")]
+        ),
+        _vm._v(" "),
+        _c(
+          "p",
+          { staticClass: "text-center" },
+          [
+            _c("router-link", { attrs: { to: "/login" } }, [
+              _vm._v("Voltar a Iniciar Sessão")
+            ])
+          ],
+          1
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _vm._m(0)
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "text-center" }, [
+      _c("a", { staticClass: "text-muted", attrs: { href: "/" } }, [
+        _c("small", [_vm._v("← Voltar a IPL-Cibersegurança")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4744a35c", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ 485:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(486)
+/* template */
+var __vue_template__ = __webpack_require__(487)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\loginComponents\\newPasswordComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-e2e344d4", Component.options)
+  } else {
+    hotAPI.reload("data-v-e2e344d4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ 486:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['token', 'user'],
+    data: function data() {
+        return {
+            email: '',
+            password: '',
+            passwordConfirmation: '',
+            attemptSubmit: false,
+            serverError: false,
+            serverErrorMessage: '',
+            success: false
+        };
+    },
+    computed: {
+        missingEmail: function missingEmail() {
+            return this.email.trim() === '' && !this.hasServerError && this.attemptSubmit;
+        },
+        invalidEmail: function invalidEmail() {
+            return !this.missingEmail && !this.validateEmail(this.email.trim()) && !this.hasServerError && this.attemptSubmit;
+        },
+        missingPassword: function missingPassword() {
+            return this.password.trim() === '' && !this.hasServerError && this.attemptSubmit;
+        },
+        invalidPassword: function invalidPassword() {
+            return !this.missingPassword && !this.validatePasswordStructure(this.password.trim()) && !this.hasServerError && this.attemptSubmit;
+        },
+        missingPasswordConfirmation: function missingPasswordConfirmation() {
+            return !this.missingPassword && !this.invalidPassword && this.passwordConfirmation.trim() === '' && !this.hasServerError && this.attemptSubmit;
+        },
+        wrongPasswordConfirmation: function wrongPasswordConfirmation() {
+            return !this.missingPassword && !this.invalidPassword && !this.missingPasswordConfirmation && this.passwordConfirmation.trim() != this.password.trim() && !this.hasServerError && this.attemptSubmit;
+        },
+        hasClientError: function hasClientError() {
+            return this.missingEmail || this.invalidEmail || this.missingPassword || this.invalidPassword || this.wrongPasswordConfirmation || this.missingPasswordConfirmation;
+        },
+        hasServerError: function hasServerError() {
+            return this.serverError;
+        },
+        isFormInvalid: function isFormInvalid() {
+            return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
+        }
+    },
+    methods: {
+        validateEmail: function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        },
+        validatePasswordStructure: function validatePasswordStructure(password) {
+            var re = /^[a-zA-Z0-9]{6,}$/;
+            return re.test(password);
+        },
+        validateForm: function validateForm() {
+            var _this = this;
+
+            //CLEARS SERVER ERROR'S
+            this.serverError = false;
+            this.success = false;
+
+            //PREVENT FORM
+            event.preventDefault();
+
+            //FORM SUBMITED
+            this.attemptSubmit = true;
+
+            //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
+            if (!this.isFormInvalid) {
+                var data = {
+                    email: this.email,
+                    token: this.token,
+                    password: this.password
+                };
+                console.log(data);
+                axios.post('/api/password/reset', data).then(function (response) {
+
+                    _this.success = true;
+                    _this.attemptSubmit = false;
+                    _this.email = '';
+                    _this.password = '';
+                    _this.passwordConfirmation = '';
+                    setTimeout(function () {
+                        return _this.$router.push({ path: '/login' });
+                    }, 5000);
+                }).catch(function (error) {
+                    _this.serverError = true;
+                    _this.serverErrorMessage = "server" + error.response.data.msg;
+                    setTimeout(_this.serverError = false, 5000);
+                });
+            }
+        }
+    }
+});
+
+/***/ }),
+
+/***/ 487:
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card card-container" }, [
+    _c("img", {
+      staticClass: "profile-img-card",
+      attrs: { src: "/img/logo_ipl_header.png", alt: "Logotipo IPL" }
+    }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "form-signin",
+        attrs: { method: "post" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.validateForm($event)
+          }
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.serverError,
+                expression: "serverError"
+              }
+            ],
+            staticClass: "alert alert-danger",
+            attrs: { role: "alert" }
+          },
+          [_c("p", [_vm._v(_vm._s(_vm.serverErrorMessage))])]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.success,
+                expression: "success"
+              }
+            ],
+            staticClass: "alert alert-success",
+            attrs: { role: "alert" }
+          },
+          [_c("p", [_vm._v("Password Alterada")])]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.email,
+              expression: "email"
+            }
+          ],
+          staticClass: "form-control",
+          class: { "is-invalid": _vm.missingEmail || _vm.invalidEmail },
+          attrs: { type: "text", name: "email", placeholder: "Email" },
+          domProps: { value: _vm.email },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.email = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: "alert-danger",
+            attrs: { role: "alert" }
+          },
+          [_vm.missingEmail ? _c("p", [_vm._v("Preencher o Email")]) : _vm._e()]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: "alert-danger",
+            attrs: { role: "alert" }
+          },
+          [_vm.invalidEmail ? _c("p", [_vm._v("Invalido Email")]) : _vm._e()]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.password,
+              expression: "password"
+            }
+          ],
+          staticClass: "form-control",
+          class: { "is-invalid": _vm.missingPassword || _vm.invalidPassword },
+          attrs: {
+            type: "password",
+            name: "password",
+            autocomplete: "new-password",
+            placeholder: "Password"
+          },
+          domProps: { value: _vm.password },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.password = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: "alert-danger",
+            attrs: { role: "alert" }
+          },
+          [
+            _vm.missingPassword
+              ? _c("p", [_vm._v("Preencher a Password")])
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: "alert-danger",
+            attrs: { role: "alert" }
+          },
+          [
+            _vm.invalidPassword
+              ? _c("p", [_vm._v("Password deve ter 6 digitos")])
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.passwordConfirmation,
+              expression: "passwordConfirmation"
+            }
+          ],
+          staticClass: "form-control",
+          class: {
+            "is-invalid":
+              _vm.missingPasswordConfirmation || _vm.wrongPasswordConfirmation
+          },
+          attrs: {
+            type: "password",
+            name: "passwordConfirmation",
+            placeholder: "Confirm Password"
+          },
+          domProps: { value: _vm.passwordConfirmation },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.passwordConfirmation = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: " alert-danger",
+            attrs: { role: "alert" }
+          },
+          [
+            _vm.missingPasswordConfirmation
+              ? _c("p", [_vm._v("Confirma a Password")])
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isFormInvalid,
+                expression: "isFormInvalid"
+              }
+            ],
+            staticClass: " alert-danger",
+            attrs: { role: "alert" }
+          },
+          [
+            _vm.wrongPasswordConfirmation
+              ? _c("p", [_vm._v("Password não são iguais")])
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-lg btn-primary btn-block btn-signin",
+            attrs: { type: "submit" }
+          },
+          [_vm._v("Alterar Password")]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _vm._m(0)
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "text-center" }, [
+      _c("a", { staticClass: "text-muted", attrs: { href: "/" } }, [
+        _c("small", [_vm._v("← Voltar a IPL-Cibersegurança")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-e2e344d4", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ 49:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -42158,1110 +43714,322 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(54)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(50)(module)))
 
 /***/ }),
 
-/***/ 531:
+/***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(532);
-
-
-/***/ }),
-
-/***/ 532:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(76);
-__webpack_require__(52);
 
 
+var bind = __webpack_require__(29);
+var isBuffer = __webpack_require__(54);
 
+/*global toString:true*/
 
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
+// utils is a library of generic helper functions non-specific to axios
 
-window.Vue = __webpack_require__(37);
+var toString = Object.prototype.toString;
 
-var login = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('login', __webpack_require__(533));
-var register = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('register', __webpack_require__(536));
+/**
+ * Determine if a value is an Array
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Array, otherwise false
+ */
+function isArray(val) {
+  return toString.call(val) === '[object Array]';
+}
 
-/*ROUTES*/
-var routes = [{ path: '/', redirect: '/login' }, { path: '/login', component: login }, { path: '/register', component: register }, { path: '/password/reset', component: __webpack_require__(539) }, { path: '/password/reset/:token', component: __webpack_require__(542), props: true }];
+/**
+ * Determine if a value is an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+ */
+function isArrayBuffer(val) {
+  return toString.call(val) === '[object ArrayBuffer]';
+}
 
-var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
-				routes: routes
-});
+/**
+ * Determine if a value is a FormData
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an FormData, otherwise false
+ */
+function isFormData(val) {
+  return (typeof FormData !== 'undefined') && (val instanceof FormData);
+}
 
-new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-				router: router
-}).$mount('#auth');
-
-/***/ }),
-
-/***/ 533:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(534)
-/* template */
-var __vue_template__ = __webpack_require__(535)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\loginComponents\\loginComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-347d0248", Component.options)
+/**
+ * Determine if a value is a view on an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+ */
+function isArrayBufferView(val) {
+  var result;
+  if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
+    result = ArrayBuffer.isView(val);
   } else {
-    hotAPI.reload("data-v-347d0248", Component.options)
+    result = (val) && (val.buffer) && (val.buffer instanceof ArrayBuffer);
   }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
+  return result;
+}
 
-module.exports = Component.exports
+/**
+ * Determine if a value is a String
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a String, otherwise false
+ */
+function isString(val) {
+  return typeof val === 'string';
+}
 
+/**
+ * Determine if a value is a Number
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Number, otherwise false
+ */
+function isNumber(val) {
+  return typeof val === 'number';
+}
 
-/***/ }),
+/**
+ * Determine if a value is undefined
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if the value is undefined, otherwise false
+ */
+function isUndefined(val) {
+  return typeof val === 'undefined';
+}
 
-/***/ 534:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/**
+ * Determine if a value is an Object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Object, otherwise false
+ */
+function isObject(val) {
+  return val !== null && typeof val === 'object';
+}
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/**
+ * Determine if a value is a Date
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Date, otherwise false
+ */
+function isDate(val) {
+  return toString.call(val) === '[object Date]';
+}
 
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
+/**
+ * Determine if a value is a File
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a File, otherwise false
+ */
+function isFile(val) {
+  return toString.call(val) === '[object File]';
+}
 
-            username: '',
-            password: '',
-            attemptSubmit: false,
-            serverError: false,
-            serverErrorMessage: ''
-        };
-    },
-    computed: {
-        missingUsername: function missingUsername() {
-            return this.username.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        missingPassword: function missingPassword() {
-            return this.password.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        hasClientError: function hasClientError() {
-            return this.missingUsername || this.missingPassword;
-        },
-        hasServerError: function hasServerError() {
-            return this.serverError;
-        },
-        isFormInvalid: function isFormInvalid() {
-            return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
-        }
-    },
-    methods: {
-        submitForm: function submitForm(event) {
-            var _this = this;
+/**
+ * Determine if a value is a Blob
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Blob, otherwise false
+ */
+function isBlob(val) {
+  return toString.call(val) === '[object Blob]';
+}
 
-            this.serverError = false;
-            this.attemptSubmit = true;
+/**
+ * Determine if a value is a Function
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Function, otherwise false
+ */
+function isFunction(val) {
+  return toString.call(val) === '[object Function]';
+}
 
-            if (!this.isFormInvalid) {
-                var data = {
-                    username: this.username,
-                    password: this.password
-                };
-                axios.post('/api/login', data).then(function (response) {
-                    localStorage.setItem('access_token', 'Bearer ' + response.data.access_token);
+/**
+ * Determine if a value is a Stream
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Stream, otherwise false
+ */
+function isStream(val) {
+  return isObject(val) && isFunction(val.pipe);
+}
 
-                    axios.get('/api/user', { headers: { "Authorization": 'Bearer ' + response.data.access_token } }).then(function (response) {
-                        console.log(response.data);
-                        if (response.data.type == 1) {
-                            // admin   
-                            window.location.href = '/admin/#/home';
-                        } else if (response.data.type == 0) {
-                            window.location.href = '/';
-                        }
-                    }).catch(function (error) {
-                        _this.serverError = true;
-                        console.log(error);
-                        _this.serverErrorMessage = error.response.data.data;
-                    });
-                }).catch(function (error) {
-                    _this.serverError = true;
-                    console.log(error);
-                    _this.serverErrorMessage = error.response.data.data;
-                });
-            }
-        }
+/**
+ * Determine if a value is a URLSearchParams object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+ */
+function isURLSearchParams(val) {
+  return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
+}
+
+/**
+ * Trim excess whitespace off the beginning and end of a string
+ *
+ * @param {String} str The String to trim
+ * @returns {String} The String freed of excess whitespace
+ */
+function trim(str) {
+  return str.replace(/^\s*/, '').replace(/\s*$/, '');
+}
+
+/**
+ * Determine if we're running in a standard browser environment
+ *
+ * This allows axios to run in a web worker, and react-native.
+ * Both environments support XMLHttpRequest, but not fully standard globals.
+ *
+ * web workers:
+ *  typeof window -> undefined
+ *  typeof document -> undefined
+ *
+ * react-native:
+ *  navigator.product -> 'ReactNative'
+ */
+function isStandardBrowserEnv() {
+  if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
+    return false;
+  }
+  return (
+    typeof window !== 'undefined' &&
+    typeof document !== 'undefined'
+  );
+}
+
+/**
+ * Iterate over an Array or an Object invoking a function for each item.
+ *
+ * If `obj` is an Array callback will be called passing
+ * the value, index, and complete array for each item.
+ *
+ * If 'obj' is an Object callback will be called passing
+ * the value, key, and complete object for each property.
+ *
+ * @param {Object|Array} obj The object to iterate
+ * @param {Function} fn The callback to invoke for each item
+ */
+function forEach(obj, fn) {
+  // Don't bother if no value provided
+  if (obj === null || typeof obj === 'undefined') {
+    return;
+  }
+
+  // Force an array if not already something iterable
+  if (typeof obj !== 'object') {
+    /*eslint no-param-reassign:0*/
+    obj = [obj];
+  }
+
+  if (isArray(obj)) {
+    // Iterate over array values
+    for (var i = 0, l = obj.length; i < l; i++) {
+      fn.call(null, obj[i], i, obj);
     }
-});
-
-/***/ }),
-
-/***/ 535:
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card card-container" }, [
-    _c("img", {
-      staticClass: "profile-img-card",
-      attrs: { src: "/img/logo_ipl_header.png", alt: "Logotipo IPL" }
-    }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c(
-      "form",
-      {
-        staticClass: "form-signin",
-        attrs: { method: "post" },
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.submitForm($event)
-          }
-        }
-      },
-      [
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.serverError,
-                expression: "serverError"
-              }
-            ],
-            staticClass: "alert alert-danger",
-            attrs: { role: "alert" }
-          },
-          [_c("p", [_vm._v(_vm._s(_vm.serverErrorMessage))])]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.username,
-              expression: "username"
-            }
-          ],
-          staticClass: "form-control",
-          class: { "is-invalid": _vm.missingUsername },
-          attrs: {
-            type: "text",
-            id: "inputAuth",
-            name: "username",
-            placeholder: "Username ou Email",
-            required: "",
-            autofocus: ""
-          },
-          domProps: { value: _vm.username },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.username = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "clearfix" }, [
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.isFormInvalid && _vm.missingUsername,
-                  expression: "isFormInvalid && missingUsername "
-                }
-              ],
-              staticClass: "alert alert-danger",
-              attrs: { role: "alert" }
-            },
-            [
-              _vm.missingUsername
-                ? _c("p", [_vm._v("Preencher Username / Email")])
-                : _vm._e()
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.password,
-              expression: "password"
-            }
-          ],
-          staticClass: "form-control",
-          class: { "is-invalid": _vm.missingPassword },
-          attrs: {
-            type: "password",
-            id: "inputPassword",
-            placeholder: "Password",
-            name: "password",
-            required: ""
-          },
-          domProps: { value: _vm.password },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.password = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "clearfix" }, [
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.isFormInvalid && _vm.missingPassword,
-                  expression: "isFormInvalid && missingPassword"
-                }
-              ],
-              staticClass: "alert alert-danger",
-              attrs: { role: "alert" }
-            },
-            [
-              _vm.missingPassword
-                ? _c("p", [_vm._v("Preencher Password")])
-                : _vm._e()
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-lg btn-primary btn-block btn-signin",
-            attrs: { type: "submit" }
-          },
-          [_vm._v("Iniciar Sessão")]
-        ),
-        _vm._v(" "),
-        _c(
-          "p",
-          { staticClass: "text-center" },
-          [
-            _c("router-link", { attrs: { to: "/password/reset" } }, [
-              _vm._v("Recuperar Password")
-            ])
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "p",
-          { staticClass: "text-center" },
-          [
-            _c("router-link", { attrs: { to: "/register" } }, [
-              _vm._v("Criar nova conta")
-            ])
-          ],
-          1
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _vm._m(0)
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "text-center" }, [
-      _c("a", { staticClass: "text-muted", attrs: { href: "/" } }, [
-        _c("small", [_vm._v("← Voltar a IPL-Cibersegurança")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-347d0248", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ 536:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(537)
-/* template */
-var __vue_template__ = __webpack_require__(538)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\loginComponents\\registerComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-77927f96", Component.options)
   } else {
-    hotAPI.reload("data-v-77927f96", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ 537:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            name: '',
-            username: '',
-            email: '',
-            password: '',
-            passwordConfirmation: '',
-            attemptSubmit: false,
-            serverErrorCode: 0,
-            serverErrorMessage: '',
-            success: false
-        };
-    },
-    computed: {
-        missingName: function missingName() {
-            return this.name.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        missingEmail: function missingEmail() {
-            return this.email.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        invalidEmail: function invalidEmail() {
-            return !this.missingEmail && !this.validateEmail(this.email.trim()) && !this.hasServerError && this.attemptSubmit;
-        },
-        emailAlreadyUsed: function emailAlreadyUsed() {
-            return this.serverErrorCode == 1;
-        },
-        missingUsername: function missingUsername() {
-            return this.username.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        usernameAlreadyUsed: function usernameAlreadyUsed() {
-            return this.serverErrorCode == 2;
-        },
-        missingPassword: function missingPassword() {
-            return this.password.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        invalidPassword: function invalidPassword() {
-            return !this.missingPassword && !this.validatePasswordStructure(this.password.trim()) && !this.hasServerError && this.attemptSubmit;
-        },
-        missingPasswordConfirmation: function missingPasswordConfirmation() {
-            return !this.missingPassword && !this.invalidPassword && this.passwordConfirmation.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        wrongPasswordConfirmation: function wrongPasswordConfirmation() {
-            return !this.missingPassword && !this.invalidPassword && !this.missingPasswordConfirmation && this.passwordConfirmation.trim() != this.password.trim() && !this.hasServerError && this.attemptSubmit;
-        },
-        hasClientError: function hasClientError() {
-            return this.missingName || this.missingEmail || this.missingUsername || this.missingPassword || this.invalidPassword || this.wrongPasswordConfirmation || this.missingPasswordConfirmation || this.invalidEmail;
-        },
-        hasServerError: function hasServerError() {
-            return this.serverErrorCode == -1 || this.emailAlreadyUsed || this.usernameAlreadyUsed;
-        },
-        isFormInvalid: function isFormInvalid() {
-            return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
-        }
-    },
-    methods: {
-        validateEmail: function validateEmail(email) {
-            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
-        },
-        validatePasswordStructure: function validatePasswordStructure(password) {
-            var re = /^[a-zA-Z0-9]{6,}$/;
-            return re.test(password);
-        },
-        clear: function clear() {
-            this.name = '';
-            this.username = '';
-            this.email = '';
-            this.password = '';
-            this.passwordConfirmation = '';
-            this.attemptSubmit = false;
-            this.serverErrorCode = 0;
-        },
-        validateForm: function validateForm() {
-            var _this = this;
-
-            //CLEARS SERVER ERROR'S
-            this.serverErrorCode = 0;
-            this.success = false;
-
-            //PREVENT FORM
-            event.preventDefault();
-
-            //FORM SUBMITED
-            this.attemptSubmit = true;
-
-            //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
-            if (!this.isFormInvalid) {
-                var data = {
-                    name: this.name,
-                    username: this.username,
-                    email: this.email,
-                    password: this.password
-                };
-                axios.post('/api/register', data).then(function (response) {
-                    _this.success = true;
-                    _this.clear();
-                    setTimeout(function () {
-                        return _this.$router.push({ path: '/login' });
-                    }, 5000);
-                }).catch(function (error) {
-                    _this.serverErrorCode = error.response.data.errorCode;
-                    _this.serverErrorMessage = error.response.data.msg;
-                });
-            }
-        }
+    // Iterate over object keys
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        fn.call(null, obj[key], key, obj);
+      }
     }
-});
-
-/***/ }),
-
-/***/ 538:
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card card-container" }, [
-    _c("img", {
-      staticClass: "profile-img-card",
-      attrs: { src: "/img/logo_ipl_header.png", alt: "Logotipo IPL" }
-    }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c(
-      "form",
-      {
-        staticClass: "form-signin",
-        attrs: { method: "post" },
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.validateForm($event)
-          }
-        }
-      },
-      [
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.success,
-                expression: "success"
-              }
-            ],
-            staticClass: "alert alert-success",
-            attrs: { role: "alert" }
-          },
-          [
-            _c("p", [
-              _vm._v(
-                "Utilizador criado, verifique o seu email para ativar a conta."
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.serverErrorCode != 0,
-                expression: "serverErrorCode != 0"
-              }
-            ],
-            staticClass: "alert alert-danger",
-            attrs: { role: "alert" }
-          },
-          [_c("p", [_vm._v(_vm._s(_vm.serverErrorMessage))])]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.name,
-              expression: "name"
-            }
-          ],
-          staticClass: "form-control",
-          class: { "is-invalid": _vm.missingName },
-          attrs: { type: "text", name: "name", placeholder: "Name" },
-          domProps: { value: _vm.name },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.name = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: "alert-danger",
-            attrs: { role: "alert" }
-          },
-          [_vm.missingName ? _c("p", [_vm._v("Preencher o Nome")]) : _vm._e()]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.username,
-              expression: "username"
-            }
-          ],
-          staticClass: "form-control",
-          class: {
-            "is-invalid": _vm.missingUsername || _vm.usernameAlreadyUsed
-          },
-          attrs: { type: "text", name: "username", placeholder: "Username" },
-          domProps: { value: _vm.username },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.username = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: "alert-danger",
-            attrs: { role: "alert" }
-          },
-          [
-            _vm.missingUsername
-              ? _c("p", [_vm._v("Preencher o Username")])
-              : _vm._e()
-          ]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.email,
-              expression: "email"
-            }
-          ],
-          staticClass: "form-control",
-          class: {
-            "is-invalid":
-              _vm.missingEmail || _vm.invalidEmail || _vm.emailAlreadyUsed
-          },
-          attrs: { type: "text", name: "email", placeholder: "Email" },
-          domProps: { value: _vm.email },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.email = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: "alert-danger",
-            attrs: { role: "alert" }
-          },
-          [_vm.missingEmail ? _c("p", [_vm._v("Preencher o Email")]) : _vm._e()]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: "alert-danger",
-            attrs: { role: "alert" }
-          },
-          [_vm.invalidEmail ? _c("p", [_vm._v("Invalido Email")]) : _vm._e()]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.password,
-              expression: "password"
-            }
-          ],
-          staticClass: "form-control",
-          class: { "is-invalid": _vm.missingPassword || _vm.invalidPassword },
-          attrs: {
-            type: "password",
-            name: "password",
-            autocomplete: "new-password",
-            placeholder: "Password"
-          },
-          domProps: { value: _vm.password },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.password = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: "alert-danger",
-            attrs: { role: "alert" }
-          },
-          [
-            _vm.missingPassword
-              ? _c("p", [_vm._v("Preencher a Password")])
-              : _vm._e()
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: "alert-danger",
-            attrs: { role: "alert" }
-          },
-          [
-            _vm.invalidPassword
-              ? _c("p", [_vm._v("Password deve ter 6 digitos")])
-              : _vm._e()
-          ]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.passwordConfirmation,
-              expression: "passwordConfirmation"
-            }
-          ],
-          staticClass: "form-control",
-          class: {
-            "is-invalid":
-              _vm.missingPasswordConfirmation || _vm.wrongPasswordConfirmation
-          },
-          attrs: {
-            type: "password",
-            name: "passwordConfirmation",
-            placeholder: "Confirm Password"
-          },
-          domProps: { value: _vm.passwordConfirmation },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.passwordConfirmation = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: " alert-danger",
-            attrs: { role: "alert" }
-          },
-          [
-            _vm.missingPasswordConfirmation
-              ? _c("p", [_vm._v("Confirma a Password")])
-              : _vm._e()
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: " alert-danger",
-            attrs: { role: "alert" }
-          },
-          [
-            _vm.wrongPasswordConfirmation
-              ? _c("p", [_vm._v("Password não são iguais")])
-              : _vm._e()
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-lg btn-primary btn-block btn-signin",
-            attrs: { type: "submit" }
-          },
-          [_vm._v("Registar")]
-        ),
-        _vm._v(" "),
-        _c(
-          "p",
-          { staticClass: "text-center" },
-          [
-            _c("router-link", { attrs: { to: "/login" } }, [
-              _vm._v("Voltar a Iniciar Sessão")
-            ])
-          ],
-          1
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _vm._m(0)
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "text-center" }, [
-      _c("a", { staticClass: "text-muted", attrs: { href: "/" } }, [
-        _c("small", [_vm._v("← Voltar a IPL-Cibersegurança")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-77927f96", module.exports)
   }
 }
 
-/***/ }),
-
-/***/ 539:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(540)
-/* template */
-var __vue_template__ = __webpack_require__(541)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\loginComponents\\recoverPasswordComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4744a35c", Component.options)
-  } else {
-    hotAPI.reload("data-v-4744a35c", Component.options)
+/**
+ * Accepts varargs expecting each argument to be an object, then
+ * immutably merges the properties of each object and returns result.
+ *
+ * When multiple objects contain the same key the later object in
+ * the arguments list will take precedence.
+ *
+ * Example:
+ *
+ * ```js
+ * var result = merge({foo: 123}, {foo: 456});
+ * console.log(result.foo); // outputs 456
+ * ```
+ *
+ * @param {Object} obj1 Object to merge
+ * @returns {Object} Result of all merge properties
+ */
+function merge(/* obj1, obj2, obj3, ... */) {
+  var result = {};
+  function assignValue(val, key) {
+    if (typeof result[key] === 'object' && typeof val === 'object') {
+      result[key] = merge(result[key], val);
+    } else {
+      result[key] = val;
+    }
   }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
-module.exports = Component.exports
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
+ * Extends object a by mutably adding to it the properties of object b.
+ *
+ * @param {Object} a The object to be extended
+ * @param {Object} b The object to copy properties from
+ * @param {Object} thisArg The object to bind function to
+ * @return {Object} The resulting value of object a
+ */
+function extend(a, b, thisArg) {
+  forEach(b, function assignValue(val, key) {
+    if (thisArg && typeof val === 'function') {
+      a[key] = bind(val, thisArg);
+    } else {
+      a[key] = val;
+    }
+  });
+  return a;
+}
+
+module.exports = {
+  isArray: isArray,
+  isArrayBuffer: isArrayBuffer,
+  isBuffer: isBuffer,
+  isFormData: isFormData,
+  isArrayBufferView: isArrayBufferView,
+  isString: isString,
+  isNumber: isNumber,
+  isObject: isObject,
+  isUndefined: isUndefined,
+  isDate: isDate,
+  isFile: isFile,
+  isBlob: isBlob,
+  isFunction: isFunction,
+  isStream: isStream,
+  isURLSearchParams: isURLSearchParams,
+  isStandardBrowserEnv: isStandardBrowserEnv,
+  forEach: forEach,
+  merge: merge,
+  extend: extend,
+  trim: trim
+};
 
 
 /***/ }),
 
-/***/ 54:
+/***/ 50:
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -43290,775 +44058,7 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ 540:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            email: '',
-            attemptSubmit: false,
-            serverError: false,
-            serverErrorMessage: '',
-            success: false
-        };
-    },
-    computed: {
-        missingEmail: function missingEmail() {
-            return this.email.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        invalidEmail: function invalidEmail() {
-            return !this.missingEmail && !this.validateEmail(this.email.trim()) && !this.hasServerError && this.attemptSubmit;
-        },
-        hasClientError: function hasClientError() {
-            return this.missingEmail || this.invalidEmail;
-        },
-        hasServerError: function hasServerError() {
-            return this.serverError;
-        },
-        isFormInvalid: function isFormInvalid() {
-            return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
-        }
-    },
-    methods: {
-        validateEmail: function validateEmail(email) {
-            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
-        },
-        submitForm: function submitForm(event) {
-            var _this = this;
-
-            //CLEARS SERVER ERROR'S
-            this.serverError = false;
-            this.success = false;
-
-            //PREVENT FORM
-
-            event.preventDefault();
-
-            //FORM SUBMITED
-            this.attemptSubmit = true;
-
-            //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
-            if (!this.isFormInvalid) {
-                var data = {
-                    email: this.email
-                };
-                axios.post('/api/password/email', data).then(function (response) {
-                    _this.success = true;
-                    _this.attemptSubmit = false;
-                    setTimeout(function () {
-                        return _this.$router.push({ path: '/login' });
-                    }, 5000);
-                }).catch(function (error) {
-                    _this.serverError = true;
-                    _this.serverErrorMessage = error.response.data.msg;
-                });
-            }
-        }
-    }
-});
-
-/***/ }),
-
-/***/ 541:
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card card-container" }, [
-    _c("img", {
-      staticClass: "profile-img-card",
-      attrs: { src: "/img/logo_ipl_header.png", alt: "Logotipo IPL" }
-    }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c(
-      "form",
-      {
-        staticClass: "form-signin",
-        attrs: { method: "post" },
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.submitForm($event)
-          }
-        }
-      },
-      [
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.serverError,
-                expression: "serverError"
-              }
-            ],
-            staticClass: "alert alert-danger",
-            attrs: { role: "alert" }
-          },
-          [_c("p", [_vm._v(_vm._s(_vm.serverErrorMessage))])]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.success,
-                expression: "success"
-              }
-            ],
-            staticClass: "alert alert-success",
-            attrs: { role: "alert" }
-          },
-          [
-            _c("p", { staticClass: "text-center" }, [
-              _vm._v(
-                "Email com a informação para recuperar a password foi enviado. Verifique o seu email."
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.email,
-              expression: "email"
-            }
-          ],
-          staticClass: "form-control",
-          class: { "is-invalid": _vm.missingEmail },
-          attrs: {
-            type: "email",
-            id: "inputAuth",
-            name: "email",
-            placeholder: "Email",
-            required: "",
-            autofocus: ""
-          },
-          domProps: { value: _vm.email },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.email = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "clearfix" }, [
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.isFormInvalid && _vm.missingEmail,
-                  expression: "isFormInvalid && missingEmail "
-                }
-              ],
-              staticClass: "alert alert-danger",
-              attrs: { role: "alert" }
-            },
-            [_vm.missingEmail ? _c("p", [_vm._v("Preencher Email")]) : _vm._e()]
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-lg btn-primary btn-block btn-signin",
-            attrs: { type: "submit" }
-          },
-          [_vm._v("Recuperar Password")]
-        ),
-        _vm._v(" "),
-        _c(
-          "p",
-          { staticClass: "text-center" },
-          [
-            _c("router-link", { attrs: { to: "/login" } }, [
-              _vm._v("Voltar a Iniciar Sessão")
-            ])
-          ],
-          1
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _vm._m(0)
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "text-center" }, [
-      _c("a", { staticClass: "text-muted", attrs: { href: "/" } }, [
-        _c("small", [_vm._v("← Voltar a IPL-Cibersegurança")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4744a35c", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ 542:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(543)
-/* template */
-var __vue_template__ = __webpack_require__(544)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\loginComponents\\newPasswordComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-e2e344d4", Component.options)
-  } else {
-    hotAPI.reload("data-v-e2e344d4", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ 543:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['token', 'user'],
-    data: function data() {
-        return {
-            email: '',
-            password: '',
-            passwordConfirmation: '',
-            attemptSubmit: false,
-            serverError: false,
-            serverErrorMessage: '',
-            success: false
-        };
-    },
-    computed: {
-        missingEmail: function missingEmail() {
-            return this.email.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        invalidEmail: function invalidEmail() {
-            return !this.missingEmail && !this.validateEmail(this.email.trim()) && !this.hasServerError && this.attemptSubmit;
-        },
-        missingPassword: function missingPassword() {
-            return this.password.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        invalidPassword: function invalidPassword() {
-            return !this.missingPassword && !this.validatePasswordStructure(this.password.trim()) && !this.hasServerError && this.attemptSubmit;
-        },
-        missingPasswordConfirmation: function missingPasswordConfirmation() {
-            return !this.missingPassword && !this.invalidPassword && this.passwordConfirmation.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        wrongPasswordConfirmation: function wrongPasswordConfirmation() {
-            return !this.missingPassword && !this.invalidPassword && !this.missingPasswordConfirmation && this.passwordConfirmation.trim() != this.password.trim() && !this.hasServerError && this.attemptSubmit;
-        },
-        hasClientError: function hasClientError() {
-            return this.missingEmail || this.invalidEmail || this.missingPassword || this.invalidPassword || this.wrongPasswordConfirmation || this.missingPasswordConfirmation;
-        },
-        hasServerError: function hasServerError() {
-            return this.serverError;
-        },
-        isFormInvalid: function isFormInvalid() {
-            return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
-        }
-    },
-    methods: {
-        validateEmail: function validateEmail(email) {
-            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
-        },
-        validatePasswordStructure: function validatePasswordStructure(password) {
-            var re = /^[a-zA-Z0-9]{6,}$/;
-            return re.test(password);
-        },
-        validateForm: function validateForm() {
-            var _this = this;
-
-            //CLEARS SERVER ERROR'S
-            this.serverError = false;
-            this.success = false;
-
-            //PREVENT FORM
-            event.preventDefault();
-
-            //FORM SUBMITED
-            this.attemptSubmit = true;
-
-            //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
-            if (!this.isFormInvalid) {
-                var data = {
-                    email: this.email,
-                    token: this.token,
-                    password: this.password
-                };
-                console.log(data);
-                axios.post('/api/password/reset', data).then(function (response) {
-
-                    _this.success = true;
-                    _this.attemptSubmit = false;
-                    _this.email = '';
-                    _this.password = '';
-                    _this.passwordConfirmation = '';
-                    setTimeout(function () {
-                        return _this.$router.push({ path: '/login' });
-                    }, 5000);
-                }).catch(function (error) {
-                    _this.serverError = true;
-                    _this.serverErrorMessage = "server" + error.response.data.msg;
-                    setTimeout(_this.serverError = false, 5000);
-                });
-            }
-        }
-    }
-});
-
-/***/ }),
-
-/***/ 544:
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card card-container" }, [
-    _c("img", {
-      staticClass: "profile-img-card",
-      attrs: { src: "/img/logo_ipl_header.png", alt: "Logotipo IPL" }
-    }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c(
-      "form",
-      {
-        staticClass: "form-signin",
-        attrs: { method: "post" },
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.validateForm($event)
-          }
-        }
-      },
-      [
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.serverError,
-                expression: "serverError"
-              }
-            ],
-            staticClass: "alert alert-danger",
-            attrs: { role: "alert" }
-          },
-          [_c("p", [_vm._v(_vm._s(_vm.serverErrorMessage))])]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.success,
-                expression: "success"
-              }
-            ],
-            staticClass: "alert alert-success",
-            attrs: { role: "alert" }
-          },
-          [_c("p", [_vm._v("Password Alterada")])]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.email,
-              expression: "email"
-            }
-          ],
-          staticClass: "form-control",
-          class: { "is-invalid": _vm.missingEmail || _vm.invalidEmail },
-          attrs: { type: "text", name: "email", placeholder: "Email" },
-          domProps: { value: _vm.email },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.email = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: "alert-danger",
-            attrs: { role: "alert" }
-          },
-          [_vm.missingEmail ? _c("p", [_vm._v("Preencher o Email")]) : _vm._e()]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: "alert-danger",
-            attrs: { role: "alert" }
-          },
-          [_vm.invalidEmail ? _c("p", [_vm._v("Invalido Email")]) : _vm._e()]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.password,
-              expression: "password"
-            }
-          ],
-          staticClass: "form-control",
-          class: { "is-invalid": _vm.missingPassword || _vm.invalidPassword },
-          attrs: {
-            type: "password",
-            name: "password",
-            autocomplete: "new-password",
-            placeholder: "Password"
-          },
-          domProps: { value: _vm.password },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.password = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: "alert-danger",
-            attrs: { role: "alert" }
-          },
-          [
-            _vm.missingPassword
-              ? _c("p", [_vm._v("Preencher a Password")])
-              : _vm._e()
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: "alert-danger",
-            attrs: { role: "alert" }
-          },
-          [
-            _vm.invalidPassword
-              ? _c("p", [_vm._v("Password deve ter 6 digitos")])
-              : _vm._e()
-          ]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.passwordConfirmation,
-              expression: "passwordConfirmation"
-            }
-          ],
-          staticClass: "form-control",
-          class: {
-            "is-invalid":
-              _vm.missingPasswordConfirmation || _vm.wrongPasswordConfirmation
-          },
-          attrs: {
-            type: "password",
-            name: "passwordConfirmation",
-            placeholder: "Confirm Password"
-          },
-          domProps: { value: _vm.passwordConfirmation },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.passwordConfirmation = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: " alert-danger",
-            attrs: { role: "alert" }
-          },
-          [
-            _vm.missingPasswordConfirmation
-              ? _c("p", [_vm._v("Confirma a Password")])
-              : _vm._e()
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isFormInvalid,
-                expression: "isFormInvalid"
-              }
-            ],
-            staticClass: " alert-danger",
-            attrs: { role: "alert" }
-          },
-          [
-            _vm.wrongPasswordConfirmation
-              ? _c("p", [_vm._v("Password não são iguais")])
-              : _vm._e()
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-lg btn-primary btn-block btn-signin",
-            attrs: { type: "submit" }
-          },
-          [_vm._v("Alterar Password")]
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _vm._m(0)
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "text-center" }, [
-      _c("a", { staticClass: "text-muted", attrs: { href: "/" } }, [
-        _c("small", [_vm._v("← Voltar a IPL-Cibersegurança")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-e2e344d4", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ 55:
+/***/ 51:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -44067,7 +44067,7 @@ if (false) {
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(31), __webpack_require__(15)) :
+   true ? factory(exports, __webpack_require__(28), __webpack_require__(15)) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
   (factory((global.bootstrap = {}),global.jQuery,global.Popper));
 }(this, (function (exports,$,Popper) { 'use strict';
@@ -47992,23 +47992,23 @@ if (false) {
 
 /***/ }),
 
-/***/ 56:
+/***/ 52:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(57);
+module.exports = __webpack_require__(53);
 
 /***/ }),
 
-/***/ 57:
+/***/ 53:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(5);
-var bind = __webpack_require__(32);
-var Axios = __webpack_require__(59);
-var defaults = __webpack_require__(21);
+var bind = __webpack_require__(29);
+var Axios = __webpack_require__(55);
+var defaults = __webpack_require__(20);
 
 /**
  * Create an instance of Axios
@@ -48041,15 +48041,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(36);
-axios.CancelToken = __webpack_require__(73);
-axios.isCancel = __webpack_require__(35);
+axios.Cancel = __webpack_require__(34);
+axios.CancelToken = __webpack_require__(69);
+axios.isCancel = __webpack_require__(33);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(74);
+axios.spread = __webpack_require__(70);
 
 module.exports = axios;
 
@@ -48059,7 +48059,7 @@ module.exports.default = axios;
 
 /***/ }),
 
-/***/ 58:
+/***/ 54:
 /***/ (function(module, exports) {
 
 /*!
@@ -48087,16 +48087,16 @@ function isSlowBuffer (obj) {
 
 /***/ }),
 
-/***/ 59:
+/***/ 55:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var defaults = __webpack_require__(21);
+var defaults = __webpack_require__(20);
 var utils = __webpack_require__(5);
-var InterceptorManager = __webpack_require__(68);
-var dispatchRequest = __webpack_require__(69);
+var InterceptorManager = __webpack_require__(64);
+var dispatchRequest = __webpack_require__(65);
 
 /**
  * Create a new instance of Axios
@@ -48174,7 +48174,7 @@ module.exports = Axios;
 
 /***/ }),
 
-/***/ 60:
+/***/ 56:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48194,13 +48194,13 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 /***/ }),
 
-/***/ 61:
+/***/ 57:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(34);
+var createError = __webpack_require__(32);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -48228,7 +48228,7 @@ module.exports = function settle(resolve, reject, response) {
 
 /***/ }),
 
-/***/ 62:
+/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48257,7 +48257,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 /***/ }),
 
-/***/ 63:
+/***/ 59:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48333,7 +48333,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 /***/ }),
 
-/***/ 64:
+/***/ 60:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48394,7 +48394,7 @@ module.exports = function parseHeaders(headers) {
 
 /***/ }),
 
-/***/ 65:
+/***/ 61:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48470,7 +48470,7 @@ module.exports = (
 
 /***/ }),
 
-/***/ 66:
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48514,7 +48514,7 @@ module.exports = btoa;
 
 /***/ }),
 
-/***/ 67:
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48575,7 +48575,7 @@ module.exports = (
 
 /***/ }),
 
-/***/ 68:
+/***/ 64:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48635,18 +48635,18 @@ module.exports = InterceptorManager;
 
 /***/ }),
 
-/***/ 69:
+/***/ 65:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(5);
-var transformData = __webpack_require__(70);
-var isCancel = __webpack_require__(35);
-var defaults = __webpack_require__(21);
-var isAbsoluteURL = __webpack_require__(71);
-var combineURLs = __webpack_require__(72);
+var transformData = __webpack_require__(66);
+var isCancel = __webpack_require__(33);
+var defaults = __webpack_require__(20);
+var isAbsoluteURL = __webpack_require__(67);
+var combineURLs = __webpack_require__(68);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -48729,7 +48729,7 @@ module.exports = function dispatchRequest(config) {
 
 /***/ }),
 
-/***/ 70:
+/***/ 66:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48757,7 +48757,7 @@ module.exports = function transformData(data, headers, fns) {
 
 /***/ }),
 
-/***/ 71:
+/***/ 67:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48779,7 +48779,7 @@ module.exports = function isAbsoluteURL(url) {
 
 /***/ }),
 
-/***/ 72:
+/***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48801,13 +48801,13 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 /***/ }),
 
-/***/ 73:
+/***/ 69:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(36);
+var Cancel = __webpack_require__(34);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -48866,7 +48866,7 @@ module.exports = CancelToken;
 
 /***/ }),
 
-/***/ 74:
+/***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48901,7 +48901,7 @@ module.exports = function spread(callback) {
 
 /***/ }),
 
-/***/ 75:
+/***/ 71:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -49091,11 +49091,11 @@ module.exports = function spread(callback) {
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(22)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(30)))
 
 /***/ }),
 
-/***/ 76:
+/***/ 72:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51726,7 +51726,7 @@ if (inBrowser && window.Vue) {
 
 /***/ }),
 
-/***/ 8:
+/***/ 9:
 /***/ (function(module, exports) {
 
 var g;
