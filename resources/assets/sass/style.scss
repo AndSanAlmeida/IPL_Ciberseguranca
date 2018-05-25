@@ -324,6 +324,9 @@ p {
   background-size: cover;
   min-height: 500px;
   position: relative;
+  .bg-color {
+    min-height: 500px;
+  }
   h1 {
     font-size: 2.2vw;
     color: white;
@@ -341,18 +344,6 @@ p {
     padding: 20px 10px;
     font-weight: 700;
   }
-  p {
-    color: white;
-    margin: 0 0 40px;
-  }
-  .btn {
-    margin: 0 8px;
-  }
-}
-
-.bg-color {
-  //background-color: rgba(0, 0, 0, 0);
-  min-height: 500px;
 }
 
 .banner-content {
@@ -362,6 +353,62 @@ p {
   top: 75%;
   left: 0;
   @include transform(translateY(-50%));
+}
+
+#mission {
+  background: url(/img/mission.jpg) no-repeat fixed;
+  background-size: cover;
+  min-height: 400px;
+  position: relative;
+
+  .bg-color {
+    background-color: rgba(0, 0, 0, 0.5);
+    min-height: 400px;
+  }
+
+  .missionContent {
+    margin-top: 10%;
+  }
+  h1{
+    font-size: 4em;
+    color: white;
+  }
+  p {
+    font-size: 21px;
+    line-height: 32px;
+    color: white;
+  }
+}
+
+#homeEvents {
+  .borderB {
+    border-bottom: solid 2px #e8e8e8;
+  }
+  .homeEventsContainer {
+    margin-top: 2em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }  
+  .thumbnail {
+    margin: 20px;
+    border: none;
+    img {
+      opacity: 1;
+      @include border-radius(5px);
+      @include transition(opacity, 0.5s, ease-in-out);
+    }   
+    &:hover {
+      img {
+        opacity: 0.8;
+      }
+    }
+    p {
+      margin: 0;
+    }
+  }
 }
 
 /*****************************************************
