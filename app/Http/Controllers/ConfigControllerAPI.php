@@ -56,6 +56,27 @@ class ConfigControllerAPI extends Controller
         }
     }
 
+    public function getOurMission() {
+        $text = Text::where('key', 'ourMission')->first();
+        return $text;
+    }
+
+    public function ourMissionUpdate(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'ourMission.description' => 'required|string',
+        ]);
+
+        if ($request->wantsJson() && !$validator->fails()) {
+
+            $ourMission = Text::findOrFail($request->ourMission['id']);
+            $ourMission->description = $request->ourMission['description'];
+            $ourMission->save();
+            return response()->json(['msg' => 'Alterações guardadas com sucesso.']);
+        } else {
+            return response()->json(['msg' => 'Request inválido.'], 400);
+        }
+    }
+
     public function getAboutUs() {
         $text = Text::where('key', 'aboutUs')->first();
         return $text;

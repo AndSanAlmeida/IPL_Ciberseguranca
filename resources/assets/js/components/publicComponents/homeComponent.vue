@@ -61,13 +61,13 @@
                 </div>
             </div>
         </section>
-        <section id="mission">
+        <section v-if="hasOurMission" id="mission">
             <div class="bg-color ">
                 <div class="container">
                     <div class="row missionContent">
                         <div class="col-md-12 text-center">
                             <h1>Nossa missão</h1>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <p v-html="ourMission.description"></p>
                         </div>                         
                     </div>
                 </div>           
@@ -101,15 +101,25 @@
     export default {
         data: function(){
             return {
+                ourMission: [],
                 eventos: [],
             }
         },
         computed: {
+            hasOurMission: function () {
+                return Object.keys(this.ourMission).length !== 0;
+            },
             hasEvents: function () {
                 return this.eventos.length > 0;
             },
         },
         methods: {
+            getOurMission() {
+                axios.get('/api/settings/ourMission')
+                    .then(response=>{
+                        this.ourMission = response.data;
+                });
+            },
             getEvents() {
                 axios.get('/api/events')
                     .then(response => {
@@ -118,6 +128,7 @@
             },
         },
         mounted(){
+            this.getOurMission();
             this.getEvents();
         }
     }
