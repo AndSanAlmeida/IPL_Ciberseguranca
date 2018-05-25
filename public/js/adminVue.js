@@ -75554,12 +75554,7 @@ window.Vue = __webpack_require__(37);
 axios.defaults.headers.common['Accept'] = "application/json";
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('access_token');
 
-// FIXED
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('navbar-left', __webpack_require__(346));
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('navbar-top', __webpack_require__(349));
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('admin-footer', __webpack_require__(352));
-
-//////////////////
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('admin-layout', __webpack_require__(548));
 var home = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('home', __webpack_require__(354));
 var users = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('users', __webpack_require__(359));
 var eventos = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('events', __webpack_require__(365));
@@ -75582,29 +75577,41 @@ var aboutUs = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('aboutUs', _
 var rssNews = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('rssNews', __webpack_require__(519));
 
 /*ROUTES*/
-var routes = [{ path: '/', redirect: '/home' }, { path: '/home', component: home }, { path: '/users', component: users }, { path: '/events', component: eventos }, { path: '/events/create', component: eventsCreate
-	/*beforeEnter: (to, from, next) => {
- 	axios.get('/api/user')
-     .then(response => {
-     	next();
-     })
-     .catch(error => {
- 	    next(false);
- 	});
- } */
-}, { path: '/events/edit/:id', component: eventsEdit, name: 'eventsEdit', props: { default: true } }, { path: '/events/:id', component: eventsDetails, name: 'eventsDetails', props: { default: true } }, { path: '/glossary', component: glossary }, { path: '/settings', component: settings }, { path: '/usefulLinks', component: usefulLinks }, { path: '/documents', component: documents }, { path: '/faqs', component: faqs }, { path: '/userQuestions', component: userQuestions }, { path: '/userQuestions/all', component: userAllQuestionsComponent }, { path: '/news', component: newsComponent }, { path: '/newsletters', component: newslettersComponent }, { path: '/rssNews', component: rssNews }];
+var routes = [
+
+//{ path: '/',  },
+{
+				path: '/',
+				redirect: '/home',
+				component: {
+								template: '<router-view></router-view>'
+				},
+				beforeEnter: function beforeEnter(to, from, next) {
+								if (localStorage.getItem('access_token')) {
+												axios.get('/api/user').then(function (response) {
+																console.log(response.status);
+																if (response.status != 401) next();else window.location = '/';
+												}).catch(function (error) {
+																window.location = '/';
+												});
+								} else {
+												window.location = '/';
+								}
+				},
+				children: [{ path: 'home', component: home }, { path: 'users', component: users }, { path: 'events', component: eventos }, { path: 'events/create', component: eventsCreate }, { path: 'events/edit/:id', component: eventsEdit, name: 'eventsEdit', props: { default: true } }, { path: 'events/:id', component: eventsDetails, name: 'eventsDetails', props: { default: true } }, { path: 'glossary', component: glossary }, { path: 'settings', component: settings }, { path: 'usefulLinks', component: usefulLinks }, { path: 'documents', component: documents }, { path: 'faqs', component: faqs }, { path: 'userQuestions', component: userQuestions }, { path: 'userQuestions/all', component: userAllQuestionsComponent }, { path: 'news', component: newsComponent }, { path: 'newsletters', component: newslettersComponent }, { path: 'rssNews', component: rssNews }]
+}];
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
-	routes: routes
+				routes: routes
 });
 
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-	router: router,
-	data: function data() {
-		return {};
-	},
-	methods: {},
-	created: function created() {}
+				router: router,
+				data: function data() {
+								return {};
+				},
+				methods: {},
+				created: function created() {}
 
 }).$mount('#admin');
 
@@ -108156,6 +108163,149 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-34d0edc7", module.exports)
+  }
+}
+
+/***/ }),
+/* 531 */,
+/* 532 */,
+/* 533 */,
+/* 534 */,
+/* 535 */,
+/* 536 */,
+/* 537 */,
+/* 538 */,
+/* 539 */,
+/* 540 */,
+/* 541 */,
+/* 542 */,
+/* 543 */,
+/* 544 */,
+/* 545 */,
+/* 546 */,
+/* 547 */,
+/* 548 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(549)
+/* template */
+var __vue_template__ = __webpack_require__(550)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\adminComponents\\layoutComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7131e656", Component.options)
+  } else {
+    hotAPI.reload("data-v-7131e656", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 549 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adminComponents_partialsComponents_navbarLeftComponent_vue__ = __webpack_require__(346);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adminComponents_partialsComponents_navbarLeftComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__adminComponents_partialsComponents_navbarLeftComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__adminComponents_partialsComponents_navbarTopComponent_vue__ = __webpack_require__(349);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__adminComponents_partialsComponents_navbarTopComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__adminComponents_partialsComponents_navbarTopComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adminComponents_partialsComponents_footerComponent_vue__ = __webpack_require__(352);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adminComponents_partialsComponents_footerComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__adminComponents_partialsComponents_footerComponent_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    'navbar-left': __WEBPACK_IMPORTED_MODULE_0__adminComponents_partialsComponents_navbarLeftComponent_vue___default.a,
+    'navbar-top': __WEBPACK_IMPORTED_MODULE_1__adminComponents_partialsComponents_navbarTopComponent_vue___default.a,
+    'admin-footer': __WEBPACK_IMPORTED_MODULE_2__adminComponents_partialsComponents_footerComponent_vue___default.a
+
+  }
+});
+
+/***/ }),
+/* 550 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("navbar-top"),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "page-content d-flex align-items-stretch" },
+        [
+          _c("navbar-left"),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "content-inner" },
+            [_c("router-view"), _vm._v(" "), _c("admin-footer")],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7131e656", module.exports)
   }
 }
 

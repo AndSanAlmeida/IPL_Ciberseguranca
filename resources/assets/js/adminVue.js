@@ -15,12 +15,7 @@ window.Vue = require('vue');
 axios.defaults.headers.common['Accept'] = "application/json";
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('access_token');
 
-// FIXED
-Vue.component('navbar-left', require('./components/adminComponents/partialsComponents/navbarLeftComponent.vue'));
-Vue.component('navbar-top', require('./components/adminComponents/partialsComponents/navbarTopComponent.vue'));
-Vue.component('admin-footer', require('./components/adminComponents/partialsComponents/footerComponent.vue'));
-
-//////////////////
+Vue.component('admin-layout', require('./components/adminComponents/layoutComponent.vue'));
 const home = Vue.component('home', require('./components/adminComponents/homeComponent.vue'));
 const users = Vue.component('users', require('./components/adminComponents/usersComponents/usersComponent.vue'));
 const eventos = Vue.component('events', require('./components/adminComponents/eventsComponents/eventsComponent.vue'));
@@ -44,34 +39,51 @@ const rssNews = Vue.component('rssNews', require('./components/adminComponents/r
 
 /*ROUTES*/
 const routes = [
-
-	{ path: '/', redirect: '/home' },
-	{ path: '/home', component: home },
-	{ path: '/users', component: users },
-	{ path: '/events', component: eventos },
-	{ path: '/events/create', component: eventsCreate,
-		/*beforeEnter: (to, from, next) => {
-			axios.get('/api/user')
-		    .then(response => {
-		    	next();
-		    })
-		    .catch(error => {
-			    next(false);
-			});
-		} */
+	
+	//{ path: '/',  },
+	{
+	    path: '/',
+	    redirect: '/home',
+	    component: {
+          template: '<router-view></router-view>',
+      	},
+      	beforeEnter: (to, from, next) => {
+      		if (localStorage.getItem('access_token')) {
+      			axios.get('/api/user')
+			    .then(response => {
+			    	console.log(response.status);
+			    	if (response.status != 401 ) 
+			    		next();
+			    	else 
+			    		window.location = '/';
+			    })
+			    .catch(error => {
+				    window.location = '/';
+				});
+      		} else {
+      			window.location = '/';
+      		}
+			
+		}, 
+	    children: [
+	    	{ path: 'home', component: home },
+			{ path: 'users', component: users },
+			{ path: 'events', component: eventos },
+			{ path: 'events/create', component: eventsCreate },
+			{ path: 'events/edit/:id', component: eventsEdit, name: 'eventsEdit', props: { default: true} },
+			{ path: 'events/:id', component: eventsDetails, name: 'eventsDetails', props: { default: true} },
+			{ path: 'glossary', component: glossary },
+			{ path: 'settings', component: settings },
+			{ path: 'usefulLinks', component: usefulLinks },
+			{ path: 'documents', component: documents },
+			{ path: 'faqs', component: faqs },
+			{ path: 'userQuestions', component: userQuestions },
+			{ path: 'userQuestions/all', component: userAllQuestionsComponent },
+			{ path: 'news', component: newsComponent },
+			{ path: 'newsletters', component: newslettersComponent },
+			{ path: 'rssNews', component: rssNews },
+	    ],
 	},
-	{ path: '/events/edit/:id', component: eventsEdit, name: 'eventsEdit', props: { default: true} },
-	{ path: '/events/:id', component: eventsDetails, name: 'eventsDetails', props: { default: true} },
-	{ path: '/glossary', component: glossary },
-	{ path: '/settings', component: settings },
-	{ path: '/usefulLinks', component: usefulLinks },
-	{ path: '/documents', component: documents },
-	{ path: '/faqs', component: faqs },
-	{ path: '/userQuestions', component: userQuestions },
-	{ path: '/userQuestions/all', component: userAllQuestionsComponent },
-	{ path: '/news', component: newsComponent },
-	{ path: '/newsletters', component: newslettersComponent },
-	{ path: '/rssNews', component: rssNews },
 ];
 
 const router = new VueRouter({

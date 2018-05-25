@@ -3,14 +3,7 @@
 @section('title', 'IPL-Cibersegurança | Administração')
 
 @section('content')
-    <navbar-top></navbar-top>
-    <div class="page-content d-flex align-items-stretch">
-        <navbar-left></navbar-left>
-        <div class="content-inner">
-            <router-view></router-view>
-            <admin-footer></admin-footer>
-        </div>
-    </div> 
+<admin-layout></admin-layout>
 @endsection
 
 @section('pagescript')
