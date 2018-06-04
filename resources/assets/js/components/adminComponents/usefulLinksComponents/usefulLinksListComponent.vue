@@ -12,29 +12,22 @@
             <div class="card-body">
               <div class="table-responsive">                       
                 <div class="card">
-                  <p class="text-center" v-if="usefulLinks.length == 0" >Não existe links úteis disponíveis.</p>
-                  <table class="table table-striped table-hover" v-if="usefulLinks.length != 0" >
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Descrição</th>
-                        <th>URL</th>
-                        <th>Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="link in usefulLinks" :key="link.id">
-                        <td>{{link.id}}</td>
-                        <td>{{link.description}}</td>
-                        <td>{{link.link}}</td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-warning" v-on:click="editLink(link)">Editar</button>
-                            <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteLink(link)">Eliminar</button>
-                        
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <b-table responsive 
+                    stacked="md"
+                    :items="usefulLinks" 
+                    :fields="fields"
+                    :current-page="currentPage"
+                    :per-page="perPage"> 
+                    <template slot="actions" slot-scope="row">
+                      <button type="button" class="btn btn-sm btn-warning" v-on:click="editLink(row.item)">Editar</button>
+                      <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteLink(row.item)">Eliminar</button>
+                    </template>
+                  </b-table>
+                  <hr>
+                  <b-pagination :total-rows="usefulLinks.length" 
+                      :per-page="perPage" 
+                      v-model="currentPage"
+                      align="center"/>
                 </div>
               </div>
             </div>
@@ -47,8 +40,17 @@
 <script type="text/javascript">
 module.exports={
   props: ['usefulLinks'],
-  computed: {
-
+  data: function () {
+    return {
+      fields: [
+        { key: 'id', label:'#'},
+        { key: 'description', label:'Descrição'},
+        { key: 'link', label:'URL'},
+        { key: 'actions', label:'Ações'},
+      ],
+      currentPage: 1,
+      perPage: 10
+    }
   },
   methods: {
     editLink: function(link) {

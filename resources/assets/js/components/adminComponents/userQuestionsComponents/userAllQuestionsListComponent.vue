@@ -10,29 +10,23 @@
             <div class="card-body">
               <div class="table-responsive">                       
                 <div class="card">
-                  <p class="text-center" v-if="questions.length == 0" >Não existem questões do utilizador</p>
-                  <table class="table table-striped table-hover" v-if="questions.length != 0" >
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Pergunta</th>
-                        <th>Resposta</th>
-                        <th>Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="question in questions" :key="question.id">
-                        <td>{{question.id}}</td>
-                        <td>{{question.question}}</td>
-                        <td>{{question.answer}}</td>
-                        <td>
-                          <button type="button" class="btn btn-sm btn-primary" v-on:click="seeMoreDetails(question)">Ver mais detalhes</button>
-                          <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteQuestions(question)">Eliminar</button>
-                          <button type="button" class="btn btn-sm btn-success" v-if="!question.isFAQ" v-on:click="useInFAQ(question)">Usar em FAQ</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <b-table responsive 
+                    stacked="md"
+                    :items="questions" 
+                    :fields="fields"
+                    :current-page="currentPage"
+                    :per-page="perPage"> 
+                    <template slot="actions" slot-scope="row">
+                      <button type="button" class="btn btn-sm btn-primary" v-on:click="seeMoreDetails(row.item)">Ver mais detalhes</button>
+                      <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteQuestions(row.item)">Eliminar</button>
+                      <button type="button" class="btn btn-sm btn-success" v-if="!row.item.isFAQ" v-on:click="useInFAQ(row.item)">Usar em FAQ</button>
+                    </template>
+                  </b-table>
+                  <hr>
+                  <b-pagination :total-rows="questions.length" 
+                      :per-page="perPage" 
+                      v-model="currentPage"
+                      align="center"/>
                 </div>
               </div>
               <div class="text-right">
@@ -48,8 +42,17 @@
 <script type="text/javascript">
 module.exports={
   props: ['questions'],
-  computed: {
-
+  data: function () {
+    return {
+      fields: [
+        { key: 'id', label:'#'},
+        { key: 'question', label:'Pergunta'},
+        { key: 'answer', label:'Resposta'},
+        { key: 'actions', label:'Ações'},
+      ],
+      currentPage: 1,
+      perPage: 10
+    }
   },
   methods: {
     useInFAQ: function(question) {

@@ -12,27 +12,23 @@
             <div class="card-body">
               <div class="table-responsive">                       
                 <div class="card">
-                  <p class="text-center" v-if="faqs.length == 0" >Não existe FAQs disponíveis.</p>
-                  <table class="table table-striped table-hover" v-if="faqs.length != 0" >
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Questão</th>
-                        <th>Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="faq in faqs" :key="faq.id">
-                        <td>{{faq.id}}</td>
-                        <td>{{faq.question}}</td>
-                        <td>
-                          <button type="button" class="btn btn-sm btn-primary" v-on:click="seeMoreDetails(faq)">Ver mais detalhes</button>
-                          <button type="button" class="btn btn-sm btn-warning" v-on:click="editFaq(faq)">Editar</button>
-                          <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteFaq(faq)">Eliminar</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <b-table responsive 
+                    stacked="md"
+                    :items="faqs" 
+                    :fields="fields"
+                    :current-page="currentPage"
+                    :per-page="perPage"> 
+                    <template slot="actions" slot-scope="row">
+                      <button type="button" class="btn btn-sm btn-primary" v-on:click="seeMoreDetails(row.item)">Ver mais detalhes</button>
+                      <button type="button" class="btn btn-sm btn-warning" v-on:click="editFaq(row.item)">Editar</button>
+                      <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteFaq(row.item)">Eliminar</button>
+                    </template>
+                  </b-table>
+                  <hr>
+                  <b-pagination :total-rows="faqs.length" 
+                      :per-page="perPage" 
+                      v-model="currentPage"
+                      align="center"/>
                 </div>
               </div>
             </div>
@@ -45,8 +41,16 @@
 <script type="text/javascript">
 module.exports={
   props: ['faqs'],
-  computed: {
-
+  data: function () {
+    return {
+      fields: [
+        { key: 'id', label:'#'},
+        { key: 'question', label:'Questão'},
+        { key: 'actions', label:'Ações'},
+      ],
+      currentPage: 1,
+      perPage: 10
+    }
   },
   methods: {
     editFaq: function(faq) {

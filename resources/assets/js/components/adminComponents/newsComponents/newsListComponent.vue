@@ -15,7 +15,6 @@
             <div class="card-body">
               <div class="table-responsive">                       
                 <div class="card">
-                  <p class="text-center" v-if="news.length == 0" >Não existe notícias disponíveis.</p>
                   <b-table responsive 
                     stacked="md"
                     :items="news" 
@@ -33,7 +32,7 @@
                       <button type="button" class="btn btn-sm btn-primary" v-on:click="viewNews(row.item)">Ver Detalhes</button>
                     </template>
                   </b-table>
-              
+                  <hr>
                   <b-pagination :total-rows="news.length" 
                       :per-page="perPage" 
                       v-model="currentPage"
@@ -62,9 +61,6 @@ module.exports={
       sortBy: 'pubDate',
       sortDesc: true,
     }
-  },
-  computed: {
-  
   },
   methods: {
     viewNews: function(news) {
