@@ -139,6 +139,7 @@
     import swal from 'sweetalert';
 
     export default {
+        props: ['item'],
         data: function() {
             return {
                 id: this.$route.params.id,
@@ -197,7 +198,7 @@
         },
         methods: {
             getEvento: function(id) {
-                axios.get('/api/events/'+this.id)
+                axios.get('/api/events/'+this.item.id)
                 .then((response) => {
                     this.name = response.data.name;
                     this.organizer = response.data.organizer;
@@ -235,7 +236,7 @@
                         path: this.path,
                         image: this.image,
                     };
-                    axios.post('/api/events/'+ this.id +'/update', data)
+                    axios.post('/api/events/'+ this.item.id +'/update', data)
                     .then((response) => {
                         swal("Evento alterado com sucesso.", {
                             icon: 'success',
@@ -246,7 +247,7 @@
                         .then((value) => {
                             switch (value) {
                                 case "ok":
-                                window.location.href = '/admin/#/events'
+                                this.exit();
                                 break;
                             }
                         });
@@ -281,6 +282,9 @@
 
                 return [year, month, day].join('-');
             },
+            exit: function() {
+                this.$emit('exit');
+            },
             cancel: function() {
                 swal("Deseja realmente sair?", {
                     icon: "warning",
@@ -295,7 +299,7 @@
                         break;
 
                         case "yes":
-                        window.location.href = '/admin/#/events'
+                        this.exit();
                         break;
                     }
                 });

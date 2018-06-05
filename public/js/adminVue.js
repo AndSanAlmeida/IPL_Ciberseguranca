@@ -77564,8 +77564,14 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eventsListComponent_vue__ = __webpack_require__(365);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eventsListComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__eventsListComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_sweetalert__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_sweetalert___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_sweetalert__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__eventsCreateComponent_vue__ = __webpack_require__(369);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__eventsCreateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__eventsCreateComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__eventsEditComponent_vue__ = __webpack_require__(372);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__eventsEditComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__eventsEditComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__eventsDetailsComponent_vue__ = __webpack_require__(375);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__eventsDetailsComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__eventsDetailsComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sweetalert__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sweetalert___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_sweetalert__);
 //
 //
 //
@@ -77599,6 +77605,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 
 
 
@@ -77609,6 +77641,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             title: 'Eventos',
             eventos: [],
             loading: true,
+            showList: true,
+            showCreate: false,
+            showView: false,
+            showEdit: false,
             errorLoading: false
         };
     },
@@ -77621,6 +77657,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
+        exit: function exit() {
+            this.showList = true;
+            this.showCreate = false;
+            this.showEdit = false;
+            this.showView = false;
+            this.getEvents();
+        },
+        createEvent: function createEvent() {
+            this.showList = false;
+            this.showCreate = true;
+            this.showEdit = false;
+            this.showView = false;
+        },
+        viewEvent: function viewEvent(item) {
+            this.item = item;
+            this.showList = false;
+            this.showCreate = false;
+            this.showEdit = false;
+            this.showView = true;
+        },
+        editEvent: function editEvent(item) {
+            this.item = item;
+            this.showList = false;
+            this.showCreate = false;
+            this.showEdit = true;
+            this.showView = false;
+        },
         getEvents: function getEvents() {
             var _this = this;
 
@@ -77637,7 +77700,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         deleteEvent: function deleteEvent(evento) {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Pertende realmente apagar o evento?", {
+            __WEBPACK_IMPORTED_MODULE_4_sweetalert___default()("Pretende realmente apagar o evento?", {
                 icon: "warning",
                 buttons: {
                     no: {
@@ -77656,7 +77719,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                     case "yes":
                         axios.delete('/api/event/' + evento.id + '/delete').then(function (response) {
-                            __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Evento apagado com sucesso.", {
+                            __WEBPACK_IMPORTED_MODULE_4_sweetalert___default()("Evento apagado com sucesso.", {
                                 icon: "success",
                                 buttons: {
                                     ok: "Ok"
@@ -77675,7 +77738,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     components: {
-        'eventsList': __WEBPACK_IMPORTED_MODULE_0__eventsListComponent_vue___default.a
+        'eventsList': __WEBPACK_IMPORTED_MODULE_0__eventsListComponent_vue___default.a,
+        'eventCreate': __WEBPACK_IMPORTED_MODULE_1__eventsCreateComponent_vue___default.a,
+        'eventEdit': __WEBPACK_IMPORTED_MODULE_2__eventsEditComponent_vue___default.a,
+        'eventView': __WEBPACK_IMPORTED_MODULE_3__eventsDetailsComponent_vue___default.a
     },
     mounted: function mounted() {
         this.getEvents();
@@ -77790,11 +77856,17 @@ module.exports = {
   props: ['eventos'],
   computed: {},
   methods: {
-    editEvento: function editEvento(id) {
-      router.push("/events/edit/" + id);
+    deleteEvent: function deleteEvent(event) {
+      this.$emit('deleteEvent', event);
     },
-    deleteEvento: function deleteEvento(evento) {
-      this.$emit('delete-click', evento);
+    editEvent: function editEvent(event) {
+      this.$emit('editEvent', event);
+    },
+    createEvent: function createEvent() {
+      this.$emit('createEvent');
+    },
+    viewEvent: function viewEvent(event) {
+      this.$emit('viewEvent', event);
     }
   }
 };
@@ -77810,128 +77882,122 @@ var render = function() {
   return _c("section", { staticClass: "tables" }, [
     _c("div", { staticClass: "container-fluid" }, [
       _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          { staticClass: "col-lg-12" },
-          [
-            _c(
-              "router-link",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { to: "/events/create" }
-              },
-              [_vm._v("Adicionar Evento")]
-            ),
+        _c("div", { staticClass: "col-lg-12" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  _vm.createEvent()
+                }
+              }
+            },
+            [_vm._v("Criar Evento")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "card mt-2" }, [
+            _vm._m(0),
             _vm._v(" "),
-            _c("div", { staticClass: "card mt-2" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "table-responsive" }, [
-                  _c("div", { staticClass: "card" }, [
-                    _vm.eventos.length == 0
-                      ? _c("p", { staticClass: "text-center" }, [
-                          _vm._v("Não há eventos disponíveis.")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.eventos.length != 0
-                      ? _c(
-                          "table",
-                          { staticClass: "table table-striped table-hover" },
-                          [
-                            _vm._m(1),
-                            _vm._v(" "),
-                            _c(
-                              "tbody",
-                              _vm._l(_vm.eventos, function(evento) {
-                                return _c("tr", { key: evento.id }, [
-                                  _c("td", [_vm._v(_vm._s(evento.id))]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(evento.name))]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(evento.organizer))]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(evento.date))]),
-                                  _vm._v(" "),
-                                  _c("td", [
-                                    _vm._v(_vm._s(evento.max_inscritos))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", [
-                                    _vm._v(
-                                      _vm._s(
-                                        evento.status == 0
-                                          ? "Por Realizar"
-                                          : evento.status == 0
-                                            ? "A Decorrer"
-                                            : "Concluido"
-                                      )
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "table-responsive" }, [
+                _c("div", { staticClass: "card" }, [
+                  _vm.eventos.length == 0
+                    ? _c("p", { staticClass: "text-center" }, [
+                        _vm._v("Não há eventos disponíveis.")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.eventos.length != 0
+                    ? _c(
+                        "table",
+                        { staticClass: "table table-striped table-hover" },
+                        [
+                          _vm._m(1),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            _vm._l(_vm.eventos, function(evento) {
+                              return _c("tr", { key: evento.id }, [
+                                _c("td", [_vm._v(_vm._s(evento.id))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(evento.name))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(evento.organizer))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(evento.date))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(_vm._s(evento.max_inscritos))
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(
+                                      evento.status == 0
+                                        ? "Por Realizar"
+                                        : evento.status == 0
+                                          ? "A Decorrer"
+                                          : "Concluido"
                                     )
-                                  ]),
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.viewEvent(evento)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Ver detalhes")]
+                                  ),
                                   _vm._v(" "),
                                   _c(
-                                    "td",
-                                    [
-                                      _c(
-                                        "router-link",
-                                        {
-                                          staticClass: "btn btn-primary",
-                                          attrs: {
-                                            role: "button",
-                                            to: {
-                                              name: "eventsDetails",
-                                              params: { id: evento.id }
-                                            }
-                                          }
-                                        },
-                                        [_vm._v("Ver detalhes")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "router-link",
-                                        {
-                                          staticClass: "btn btn-warning",
-                                          attrs: {
-                                            role: "button",
-                                            to: {
-                                              name: "eventsEdit",
-                                              params: { id: evento.id }
-                                            }
-                                          }
-                                        },
-                                        [_vm._v("Editar")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass: "btn btn-danger",
-                                          attrs: { type: "button" },
-                                          on: {
-                                            click: function($event) {
-                                              _vm.deleteEvento(evento)
-                                            }
-                                          }
-                                        },
-                                        [_vm._v("Eliminar")]
-                                      )
-                                    ],
-                                    1
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-warning",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.editEvent(evento)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Editar")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-danger",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.deleteEvent(evento)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Eliminar")]
                                   )
                                 ])
-                              })
-                            )
-                          ]
-                        )
-                      : _vm._e()
-                  ])
+                              ])
+                            })
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ])
             ])
-          ],
-          1
-        )
+          ])
+        ])
       ])
     ])
   ])
@@ -77996,13 +78062,31 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      !_vm.hasItems && _vm.canShowContent
+      !_vm.hasItems && _vm.canShowContent && _vm.showList
         ? _c(
             "div",
             { staticClass: "alert alert-warning", attrs: { role: "alert" } },
             [
               _c("p", [
                 _vm._v("Não foram encontrados " + _vm._s(_vm.title) + ".")
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-0" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "alert-link",
+                    attrs: { href: "#", title: "Criar Entrada" },
+                    on: {
+                      click: function($event) {
+                        _vm.createEvent()
+                      }
+                    }
+                  },
+                  [_vm._v("Criar " + _vm._s(_vm.title))]
+                )
               ])
             ]
           )
@@ -78024,11 +78108,27 @@ var render = function() {
           : _vm._e()
       ]),
       _vm._v(" "),
-      _vm.hasItems && _vm.canShowContent
+      _vm.hasItems && _vm.canShowContent && _vm.showList
         ? _c("eventsList", {
             attrs: { eventos: _vm.eventos },
-            on: { "delete-click": _vm.deleteEvent }
+            on: {
+              exit: _vm.exit,
+              createEvent: _vm.createEvent,
+              viewEvent: _vm.viewEvent,
+              editEvent: _vm.editEvent,
+              deleteEvent: _vm.deleteEvent
+            }
           })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.showCreate ? _c("eventCreate", { on: { exit: _vm.exit } }) : _vm._e(),
+      _vm._v(" "),
+      _vm.showEdit
+        ? _c("eventEdit", { attrs: { item: _vm.item }, on: { exit: _vm.exit } })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.showView
+        ? _c("eventView", { attrs: { item: _vm.item }, on: { exit: _vm.exit } })
         : _vm._e()
     ],
     1
@@ -78232,6 +78332,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
+    exit: function exit() {
+      this.$emit('exit');
+    },
     submitForm: function submitForm(event) {
       var _this = this;
 
@@ -78259,7 +78362,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           }).then(function (value) {
             switch (value) {
               case "ok":
-                window.location.href = '/admin/#/events';
+                _this.exit();
                 break;
             }
           });
@@ -78295,6 +78398,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return [year, month, day].join('-');
     },
     cancel: function cancel() {
+      var _this2 = this;
+
       swal("Deseja realmente sair?", {
         icon: "warning",
         buttons: {
@@ -78307,7 +78412,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             break;
 
           case "yes":
-            window.location.href = '/admin/#/events';
+            _this2.exit();
             break;
         }
       });
@@ -78879,6 +78984,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['item'],
     data: function data() {
         return {
             id: this.$route.params.id,
@@ -78939,7 +79045,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getEvento: function getEvento(id) {
             var _this = this;
 
-            axios.get('/api/events/' + this.id).then(function (response) {
+            axios.get('/api/events/' + this.item.id).then(function (response) {
                 _this.name = response.data.name;
                 _this.organizer = response.data.organizer;
                 _this.localization = response.data.localization;
@@ -78977,7 +79083,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     path: this.path,
                     image: this.image
                 };
-                axios.post('/api/events/' + this.id + '/update', data).then(function (response) {
+                axios.post('/api/events/' + this.item.id + '/update', data).then(function (response) {
                     __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Evento alterado com sucesso.", {
                         icon: 'success',
                         buttons: {
@@ -78986,7 +79092,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }).then(function (value) {
                         switch (value) {
                             case "ok":
-                                window.location.href = '/admin/#/events';
+                                _this2.exit();
                                 break;
                         }
                     });
@@ -79020,7 +79126,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             return [year, month, day].join('-');
         },
+        exit: function exit() {
+            this.$emit('exit');
+        },
         cancel: function cancel() {
+            var _this3 = this;
+
             __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Deseja realmente sair?", {
                 icon: "warning",
                 buttons: {
@@ -79033,7 +79144,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         break;
 
                     case "yes":
-                        window.location.href = '/admin/#/events';
+                        _this3.exit();
                         break;
                 }
             });
@@ -79793,6 +79904,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['item'],
     data: function data() {
         return {
             id: this.$route.params.id,
@@ -79813,10 +79925,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     methods: {
-        getEvento: function getEvento(id) {
+        getEvento: function getEvento() {
             var _this = this;
 
-            axios.get('/api/events/' + this.id).then(function (response) {
+            axios.get('/api/events/' + this.item.id).then(function (response) {
                 _this.name = response.data.name;
                 _this.organizer = response.data.organizer;
                 _this.localization = response.data.localization;
@@ -79835,7 +79947,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         cancel: function cancel() {
-            window.location.href = '/admin/#/events';
+            this.exit();
+        },
+        exit: function exit() {
+            this.$emit('exit');
         },
         formatDate: function formatDate() {
             var dateObj = this.date;

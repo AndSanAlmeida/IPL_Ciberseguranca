@@ -132,6 +132,9 @@ export default {
   },
 
   methods: {
+    exit: function() {
+        this.$emit('exit');
+    },
     submitForm: function (event) {
       this.serverError = false;
       this.attemptSubmit = true;
@@ -160,7 +163,7 @@ export default {
           .then((value) => {
             switch (value) {
               case "ok":
-              window.location.href = '/admin/#/events'
+              this.exit()
               break;
             }
           });
@@ -211,7 +214,7 @@ export default {
               break;
 
               case "yes":
-              window.location.href = '/admin/#/events'
+              this.exit();
               break;
             }
           });

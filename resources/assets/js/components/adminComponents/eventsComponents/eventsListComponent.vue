@@ -4,7 +4,7 @@
       <div class="row">    
         
         <div class="col-lg-12">
-          <router-link to="/events/create" class="btn btn-primary">Adicionar Evento</router-link>
+          <button type="button" class="btn btn-primary" v-on:click="createEvent()">Criar Evento</button>
           <div class="card mt-2">
             <div class="card-header d-flex align-items-center">
               <h3 class="h4">Lista de Eventos</h3>
@@ -34,9 +34,9 @@
                         <td>{{evento.max_inscritos}}</td>
                         <td>{{evento.status == 0 ? 'Por Realizar' : evento.status == 0 ? 'A Decorrer' : 'Concluido'}}</td>
                         <td>
-                            <router-link role="button" :to="{ name: 'eventsDetails', params: {id: evento.id } }" class="btn btn-primary">Ver detalhes</router-link>
-                            <router-link role="button" :to="{ name: 'eventsEdit', params: {id: evento.id } }" class="btn btn-warning">Editar</router-link>
-                            <button type="button" class="btn btn-danger" v-on:click="deleteEvento(evento)">Eliminar</button>
+                            <button type="button" class="btn btn-primary" v-on:click="viewEvent(evento)">Ver detalhes</button>
+                            <button type="button" class="btn btn-warning" v-on:click="editEvent(evento)">Editar</button>
+                            <button type="button" class="btn btn-danger" v-on:click="deleteEvent(evento)">Eliminar</button>
                         </td>
                       </tr>
                     </tbody>
@@ -57,11 +57,17 @@ module.exports={
 
   },
   methods: {
-    editEvento: function(id) {
-      router.push("/events/edit/"+id);
+    deleteEvent: function(event) {
+      this.$emit('deleteEvent', event);
     },
-    deleteEvento: function(evento) {
-      this.$emit('delete-click', evento);
+    editEvent: function(event) {
+      this.$emit('editEvent', event);
+    },
+    createEvent: function() {
+      this.$emit('createEvent');
+    },
+    viewEvent: function(event) {
+      this.$emit('viewEvent', event);
     }
   }
 }

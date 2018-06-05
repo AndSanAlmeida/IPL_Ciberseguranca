@@ -101,7 +101,8 @@ export default {
           })
           .then((value) => {
             switch (value) {
-              case "ok":this.exit();
+              case "ok": 
+              this.exit();
               break;
             }
           });

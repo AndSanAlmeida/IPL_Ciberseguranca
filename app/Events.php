@@ -23,4 +23,9 @@ class Events extends Model
     protected $hidden = [
         
     ];
+
+    public function subscribers()
+    {
+        return $this->belongsToMany('App\User')->withTimestamps();
+    }
 }

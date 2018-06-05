@@ -95,8 +95,11 @@ class DbStructure extends Migration
 
         Schema::create('event_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_user');
-            $table->integer('id_event');
+            $table->integer('id_user')->unsigned()->nullable();
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('id_event')->unsigned()->nullable();
+            $table->foreign('id_event')->references('id')->on('events')->onDelete('cascade');
+            $table->timestamps();
         });
 
         Schema::create('glossary', function(Blueprint $table){

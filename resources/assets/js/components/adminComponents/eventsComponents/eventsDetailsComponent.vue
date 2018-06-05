@@ -42,6 +42,7 @@
 </template>
 <script type="text/javascript">
     export default {
+        props: ['item'],
         data: function() {
             return {
                 id: this.$route.params.id,
@@ -62,8 +63,8 @@
             }
         },
         methods: {
-            getEvento: function(id) {
-                axios.get('/api/events/'+this.id)
+            getEvento: function() {
+                axios.get('/api/events/'+this.item.id)
                 .then((response) => {
                     this.name = response.data.name;
                     this.organizer = response.data.organizer;
@@ -84,7 +85,10 @@
                 });
             },
             cancel: function() {
-                window.location.href = '/admin/#/events'
+                this.exit();
+            },
+            exit: function() {
+                this.$emit('exit');
             },
             formatDate: function() {
                 var dateObj = this.date;

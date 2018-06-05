@@ -7,8 +7,10 @@
 		</header>
         
         <!-- ERRORS -->
-        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent">
+        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent && showList">
             <p>Não foram encontrados {{title}}.</p>
+            <hr>
+            <p class="mb-0"><a href="#" class="alert-link" title="Criar Entrada" v-on:click="createEvent()">Criar {{title}}</a></p>
         </div>
 
         <div class="alert alert-danger" role="alert" v-if="errorLoading">
@@ -23,16 +25,40 @@
         <!-- ============ -->
 
 		<eventsList 
-			v-if="hasItems && canShowContent" 
+			v-if="hasItems && canShowContent && showList"
 			:eventos="eventos" 
-			@delete-click="deleteEvent">
+			@exit="exit"
+			@createEvent="createEvent"
+			@viewEvent="viewEvent"
+			@editEvent="editEvent"
+			@deleteEvent="deleteEvent">
 		</eventsList>
+
+		<eventCreate
+			v-if="showCreate"
+			@exit="exit">
+		</eventCreate> 
+
+		<eventEdit
+			:item="item"
+			v-if="showEdit"
+			@exit="exit">
+		</eventEdit>
+
+		<eventView
+			:item="item"
+			v-if="showView"
+			@exit="exit">
+		</eventView>
 
 	</div>
 </template>
 
 <script type="text/javascript">
     import EventsList from './eventsListComponent.vue';
+    import EventsCreate from './eventsCreateComponent.vue';
+    import EventsEdit from './eventsEditComponent.vue';
+    import EventsView from './eventsDetailsComponent.vue';
     import swal from 'sweetalert';
 
     export default {
@@ -41,6 +67,10 @@
             	title: 'Eventos',
                 eventos: [],
                 loading: true,
+                showList: true,
+                showCreate: false,
+                showView:false,
+                showEdit: false,
                 errorLoading: false,
             }
         },
@@ -53,6 +83,33 @@
             },
         },
         methods: {
+        	exit: function(){
+        		this.showList = true;
+                this.showCreate = false;
+                this.showEdit = false;
+                this.showView = false;
+                this.getEvents();
+        	},
+        	createEvent: function() {
+        		this.showList = false;
+                this.showCreate = true;
+                this.showEdit = false;
+                this.showView = false;
+        	},
+        	viewEvent: function(item) {
+        		this.item = item;
+        		this.showList = false;
+                this.showCreate = false;
+                this.showEdit = false;
+                this.showView = true;
+        	},
+        	editEvent: function(item) {
+        		this.item = item;
+        		this.showList = false;
+                this.showCreate = false;
+                this.showEdit = true;
+                this.showView = false;
+        	},
             getEvents: function () {
                 this.loading = true;
                 this.errorLoading = false;                
@@ -66,7 +123,7 @@
                 });
             },
             deleteEvent : function(evento){
-		      swal("Pertende realmente apagar o evento?", {
+		      swal("Pretende realmente apagar o evento?", {
 		          icon: "warning",
 		          buttons: {
 		              no: {
@@ -111,6 +168,9 @@
         },
         components: {
             'eventsList': EventsList,
+            'eventCreate': EventsCreate,
+            'eventEdit': EventsEdit, 
+            'eventView': EventsView,
         },
         mounted() {
             this.getEvents();
