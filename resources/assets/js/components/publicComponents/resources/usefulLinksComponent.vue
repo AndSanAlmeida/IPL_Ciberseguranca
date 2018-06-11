@@ -9,14 +9,14 @@
                  	</div>
 
                     <br>
-                    <h3><b>IPL Cibersegurança links úteis:</b></h3>
+                    <h3 v-if="hasItems && canShowContent"><b>IPL Cibersegurança links úteis:</b></h3>
 
                     <div v-if="!hasItems && canShowContent" class="alert alert-danger" role="alert" style="margin-top: 2em;">
                         <h4><strong>Erro: </strong>Não existe links disponíveis.</h4>
                     </div>
 
-                    <div v-if="loading" class="text-center" style="margin-top: 2em;">
-                        <h3>A carregar...</h3>
+                    <div v-if="loading" class="align-loader">
+                        <div class="loader"></div>
                     </div>
 
                  	<div v-if="hasItems && canShowContent" id="linksAndDocuments">

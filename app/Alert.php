@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Events extends Model
+class Alert extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Events extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'organizer', 'localization', 'id_user'
+        'title', 'description', 'source', 'pub_date'
     ];
 
     /**
@@ -23,9 +23,4 @@ class Events extends Model
     protected $hidden = [
         
     ];
-
-    public function subscribers()
-    {
-        return $this->belongsToMany('App\User')->withTimestamps();
-    }
 }

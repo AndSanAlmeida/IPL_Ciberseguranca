@@ -6,8 +6,8 @@
 	        <!-- Navbar Header-->
 	        <div class="navbar-header">
 	          <!-- Navbar Brand --><a href="#" class="navbar-brand">
-	            <div class="brand-text brand-big"><span>IPL-Cibersegurança</span></div>
-	            <div class="brand-text brand-small"><strong>PA</strong></div></a>
+	            <div class="brand-text brand-big"><span>IPLeiria - Cibersegurança</span></div>
+	            <div class="brand-text brand-small"><strong>IPLeiria</strong></div></a>
 	          <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
 	        </div>
 	        <!-- Navbar Menu -->

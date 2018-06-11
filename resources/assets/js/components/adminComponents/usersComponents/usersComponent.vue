@@ -22,7 +22,7 @@
                 <div class="row">
 
                     <!-- SEARCH -->
-                    <div class="col-lg-6 offset-lg-3">
+                    <div class="col-lg-6 offset-lg-3" v-if="hasItems && canShowContent">
                         <div class="card">
                           <div class="card-header d-flex align-items-center">
                             <h3 class="h4">Listar Por</h3>
@@ -49,7 +49,9 @@
 
                     <!-- LOADING -->
                     <div class="col-md-12">
-                        <h1 class="m-5 text-center" v-if="loading">A carregar...</h1>
+                        <div v-if="loading" class="align-loader mt-4">
+                            <div class="loader"></div>
+                        </div>
                     </div>
                         
                     <!-- USER LIST -->

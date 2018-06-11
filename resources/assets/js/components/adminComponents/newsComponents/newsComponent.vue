@@ -12,6 +12,8 @@
             <p>Não foram encontrados {{title}}.</p>
             <hr>
             <p class="mb-0"><a href="#" class="alert-link" title="Criar Notícias" v-on:click="createNews()">Criar {{title}}</a></p>
+            <hr>
+            <p class="mb-0"><a href="/admin/#/rssNews" class="alert-link" title="Adicionar RSS">Adicionar RSS</a></p>
         </div>
 
         <div class="alert alert-danger" role="alert" v-if="errorLoading">
@@ -19,8 +21,8 @@
         </div>
 
         <!-- LOADING -->
-        <div class="col-md-12">
-            <h1 class="m-5 text-center" v-if="loading">A carregar...</h1>
+        <div v-if="loading" class="align-loader mt-4">
+            <div class="loader"></div>
         </div>
         
         <!-- ============ -->
@@ -112,11 +114,20 @@
                             newsObject.link[0] = singleNews.source;
                             this.news = this.news.concat(newsObject);
                         }
-                        this.showList = true;
+                        window.setTimeout(this.orderNews(), 3000);
+                        
                     })
                     .catch((error) => {
                         this.errorLoading = true;
                     });
+            },
+            orderNews: function() {
+                this.news.sort(function(a,b){
+                    var c = new Date(a.pubDate[0]);
+                    var d = new Date(b.pubDate[0]);
+                    return d-c;
+                });
+                this.showList = true;
             },
         	getRSSByFeed: function(feed) {
         		this.xhr = this.createCORSRequest('GET', feed);
@@ -161,6 +172,7 @@
         		this.showList = true;
                 this.showCreate = false;
                 this.showView = false;
+                this.getRSSNews();
         	},
         	viewNews: function(item) {
         		this.item = item;
@@ -168,7 +180,6 @@
                 this.showCreate = false;
                 this.showView = true;
         	},
-        	
         },
         components: {
             'newsList': NewsList,

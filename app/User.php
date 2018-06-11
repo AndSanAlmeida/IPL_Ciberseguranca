@@ -37,8 +37,8 @@ class User extends Authenticatable
         return $this->hasMany('App\UserQuestion');
     }
 
-    public function events()
+    public function event()
     {
-        return $this->belongsToMany('App\Events')->withTimestamps();
+        return $this->belongsToMany('App\Event')->withTimestamps();
     }
 }

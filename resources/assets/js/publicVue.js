@@ -34,6 +34,7 @@ const userSettings = Vue.component('userSettings', require('./components/publicC
 const alerts = Vue.component('alerts', require('./components/publicComponents/resources/alertsComponent.vue'));
 const glossary = Vue.component('glossary', require('./components/publicComponents/resources/glossaryComponent.vue'));
 const news = Vue.component('news', require('./components/publicComponents/resources/newsComponent.vue'));
+const singleNews = Vue.component('singleNews', require('./components/publicComponents/resources/singleNewsComponent.vue'));
 const usefulLinks = Vue.component('usefulLinks', require('./components/publicComponents/resources/usefulLinksComponent.vue'));
 const documents = Vue.component('documents', require('./components/publicComponents/resources/documentsComponent.vue'));
 const faq = Vue.component('faq', require('./components/publicComponents/resources/faqComponent.vue'));
@@ -58,6 +59,7 @@ const routes = [
 	{ path: '/resources/alerts', component: alerts },
 	{ path: '/resources/glossary', component: glossary },
 	{ path: '/resources/news', component: news },
+	{ path: '/resources/news/:title', component: singleNews },
 	{ path: '/resources/usefulLinks', component: usefulLinks },
 	{ path: '/resources/documents', component: documents },
 	{ path: '/resources/faq', component: faq },

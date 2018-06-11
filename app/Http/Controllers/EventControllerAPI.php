@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Events;
-use App\Http\Resources\EventsResource;
+use App\Event;
+use App\User;
+use App\Http\Resources\EventResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Mail\TransportManager;
+use App\Http\Resources\SmallerUserResource;
 use Auth;
 use Validator;
 use Storage;
@@ -24,9 +26,9 @@ class EventControllerAPI extends Controller
     {
         // get all news
         if ($request->wantsJson()) {
-            $events = Events::all();
+            $events = Event::all()->sortBy('date')->reverse();
 
-            return EventsResource::collection($events);
+            return EventResource::collection($events);
         } else {
             return response()->json(['message' => 'Request inválido.'], 400);
         }
@@ -52,7 +54,7 @@ class EventControllerAPI extends Controller
         if ($validator->fails()) {
             return response()->json(['msg' => $validator->errors()]);
         } else {
-            $event = new Events;
+            $event = new Event;
             $event->name = $request->get('name');
             $event->localization = $request->get('localization');
             $event->description = $request->get('description');
@@ -107,7 +109,7 @@ class EventControllerAPI extends Controller
      */
     public function show($id)
     {
-        $event = Events::findOrFail($id);
+        $event = Event::findOrFail($id);
         return $event;
     }
 
@@ -132,7 +134,7 @@ class EventControllerAPI extends Controller
 
         if ($request->wantsJson() && !$validator->fails()) {
 
-            $event = Events::findOrFail($id);
+            $event = Event::findOrFail($id);
 
             if (!empty($request->get('image'))) {
                 // apagar caso o nome seja alterado
@@ -168,7 +170,8 @@ class EventControllerAPI extends Controller
                 Image::make($request->get('image'))->save($path . '/' . $fileName);
                 $event->image_path = 'img/eventos/' . $fileName;
             } else {
-                $event->image_path = null;
+                $fileName = $event->name.'.png';
+                $event->image_path = 'img/eventos/' . $fileName;
             }
             
             $event->save();
@@ -199,7 +202,7 @@ class EventControllerAPI extends Controller
      */
     public function destroy($id)
     {
-        $event = Events::findOrFail($id);
+        $event = Event::findOrFail($id);
 
         $event->delete();
 
@@ -209,9 +212,9 @@ class EventControllerAPI extends Controller
     public function getEventosPorRealizar(Request $request)
     {
         if ($request->wantsJson()) {
-            $events = Events::where('status', 0)->get();
+            $events = Event::where('status', 0)->get();
 
-            return EventsResource::collection($events);
+            return EventResource::collection($events);
         } else {
             return response()->json(['message' => 'Request inválido.'], 400);
         }
@@ -220,9 +223,9 @@ class EventControllerAPI extends Controller
     public function getEventosADecorrer(Request $request)
     {
         if ($request->wantsJson()) {
-            $events = Events::where('status', 1)->get();
+            $events = Event::where('status', 1)->get();
 
-            return EventsResource::collection($events);
+            return EventResource::collection($events);
         } else {
             return response()->json(['message' => 'Request inválido.'], 400);
         }
@@ -231,9 +234,9 @@ class EventControllerAPI extends Controller
     public function getEventosConcluidos(Request $request)
     {
         if ($request->wantsJson()) {
-            $events = Events::where('status', 2)->get();
+            $events = Event::where('status', 2)->get();
 
-            return EventsResource::collection($events);
+            return EventResource::collection($events);
         } else {
             return response()->json(['message' => 'Request inválido.'], 400);
         }
@@ -243,13 +246,76 @@ class EventControllerAPI extends Controller
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|integer',
-            'event_id' => 'required|integer',
+            'events_id' => 'required|integer',
         ]);
         
         if ($validator->fails()) {
             return response()->json(['msg' => $validator->errors()]);
         } else {
+            $event = Event::find($request->get('events_id'));
+            $user = User::find($request->get('user_id'));
 
+            $user->event()->save($event);
+
+            $event->total_interested = $event->subscribers->count('user_id');
+            $event->save();
+
+            return response()->json(['msg' => 'Inscrição realizada com sucesso.', ]);
         }
     }
+
+    public function unsubscribe(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer',
+            'events_id' => 'required|integer',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['msg' => $validator->errors()]);
+        } else {
+            $event = Event::find($request->get('events_id'));
+            $user = User::find($request->get('user_id'));
+
+            $user->event()->detach($event);
+            $event->total_interested = $event->subscribers->count('user_id');
+            $event->save();
+
+            return response()->json(['msg' => 'Inscrição realizada com sucesso.', ]);
+        }
+    }
+
+    public function isSubscribed(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['msg' => $validator->errors()]);
+        } else {
+            $user = User::find($request->get('user_id'));
+            $events = Event::all();
+
+            $arrayOfEventsId = [];
+
+            foreach ($events as $event) {
+                if ($user->event->contains($event)) {
+                    if(!in_array($event->id, $arrayOfEventsId)){
+                        $arrayOfEventsId[]=$event->id;
+                    }
+                }
+            }
+
+            return $arrayOfEventsId;
+        }
+    }
+
+    public function getUsersSubscribed($id)
+    {
+        $event = Event::findOrFail($id);
+        $users = $event->subscribers;
+        return SmallerUserResource::collection($users);
+    }
+
 }

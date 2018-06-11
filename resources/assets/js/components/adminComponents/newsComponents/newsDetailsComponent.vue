@@ -7,18 +7,23 @@
                 <h1 class="mb-0 text-center"><span v-html="item.title[0]"></span></h1>
             </div>
             <div class="card-body">
-                <p><b>Data: </b>{{prepareDate(item.pubDate[0])}}</span></p>
+              <div class="row">
+                <div class="col-sm-12">
+                  <p><b>Data: </b>{{prepareDate(item.pubDate[0])}}</span></p>
 
-                <p><span v-html="item.description[0]"></span></p>
+                  <p><span v-html="item.description[0]"></span></p>
 
-                <p><b>Fonte: </b></p><a :href="item.link[0]"><span v-html="item.link[0]"></span></a>
+                  <p><b>Fonte: </b></p><a :href="item.link[0]"><span v-html="item.link[0]"></span></a>
 
-                <div class="form-group row">
-                    <label class="col-lg-3 col-form-label form-control-label"></label>
-                    <div class="col-lg-9">
-                        <input class="btn btn-secondary float-right" value="Voltar" type="button" v-on:click="cancel">
-                    </div>
+                  <div class="form-group row">
+                      <label class="col-lg-3 col-form-label form-control-label"></label>
+                      <div class="col-lg-9">
+                          <input class="btn btn-secondary float-right" value="Voltar" type="button" v-on:click="cancel">
+                      </div>
+                  </div>
                 </div>
+              </div>
+                
             </div>
         </div>
     </div>
@@ -58,3 +63,7 @@
         }
     }
 </script>
+
+<style type="text/css" media="screen">
+ 
+</style>

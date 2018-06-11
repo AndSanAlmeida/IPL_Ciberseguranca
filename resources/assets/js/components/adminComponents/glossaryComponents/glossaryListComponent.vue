@@ -10,31 +10,39 @@
               <h3 class="h4">Entradas do Glossário</h3>
             </div>
             <div class="card-body">
+
+              <!-- SEARCH -->
+              <div class="col-lg-6 offset-lg-3">
+                <b-form-group horizontal label="Pesquisar">
+                  <b-input-group>
+                    <b-form-input v-model="filter" placeholder="Escreva para Procurar" />
+                    <b-input-group-append>
+                      <b-btn :disabled="!filter" @click="filter = ''">Limpar</b-btn>
+                    </b-input-group-append>
+                  </b-input-group>
+                </b-form-group>
+              </div>
+
               <div class="table-responsive">                       
                 <div class="card">
-                  <p class="text-center" v-if="glossary.length == 0" >Não existe entradas do glossário disponíveis.</p>
-                  <table class="table table-striped table-hover" v-if="glossary.length != 0" >
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Chave</th>
-                        <th>Nome</th>
-                        <th>Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="glossaryItem in glossary"  :key="glossaryItem.id">
-                        <td>{{glossaryItem.id}}</td>
-                        <td>{{glossaryItem.key}}</td>
-                        <td>{{glossaryItem.name}}</td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-primary" v-on:click="viewGlossary(glossaryItem)">Ver Detalhes</button>
-                            <button type="button" class="btn btn-sm btn-warning" v-on:click="editGlossary(glossaryItem)">Editar</button>
-                            <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteGlossary(glossaryItem)">Eliminar</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <b-table responsive 
+                    stacked="md"
+                    :items="glossary" 
+                    :fields="fields"
+                    :current-page="currentPage"
+                    :per-page="perPage"
+                    :filter="filter"> 
+                    <template slot="actions" slot-scope="row">
+                      <button type="button" class="btn btn-sm btn-primary" v-on:click="viewGlossary(row.item)">Ver Detalhes</button>
+                      <button type="button" class="btn btn-sm btn-warning" v-on:click="editGlossary(row.item)">Editar</button>
+                      <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteGlossary(row.item)">Eliminar</button>
+                    </template>
+                  </b-table>
+                  <hr>
+                  <b-pagination :total-rows="glossary.length" 
+                      :per-page="perPage" 
+                      v-model="currentPage"
+                      align="center"/>
                 </div>
               </div>
             </div>
@@ -47,8 +55,18 @@
 <script type="text/javascript">
 module.exports={
   props: ['glossary'],
-  computed: {
-
+  data: function () {
+    return {
+      fields: [
+        { key: 'id', label:'#'},
+        { key: 'key', label:'Chave', sortable: true},
+        { key: 'name', label:'Nome'},
+        { key: 'actions', label:'Ações'},
+      ],
+      currentPage: 1,
+      perPage: 10,
+      filter: null
+    }
   },
   methods: {
     deleteGlossary: function(glossary) {

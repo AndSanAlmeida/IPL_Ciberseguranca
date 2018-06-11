@@ -12,35 +12,26 @@
             <div class="card-body">
               <div class="table-responsive">                       
                 <div class="card">
-                  <p class="text-center" v-if="eventos.length == 0" >Não há eventos disponíveis.</p>
-                  <table class="table table-striped table-hover" v-if="eventos.length != 0" >
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Nome</th>
-                        <th>Orgazinador</th>
-                        <th>Data</th>
-                        <th>Lotação</th>
-                        <th>Estado</th>
-                        <th>Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="evento in eventos"  :key="evento.id">
-                        <td>{{evento.id}}</td>
-                        <td>{{evento.name}}</td>
-                        <td>{{evento.organizer}}</td>
-                        <td>{{evento.date}}</td>
-                        <td>{{evento.max_inscritos}}</td>
-                        <td>{{evento.status == 0 ? 'Por Realizar' : evento.status == 0 ? 'A Decorrer' : 'Concluido'}}</td>
-                        <td>
-                            <button type="button" class="btn btn-primary" v-on:click="viewEvent(evento)">Ver detalhes</button>
-                            <button type="button" class="btn btn-warning" v-on:click="editEvent(evento)">Editar</button>
-                            <button type="button" class="btn btn-danger" v-on:click="deleteEvent(evento)">Eliminar</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <b-table responsive 
+                    stacked="md"
+                    :items="eventos" 
+                    :fields="fields"
+                    :current-page="currentPage"
+                    :per-page="perPage"> 
+                    <template slot="status" slot-scope="row">
+                      {{row.item.status == 0 ? 'Por Realizar' : row.item.status == 0 ? 'A Decorrer' : 'Concluido'}}
+                    </template>
+                    <template slot="actions" slot-scope="row">
+                      <button type="button" class="btn btn-primary" v-on:click="viewEvent(row.item)">Ver detalhes</button>
+                      <button type="button" class="btn btn-warning" v-on:click="editEvent(row.item)">Editar</button>
+                      <button type="button" class="btn btn-danger" v-on:click="deleteEvent(row.item)">Eliminar</button>
+                    </template>
+                  </b-table>
+                  <hr>
+                  <b-pagination :total-rows="eventos.length" 
+                      :per-page="perPage" 
+                      v-model="currentPage"
+                      align="center"/>
                 </div>
               </div>
             </div>
@@ -53,8 +44,22 @@
 <script type="text/javascript">
 module.exports={
   props: ['eventos'],
-  computed: {
-
+  data: function () {
+    return {
+      fields: [
+        { key: 'id', label:'#'},
+        { key: 'name', label:'Nome'},
+        { key: 'organizer', label:'Organizador'},
+        { key: 'date', label:'Data'},
+        { key: 'max_inscritos', label:'Lotação'},
+        { key: 'total_interested', label:'Total de Inscritos'},
+        { key: 'status', label:'Estado'},
+        { key: 'actions', label:'Ações'},
+        
+      ],
+      currentPage: 1,
+      perPage: 10
+    }
   },
   methods: {
     deleteEvent: function(event) {

@@ -42,7 +42,21 @@
                                         <p class="text-justify"><strong>Descrição: </strong>{{row.item.description}}</p>
                                         <p v-if="row.item.path"><strong>Documento: </strong><a href="#" target="_blank">{{row.item.name}}</a></p>
                                         <div class="text-center">
-                                            <button v-if="logged" type="button" class="btn btn-contrast" v-on:click="inscreverEvento(row.item)">Inscrever</button>
+                                            <div v-if="logged">
+                                                <div v-if="!subscribed(row.item.id)">
+                                                    <div v-if="!isMaxCapacity(row.item)">
+                                                        <p class="text-center">Se pertende inscrever no evento pressione o botao seguinte</p>
+                                                    <button type="button" class="btn btn-contrast" v-on:click="subscribeToEvent(row.item)">Inscrever</button>
+                                                    </div>
+                                                    <div v-if="isMaxCapacity(row.item)">
+                                                        <p class="text-center">Evento encontra-se com lotação esgotada</p>
+                                                    </div>
+                                                </div>
+                                                <div v-if="subscribed(row.item.id)">
+                                                    <p class="text-center">Já se encontra inscrito a este evento.</p>
+                                                    <button type="button" class="btn btn-contrast" v-on:click="unsubscribeToEvent(row.item)">Anular Inscrição</button>
+                                                </div>
+                                            </div>
                                             <a v-if="!logged" href="/auth/#/" class="btn btn-red">Inscrever</a>
                                         </div>                                        
                                     </div>
@@ -72,6 +86,7 @@
 </template>
 
 <script type="text/javascript">
+
     export default {
         data: function(){
             return {
@@ -100,6 +115,7 @@
                 loading: true,
                 errorLoading: false,
                 userId: 0,
+                arrayOfIds: [],
             }
         },
         computed: {
@@ -111,14 +127,34 @@
             },
         },
         methods: {
+            subscribed: function(id) {
+                return this.arrayOfIds.includes(id);
+            },
+            isMaxCapacity: function(evento) {
+                return !(evento.max_inscritos-evento.total_interested > 0);
+            },
             getUserId() {
                 axios.get('/api/user')
                     .then((response) => {
                         this.userId = response.data.id;
+                        this.getSubscribedEventsOfUser(response.data.id);
                     })
                     .catch((error) => {
                         console.log(error);
                     });
+            },
+            getSubscribedEventsOfUser: function(id) {
+                const data = {
+                    user_id: id
+                }
+                axios.post('/api/events/isSubscribed', data)
+                    .then((response) => {
+                        this.arrayOfIds = response.data;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+
             },
             getEvents() {
                 this.loading = true;
@@ -137,17 +173,96 @@
                     this.logged = true;
                 }
             },
-            inscreverEvento(evento) {
-                this.getUserId();
-                const data = {
-                    userId: this.userId,
-                    eventId: evento.id
-                }
-                axios.post('/api/events/subscribe', data) 
-                    .then(response => {
-
-                    }).catch((error) => {
-                        
+            subscribeToEvent: function(evento) {
+                swal("Pertende realmente inscrever-se a este evento?", {
+                    icon: "info",
+                    buttons: {
+                        no: {
+                            text: "Não",
+                            className: "btn-light",
+                        },
+                        yes: {
+                            text: "Sim",
+                            className: "btn-info",
+                        },
+                    },
+                })
+                .then((value) => {
+                    switch (value) {
+                        case "no":
+                            break;
+                   
+                        case "yes":
+                            const data = {
+                                user_id: this.userId,
+                                events_id: evento.id
+                            }
+                            axios.post('/api/events/subscribe', data) 
+                                .then(response => {
+                                    swal(response.data.msg, {
+                                        icon: 'success',
+                                        buttons: {
+                                            ok: "Ok"
+                                        },
+                                    })
+                                    .then((value) => {
+                                        switch (value) {
+                                            case "ok":
+                                            this.getSubscribedEventsOfUser(this.userId);
+                                            break;
+                                        }
+                                    });
+                                }).catch((error) => {
+                                    
+                                });         
+                            break;
+                    }
+                });
+            },
+            unsubscribeToEvent: function(evento) {
+                swal("Pertende realmente anular a inscrição do evento?", {
+                    icon: "info",
+                    buttons: {
+                        no: {
+                            text: "Não",
+                            className: "btn-light",
+                        },
+                        yes: {
+                            text: "Sim",
+                            className: "btn-info",
+                        },
+                    },
+                })
+                .then((value) => {
+                    switch (value) {
+                        case "no":
+                            break;
+                   
+                        case "yes":
+                            const data = {
+                                user_id: this.userId,
+                                events_id: evento.id
+                            }
+                            axios.post('/api/events/unsubscribe', data) 
+                                .then(response => {
+                                    swal(response.data.msg, {
+                                        icon: 'success',
+                                        buttons: {
+                                            ok: "Ok"
+                                        },
+                                    })
+                                    .then((value) => {
+                                        switch (value) {
+                                            case "ok":
+                                            this.getSubscribedEventsOfUser(this.userId);
+                                            break;
+                                        }
+                                    });
+                                }).catch((error) => {
+                                    
+                                });         
+                            break;
+                    }
                 });
             },
         },
@@ -155,6 +270,7 @@
             this.getEvents();
             this.totalRows = this.eventos.length;
             this.isLogged();
+            this.getUserId();
         }
 
     }

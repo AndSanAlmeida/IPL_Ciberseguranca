@@ -17,8 +17,8 @@
         </div>
 
         <!-- LOADING -->
-        <div class="col-md-12">
-            <h1 class="m-5 text-center" v-if="loading">A carregar...</h1>
+        <div v-if="loading" class="align-loader mt-4">
+            <div class="loader"></div>
         </div>
         
         <!-- ============ -->

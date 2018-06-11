@@ -12,11 +12,14 @@
                         <nav class="glossary__nav">
                             <ul class="list-inline text-center">
                                 <li class="glossary__nav__item" v-for="letter in lettersAvailable">
-                                    <a href="#" class="card card__content" v-on:click="getGlossary(letter)">{{letter}}</a>
+                                    <a class="card card__content" v-on:click="getGlossary(letter)">{{letter}}</a>
                                 </li>
                             </ul>
                         </nav>
                         <!--END Glossary Nav-->
+                        <div v-if="loading" class="align-loader my-3">
+                            <div class="loader"></div>
+                        </div>
 
                         <div class="glossary__results">
             
@@ -33,6 +36,9 @@
 
                         </div>
                         <!--END Glossary Results-->
+                        <div v-if="!hasItems && canShowContent" class="alert alert-danger" role="alert" style="margin-top: 2em;">
+                            <h4><strong>Erro: </strong>Não existe glossário disponíveis.</h4>
+                        </div>
                     </div>
                     <!-- END Main content -->
 
@@ -69,24 +75,38 @@
                 }],
                 glossary: [],
                 lettersAvailable : [], 
+                errorLoading: false,
+                loading: true,
             }
+        },
+        computed: {
+            hasItems: function () {
+                return this.lettersAvailable.length > 0;
+            },
+            canShowContent: function () {
+                return !this.errorLoading && !this.loading;
+            },
         },
         methods: {
             getGlossaryLetters: function() {
+                this.loading = true;
                 axios.get('/api/glossary/letters')                    
                     .then(response => {
                         this.lettersAvailable = response.data;
                         this.getGlossary(this.lettersAvailable[0]);
+                        this.loading = false;
                     }).catch((error) => {
-                        
-                });
+                        this.loading = false;
+                    });
             },
-            getGlossary: function (letter) {                 
+            getGlossary: function (letter) {       
+                this.loading = true;          
                 axios.get('/api/glossary/byLetter/' + letter.toLowerCase())
                     .then(response => {
                         this.glossary = response.data.data;
+                        this.loading = false;
                 }).catch((error) => {
-
+                    this.loading = false;
                 });
             },
         },

@@ -15,6 +15,13 @@ window.Vue = require('vue');
 axios.defaults.headers.common['Accept'] = "application/json";
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('access_token');
 
+//FIXED
+const platformEmail = Vue.component('platformEmail', require('./components/adminComponents/settingsComponents/platformEmailComponent.vue'));
+const resources = Vue.component('resources', require('./components/adminComponents/settingsComponents/resourcesComponent.vue'));
+const activities = Vue.component('activities', require('./components/adminComponents/settingsComponents/activitiesComponent.vue'));
+const aboutUs = Vue.component('aboutUs', require('./components/adminComponents/settingsComponents/aboutUsComponent.vue'));
+const ourMission = Vue.component('ourMission', require('./components/adminComponents/settingsComponents/ourMissionComponent.vue'));
+
 Vue.component('admin-layout', require('./components/adminComponents/layoutComponent.vue'));
 const home = Vue.component('home', require('./components/adminComponents/homeComponent.vue'));
 const users = Vue.component('users', require('./components/adminComponents/usersComponents/usersComponent.vue'));
@@ -30,12 +37,10 @@ const faqs = Vue.component('faqs', require('./components/adminComponents/faqsCom
 const userQuestions = Vue.component('userQuestions', require('./components/adminComponents/userQuestionsComponents/userQuestionsComponent.vue'));
 const userAllQuestionsComponent = Vue.component('userAllQuestionsComponent', require('./components/adminComponents/userQuestionsComponents/userAllQuestionsComponent.vue'));
 const newsComponent = Vue.component('newsComponent', require('./components/adminComponents/newsComponents/newsComponent.vue'));
-const newslettersComponent = Vue.component('newslettersComponent', require('./components/adminComponents/newslettersComponents/newslettersComponent.vue'));
-const platformEmail = Vue.component('platformEmail', require('./components/adminComponents/settingsComponents/platformEmailComponent.vue'));
-const resources = Vue.component('resources', require('./components/adminComponents/settingsComponents/resourcesComponent.vue'));
-const activities = Vue.component('activities', require('./components/adminComponents/settingsComponents/activitiesComponent.vue'));
-const aboutUs = Vue.component('aboutUs', require('./components/adminComponents/settingsComponents/aboutUsComponent.vue'));
 const rssNews = Vue.component('rssNews', require('./components/adminComponents/rssNewsComponents/rssNewsComponent.vue'));
+const newslettersComponent = Vue.component('newslettersComponent', require('./components/adminComponents/newslettersComponents/newslettersComponent.vue'));
+const alertsComponent = Vue.component('alertsComponent', require('./components/adminComponents/alertsComponents/alertComponent.vue'));
+const rssAlerts = Vue.component('rssAlerts', require('./components/adminComponents/rssAlertsComponents/rssAlertsComponent.vue'));
 
 /*ROUTES*/
 const routes = [
@@ -82,6 +87,8 @@ const routes = [
 			{ path: 'news', component: newsComponent },
 			{ path: 'newsletters', component: newslettersComponent },
 			{ path: 'rssNews', component: rssNews },
+			{ path: 'alerts', component: alertsComponent },
+			{ path: 'rssAlerts', component: rssAlerts },
 	    ],
 	},
 ];

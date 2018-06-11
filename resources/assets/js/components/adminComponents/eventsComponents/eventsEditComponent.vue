@@ -93,7 +93,7 @@
                     <div class="form-group row">
                         <label for="fileInput" class="col-lg-3 col-form-label form-control-label">Documento</label>
                         <div class="col-lg-9" v-if="path == null">
-                            <input id="fileInput" type="file" accept=".pdf" class="form-control-file" v-on:change="onFileChange">
+                            <input id="fileInput" type="file" accept=".pdf" class="form-control-file" v-on:change="onFileChange" required>
                         </div>
                         <div class="col-lg-9" v-if="path != null">
                             <a class="btn btn-success" :href="path" :download=description>Ver documento</a>
@@ -103,7 +103,7 @@
                     <div class="form-group row">
                         <label for="imageInput" class="col-lg-3 form-control-label">Imagem</label>
                         <div class="col-lg-9" v-if="!imagePath || imagePath == null">
-                            <input id="imageInput" type="file" accept="image/x-png,image/gif,image/jpeg" class="form-control-file" v-on:change="onImageChange">
+                            <input id="imageInput" type="file" accept="image/x-png,image/gif,image/jpeg" class="form-control-file" v-on:change="onImageChange" required>
                         </div>
                         <div class="col-lg-9" v-if="imagePath">
                             <img :src="imagePath" class="img-fluid" alt="Imagem do evento"/>

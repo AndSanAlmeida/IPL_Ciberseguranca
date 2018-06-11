@@ -24,12 +24,45 @@
 
                 <p><b>Estado: </b>{{status == 0 ? 'Por Realizar' : status == 0 ? 'A Decorrer' : 'Concluido'}}</p>
                  
+                <p v-if="document"><b>Documento: </b><a :href="document" :download ="name" role="button">Ver Documento</a></p>
+
+                <hr>
                 <p><b>Lotação: </b>{{max_inscritos}}</p>
     
-                <p><b>Total de interessados: </b>{{total_interested}}</p>
+                <p><b>Total de Inscritos: </b>{{total_interested}}</p>
+                
+                <div v-if="total_interested != 0">
+                    <button class="btn btn-primary" v-on:click="showHideUsers()">{{buttonText}}</button>
 
-                <p v-if="document"><b>Documento: </b><a :href="document" :download ="name" role="button">Ver Documento</a></p>
- 
+                    <div v-if="showUsers">
+                        <div class="table-responsive mt-4">                       
+                            <div class="card">
+                              <b-table responsive 
+                                stacked="md"
+                                :items="users" 
+                                :fields="fields"
+                                :current-page="currentPage"
+                                :per-page="perPage"> 
+                                <template slot="status" slot-scope="row">
+                                  {{row.item.status == 0 ? 'Por Realizar' : row.item.status == 0 ? 'A Decorrer' : 'Concluido'}}
+                                </template>
+                                <template slot="actions" slot-scope="row">
+                                  <button type="button" class="btn btn-primary" v-on:click="viewEvent(row.item)">Ver detalhes</button>
+                                  <button type="button" class="btn btn-warning" v-on:click="editEvent(row.item)">Editar</button>
+                                  <button type="button" class="btn btn-danger" v-on:click="deleteEvent(row.item)">Eliminar</button>
+                                </template>
+                              </b-table>
+                              <hr>
+                              <b-pagination :total-rows="users.length" 
+                                  :per-page="perPage" 
+                                  v-model="currentPage"
+                                  align="center"/>
+                            </div>
+                          </div>
+                    </div>
+
+                </div>
+
                 <div class="form-group row">
                     <label class="col-lg-3 col-form-label form-control-label"></label>
                     <div class="col-lg-9">
@@ -45,7 +78,6 @@
         props: ['item'],
         data: function() {
             return {
-                id: this.$route.params.id,
                 name: '',
                 organizer: '',
                 localization: '',
@@ -60,9 +92,45 @@
                 attemptSubmit: false,
                 serverError: false,
                 serverErrorMessage: '',
+                buttonText: 'Ver utilizadores inscritos',
+                showUsers: false,
+                users: [],
+                fields: [
+                    { key: 'id', label:'#'},
+                    { key: 'name', label:'Nome'},
+                    { key: 'email', label:'Email'},
+                    
+                ],
+                currentPage: 1,
+                perPage: 10
             }
         },
         methods: {
+            showHideUsers: function() {
+                if (this.showUsers == true) {
+                    this.showUsers =false; 
+                    this.buttonText = 'Mostar utilizadores inscritos'
+                } else {
+                    this.buttonText = 'Ocultar utilizadores inscritos'
+                    this.showUsers =true;
+
+                    this.getSignedUsers();
+                }
+            },
+            getSignedUsers: function() {
+                if (this.users.length == 0) {
+                    
+                    axios.get('/api/events/'+this.item.id+'/users')
+                        .then((response) => {
+                            this.users = response.data.data;
+                        })
+                        .catch((error) => {
+                            this.serverError = true;
+                            console.log(error);
+                            this.serverErrorMessage = error.response.data.data;
+                        });
+                }
+            },
             getEvento: function() {
                 axios.get('/api/events/'+this.item.id)
                 .then((response) => {

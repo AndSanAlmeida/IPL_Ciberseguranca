@@ -60,6 +60,16 @@ class DbStructure extends Migration
             $table->timestamps();
         });
 
+        Schema::create('alerts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->string('category');
+            $table->longText('description');
+            $table->string('source');
+            $table->date('pub_date');
+            $table->timestamps();
+        });
+
         Schema::create('rss_news', function (Blueprint $table) {
             $table->increments('id');
             $table->string('website');
@@ -95,10 +105,10 @@ class DbStructure extends Migration
 
         Schema::create('event_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_user')->unsigned()->nullable();
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('id_event')->unsigned()->nullable();
-            $table->foreign('id_event')->references('id')->on('events')->onDelete('cascade');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('event_id')->unsigned()->nullable();
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
             $table->timestamps();
         });
 

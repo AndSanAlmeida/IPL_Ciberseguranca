@@ -12,8 +12,8 @@
                         <h4><strong>Erro: </strong>Não existe FAQ's disponíveis.</h4>
                     </div>
 
-                    <div v-if="loading" class="text-center" style="margin-top: 2em;">
-                        <h3>A carregar...</h3>
+                    <div v-if="loading" class="align-loader">
+                        <div class="loader"></div>
                     </div>
 
                     <div v-if="hasItems && canShowContent" id="faq">

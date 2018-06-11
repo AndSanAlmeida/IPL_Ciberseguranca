@@ -11,31 +11,33 @@
           </div>
           <div class="card mt-2">
             <div class="card-header d-flex align-items-center">
-              <h3 class="h4">Lista de Notícias</h3>
+              <h3 class="h4">Lista de RSS de Notícias</h3>
             </div>
             <div class="card-body">
               <div class="table-responsive">                       
                 <div class="card">
-                  <p class="text-center" v-if="rssNews.length == 0" >Não existe rss de notícias disponíveis.</p>
-                  <table class="table table-striped table-hover" v-if="rssNews.length != 0" >
-                    <thead>
-                      <tr>
-                        <th>Website</th>
-                        <th>Url</th>
-                        <th>Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="rss in rssNews">
-                        <td><span v-html="rss.website"></span></td>
-                        <td><span v-html="rss.url"></span></td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-warning" v-on:click="editRssNews(rss)">Editar</button>
-                            <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteRssNews(rss)">Eliminar</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <b-table responsive 
+                    stacked="md"
+                    :items="rssNews" 
+                    :fields="fields"
+                    :current-page="currentPage"
+                    :per-page="perPage"> 
+                    <template slot="website" slot-scope="row">
+                      <span v-html="row.item.website"></span>
+                    </template>
+                    <template slot="url" slot-scope="row">
+                      <span v-html="row.item.url"></span>
+                    </template>
+                    <template slot="actions" slot-scope="row">
+                      <button type="button" class="btn btn-sm btn-warning" v-on:click="editRssNews(row.item)">Editar</button>
+                      <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteRssNews(row.item)">Eliminar</button>
+                    </template>
+                  </b-table>
+                  <hr>
+                  <b-pagination :total-rows="rssNews.length" 
+                      :per-page="perPage" 
+                      v-model="currentPage"
+                      align="center"/>
                 </div>
               </div>
             </div>
@@ -48,8 +50,17 @@
 <script type="text/javascript">
 module.exports={
   props: ['rssNews'],
-  computed: {
-
+  data: function () {
+    return {
+      fields: [
+        { key: 'id', label:'#'},
+        { key: 'website', label:'Website'},
+        { key: 'url', label:'URL'},
+        { key: 'actions', label:'Ações'},
+      ],
+      currentPage: 1,
+      perPage: 10
+    }
   },
   methods: {
     viewRssNews: function(rss) {

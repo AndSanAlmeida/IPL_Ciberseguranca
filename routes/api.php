@@ -14,14 +14,6 @@ use Illuminate\Http\Request;
 */
 
 
-/******************
- LOGIN AND LOGOUT
- *****************/
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::group(['middleware' => 'prevent-back-history'],function(){
 	Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 	Route::get('/', function() {
@@ -29,103 +21,152 @@ Route::group(['middleware' => 'prevent-back-history'],function(){
 	});
 });
 
+// GENERAL USER
+// -------------------- AUTH --------------------
 Route::post('register', 'UserControllerAPI@store');
 Route::post('login', 'LoginControllerAPI@login');
 Route::post('password/email', 'LoginControllerAPI@sendResetLinkEmail');
 Route::post('password/reset', 'LoginControllerAPI@resetPassword');
 
-
-
-
-/******************
-	ADMIN ROUTES
- *****************/
-
-Route::middleware('auth:api')->put('users/{id}', 'UserControllerAPI@updateState'); //CHANGE STATE USER
-Route::middleware('auth:api')->delete('users/{id}', 'UserControllerAPI@delete'); //DELETE USER
-Route::middleware('auth:api')->get('user/{id}', 'UserControllerAPI@getUserById'); // get user by id
-
+// -------------------- EVENTS --------------------
 Route::get('events', 'EventControllerAPI@index'); //GET LIST OF EVENTS
-Route::get('events/{id}', 'EventControllerAPI@show'); // get event by id 
-Route::middleware(['auth:api','isAdmin'])->post('events/create', 'EventControllerAPI@create'); // create event
-Route::middleware('auth:api')->delete('event/{id}/delete', 'EventControllerAPI@destroy'); // delete event
-Route::middleware('auth:api')->post('events/{id}/update', 'EventControllerAPI@edit'); // edit event
-Route::middleware('auth:api')->post('events/subscribe', 'EventControllerAPI@subscribe'); // subscribe to event
+Route::get('events/{id}', 'EventControllerAPI@show'); // GET EVENT BY ID
+Route::get('events/{id}/users', 'EventControllerAPI@getUsersSubscribed'); // GET SUBSCRIBED USERS OF A EVENT
 
-Route::get('glossary/byLetter/{letter}', 'GlossaryControllerAPI@getGlossaryItensByLetter'); //Get the glossary by letter
-Route::get('glossary/letters', 'GlossaryControllerAPI@getLetterInGlossary'); // get all letter in glossary
-Route::get('glossary', 'GlossaryControllerAPI@index'); //Get the glossary
-Route::get('glossary/{id}', 'GlossaryControllerAPI@show'); // get item of glossary by id 
-Route::middleware('auth:api')->post('glossary/create', 'GlossaryControllerAPI@store'); // create item of glossary
-Route::middleware('auth:api')->delete('glossary/{id}/delete', 'GlossaryControllerAPI@destroy'); // delete item of glossary
-Route::middleware('auth:api')->post('glossary/{id}/update', 'GlossaryControllerAPI@update'); // edit item of glossary
+// -------------------- GLOSSARY --------------------
+Route::get('glossary/byLetter/{letter}', 'GlossaryControllerAPI@getGlossaryItensByLetter'); // GET GLOSSARY BY LETTER
+Route::get('glossary/letters', 'GlossaryControllerAPI@getLetterInGlossary'); // GET ALL LETTERS IN GLOSSARY
+Route::get('glossary', 'GlossaryControllerAPI@index'); // GET GLOSSARY
+Route::get('glossary/{id}', 'GlossaryControllerAPI@show'); // GET ITEM FROM GLOSSARY BY ID
 
-Route::middleware('auth:api')->get('settings', 'ConfigControllerAPI@getPlatformData'); // get platform email
-Route::middleware('auth:api')->post('settings/update', 'ConfigControllerAPI@update'); // update platform email
-Route::get('settings/aboutUs', 'ConfigControllerAPI@getAboutUs'); // get about us
-Route::middleware('auth:api')->post('settings/aboutUs/update', 'ConfigControllerAPI@aboutUsUpdate'); // update about us
-Route::get('settings/activities', 'ConfigControllerAPI@getActivities'); // get about us
-Route::middleware('auth:api')->post('settings/activities/update', 'ConfigControllerAPI@ActivitiesUpdate'); // update about us
-Route::get('settings/resources', 'ConfigControllerAPI@getResources'); // get about us
-Route::middleware('auth:api')->post('settings/resources/update', 'ConfigControllerAPI@ResourcesUpdate'); // update about us
+// -------------------- SETTINGS --------------------
+Route::get('settings/ourMission', 'ConfigControllerAPI@getOurMission'); // GET OUR MISSION
+Route::get('settings/aboutUs', 'ConfigControllerAPI@getAboutUs'); // GET ABOUT US
+Route::get('settings/activities', 'ConfigControllerAPI@getActivities'); // GET ACTIVITIES
+Route::get('settings/resources', 'ConfigControllerAPI@getResources'); // GET RESOURCES
 
-Route::get('usefulLinks', 'UsefulLinksControllerAPI@index'); //Get the useful links
-Route::get('usefulLinks/{id}', 'UsefulLinksControllerAPI@show'); // get item of useful links by id 
-Route::middleware('auth:api')->post('usefulLinks/create', 'UsefulLinksControllerAPI@store'); // create item of useful links
-Route::middleware('auth:api')->delete('usefulLinks/{id}/delete', 'UsefulLinksControllerAPI@destroy'); // delete item of useful links
-Route::middleware('auth:api')->post('usefulLinks/{id}/update', 'UsefulLinksControllerAPI@update'); // edit item of useful links
+// -------------------- USEFUL LINKS --------------------
+Route::get('usefulLinks', 'UsefulLinksControllerAPI@index'); // GET USERFULL LINKS
+Route::get('usefulLinks/{id}', 'UsefulLinksControllerAPI@show'); // GET ITEM OF USEFULL LINK BY ID
 
-Route::get('documents', 'DocumentsControllerAPI@index'); //Get the useful links
-Route::get('documents/{id}', 'DocumentsControllerAPI@show'); // get item of useful links by id 
-Route::middleware('auth:api')->post('documents/create', 'DocumentsControllerAPI@store'); // create item of useful links
-Route::middleware('auth:api')->delete('documents/{id}/delete', 'DocumentsControllerAPI@destroy'); // delete item of useful links
-Route::middleware('auth:api')->post('documents/{id}/update', 'DocumentsControllerAPI@update'); // edit item of useful links
+// -------------------- DOCUMENTS --------------------
+Route::get('documents', 'DocumentsControllerAPI@index'); // GET DOCUMENTS
+Route::get('documents/{id}', 'DocumentsControllerAPI@show'); //GET ITEM OF DOCUMENT BY ID
 
-Route::get('newsletters', 'NewsletterControllerAPI@index'); // get all newsletter
-Route::get('newsletters/{id}', 'NewsletterControllersAPI@show'); // get newsletter
-Route::middleware('auth:api')->post('newsletters/create', 'NewsletterControllerAPI@store'); // create newsletter
-Route::middleware('auth:api')->delete('newsletters/{id}/delete', 'NewsletterControllerAPI@destroy'); // delete newsletter
-Route::middleware('auth:api')->post('newsletters/{id}/update', 'NewsletterControllerAPI@update'); // edit newsletter
-Route::post('newsletter/subscribe', 'NewsletterControllerAPI@subscribe'); // subscribe to newsletter
-Route::delete('newsletter/{email}/unsubcribe', 'NewsletterControllerAPI@unsubscribe'); // delete subscription of newsletter
-Route::post('newsletter/subscribed', 'NewsletterControllerAPI@subscribed'); // check if user is in newsletter subscription
-Route::middleware('auth:api')->post('newsletters/{id}/publish', 'NewsletterControllerAPI@publish'); // edit newsletter
+// -------------------- NEWSLETTERS --------------------
+Route::get('newsletters', 'NewsletterControllerAPI@index'); // GET ALL NEWSLETTER
+Route::get('newsletters/{id}', 'NewsletterControllersAPI@show'); // GET NEWSLETTER
+Route::post('newsletter/subscribe', 'NewsletterControllerAPI@subscribe'); // SUBSCRIBE NEWSLETTER
+Route::delete('newsletter/{email}/unsubcribe', 'NewsletterControllerAPI@unsubscribe'); // DELETE SUBSCRIPTION OF NEWSLETTER
+Route::post('newsletter/subscribed', 'NewsletterControllerAPI@subscribed'); // CHECK IF USER IS IN NEWSLETTER SUBSCRIPTION
 
-Route::middleware('auth:api')->post('questions/create', 'UserQuestionControllerAPI@store'); // edit newsletter
-Route::middleware('auth:api')->get('questions', 'UserQuestionControllerAPI@index'); // get all questions
-Route::middleware('auth:api')->get('questions/answered', 'UserQuestionControllerAPI@answered'); // get all questions
-Route::middleware('auth:api')->get('questions/notAnswered', 'UserQuestionControllerAPI@notAnswered'); // get questions with no answered
-Route::middleware('auth:api')->delete('questions/{id}/delete', 'UserQuestionControllerAPI@deleteQuestion'); // delete question
-Route::middleware('auth:api')->post('questions/answer', 'UserQuestionControllerAPI@answer'); // responde to a question
+// -------------------- FAQS --------------------
+Route::get('faqs', 'FAQControllerAPI@index'); // GET FAQS
+Route::get('faqs/{id}', 'FAQControllerAPI@show'); // GET FAQ BY ID
 
-Route::get('faqs', 'FAQControllerAPI@index'); //Get faqs
-Route::get('faqs/{id}', 'FAQControllerAPI@show'); // get faq by id 
-Route::middleware('auth:api')->post('faqs/create/clean', 'FAQControllerAPI@cleanStore'); // create clean faq 
-Route::middleware('auth:api')->post('faqs/create', 'FAQControllerAPI@store'); // create faq from user question
-Route::middleware('auth:api')->delete('faqs/{id}/delete', 'FAQControllerAPI@destroy'); // delete faq
-Route::middleware('auth:api')->post('faqs/{id}/update', 'FAQControllerAPI@update'); // edit faq
+// -------------------- NEWS RSS --------------------
+Route::get('rssNews', 'RSSNewsControllerAPI@index'); // GET RSS NEWS
+Route::get('rssNews/{id}', 'RSSNewsControllerAPI@show'); // GET RSS NEWS BY ID
 
-Route::get('rssNews', 'RSSNewsControllerAPI@index'); // get rss news
-Route::middleware('auth:api')->post('rssNews/create', 'RSSNewsControllerAPI@store'); // add rss of news
-Route::middleware('auth:api')->delete('rssNews/{id}/delete', 'RSSNewsControllerAPI@destroy'); // delete rss of news
-Route::get('rssNews/{id}', 'RSSNewsControllerAPI@show'); // get rss by id
-Route::middleware('auth:api')->post('rssNews/{id}/update', 'RSSNewsControllerAPI@update'); // edit rss 
+// -------------------- ALERTS RSS --------------------
+Route::get('rssAlerts', 'RSSAlertsControllerAPI@index'); // GET RSS ALERTS
+Route::get('rssAlerts/{id}', 'RSSAlertsControllerAPI@show'); // GET RSS ALERTS BY ID
 
-Route::middleware('auth:api')->post('news/create', 'NewsControllerAPI@store'); // add rss of news
+
+// -------------------- NEWS --------------------
 Route::get('news', 'NewsControllerAPI@index');
-/******************
-	USER ROUTES
- *****************/
-	
-Route::middleware('auth:api')->post('users', 'UserControllerAPI@getUsers'); //GET LIST OF USERS TO MANAGE
-Route::middleware(['auth:api','isAdmin'])->post('usersForStatus', 'UserControllerAPI@getUsersForStatus'); //GET LIST OF USERS FOR STATUS TO MANAGE
-Route::middleware('auth:api')->post('/user/update', 'UserControllerAPI@updateUserSettings'); //UPDATE USER INFO
-Route::middleware('auth:api')->delete('deleteOwnAccount', 'UserControllerAPI@deleteOwnAccount'); //DELETE USER
 
-/******************
- USER/ADMIN ROUTES
- *****************/
+// -------------------- ALERTS --------------------
+Route::get('alerts', 'AlertsControllerAPI@index');
 
-Route::middleware('auth:api')->post('/user/avatar/update', 'UserControllerAPI@updateAvatar'); //UPDATE AVATAR
-Route::middleware('auth:api')->post('/user/password/update', 'UserControllerAPI@updatePassword'); //UPDATE PASSWORD
+// LOGGED USER
+Route::middleware('auth:api')->group(function () {
+	// -------------------- USERS --------------------
+	Route::post('/user/avatar/update', 'UserControllerAPI@updateAvatar'); //UPDATE AVATAR
+	Route::post('/user/password/update', 'UserControllerAPI@updatePassword'); //UPDATE PASSWORD
+	Route::post('/user/update', 'UserControllerAPI@updateUserSettings'); //UPDATE USER INFO
+	Route::delete('deleteOwnAccount', 'UserControllerAPI@deleteOwnAccount'); //DELETE USER
+	Route::get('/user', function (Request $request) {
+	    return $request->user();
+	});
+
+	// -------------------- EVENTS --------------------
+	Route::post('events/subscribe', 'EventControllerAPI@subscribe'); // SUBSCRIBE TO EVENT
+	Route::post('events/unsubscribe', 'EventControllerAPI@unsubscribe'); // UNSUBSCRIBE TO EVENT
+	Route::post('events/isSubscribed', 'EventControllerAPI@isSubscribed'); // GET LIST OF EVENTS ID OF SUBSCRIBED EVENTS BY USER
+
+	// -------------------- QUESTIONS --------------------
+	Route::post('questions/create', 'UserQuestionControllerAPI@store'); // CREATE QUESTION
+
+	// ADMIN USER
+	Route::middleware('isAdmin')->group(function () {
+		// -------------------- USER --------------------
+		Route::post('users', 'UserControllerAPI@getUsers'); //GET LIST OF USERS TO MANAGE
+		Route::put('users/{id}', 'UserControllerAPI@updateState'); //CHANGE STATE USER
+		Route::delete('users/{id}', 'UserControllerAPI@delete'); //DELETE USER
+		Route::get('user/{id}', 'UserControllerAPI@getUserById'); // GET USER BY ID
+		Route::post('usersForStatus', 'UserControllerAPI@getUsersForStatus'); //GET LIST OF USERS FOR STATUS TO MANAGE
+
+		// -------------------- EVENTS --------------------
+		Route::post('events/create', 'EventControllerAPI@create'); // CREATE EVENT
+		Route::delete('event/{id}/delete', 'EventControllerAPI@destroy'); // DELETE EVENT
+		Route::post('events/{id}/update', 'EventControllerAPI@edit'); // EDIT EVENT
+
+		// -------------------- GLOSSARY --------------------
+		Route::post('glossary/create', 'GlossaryControllerAPI@store'); // CREATE ITEM OF GLOSSARY
+		Route::delete('glossary/{id}/delete', 'GlossaryControllerAPI@destroy'); // DELETE ITEM OF GLOSSARY
+		Route::post('glossary/{id}/update', 'GlossaryControllerAPI@update'); // EDIT ITEM OF GLOSSARY
+
+		// -------------------- SETTINGS --------------------
+		Route::get('settings', 'ConfigControllerAPI@getPlatformData'); // GET PLATFORM EMAIL
+		Route::post('settings/update', 'ConfigControllerAPI@update'); // UPDATE PLATFORM EMAIL
+		Route::post('settings/ourMission/update', 'ConfigControllerAPI@ourMissionUpdate'); // UPDATE OUR MISSION
+		Route::post('settings/aboutUs/update', 'ConfigControllerAPI@aboutUsUpdate'); // UPDATE ABOUT US
+		Route::post('settings/activities/update', 'ConfigControllerAPI@ActivitiesUpdate'); // UPDATE ACTIVITIES
+		Route::post('settings/resources/update', 'ConfigControllerAPI@ResourcesUpdate'); // UPDATE RESOURCES
+
+		// -------------------- USEFUL LINKS --------------------
+		Route::post('usefulLinks/create', 'UsefulLinksControllerAPI@store'); // CREATE ITEM OF USEFULL LINK
+		Route::delete('usefulLinks/{id}/delete', 'UsefulLinksControllerAPI@destroy'); // DELETE ITEM OF USEFULL LINK
+		Route::post('usefulLinks/{id}/update', 'UsefulLinksControllerAPI@update'); // EDIT ITEM OF USEFULL LINK
+
+		// -------------------- DOCUMENTS --------------------
+		Route::post('documents/create', 'DocumentsControllerAPI@store'); // CREATE ITEM OF DOCUMENTS
+		Route::delete('documents/{id}/delete', 'DocumentsControllerAPI@destroy'); // DELETE ITEM OF DOCUMENTS
+		Route::post('documents/{id}/update', 'DocumentsControllerAPI@update'); // EDIT ITEM OF DOCUMENTS
+
+		// -------------------- NEWSLETTER --------------------
+		Route::post('newsletters/create', 'NewsletterControllerAPI@store'); // CREATE NEWSLETTER
+		Route::delete('newsletters/{id}/delete', 'NewsletterControllerAPI@destroy'); // DELETE NEWSLETTER
+		Route::post('newsletters/{id}/update', 'NewsletterControllerAPI@update'); // EDIT NEWSLETTER
+		Route::post('newsletters/{id}/publish', 'NewsletterControllerAPI@publish'); // PUBLISH NEWSLETTER
+
+		// -------------------- USER QUESTIONS --------------------
+		Route::get('questions', 'UserQuestionControllerAPI@index'); // GET ALL USER QUESTIONS
+		Route::get('questions/answered', 'UserQuestionControllerAPI@answered'); // GET ANSWERED USER QUESTIONS
+		Route::get('questions/notAnswered', 'UserQuestionControllerAPI@notAnswered'); // GET NOT ANSWERED USER QUESTIONS
+		Route::delete('questions/{id}/delete', 'UserQuestionControllerAPI@deleteQuestion'); // DELETE USER QUESTIONS
+		Route::post('questions/answer', 'UserQuestionControllerAPI@answer'); // ANSWER USER QUESTIONS
+
+		// -------------------- FAQS --------------------
+		Route::post('faqs/create/clean', 'FAQControllerAPI@cleanStore'); // CREATE CLEAN FAQ
+		Route::post('faqs/create', 'FAQControllerAPI@store'); // CREATE FAQS FROM USER QUESTION
+		Route::delete('faqs/{id}/delete', 'FAQControllerAPI@destroy'); // DELETE FAQ
+		Route::post('faqs/{id}/update', 'FAQControllerAPI@update'); // EDIT FAQ
+
+		// -------------------- RSS NEWS --------------------
+		Route::post('rssNews/create', 'RSSNewsControllerAPI@store'); // ADD RSS NEWS
+		Route::delete('rssNews/{id}/delete', 'RSSNewsControllerAPI@destroy'); // DELETE RSS NEWS
+		Route::post('news/create', 'NewsControllerAPI@store'); // ADD RSS OF NEWS
+		Route::post('rssNews/{id}/update', 'RSSNewsControllerAPI@update'); // EDIT RSS NEWS
+
+		// -------------------- RSS ALERTS --------------------
+		Route::post('rssAlerts/create', 'RSSAlertsControllerAPI@store'); // ADD RSS ALERTS
+		Route::delete('rssAlerts/{id}/delete', 'RSSAlertsControllerAPI@destroy'); // DELETE RSS ALERTS
+		Route::post('alerts/create', 'AlertsControllerAPI@store'); // ADD RSS OF ALERTS
+		Route::post('rssAlerts/{id}/update', 'RSSAlertsControllerAPI@update'); // EDIT RSS ALERTS
+
+
+	});	
+});
 

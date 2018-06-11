@@ -12,27 +12,23 @@
             <div class="card-body">
               <div class="table-responsive">                       
                 <div class="card">
-                  <p class="text-center" v-if="documents.length == 0" >Não existe documentos disponíveis.</p>
-                  <table class="table table-striped table-hover" v-if="documents.length != 0" >
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Descrição</th>
-                        <th>Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="document in documents" :key="document.id">
-                        <td>{{document.id}}</td>
-                        <td>{{document.description}}</td>
-                        <td>
-                            <a class="btn btn-sm btn-primary" :href="document.path" :download=document.description>Ver documento</a>
-                            <button type="button" class="btn btn-sm btn-warning" v-on:click="editDocument(document)">Editar</button>
-                            <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteDocument(document)">Eliminar</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <b-table responsive 
+                    stacked="md"
+                    :items="documents" 
+                    :fields="fields"
+                    :current-page="currentPage"
+                    :per-page="perPage"> 
+                    <template slot="actions" slot-scope="row">
+                      <a class="btn btn-sm btn-primary" :href="row.item.path" :download=row.item.description>Ver documento</a>
+                      <button type="button" class="btn btn-sm btn-warning" v-on:click="editDocument(row.item)">Editar</button>
+                      <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteDocument(row.item)">Eliminar</button>
+                    </template>
+                  </b-table>
+                  <hr>
+                  <b-pagination :total-rows="documents.length" 
+                      :per-page="perPage" 
+                      v-model="currentPage"
+                      align="center"/>
                 </div>
               </div>
             </div>
@@ -45,8 +41,16 @@
 <script type="text/javascript">
 module.exports={
   props: ['documents'],
-  computed: {
-
+  data: function () {
+    return {
+      fields: [
+        { key: 'id', label:'#'},
+        { key: 'description', label:'Descrição'},
+        { key: 'actions', label:'Ações'},
+      ],
+      currentPage: 1,
+      perPage: 10
+    }
   },
   methods: {
     deleteDocument: function(document) {
@@ -55,9 +59,9 @@ module.exports={
     editDocument: function(document) {
       this.$emit('editDocument', document);
     },
-    /*createDocument: function() {
+    createDocument: function() {
       this.$emit('createDocument');
-    }*/
+    }
   }
 }
 </script>
