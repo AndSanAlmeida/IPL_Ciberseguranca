@@ -579,12 +579,13 @@ p {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
 }
 
 #homeEvents .thumbnail {
+  max-width: 50%;
   margin: 20px;
   border: none;
 }
@@ -594,13 +595,13 @@ p {
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
-  transition: opacity 0.5s ease-in-out;
-  -webkit-transition: opacity 0.5s ease-in-out;
-  -moz-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
+  -webkit-transition: opacity 0.3s ease-in-out;
+  -moz-transition: opacity 0.3s ease-in-out;
 }
 
 #homeEvents .thumbnail:hover img {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 #homeEvents .thumbnail p {

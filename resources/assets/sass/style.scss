@@ -419,19 +419,20 @@ p {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
+    align-items: baseline;
   }  
   .thumbnail {
+    max-width: 50%;
     margin: 20px;
     border: none;
     img {
       opacity: 1;
       @include border-radius(5px);
-      @include transition(opacity, 0.5s, ease-in-out);
+      @include transition(opacity, 0.3s, ease-in-out);
     }   
     &:hover {
       img {
-        opacity: 0.8;
+        opacity: 0.9;
       }
     }
     p {
