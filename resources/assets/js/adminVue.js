@@ -105,10 +105,12 @@ new Vue({
         }
     },
     methods: {
-    	
+    	ola: function() {
+    		alert("Ola");
+    	}
     },
     created: function() {
-
+    	this.ola;
     },
     
 }).$mount('#admin');

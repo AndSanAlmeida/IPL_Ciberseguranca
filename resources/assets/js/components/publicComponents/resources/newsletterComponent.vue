@@ -9,7 +9,7 @@
                  	</div>
 
                     <br>
-                    <h3><b>IPL Cibersegurança newsletter:</b></h3>
+                    <h3><b>IPLeiria Cibersegurança newsletter:</b></h3>
 
                     <div class="alert alert-danger" role="alert" style="margin-top: 2em;">
                         <h4><strong>Erro: </strong>Não existe newsletters disponíveis.</h4>

@@ -48,7 +48,7 @@
 
         },
         methods: {
-            getData: function () {
+            getAvatar: function () {
                 axios.get('/api/user')
                     .then((response) => {
                         this.avatar = 'img/avatars/' + response.data.avatar;
@@ -83,13 +83,13 @@
                     axios.post('/api/user/avatar/update', {avatar: this.avatar}).then(response => {
                         this.success = true;
                         this.avatarChanged = false;
-                        this.getData();
+                        this.getAvatar();
                     });
                 }
             },
         },
         created: function () {
-            this.getData();
+            this.getAvatar();
         }
     }
 </script>

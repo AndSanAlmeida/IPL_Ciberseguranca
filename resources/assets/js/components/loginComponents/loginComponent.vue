@@ -25,13 +25,6 @@
                     <p v-if="missingPassword">Preencher Password</p>
                 </div>
             </div>
-
-            <!-- REMEMBER ME -->
-            <!--<div id="remember" class="checkbox">
-                <label>
-                    <input type="checkbox" value="remember-me"> Lembrar-me
-                </label>
-            </div>-->
             
             <!-- LINKS --> 
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Iniciar Sessão</button>
@@ -44,7 +37,7 @@
 
         </form><!-- /form -->
         <p class="text-center">
-            <a href="/" class="text-muted"><small>← Voltar a IPL-Cibersegurança</small></a>
+            <a href="/" class="text-muted"><small>← Voltar a IPLeiria | Cibersegurança</small></a>
         </p>
     </div><!-- /card-container -->
 </template>

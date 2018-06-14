@@ -16,7 +16,7 @@
                               <b-table v-if="showTable"
                                 responsive
                                 id = "tableAlerts" 
-                                stacked="md"
+                                stacked="sm"
                                 :items="alerts" 
                                 :fields="fields"
                                 :current-page="currentPage"
@@ -232,5 +232,8 @@
     }   
     #tableAlerts>thead{
         display: none;
+    }
+    .table-responsive {
+        border: 0;
     }
 </style>

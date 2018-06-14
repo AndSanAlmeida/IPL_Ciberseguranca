@@ -23,7 +23,7 @@
                               <b-table v-if="showTable"
                                 responsive
                                 id = "tableNews" 
-                                stacked="md"
+                                stacked="sm"
                                 :items="news" 
                                 :fields="fields"
                                 :current-page="currentPage"
@@ -251,8 +251,10 @@
     #tableNews>thead{
         display: none;
     }
-
     .card a {
         cursor: pointer;
     } 
+    .table-responsive {
+        border: 0;
+    }
 </style>
