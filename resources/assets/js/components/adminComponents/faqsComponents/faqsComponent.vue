@@ -120,9 +120,9 @@
                         this.faqs = response.data.data;
                         this.loading = false;
                     }).catch((error) => {
-                    this.loading = false;
-                    this.errorLoading = true;
-                });
+                        this.loading = false;
+                        this.errorLoading = true;
+                    });
             },
             deleteFaq : function(faq){
               swal("Pertende realmente apagar esta FAQ?", {
@@ -155,13 +155,15 @@
                                 .then((value) => {
                                     switch (value) {
                                         case "ok":
-                                            this.getFaqs();
+                                            
                                             break;
                                     }
                                 });
+                                this.getFaqs();
                           })
                           .catch((error) => {
-
+                            this.loading = false;
+                            this.errorLoading = true;
                           });                  
                           break;
                   }

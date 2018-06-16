@@ -116,9 +116,9 @@
                         this.eventos = response.data.data;
                         this.loading = false;
                     }).catch((error) => {
-                    this.loading = false;
-                    this.errorLoading = true;
-                });
+                        this.loading = false;
+                        this.errorLoading = true;
+                    });
             },
             deleteEvent : function(evento){
 		      swal("Pretende realmente apagar o evento?", {
@@ -151,13 +151,14 @@
 		                        .then((value) => {
 		                            switch (value) {
 		                                case "ok":
-		                                	this.getEvents();
 		                                	break;
 		                            }
 		                        });
+                                this.getEvents();
 		                  })
 		                  .catch((error) => {
-
+                            this.loading = false;
+                            this.errorLoading = true;
 		                  });                  
 		                  break;
 		          }

@@ -187,10 +187,11 @@
                                         .then((value) => {
                                             switch (value) {
                                                 case "ok":
-                                                    this.getNotAnsweredQuestions();
+                                                    
                                                     break;
                                             }
                                         });
+                                        this.getNotAnsweredQuestions();
                                   })
                                   .catch((error) => {
 

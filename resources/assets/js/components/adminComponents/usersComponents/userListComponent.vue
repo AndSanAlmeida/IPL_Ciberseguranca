@@ -32,16 +32,16 @@
 
           <template slot="actions" slot-scope="row">
               <button type="button" v-if="canChangeState" class="btn btn-primary btn-sm" v-on:click.prevent="changeStateOfUser(row.item, newState, newStateString)">{{ newStateString }}</button>
-              <button type="button" v-if="canDelete" class="btn btn-danger btn-sm" v-on:click.prevent="deleteUser(row.item)">Apagar</button>
-              <button type="button" v-if="canDelete" class="btn btn-info btn-sm">Promover Admin</button>
+              <button type="button" v-if="canDelete" class="btn btn-danger btn-sm" v-on:click.prevent="deleteUser(row.item)">Eliminar</button>
+              <button type="button" v-if="canDelete" class="btn btn-info btn-sm" v-on:click.prevent="promoteUser(row.item)">Promover Admin</button>
           </template>
 
         </b-table>
         <hr>
         <b-pagination :total-rows="totalRows" 
-                      :per-page="perPage" 
-                      v-model="currentPage" 
-                      align="center"/>      
+            :per-page="perPage" 
+            v-model="currentPage" 
+            align="center"/>      
       </div>
     </div>
   </div>
@@ -84,6 +84,9 @@
             }
         },
         methods: {
+            promoteUser: function(user){
+                this.$emit('promote-click', user);
+            },
             deleteUser: function(user){
                 this.$emit('delete-click', user);
             },

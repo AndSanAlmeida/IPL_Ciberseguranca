@@ -114,13 +114,14 @@
 		                        .then((value) => {
 		                            switch (value) {
 		                                case "ok":
-		                                	this.getNewsletters();
 		                                	break;
 		                            }
 		                        });
+		                        this.getNewsletters();
 		                  })
 		                  .catch((error) => {
-
+		                  	this.loading = false;
+	                    	this.errorLoading = true;
 		                  });                  
 		                  break;
 		          }
@@ -154,9 +155,9 @@
                         this.loading = false;
 						this.errorLoading = false;
                     }).catch((error) => {
-                    this.loading = false;
-                    this.errorLoading = true;
-                });
+	                    this.loading = false;
+	                    this.errorLoading = true;
+	                });
             },
             deleteNewsletter : function(newsletter){
 		      swal("Pretende realmente apagar esta newsletter?", {

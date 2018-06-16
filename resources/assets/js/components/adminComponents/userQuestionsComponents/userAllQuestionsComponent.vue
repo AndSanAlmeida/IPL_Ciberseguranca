@@ -184,10 +184,10 @@
                                         .then((value) => {
                                             switch (value) {
                                                 case "ok":
-                                                    this.getQuestions();
                                                     break;
                                             }
                                         });
+                                        this.getQuestions();
                                   })
                                   .catch((error) => {
 

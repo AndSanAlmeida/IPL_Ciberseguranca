@@ -106,7 +106,8 @@ Route::middleware('auth:api')->group(function () {
 		Route::delete('users/{id}', 'UserControllerAPI@delete'); //DELETE USER
 		Route::get('user/{id}', 'UserControllerAPI@getUserById'); // GET USER BY ID
 		Route::post('usersForStatus', 'UserControllerAPI@getUsersForStatus'); //GET LIST OF USERS FOR STATUS TO MANAGE
-
+		Route::post('users/{id}/promote', 'UserControllerAPI@promoteUser'); // TURN THE USER INTO A ADMIN
+		
 		// -------------------- EVENTS --------------------
 		Route::post('events/create', 'EventControllerAPI@create'); // CREATE EVENT
 		Route::delete('event/{id}/delete', 'EventControllerAPI@destroy'); // DELETE EVENT

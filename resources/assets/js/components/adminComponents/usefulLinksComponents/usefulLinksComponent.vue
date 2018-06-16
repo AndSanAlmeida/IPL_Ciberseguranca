@@ -99,9 +99,9 @@
                         this.usefulLinks = response.data.data;
                         this.loading = false;
                     }).catch((error) => {
-                    this.loading = false;
-                    this.errorLoading = true;
-                });
+                        this.loading = false;
+                        this.errorLoading = true;
+                    });
             },
             deleteLink : function(link){
 		      swal("Pertende realmente apagar este link útil?", {
@@ -134,13 +134,14 @@
 		                        .then((value) => {
 		                            switch (value) {
 		                                case "ok":
-		                                	this.getUsefulLinks();
 		                                	break;
 		                            }
 		                        });
+                                this.getUsefulLinks();
 		                  })
 		                  .catch((error) => {
-
+                            this.loading = false;
+                            this.errorLoading = true;
 		                  });                  
 		                  break;
 		          }

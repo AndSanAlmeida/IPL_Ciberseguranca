@@ -56,7 +56,7 @@
                         
                     <!-- USER LIST -->
                     <userList :users="users" :state="stateOfAccountProp" v-if="hasItems && canShowContent"
-                        @delete-click="deleteUser" @change-state-click="changeStateOfUser"></userList>
+                        @delete-click="deleteUser" @change-state-click="changeStateOfUser" @promote-click="promoteUser"></userList>
 
                 </div>
             </div>
@@ -136,6 +136,38 @@
                                     swal({
                                         title: "Operação completa!",
                                         text: "Utilizador apagado com sucesso!",
+                                        icon: "success",
+                                    });
+                                this.getUsers();
+                            });
+                        break;
+                    }
+                })
+            },
+            promoteUser: function (user) {
+                swal({
+                    title: "Promover?",
+                    icon: "warning",
+                    text: "Pretende realmente promover o utilizador?",
+                    buttons: {
+                        no: {
+                          text: "Cancelar",
+                          className: "btn-light",
+                        },
+                        yes: {
+                          text: "Promover!",
+                          className: "btn-primary",
+                        }
+                    }
+                }).then((result) => {
+                    switch(result) {
+                        case "no": break;
+                        case "yes": 
+                            axios.post('/api/users/' + user.id +'/promote')
+                                .then(response => {
+                                    swal({
+                                        title: "Operação completa!",
+                                        text: "Utilizador promovido com sucesso!",
                                         icon: "success",
                                     });
                                 this.getUsers();

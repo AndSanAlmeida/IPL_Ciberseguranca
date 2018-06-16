@@ -15,6 +15,7 @@
               <input class="form-control" type="text" v-model="title">
               <div class="clearfix mt-2">
                 <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingTitle ">Preencher título</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && hasInvalidCharsTitle ">Título contém símbolos inválidas</b-alert>
                 <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeTitle ">Título demasiado longo (Max: 100)</b-alert>
               </div>
             </div>
@@ -147,11 +148,35 @@ export default {
     invalidSizeTitle: function () {
       return this.title.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
     },
+    hasInvalidCharsTitle: function() {
+      if (this.title.indexOf(';') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('/') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('?') > -1) {
+        return true;
+      }
+      if (this.title.indexOf(':') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('@') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('=') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('&') > -1) {
+        return true;
+      }
+      return false;
+    },
     missingDescription: function () {
       return this.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
     hasClientError: function () {
-      return (this.missingTitle || this.invalidSizeTitle || this.missingDescription);
+      return (this.missingTitle || this.invalidSizeTitle || this.missingDescription || this.hasInvalidCharsTitle);
     },
     hasServerError: function () {
       return this.serverError;

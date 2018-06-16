@@ -94053,8 +94053,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             });
         },
-        changeStateOfUser: function changeStateOfUser(user, newState, newStateString) {
+        promoteUser: function promoteUser(user) {
             var _this3 = this;
+
+            __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()({
+                title: "Promover?",
+                icon: "warning",
+                text: "Pretende realmente promover o utilizador?",
+                buttons: {
+                    no: {
+                        text: "Cancelar",
+                        className: "btn-light"
+                    },
+                    yes: {
+                        text: "Promover!",
+                        className: "btn-primary"
+                    }
+                }
+            }).then(function (result) {
+                switch (result) {
+                    case "no":
+                        break;
+                    case "yes":
+                        axios.post('/api/users/' + user.id + '/promote').then(function (response) {
+                            __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()({
+                                title: "Operação completa!",
+                                text: "Utilizador promovido com sucesso!",
+                                icon: "success"
+                            });
+                            _this3.getUsers();
+                        });
+                        break;
+                }
+            });
+        },
+        changeStateOfUser: function changeStateOfUser(user, newState, newStateString) {
+            var _this4 = this;
 
             __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()({
                 title: newStateString + "!",
@@ -94081,7 +94115,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             text: "Utilizador bloqueado com sucesso!",
                             icon: "success"
                         });
-                        _this3.getUsers();
+                        _this4.getUsers();
                     });
                 } else {
                     __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()("Preencher mensagem.", {
@@ -94239,6 +94273,9 @@ module.exports = {
         }
     },
     methods: {
+        promoteUser: function promoteUser(user) {
+            this.$emit('promote-click', user);
+        },
         deleteUser: function deleteUser(user) {
             this.$emit('delete-click', user);
         },
@@ -94377,7 +94414,7 @@ var render = function() {
                               }
                             }
                           },
-                          [_vm._v("Apagar")]
+                          [_vm._v("Eliminar")]
                         )
                       : _vm._e(),
                     _vm._v(" "),
@@ -94386,7 +94423,13 @@ var render = function() {
                           "button",
                           {
                             staticClass: "btn btn-info btn-sm",
-                            attrs: { type: "button" }
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                _vm.promoteUser(row.item)
+                              }
+                            }
                           },
                           [_vm._v("Promover Admin")]
                         )
@@ -94579,7 +94622,8 @@ var render = function() {
                   attrs: { users: _vm.users, state: _vm.stateOfAccountProp },
                   on: {
                     "delete-click": _vm.deleteUser,
-                    "change-state-click": _vm.changeStateOfUser
+                    "change-state-click": _vm.changeStateOfUser,
+                    "promote-click": _vm.promoteUser
                   }
                 })
               : _vm._e()
@@ -94825,11 +94869,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }).then(function (value) {
                                 switch (value) {
                                     case "ok":
-                                        _this2.getEvents();
                                         break;
                                 }
                             });
-                        }).catch(function (error) {});
+                            _this2.getEvents();
+                        }).catch(function (error) {
+                            _this2.loading = false;
+                            _this2.errorLoading = true;
+                        });
                         break;
                 }
             });
@@ -97733,11 +97780,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }).then(function (value) {
                                 switch (value) {
                                     case "ok":
-                                        _this2.getGlossary();
                                         break;
                                 }
                             });
-                        }).catch(function (error) {});
+                            _this2.getGlossary();
+                        }).catch(function (error) {
+                            _this2.loading = false;
+                            _this2.errorLoading = true;
+                        });
                         break;
                 }
             });
@@ -99886,11 +99936,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }).then(function (value) {
                                 switch (value) {
                                     case "ok":
-                                        _this2.getUsefulLinks();
                                         break;
                                 }
                             });
-                        }).catch(function (error) {});
+                            _this2.getUsefulLinks();
+                        }).catch(function (error) {
+                            _this2.loading = false;
+                            _this2.errorLoading = true;
+                        });
                         break;
                 }
             });
@@ -101259,11 +101312,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }).then(function (value) {
                                 switch (value) {
                                     case "ok":
-                                        _this2.getDocuments();
                                         break;
                                 }
                             });
-                        }).catch(function (error) {});
+                            _this2.getDocuments();
+                        }).catch(function (error) {
+                            _this2.loading = false;
+                            _this2.errorLoading = true;
+                        });
                         break;
                 }
             });
@@ -102637,11 +102693,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }).then(function (value) {
                                 switch (value) {
                                     case "ok":
-                                        _this2.getFaqs();
+
                                         break;
                                 }
                             });
-                        }).catch(function (error) {});
+                            _this2.getFaqs();
+                        }).catch(function (error) {
+                            _this2.loading = false;
+                            _this2.errorLoading = true;
+                        });
                         break;
                 }
             });
@@ -104251,10 +104311,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }).then(function (value) {
                                 switch (value) {
                                     case "ok":
-                                        _this4.getNotAnsweredQuestions();
+
                                         break;
                                 }
                             });
+                            _this4.getNotAnsweredQuestions();
                         }).catch(function (error) {});
                         break;
                 }
@@ -105019,10 +105080,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }).then(function (value) {
                                 switch (value) {
                                     case "ok":
-                                        _this4.getQuestions();
                                         break;
                                 }
                             });
+                            _this4.getQuestions();
                         }).catch(function (error) {});
                         break;
                 }
@@ -105945,11 +106006,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }).then(function (value) {
                                 switch (value) {
                                     case "ok":
-                                        _this.getRSSNews();
                                         break;
                                 }
                             });
-                        }).catch(function (error) {});
+                            _this.getRSSNews();
+                        }).catch(function (error) {
+                            _this.loading = false;
+                            _this.errorLoading = true;
+                        });
                         break;
                 }
             });
@@ -108431,11 +108495,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }).then(function (value) {
                                 switch (value) {
                                     case "ok":
-                                        _this2.getRSSNews();
                                         break;
                                 }
                             });
-                        }).catch(function (error) {});
+                            _this2.getRSSNews();
+                        }).catch(function (error) {
+                            _this2.loading = false;
+                            _this2.errorLoading = true;
+                        });
                         break;
                 }
             });
@@ -109836,11 +109903,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 																												}).then(function (value) {
 																																switch (value) {
 																																				case "ok":
-																																								_this.getNewsletters();
 																																								break;
 																																}
 																												});
-																								}).catch(function (error) {});
+																												_this.getNewsletters();
+																								}).catch(function (error) {
+																												_this.loading = false;
+																												_this.errorLoading = true;
+																								});
 																								break;
 																}
 												});
@@ -110391,6 +110461,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -110440,11 +110511,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     invalidSizeTitle: function invalidSizeTitle() {
       return this.title.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
     },
+    hasInvalidCharsTitle: function hasInvalidCharsTitle() {
+      if (this.title.indexOf(';') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('/') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('?') > -1) {
+        return true;
+      }
+      if (this.title.indexOf(':') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('@') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('=') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('&') > -1) {
+        return true;
+      }
+      return false;
+    },
     missingDescription: function missingDescription() {
       return this.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
     hasClientError: function hasClientError() {
-      return this.missingTitle || this.invalidSizeTitle || this.missingDescription;
+      return this.missingTitle || this.invalidSizeTitle || this.missingDescription || this.hasInvalidCharsTitle;
     },
     hasServerError: function hasServerError() {
       return this.serverError;
@@ -110657,6 +110752,24 @@ var render = function() {
                         attrs: { show: "", variant: "danger" }
                       },
                       [_vm._v("Preencher título")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-alert",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value:
+                              _vm.isFormInvalid && _vm.hasInvalidCharsTitle,
+                            expression: "isFormInvalid && hasInvalidCharsTitle "
+                          }
+                        ],
+                        staticClass: "col-md-12",
+                        attrs: { show: "", variant: "danger" }
+                      },
+                      [_vm._v("Título contém símbolos inválidas")]
                     ),
                     _vm._v(" "),
                     _c(
@@ -111539,10 +111652,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }).then(function (value) {
                                 switch (value) {
                                     case "ok":
-                                        _this2.getRSSAlerts();
+
                                         break;
                                 }
                             });
+                            _this2.getRSSAlerts();
                         }).catch(function (error) {});
                         break;
                 }
@@ -113440,11 +113554,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }).then(function (value) {
                                 switch (value) {
                                     case "ok":
-                                        _this2.getRSSAlerts();
                                         break;
                                 }
                             });
-                        }).catch(function (error) {});
+                            _this2.getRSSAlerts();
+                        }).catch(function (error) {
+                            _this2.loading = false;
+                            _this2.errorLoading = true;
+                        });
                         break;
                 }
             });

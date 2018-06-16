@@ -128,13 +128,14 @@
                                 .then((value) => {
                                     switch (value) {
                                         case "ok":
-                                            this.getRSSNews();
                                             break;
                                     }
                                 });
+                                this.getRSSNews();
                           })
                           .catch((error) => {
-
+                            this.loading = false;
+                            this.errorLoading = true;
                           });                  
                           break;
                     }

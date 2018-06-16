@@ -136,13 +136,14 @@
 		                        .then((value) => {
 		                            switch (value) {
 		                                case "ok":
-		                                	this.getRSSAlerts();
 		                                	break;
 		                            }
 		                        });
+                                this.getRSSAlerts();
 		                  })
 		                  .catch((error) => {
-
+                            this.loading = false;
+                            this.errorLoading = true;
 		                  });                  
 		                  break;
 		          }

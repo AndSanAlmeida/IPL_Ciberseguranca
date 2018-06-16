@@ -154,13 +154,14 @@
 		                        .then((value) => {
 		                            switch (value) {
 		                                case "ok":
-		                                	this.getGlossary();
 		                                	break;
 		                            }
 		                        });
+                                this.getGlossary();
 		                  })
 		                  .catch((error) => {
-
+                            this.loading = false;
+                            this.errorLoading = true;
 		                  });                  
 		                  break;
 		          }

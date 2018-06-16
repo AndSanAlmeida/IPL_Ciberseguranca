@@ -281,7 +281,6 @@ class UserControllerAPI extends Controller
 
         if ($request->wantsJson() && !$validator->fails()) {
 
-
             if (!Hash::check($request->input('currentPassword'), $request->user()->password)) {
                 return response()->json(
                     ['errorCode' => 1, 'msg' => 'Password incorrecta.'], 400);
@@ -317,4 +316,14 @@ class UserControllerAPI extends Controller
        }
    }
 
+   public function promoteUser($id) {
+       $user = User::where('id', $id)->first();
+       if(!is_null($user) ){
+           $user->type = 1;
+           $user->save();
+           return response()->json(['msg' => 'Utilizador promovido com sucesso.']);
+       }else{
+            return response()->json(['msg' => 'Utilizador não encontrado.'], 400);
+       }
+   }
 }
