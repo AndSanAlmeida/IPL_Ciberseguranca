@@ -30,9 +30,12 @@
             v-show="hasItems && canShowContent" 
 			:alerts="alerts" 
 			v-if="showList"
+            @updateXML="updateXML"
 			@createAlerts="createAlerts"
 			@getRSS="getRSSAlerts"
-			@viewAlerts="viewAlerts">
+			@viewAlerts="viewAlerts"
+            @editAlert="editAlert"
+            @deleteAlert="deleteAlert">
 		</alertsList>
 
 		<alertsCreate
@@ -46,6 +49,13 @@
 			@exit="exit">
 		</alertsView>
 
+
+        <alertsEdit
+            :item="item"
+            v-if="showEdit"
+            @exit="exit">
+        </alertsEdit>
+
 	</div>
 </template>
 
@@ -53,6 +63,7 @@
     import AlertsList from './alertListComponent.vue';
     import AlertsCreate from './alertCreateComponent.vue';
     import AlertsView from './alertDetailsComponent.vue';
+    import AlertsEdit from './alertEditComponent.vue';
     
     import swal from 'sweetalert';
 
@@ -61,10 +72,12 @@
             return {
                 title: 'Alertas',
                 alerts: [],
+                alertsFromIPL: [],
                 rssAlerts: [],
                 showList: false,
                 showCreate: false,
                 showView:false,
+                showEdit: false,
                 xhr:'',
                 xml:'',
                 loading: true,
@@ -80,6 +93,84 @@
             },
         },
         methods: {
+            updateXML: function() {
+                this.loading = true;
+                this.errorLoading = false; 
+                const data = {
+                    alerts: this.alertsFromIPL,
+                }
+                axios.post('/api/alerts/rss', data)
+                    .then(response => {
+                        swal("RSS Feed de alertas atualizado com sucesso.", {
+                        icon: "success",
+                            buttons: {
+                                ok: "Ok"
+                            },
+                        })
+                        .then((value) => {
+                            switch (value) {
+                                case "ok":
+                                    break;
+                            }
+                        });
+                        this.loading = false;
+                        this.errorLoading = false;  
+                    }).catch((error) => {
+                        this.loading = false;
+                        this.errorLoading = true;
+                    });
+                
+            },
+            editAlert: function(item) {
+                this.item = item;
+                this.showList = false;
+                this.showCreate = false;
+                this.showView = false;
+                this.showEdit = true;
+            },
+            deleteAlert: function(item) {
+                swal("Pretende realmente apagar o alerta?", {
+                    icon: "warning",
+                    buttons: {
+                        no: {
+                            text: "Não",
+                            className: "btn-light",
+                        },
+                        yes: {
+                            text: "Sim",
+                            className: "btn-info",
+                        },
+                    },
+                })
+                .then((value) => {
+                  switch (value) {
+                      case "no":
+                        break;
+                   
+                      case "yes":
+                        axios.delete('/api/alerts/'+item.id+'/delete')
+                          .then((response) => {
+                            swal("Notícia apagada com sucesso.", {
+                                icon: "success",
+                                    buttons: {
+                                        ok: "Ok"
+                                    },
+                                })
+                                .then((value) => {
+                                    switch (value) {
+                                        case "ok":
+                                            this.getRSSAlerts();
+                                            break;
+                                    }
+                                });
+                          })
+                          .catch((error) => {
+
+                          });                  
+                          break;
+                    }
+                });
+            },
         	createAlerts: function() {
         		this.showList = false;
                 this.showCreate = true;
@@ -87,7 +178,9 @@
         	},
         	getRSSAlerts: function() {
         		this.loading = true;
-                this.errorLoading = false;                
+                this.errorLoading = false;    
+                this.alerts = [];
+                this.alertsFromIPL = [];                  
                 axios.get('/api/rssAlerts')
                     .then(response => {
                     	this.rssAlerts = response.data.data;
@@ -99,6 +192,7 @@
                     }).catch((error) => {
                     	this.loading = false;
                     	this.errorLoading = true;
+                        console.log(error);
                 	});
         	},
             getDBAlerts: function() {
@@ -106,23 +200,31 @@
                     .then((response) => {
                         for (var j = 0; j < response.data.data.length; j++) {
                             var alert = response.data.data[j];
-                            var newsObject = {title: {}, description: {}, pubDate: {}, link: {}, category: {}}
-                            newsObject.title[0] = alert.title;
-                            newsObject.description[0] = alert.description;
-                            newsObject.pubDate[0] = alert.pub_date;
-                            newsObject.category[0] = alert.category;
-                            newsObject.link[0] = alert.source;
-                            this.alerts = this.alerts.concat(newsObject);
+                            var alertObject = {title: {}, description: {}, pubDate: {}, link: {}, category: {}, isFromIPLeiria: true, id: 0}
+                            alertObject.title[0] = alert.title;
+                            alertObject.description[0] = alert.description;
+                            alertObject.pubDate[0] = alert.pub_date;
+                            alertObject.category[0] = alert.category;
+                            alertObject.link[0] = alert.source;
+                            alertObject.id = alert.id;
+                            this.alerts = this.alerts.concat(alertObject);
+                            this.alertsFromIPL = this.alertsFromIPL.concat(alertObject);
                         }
-                        this.showList = true;
                         window.setTimeout(this.orderAlerts(), 3000);
                     })
                     .catch((error) => {
+                        this.loading = false;
                         this.errorLoading = true;
+                        console.log(error);
                     });
             },
             orderAlerts: function() {
                 this.alerts.sort(function(a,b){
+                    var c = new Date(a.pubDate[0]);
+                    var d = new Date(b.pubDate[0]);
+                    return d-c;
+                });
+                this.alertsFromIPL.sort(function(a,b){
                     var c = new Date(a.pubDate[0]);
                     var d = new Date(b.pubDate[0]);
                     return d-c;
@@ -144,6 +246,7 @@
 
 				        })
 				        .catch((error) => {
+                            this.loading = false;
 				            this.errorLoading = true;
 				        });
 				}
@@ -164,6 +267,7 @@
 					// Otherwise, CORS is not supported by the browser.
 			    	xhr = null;
 			    	this.errorLoading = true;
+                    this.loading = false;
 			  	}
 			  	return xhr;
         	},
@@ -171,6 +275,7 @@
         		this.showList = true;
                 this.showCreate = false;
                 this.showView = false;
+                this.showEdit = false;
                 this.alerts = [];
                 this.getRSSAlerts();
         	},
@@ -179,14 +284,18 @@
         		this.showList = false;
                 this.showCreate = false;
                 this.showView = true;
+                this.showEdit = false;
         	},
         },
         components: {
             'alertsList': AlertsList,
             'alertsCreate': AlertsCreate,
             'alertsView': AlertsView,
+            'alertsEdit': AlertsEdit,
         },
         created: function() {
+            this.alertsFromIPL = [];
+            this.alerts = [];
         	this.getRSSAlerts();
         }
     }

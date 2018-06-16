@@ -5,7 +5,9 @@
 				<div class="col-md-8 col-sm-12">
                     <b-breadcrumb :items="items"/>
                     <div class="left-highlight">
-                     	<h1>{{ title }}  <small><a href="#" title="RSS Alertas de Segurança" target="_blank" class="rss_color"><i class="fas fa-rss"></i></a></small></h1>
+                     	<h1>{{ title }}  <small><a href="/feedAlerts.xml" title="RSS Alertas" target="_blank" class="rss_color">
+                                    <i class="fas fa-rss"></i>
+                                </a></small></h1>
                  	</div>
                  	<div id="alerts">
                         <div v-if="loading" class="loader"></div>
@@ -125,7 +127,6 @@
                             newsObject.link[0] = alert.source;
                             this.alerts = this.alerts.concat(newsObject);
                         }
-                        this.showList = true;
                         window.setTimeout(this.orderAlerts(), 3000);
                     })
                     .catch((error) => {

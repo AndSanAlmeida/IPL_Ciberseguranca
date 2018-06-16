@@ -164,16 +164,20 @@ Route::middleware('auth:api')->group(function () {
 		Route::post('news/create', 'NewsControllerAPI@store'); // ADD RSS OF NEWS
 		Route::post('news/rss', 'NewsControllerAPI@createXML'); // EDIT RSS NEWS
 		Route::delete('news/{id}/delete', 'NewsControllerAPI@destroy'); // DELETE NEWS
-		Route::get('news/{id}', 'NewsControllerAPI@show'); // GET EVENT BY ID
-		Route::post('news/{id}/update', 'NewsControllerAPI@update'); // EDIT EVENT
+		Route::get('news/{id}', 'NewsControllerAPI@show'); // GET NEWS BY ID
+		Route::post('news/{id}/update', 'NewsControllerAPI@update'); // EDIT NEWS
 
 		// -------------------- RSS ALERTS --------------------
 		Route::post('rssAlerts/create', 'RSSAlertsControllerAPI@store'); // ADD RSS ALERTS
 		Route::delete('rssAlerts/{id}/delete', 'RSSAlertsControllerAPI@destroy'); // DELETE RSS ALERTS
-		Route::post('alerts/create', 'AlertsControllerAPI@store'); // ADD RSS OF ALERTS
 		Route::post('rssAlerts/{id}/update', 'RSSAlertsControllerAPI@update'); // EDIT RSS ALERTS
 
-
+		// -------------------- ALERTS --------------------
+		Route::post('alerts/create', 'AlertsControllerAPI@store'); // ADD RSS OF ALERTS
+		Route::post('alerts/{id}/update', 'AlertsControllerAPI@update'); // EDIT ALERTS
+		Route::delete('alerts/{id}/delete', 'AlertsControllerAPI@destroy'); // DELETE ALERTS
+		Route::get('alerts/{id}', 'AlertsControllerAPI@show'); // GET ALERTS BY ID
+		Route::post('alerts/rss', 'AlertsControllerAPI@createXML'); // EDIT RSS NEWS
 	});	
 });
 

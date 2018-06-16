@@ -6,6 +6,7 @@
         <div class="col-lg-12">
           <div class="row ml-1">
             <button type="button" class="btn btn-primary mr-2" v-on:click="createAlerts()">Adicionar Alerta</button>
+            <button type="button" class="btn btn-info mr-2" v-on:click="updateXML()">Atualizar RSS Feed</button>
             <router-link to="/rssAlerts" class="btn btn-success">Gerir RSS</router-link>
           </div>
           <div class="card mt-2">
@@ -46,6 +47,8 @@
                     </template>
                     <template slot="actions" slot-scope="row">
                       <button type="button" class="btn btn-sm btn-primary" v-on:click="viewAlerts(row.item)">Ver Detalhes</button>
+                      <button type="button" class="btn btn-sm btn-warning" v-if="row.item.hasOwnProperty('isFromIPLeiria')" v-on:click="editAlert(row.item)">Editar</button>
+                      <button type="button" class="btn btn-sm btn-danger" v-if="row.item.hasOwnProperty('isFromIPLeiria')" v-on:click="deleteAlert(row.item)">Eliminar</button>
                     </template>
                   </b-table>
                   <hr>
@@ -86,6 +89,15 @@ module.exports={
     },
     createAlerts: function() {
       this.$emit('createAlerts');
+    },
+    editAlert: function(item) {
+      this.$emit('editAlert', item);
+    },
+    deleteAlert: function(item) {
+      this.$emit('deleteAlert', item);
+    },
+    updateXML: function(item) {
+      this.$emit('updateXML');
     },
     prepareDate: function(item) {
       var today = new Date(item);

@@ -98,7 +98,6 @@
                 this.showEdit = true;
             },
             deleteNews: function(news) {
-                console.log(news);
                 swal("Pretende realmente apagar a notícia?", {
                     icon: "warning",
                     buttons: {
@@ -149,6 +148,18 @@
                 }
                 axios.post('/api/news/rss', data)
                     .then(response => {
+                        swal("RSS Feed de notícias atualizado com sucesso.", {
+                        icon: "success",
+                            buttons: {
+                                ok: "Ok"
+                            },
+                        })
+                        .then((value) => {
+                            switch (value) {
+                                case "ok":
+                                    break;
+                            }
+                        });
                         this.loading = false;
                         this.errorLoading = false;  
                     }).catch((error) => {

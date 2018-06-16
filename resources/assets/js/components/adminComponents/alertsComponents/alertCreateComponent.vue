@@ -30,8 +30,8 @@
             <div class="col-lg-9">
               <input class="form-control" type="text" v-model="category">
               <div class="clearfix mt-2">
-                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingCategory ">Preencher fonte</b-alert>
-                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeCategory ">Fonte demasiado longa (Max: 100)</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingCategory ">Preencher categoria</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeCategory ">Categoria demasiado longa (Max: 100)</b-alert>
               </div>
             </div>
           </div>
@@ -187,7 +187,7 @@ export default {
 
         axios.post('/api/alerts/create', data)
         .then((response) => {
-          swal("Alerta criada com sucesso.", {
+          swal("Alerta criado com sucesso.", {
             icon: 'success',
             buttons: {
               ok: "Ok"

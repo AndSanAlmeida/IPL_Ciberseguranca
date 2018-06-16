@@ -11,9 +11,11 @@
                         </div>
                         <br>
                         <p class="text-muted text-right">{{prepareDate(alert.pubDate[0])}}</p>
+                        <p class="text-muted text-left"><b>Categoria: </b>{{alert.category[0]}}</p>
                         <br>
                         <p class="text-justify" v-html="alert.description[0]"></p>
-                        <p><b>Fonte: </b><a target="_blank" :href="alert.link[0]">Link</a></p>
+                        <p v-if="!alert.hasOwnProperty('source')"><b>Fonte: </b><a target="_blank" :href="alert.link[0]">Link</a></p>
+                        <p v-if="alert.hasOwnProperty('source')"><b>Fonte: </b>{{alert.source[0]}}</p>
                     </div>
                    
                 </div>
@@ -77,7 +79,15 @@
                         for (var j = 0; j < response.data.data.length; j++) {
                             if (response.data.data[j] != null ) {
                                 if(this.title == response.data.data[j].title) {
-                                    this.alert = response.data.data[j];
+                                    var alert = response.data.data[j];
+                                    var newsObject = {title: {}, description: {}, pubDate: {}, link: {}, source: {}, category: {}}
+                                    newsObject.title[0] = alert.title;
+                                    newsObject.description[0] = alert.description;
+                                    newsObject.pubDate[0] = alert.pub_date;
+                                    newsObject.category[0] = alert.category;
+                                    newsObject.source[0] = alert.source;
+                                    newsObject.link[0] = '';
+                                    this.alert = newsObject;
                                 }
                             }
                         }

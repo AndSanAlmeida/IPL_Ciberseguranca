@@ -5,13 +5,13 @@
     
         <div class="card card-outline-secondary">
             <div class="card-header">
-                <h3 class="mb-0">Editar Notícia</h3>
+                <h3 class="mb-0">Editar Alerta</h3>
             </div>
             <div class="card-body">
                 <form class="form" role="form" autocomplete="off" v-on:submit.prevent="submitForm">
                     <div class="form-group row">
-                    	<label class="col-lg-3 col-form-label form-control-label">Título da Notícia</label>
-                    	<div class="col-lg-9">
+                        <label class="col-lg-3 col-form-label form-control-label">Título do Alerta</label>
+                        <div class="col-lg-9">
                             <input class="form-control" type="text" v-model="title">
                             <div class="clearfix mt-2">
                             <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingTitle ">Preencher título</b-alert>
@@ -28,12 +28,22 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Categoria</label>
+                        <div class="col-lg-9">
+                          <input class="form-control" type="text" v-model="category">
+                          <div class="clearfix mt-2">
+                            <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingCategory ">Preencher categoria</b-alert>
+                            <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeCategory ">Categoria demasiado longa (Max: 100)</b-alert>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">Descrição</label>
                         <div class="col-lg-9">
                             <quill-editor v-model="description"
                                 ref="myQuillEditor"
                                 :options="editorOption">
-                  			</quill-editor>
+                            </quill-editor>
                             <div class="clearfix mt-2">
                                 <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingDescription ">Preencher descrição</b-alert>
                             </div>
@@ -68,7 +78,7 @@
     import swal from 'sweetalert';
 
     import 'quill/dist/quill.snow.css';
-	import { quillEditor } from 'vue-quill-editor';
+    import { quillEditor } from 'vue-quill-editor';
 
     export default {
         props: ['item'],
@@ -78,6 +88,7 @@
                 description: '',
                 date: '',
                 source: '',
+                category: '',
                 attemptSubmit: false,
                 serverError: false,
                 serverErrorMessage: '',
@@ -124,6 +135,12 @@
             invalidSizeTitle: function () {
               return this.title.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
             },
+            missingCategory: function() {
+              return this.category.trim() === '' && !this.hasServerError && this.attemptSubmit;
+            },
+            invalidSizeCategory: function () {
+              return this.category.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+            },
             missingDescription: function () {
               return this.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
@@ -137,7 +154,7 @@
               return this.source.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
             },
             hasClientError: function () {
-              return (this.missingTitle || this.hasInvalidCharsTitle || this.invalidSizeTitle || this.missingDescription || this.missingSource || this.invalidSizeSource);
+              return (this.missingTitle || this.hasInvalidCharsTitle || this.invalidSizeTitle || this.missingDescription || this.missingSource || this.invalidSizeSource || this.missingCategory || this.invalidSizeCategory);
             },
             hasServerError: function () {
               return this.serverError;
@@ -147,29 +164,29 @@
             },
         },
         methods: {
-        	toolbarSettings: function() {
+            toolbarSettings: function() {
                 return [
-	              ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-	              ['blockquote', 'code-block'],
-	              [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-	              [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-	              [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-	              [{ 'direction': 'rtl' }],                         // text direction
-	              [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-	              ['clean']                                         // remove formatting button
-	            ];
+                  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                  ['blockquote', 'code-block'],
+                  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+                  [{ 'direction': 'rtl' }],                         // text direction
+                  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                  ['clean']                                         // remove formatting button
+                ];
             },
-            getNews: function() {
-                axios.get('/api/news/'+this.item.id)
+            getAlert: function() {
+                axios.get('/api/alerts/'+this.item.id)
                 .then((response) => {
                     this.title = response.data.title;
+                    this.category = response.data.category;
                     this.description = response.data.description;
                     this.source = response.data.source;
                     this.date = new Date(response.data.pub_date);                
                 })
                 .catch((error) => {
                     this.serverError = true;
-                    console.log(error);
                     this.serverErrorMessage = error.response.data.data;
                 });
             },
@@ -181,12 +198,13 @@
                     const data = {
                         title: this.title,
                         description: this.description,
-                        date: newDate,
+                        category: this.category,
+                        pubDate: newDate,
                         source: this.source,
                     };
-                    axios.post('/api/news/'+ this.item.id +'/update', data)
+                    axios.post('/api/alerts/'+ this.item.id +'/update', data)
                     .then((response) => {
-                        swal("Notícia alterada com sucesso.", {
+                        swal("Alerta alterado com sucesso.", {
                             icon: 'success',
                             buttons: {
                                 ok: "Ok"
@@ -207,8 +225,8 @@
                 }
             },
             getDate:function() {
-	            var month = this.date.getUTCMonth() + 1; //months from 1-12
-	            var day = this.date.getUTCDate();
+                var month = this.date.getUTCMonth() + 1; //months from 1-12
+                var day = this.date.getUTCDate();
                 var year = this.date.getUTCFullYear();
 
                 var newdate = new Date(year,month,day);
@@ -253,7 +271,7 @@
             },
         },
         mounted: function () {
-            this.getNews();
+            this.getAlert();
         }
     }
 </script>

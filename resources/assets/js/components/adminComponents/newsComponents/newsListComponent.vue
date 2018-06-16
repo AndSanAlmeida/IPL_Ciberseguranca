@@ -6,7 +6,7 @@
         <div class="col-lg-12">
           <div class="row ml-1">
             <button type="button" class="btn btn-primary mr-2" v-on:click="createNews()">Adicionar Notícia</button>
-            <button type="button" class="btn btn-info mr-2" v-on:click="updateXML()">Atualizar XML</button>
+            <button type="button" class="btn btn-info mr-2" v-on:click="updateXML()">Atualizar RSS Feed</button>
             <router-link to="/rssNews" class="btn btn-success">Gerir RSS</router-link>
           </div>
           <div class="card mt-2">

@@ -82533,6 +82533,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -82598,7 +82600,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     newsObject.link[0] = alert.source;
                     _this2.alerts = _this2.alerts.concat(newsObject);
                 }
-                _this2.showList = true;
                 window.setTimeout(_this2.orderAlerts(), 3000);
             }).catch(function (error) {
                 _this2.errorLoading = true;
@@ -82901,8 +82902,8 @@ var staticRenderFns = [
         {
           staticClass: "rss_color",
           attrs: {
-            href: "#",
-            title: "RSS Alertas de Segurança",
+            href: "/feedAlerts.xml",
+            title: "RSS Alertas",
             target: "_blank"
           }
         },
@@ -83051,6 +83052,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -83107,7 +83110,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 for (var j = 0; j < response.data.data.length; j++) {
                     if (response.data.data[j] != null) {
                         if (_this2.title == response.data.data[j].title) {
-                            _this2.alert = response.data.data[j];
+                            var alert = response.data.data[j];
+                            var newsObject = { title: {}, description: {}, pubDate: {}, link: {}, source: {}, category: {} };
+                            newsObject.title[0] = alert.title;
+                            newsObject.description[0] = alert.description;
+                            newsObject.pubDate[0] = alert.pub_date;
+                            newsObject.category[0] = alert.category;
+                            newsObject.source[0] = alert.source;
+                            newsObject.link[0] = '';
+                            _this2.alert = newsObject;
                         }
                     }
                 }
@@ -83255,6 +83266,11 @@ var render = function() {
                       _vm._v(_vm._s(_vm.prepareDate(_vm.alert.pubDate[0])))
                     ]),
                     _vm._v(" "),
+                    _c("p", { staticClass: "text-muted text-left" }, [
+                      _c("b", [_vm._v("Categoria: ")]),
+                      _vm._v(_vm._s(_vm.alert.category[0]))
+                    ]),
+                    _vm._v(" "),
                     _c("br"),
                     _vm._v(" "),
                     _c("p", {
@@ -83262,16 +83278,28 @@ var render = function() {
                       domProps: { innerHTML: _vm._s(_vm.alert.description[0]) }
                     }),
                     _vm._v(" "),
-                    _c("p", [
-                      _c("b", [_vm._v("Fonte: ")]),
-                      _c(
-                        "a",
-                        {
-                          attrs: { target: "_blank", href: _vm.alert.link[0] }
-                        },
-                        [_vm._v("Link")]
-                      )
-                    ])
+                    !_vm.alert.hasOwnProperty("source")
+                      ? _c("p", [
+                          _c("b", [_vm._v("Fonte: ")]),
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                target: "_blank",
+                                href: _vm.alert.link[0]
+                              }
+                            },
+                            [_vm._v("Link")]
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.alert.hasOwnProperty("source")
+                      ? _c("p", [
+                          _c("b", [_vm._v("Fonte: ")]),
+                          _vm._v(_vm._s(_vm.alert.source[0]))
+                        ])
+                      : _vm._e()
                   ])
                 : _vm._e()
             ],
