@@ -12,23 +12,21 @@
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">Questão</label>
                         <div class="col-lg-9">
-                            <input class="form-control" type="text" v-model="faqEdited.question" required>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingQuestion ">
-                            <p v-if="missingQuestion">Preencher questão</p>
+                            <input class="form-control" type="text" v-model="faqEdited.question" >
+                            <div class="clearfix mt-2">
+                                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingQuestion ">Preencher questão</b-alert>
+                                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeQuestion ">Questão demasiado longa (Max: 200)</b-alert>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">Resposta</label>
                         <div class="col-lg-9">
-                            <input class="form-control" type="text" v-model="faqEdited.answer" required>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingAnswer ">
-                            <p v-if="missingAnswer">Preencher resposta</p>
+                            <input class="form-control" type="text" v-model="faqEdited.answer">
+                            <div class="clearfix mt-2">
+                                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingAnswer ">Preencher resposta</b-alert>
+                                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeAnswer ">Resposta demasiado longa (Max: 200)</b-alert>
+                            </div>
                         </div>
                     </div>
                     <hr>
@@ -63,20 +61,23 @@
             missingQuestion: function () {
               return this.faqEdited.question.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
+            invalidSizeQuestion: function () {
+              return this.faqEdited.question.trim().length > 200 && !this.hasServerError && this.attemptSubmit;
+            },
             missingAnswer: function () {
               return this.faqEdited.answer.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
-            hasClientError: function () {
-              return (this.missingQuestion || this.missingAnswer);
+            invalidSizeAnswer: function () {
+              return this.faqEdited.answer.trim().length > 200 && !this.hasServerError && this.attemptSubmit;
             },
             hasClientError: function () {
-                return (this.missingName || this.missingDefinition || this.missingSource || this.invalidSizeName || this.invalidSizeDefinition || this.invalidSizeSource);
+              return (this.missingQuestion || this.invalidSizeQuestion || this.missingAnswer || this.invalidSizeAnswer);
             },
             hasServerError: function () {
-                return this.serverError;
+              return this.serverError;
             },
             isFormInvalid: function () {
-                return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
+              return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
             },
         },
         methods: {

@@ -11,15 +11,14 @@
                     <div id="glossary">
                         <nav class="glossary__nav">
                             <ul class="list-inline text-center">
-                                <li class="glossary__nav__item" v-for="letter in lettersAvailable">
-                                    <a class="card card__content" v-on:click="getGlossary(letter)">{{letter}}</a>
+                                <li class="glossary__nav__item" v-for="letter in lettersAvailable" >
+                                    <a href="javascript:;" class="card card__content" v-on:click="getGlossary(letter)">{{letter}}</a>
                                 </li>
                             </ul>
                         </nav>
                         <!--END Glossary Nav-->
-                        <div v-if="loading" class="align-loader my-3">
-                            <div class="loader"></div>
-                        </div>
+                        
+                        <div v-if="loading" class="loader"></div>
 
                         <div class="glossary__results">
             

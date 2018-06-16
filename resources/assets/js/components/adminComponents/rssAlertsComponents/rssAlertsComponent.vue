@@ -7,11 +7,11 @@
         </header>
         
         <!-- ERRORS -->
-        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent">
+        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent && !showCreate">
 		  	<h2 class="alert-heading">Opss!</h2>
 		  	<p>Não foram encontrados {{title}}.</p>
 		  	<hr>
-		  	<p class="mb-0"><a href="#" class="alert-link" title="Adicionar RSS de Alertas" v-on:click="addRSSAlerts()">Criar {{title}}</a></p>
+		  	<p class="mb-0"><a href="javascript:;" class="alert-link" title="Adicionar RSS de Alertas" v-on:click="addRSSAlerts()">Criar {{title}}</a></p>
 		</div>
 
         <div class="alert alert-danger" role="alert" v-if="errorLoading">
@@ -19,9 +19,7 @@
         </div>
 
         <!-- LOADING -->
-        <div v-if="loading" class="align-loader mt-4">
-            <div class="loader"></div>
-        </div>
+        <div v-if="loading" class="loader mt-3"></div>
         
         <!-- ============ -->
 

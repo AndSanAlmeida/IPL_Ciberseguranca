@@ -12,26 +12,24 @@
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Questão</label>
             <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="question" required>
-            </div>
-          </div>
-          <div class="clearfix">
-              <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingQuestion ">
-                  <p v-if="missingQuestion">Preencher questão</p>
+              <input class="form-control" type="text" v-model="question" >
+              <div class="clearfix mt-2">
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingQuestion ">Preencher questão</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeQuestion ">Questão demasiado longa (Max: 200)</b-alert>
               </div>
+            </div>
           </div>
          <div class="form-group row">
           <label class="col-lg-3 col-form-label form-control-label">Resposta</label>
           <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="answer" required>
+              <input class="form-control" type="text" v-model="answer">
+              <div class="clearfix mt-2">
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingAnswer ">Preencher resposta</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeAnswer ">Resposta demasiado longa (Max: 200)</b-alert>
+              </div>
          </div>
        </div>
-       <div class="clearfix">
-            <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingAnswer ">
-                <p v-if="missingAnswer">Preencher Link</p>
-            </div>
-        </div>
-        <hr>
+      <hr>
        <div class="form-group row">
         <label class="col-lg-3 col-form-label form-control-label"></label>
         <div class="col-lg-9 text-right">
@@ -53,6 +51,9 @@ export default {
     return {
       question:'',
       answer: '',
+      attemptSubmit: false,
+      serverError: false,
+      serverErrorMessage: '',
     }
   },
   components: {
@@ -61,11 +62,17 @@ export default {
     missingQuestion: function () {
       return this.question.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
+    invalidSizeQuestion: function () {
+      return this.question.trim().length > 200 && !this.hasServerError && this.attemptSubmit;
+    },
     missingAnswer: function () {
       return this.answer.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
+    invalidSizeAnswer: function () {
+      return this.answer.trim().length > 200 && !this.hasServerError && this.attemptSubmit;
+    },
     hasClientError: function () {
-      return (this.missingQuestion || this.missingAnswer);
+      return (this.missingQuestion || this.invalidSizeQuestion || this.missingAnswer || this.invalidSizeAnswer);
     },
     hasServerError: function () {
       return this.serverError;

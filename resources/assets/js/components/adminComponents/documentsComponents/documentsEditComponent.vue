@@ -12,17 +12,11 @@
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">Descrição</label>
                         <div class="col-lg-9">
-                            <input class="form-control" type="text" v-model="description" required>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingDescription ">
-                            <p v-if="missingDescription">Preencher descrição</p>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && invalidSizeDescription ">
-                            <p v-if="invalidSizeDescription">Tamanho da descrição excedido (Max: 100)</p>
+                            <input class="form-control" type="text" v-model="description">
+                            <div class="clearfix mt-2">
+                                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingDescription ">Preencher descrição</b-alert>
+                                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeDescription ">Descrição demasiado longa (Max: 100)</b-alert>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -66,13 +60,13 @@
         },
         computed: {
             missingDescription: function () {
-                return this.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
+              return this.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
-            invalidSizeDescription: function() {
-                return this.description.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+            invalidSizeDescription: function () {
+              return this.description.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
             },
             hasClientError: function () {
-                return (this.missingDescription || this.invalidSizeDescription);
+              return (this.missingDescription || this.invalidSizeDescription);
             },
             hasServerError: function () {
                 return this.serverError;
@@ -154,7 +148,6 @@
                     vm.path = e.target.result;
                 };
                 reader.readAsDataURL(file1);
-                console.log(this.path);
         
             },
             exit: function() {

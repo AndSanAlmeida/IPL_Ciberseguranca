@@ -32,6 +32,7 @@ const userSettings = Vue.component('userSettings', require('./components/publicC
 
 // RESOURCES
 const alerts = Vue.component('alerts', require('./components/publicComponents/resources/alertsComponent.vue'));
+const alert = Vue.component('alert', require('./components/publicComponents/resources/singleAlertComponent.vue'));
 const glossary = Vue.component('glossary', require('./components/publicComponents/resources/glossaryComponent.vue'));
 const news = Vue.component('news', require('./components/publicComponents/resources/newsComponent.vue'));
 const singleNews = Vue.component('singleNews', require('./components/publicComponents/resources/singleNewsComponent.vue'));
@@ -39,7 +40,7 @@ const usefulLinks = Vue.component('usefulLinks', require('./components/publicCom
 const documents = Vue.component('documents', require('./components/publicComponents/resources/documentsComponent.vue'));
 const faq = Vue.component('faq', require('./components/publicComponents/resources/faqComponent.vue'));
 const newsletters = Vue.component('newsletters', require('./components/publicComponents/resources/newsletterComponent.vue'));
-
+const singleNewsletter = Vue.component('singleNewsletter', require('./components/publicComponents/resources/singleNewsletterComponent.vue'));
 // ACTIVITIES
 const events = Vue.component('events', require('./components/publicComponents/activities/eventsComponent.vue'));
 
@@ -57,6 +58,7 @@ const routes = [
 
 	// RESOURCES
 	{ path: '/resources/alerts', component: alerts },
+	{ path: '/resources/alerts/:title', component: alert },
 	{ path: '/resources/glossary', component: glossary },
 	{ path: '/resources/news', component: news },
 	{ path: '/resources/news/:title', component: singleNews },
@@ -64,6 +66,7 @@ const routes = [
 	{ path: '/resources/documents', component: documents },
 	{ path: '/resources/faq', component: faq },
 	{ path: '/resources/newsletters', component: newsletters },
+	{ path: '/resources/newsletters/:title', component: singleNewsletter },
 
 	//ACTIVITIES
 	{ path: '/activities/events', component: events },

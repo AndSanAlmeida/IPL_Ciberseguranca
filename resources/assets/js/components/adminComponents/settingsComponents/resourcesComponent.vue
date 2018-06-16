@@ -1,12 +1,15 @@
 <template>
 	<form class="m-2" autocomplete="off" v-on:submit.prevent="validateForm" >
 		<div class="form-group row">
-			<label for="inputEmail3" class="col-sm-2 col-form-label">Atividades</label>
+			<label for="inputEmail3" class="col-sm-2 col-form-label">Recursos</label>
 			<div class="col-sm-10">
                   <quill-editor v-model="resources.description"
-                                ref="myQuillEditor"
-                                :options="editorOption">
+                    ref="myQuillEditor"
+                    :options="editorOption">
                   </quill-editor>
+                  <div class="clearfix mt-2">
+                    <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingResources ">Preencher recursos</b-alert>
+                </div>
 			</div>
 		</div>
 		<div class="form-group row">
@@ -30,7 +33,6 @@
                 attemptSubmit: false,
                 serverError: false,
                 serverErrorMessage: '',
-                success: false,
                 editorOption: {
                     theme: 'snow',
                     modules: {
@@ -40,8 +42,11 @@
             }
         },
         computed: {
+            editor() {
+                return this.$refs.myQuillEditor.quill
+            },
             missingResources: function () {
-                return this.resources.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
+                return this.resources.description === '' && !this.hasServerError && this.attemptSubmit;
             },
             hasClientError: function () {
                 return this.missingResources;
@@ -122,16 +127,10 @@
                 this.getResources();
             }
         },
-        computed: {
-            editor() {
-                return this.$refs.myQuillEditor.quill
-            }
-        },
         created: function () {
             this.getResources();
         },
         mounted() {
-            console.log('this is current quill instance object', this.editor)
         }
     }
 </script>

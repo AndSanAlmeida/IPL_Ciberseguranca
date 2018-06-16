@@ -50,8 +50,7 @@
             getUserType: function () {
                 axios.get('/api/user')
                     .then((response) => {
-                        this.userType = response.data.type
-                        console.log('User Type: ' + response.data.type)
+                        this.userType = response.data.type;
                     });
             }
         },

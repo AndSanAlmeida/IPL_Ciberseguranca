@@ -3,10 +3,13 @@
 		<div class="form-group row">
 			<label for="inputEmail3" class="col-sm-2 col-form-label">Sobre Nós</label>
 			<div class="col-sm-10">
-                  <quill-editor v-model="aboutUs.description"
-                                ref="myQuillEditor"
-                                :options="editorOption">
-                  </quill-editor>
+                <quill-editor v-model="aboutUs.description"
+                    ref="myQuillEditor"
+                    :options="editorOption">
+                </quill-editor>
+                <div class="clearfix mt-2">
+                    <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingAboutUs ">Preencher sobre nós</b-alert>
+                </div>
 			</div>
 		</div>
 		<div class="form-group row">
@@ -27,10 +30,10 @@
         data: function(){
             return {
                 aboutUs: [],
+
                 attemptSubmit: false,
                 serverError: false,
                 serverErrorMessage: '',
-                success: false,
                 editorOption: {
                     theme: 'snow',
                     modules: {
@@ -40,8 +43,11 @@
             }
         },
         computed: {
+            editor() {
+                return this.$refs.myQuillEditor.quill;
+            },
             missingAboutUs: function () {
-                return this.aboutUs.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
+                return this.aboutUs.description === '' && !this.hasServerError && this.attemptSubmit;
             },
             hasClientError: function () {
                 return this.missingAboutUs;
@@ -120,11 +126,6 @@
             cancel: function () {
                 this.attemptSubmit = false;
                 this.getAboutUs();
-            }
-        },
-        computed: {
-            editor() {
-                return this.$refs.myQuillEditor.quill
             }
         },
         created: function () {

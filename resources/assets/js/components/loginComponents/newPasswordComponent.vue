@@ -115,7 +115,6 @@ export default {
                         token: this.token,
                         password: this.password
                     };
-                    console.log(data);
                     axios.post('/api/password/reset', data)
                     .then((response) => {
 

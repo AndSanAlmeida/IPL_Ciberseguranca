@@ -7,7 +7,7 @@
                     <div class="left-highlight">
                      	<h1>{{ title }}  
                             <small>
-                                <a href="#" title="RSS Notícias" target="_blank" class="rss_color">
+                                <a href="/feedNews.xml" title="RSS Notícias" target="_blank" class="rss_color">
                                     <i class="fas fa-rss"></i>
                                 </a>
                             </small>
@@ -15,9 +15,7 @@
                  	</div>
                     
                     <div id="news">
-                        <div v-if="loading" class="align-loader">
-                            <div class="loader"></div>
-                        </div>
+                        <div v-if="loading" class="loader"></div>
                         <div class="table-responsive">                       
                             <div class="card" v-if="hasItems">
                               <b-table v-if="showTable"
@@ -113,13 +111,17 @@
         },
         methods: {
             sendToNews: function(news) {
-                window.location.href = '/#/resources/news/'+news.title;
+                window.location.href = '/#/resources/news/'+news.title[0];
+
             },
             prepareDesc: function(desc) {
-                var cutString = desc.substring(0, 150);
-                var lastSpace = cutString.lastIndexOf(" ");
-                return desc.substring(0, lastSpace)+" ...";
-                
+                if (desc.length > 120) {
+                    var cutString = desc.substring(0, 150);
+                    var lastSpace = cutString.lastIndexOf(" ");
+                    return desc.substring(0, lastSpace)+" ...";
+                } else {
+                    return desc;
+                }
             },
             getRSSNews: function() {
                 this.loading = true;
@@ -139,6 +141,7 @@
             getDBNews: function() {
                 axios.get('/api/news')
                     .then((response) => {
+
                         for (var j = 0; j < response.data.data.length; j++) {
                             var singleNews = response.data.data[j];
                             var newsObject = {title: {}, description: {}, pubDate: {}, link: {}}
@@ -146,11 +149,12 @@
                             newsObject.description[0] = singleNews.description;
                             newsObject.pubDate[0] = singleNews.pub_date;
                             newsObject.link[0] = singleNews.source;
-                            this.news = this.news.concat(newsObject);
+                            this.news.push(newsObject);
                         }
-                        window.setTimeout(this.orderNews(), 3000);
+                        window.setTimeout(this.orderNews(), 5000);
                     })
                     .catch((error) => {
+                        this.loading = false;
                         this.errorLoading = true;
                     });
             },
@@ -170,7 +174,6 @@
                 } else {
                     axios.get("https://cors.now.sh/"+feed)
                         .then((response) => {
-                            //console.log(response.data);
                             var vm = this;
                             var parseString = require('xml2js').parseString;
                             parseString(response.data, function (err, result) {
@@ -180,6 +183,7 @@
                         })
                         .catch((error) => {
                             this.errorLoading = true;
+                            this.loading = false;
                         });
                 }
             },

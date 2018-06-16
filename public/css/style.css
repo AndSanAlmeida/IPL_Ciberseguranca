@@ -217,11 +217,6 @@ p {
   Loader
 *****************************************************/
 
-.align-loader {
-  width: 0%;
-  margin: 0 auto;
-}
-
 .loader {
   border: 16px solid #f3f3f3;
   border-radius: 50%;
@@ -231,6 +226,7 @@ p {
   -webkit-animation: spin 2s linear infinite;
   /* Safari */
   animation: spin 2s linear infinite;
+  margin: 0 auto;
 }
 
 /* Safari */

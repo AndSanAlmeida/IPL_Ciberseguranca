@@ -61,7 +61,6 @@
                 attemptSubmit: false,
                 serverError: false,
                 serverErrorMessage: '',
-                success: false,
             }
         },
         computed: {

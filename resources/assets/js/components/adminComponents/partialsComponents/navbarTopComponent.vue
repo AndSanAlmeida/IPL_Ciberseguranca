@@ -16,15 +16,15 @@
                     <a href="/" class="nav-link" title="Página Oficial"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Página Oficial</a>
                 </li>
                 <!-- Messages-->
-	            <li class="nav-item"> 
-                    <a href="#" class="nav-link" title="Mensagens">
+	            <li class="nav-item" v-if="this.$root.numberOfQuestions>0" > 
+                    <a href="/admin/#/userQuestions" class="nav-link" title="Perguntas dos utilizadores">
                         <i class="fa fa-envelope-o"></i>
-                        <span class="badge bg-orange badge-corner">5</span>
+                        <span class="badge bg-orange badge-corner">{{this.$root.numberOfQuestions}}</span>
                     </a>
 	            </li>
 	            <!-- Logout    -->
 	            <li class="nav-item">
-                    <a href="#" class="nav-link logout" v-on:click="logout" title="Sair">Logout <i class="fa fa-sign-out"></i></a>
+                    <a href="javascript:;" class="nav-link logout" v-on:click="logout" title="Sair">Logout <i class="fa fa-sign-out"></i></a>
                 </li>
 	        </ul>
 	      </div>
@@ -39,13 +39,13 @@
             return {
                 user: new User(),
                 logged: false,
+                numberOfQuestions: 0,
             }
         },
         methods: {
             getUser: function () {
                 axios.get('/api/user')
                     .then((response) => {
-                        console.log('Admin Navbar: ' + response.data);
                         this.logged = true;
                         this.user.parse(response.data);
                     });
@@ -57,13 +57,24 @@
                         window.location.href = '/';
                         this.logged = false;
                     });
-            }
+            },
+            getNotAnsweredQuestions: function () {
+                this.loading = true;
+                this.errorLoading = false;
+                
+                axios.get('/api/questions/notAnswered')
+                    .then(response => {
+                        this.$root.numberOfQuestions = response.data.data.length;
+                    }).catch((error) => {
+                });
+            },
         },
         created: function () {
             if(localStorage.getItem("access_token") != null) {
                 this.getUser();
                 this.logged = true;
             }
+            this.getNotAnsweredQuestions();
         }
     }
 </script>

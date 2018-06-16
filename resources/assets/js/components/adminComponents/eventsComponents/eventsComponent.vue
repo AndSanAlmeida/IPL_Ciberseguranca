@@ -7,10 +7,10 @@
 		</header>
         
         <!-- ERRORS -->
-        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent && showList">
+        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent && showList && !showCreate">
             <p>Não foram encontrados {{title}}.</p>
             <hr>
-            <p class="mb-0"><a href="#" class="alert-link" title="Criar Entrada" v-on:click="createEvent()">Criar {{title}}</a></p>
+            <p class="mb-0"><a href="javascript:;" class="alert-link" title="Criar Entrada" v-on:click="createEvent()">Criar {{title}}</a></p>
         </div>
 
         <div class="alert alert-danger" role="alert" v-if="errorLoading">
@@ -18,9 +18,7 @@
         </div>
 
         <!-- LOADING -->
-        <div v-if="loading" class="align-loader mt-4">
-            <div class="loader"></div>
-        </div>
+        <div v-if="loading" class="loader mt-3"></div>
         
         <!-- ============ -->
 

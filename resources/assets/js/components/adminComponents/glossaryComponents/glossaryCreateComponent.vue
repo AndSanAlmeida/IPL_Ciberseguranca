@@ -12,19 +12,31 @@
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Nome da Entrada</label>
             <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="name" required>
+              <input class="form-control" type="text" v-model="name">
+              <div class="clearfix mt-2">
+                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingName ">Preencher nome da entrada</b-alert>
+                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeName ">Nome demasiado longa (Max: 100)</b-alert>
+              </div>
             </div>
           </div>
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Definição</label>
             <div class="col-lg-9">
-             <textarea class="form-control" v-model="definition" rows="7" required ></textarea>
+             <textarea class="form-control" v-model="definition" rows="7" ></textarea>
+             <div class="clearfix mt-2">
+                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missiingDefinition ">Preencher definição</b-alert>
+
+              </div>
            </div>
          </div>
          <div class="form-group row">
           <label class="col-lg-3 col-form-label form-control-label">Fonte</label>
           <div class="col-lg-9">
-           <textarea class="form-control" v-model="source" rows="7" required ></textarea>
+           <textarea class="form-control" v-model="source" rows="7"></textarea>
+            <div class="clearfix mt-2">
+              <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingName ">Preencher fonte da entrada</b-alert>
+              <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeName ">Fonte demasiado longa (Max: 100)</b-alert>
+            </div>
          </div>
        </div>
        <hr>
@@ -50,6 +62,9 @@ export default {
       name:'',
       definition: '',
       source:'',
+      attemptSubmit: false,
+      serverError: false,
+      serverErrorMessage: '',
     }
   },
   components: {
@@ -58,14 +73,20 @@ export default {
     missingName: function () {
       return this.name.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
+    invalidSizeName: function() {
+      return this.name.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+    },
     missiingDefinition: function() {
       return this.definition.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
     missingSource: function () {
       return this.source.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
+    invalidSizeSource: function() {
+      return this.source.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+    },
     hasClientError: function () {
-      return (this.missingName || this.missiingDefinition || this.missingSource);
+      return (this.missingName || this.invalidSizeName || this.missiingDefinition || this.missingSource || this.invalidSizeSource);
     },
     hasServerError: function () {
       return this.serverError;

@@ -19,10 +19,10 @@
                     :current-page="currentPage"
                     :per-page="perPage"> 
                     <template slot="actions" slot-scope="row">
-                      <a class="btn btn-sm btn-primary" :href="row.item.path" :download=row.item.description>Ver documento</a>
-                      <button type="button" class="btn btn-sm btn-warning" v-on:click="editNewsletter(row.item)">Editar</button>
-                      <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteNewsletter(row.item)">Eliminar</button>
+                      
                       <button type="button" class="btn btn-sm btn-success" v-if="row.item.isPublished == 0" v-on:click="publishNewsletter(row.item)">Publicar</button>
+                      <button type="button" class="btn btn-sm btn-primary" v-on:click="showNewsletter(row.item)">Mostrar</button>
+                      <button type="button" class="btn btn-sm btn-danger" v-on:click="deleteNewsletter(row.item)">Eliminar</button>
                     </template>
                   </b-table>
                   <hr>
@@ -46,7 +46,7 @@ module.exports={
     return {
       fields: [
         { key: 'id', label:'#'},
-        { key: 'description', label:'Descrição'},
+        { key: 'title', label:'Título'},
         { key: 'date', label:'Data'},
         { key: 'actions', label:'Ações'},
       ],
@@ -55,11 +55,11 @@ module.exports={
     }
   },
   methods: {
+    showNewsletter: function(newsletter) {
+      this.$emit('showNewsletter', newsletter);
+    },
     deleteNewsletter: function(newsletter) {
       this.$emit('deleteNewsletter', newsletter);
-    },
-    editNewsletter: function(newsletter) {
-      this.$emit('editNewsletter', newsletter);
     },
     createNewsletter: function() {
       this.$emit('createNewsletter');

@@ -77,7 +77,8 @@ class NewsControllerAPI extends Controller
      */
     public function show($id)
     {
-        //
+        $news = News::findOrFail($id);
+        return $news;
     }
 
     /**
@@ -100,7 +101,28 @@ class NewsControllerAPI extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:100',
+            'source' => 'required|string|max:100',
+            'description' => 'required|string',
+            'date' => 'required',
+        ]);
+
+        if ($request->wantsJson() && !$validator->fails()) {
+
+            $news = News::findOrFail($id);
+         
+            $news->title = $request->get('title');
+            $news->source = $request->get('source');
+            $news->description = $request->get('description');
+            $news->pub_date = $request->get('date');
+            
+            $news->save();
+
+            return response()->json(['msg' => 'Notícia editada.']);
+        } else {
+            return response()->json(['errorCode' => -1, 'msg' => $validator->errors()], 400);
+        }
     }
 
     /**
@@ -115,5 +137,44 @@ class NewsControllerAPI extends Controller
         $news->delete();
 
         return response()->json(['msg' => 'Notícia apagada']);
+    }
+
+    public function createXML(Request $request) {
+        $xmlString = '
+        <rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
+            <channel>
+                <title>IPLeiria - Cibersegurança</title>
+                <link>https://www.ipl.test</link>
+                <description>Notícias</description>
+                <language>pt-PT</language>
+                <copyright>@2018 IPLeiria - Cibersegurança</copyright>';
+                foreach ($request->get('news') as $item) {
+                    $singleNews = (object)$item;
+                    $dateTime = new \DateTime($singleNews->pubDate[0]); 
+                    echo $dateTime->format('U'); 
+                    $date = \Date ('l, d F o 00:00:00 +0100', $dateTime->format('U'));
+                    $xmlString = $xmlString.'
+                    <item>
+                        <title><![CDATA['.$singleNews->title[0].']]></title>
+                        <description><![CDATA['.$singleNews->description[0].']]></description>
+                        <pubDate>'.$date.'</pubDate>
+                        <link>http://ipl.test/#/resources/news/'.html_entity_decode($singleNews->title[0]).'</link>
+                    </item>';
+                }
+
+        $xmlString = $xmlString.'
+            </channel>
+        </rss>';
+
+        $dom = new \DOMDocument;
+        $dom->preserveWhiteSpace = FALSE;
+        $dom->loadXML($xmlString);
+
+        //Save XML as a file
+        $dom->save(public_path('feedNews.xml'));
+
+        //View XML document
+        $dom->formatOutput = TRUE;
+        echo $dom->saveXml();
     }
 }

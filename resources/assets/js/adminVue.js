@@ -56,7 +56,6 @@ const routes = [
       		if (localStorage.getItem('access_token')) {
       			axios.get('/api/user')
 			    .then(response => {
-			    	console.log(response.status);
 			    	if (response.status != 401 ) 
 			    		next();
 			    	else 
@@ -101,14 +100,14 @@ new Vue({
     router,
     data: function () {
         return {
-
+        	numberOfQuestions: 0,
         }
     },
     methods: {
     	
     },
     created: function() {
-
+    	
     },
     
 }).$mount('#admin');

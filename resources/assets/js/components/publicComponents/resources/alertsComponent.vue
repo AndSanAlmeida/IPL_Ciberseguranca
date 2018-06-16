@@ -8,9 +8,7 @@
                      	<h1>{{ title }}  <small><a href="#" title="RSS Alertas de Segurança" target="_blank" class="rss_color"><i class="fas fa-rss"></i></a></small></h1>
                  	</div>
                  	<div id="alerts">
-                        <div v-if="loading" class="align-loader">
-                            <div class="loader"></div>
-                        </div>
+                        <div v-if="loading" class="loader"></div>
                         <div class="table-responsive">                       
                             <div class="card" v-if="hasItems && canShowContent && !loading" >
                               <b-table v-if="showTable"
@@ -22,7 +20,7 @@
                                 :current-page="currentPage"
                                 :per-page="perPage"> 
                                     <template slot="alerts" slot-scope="row">
-                                        <a href="#" title="">
+                                        <a v-on:click="sendToAlert(row.item)" title="">
                                             <article class="alertContent">
                                                 <h3><span v-html="row.item.title[0]"/> <small>{{prepareDate(row.item.pubDate[0])}}</small></h3>
                                                 <dl class="dl-horizontal">
@@ -96,6 +94,9 @@
             },
         },
         methods: {
+            sendToAlert: function(alert) {
+                window.location.href = '/#/resources/alerts/'+alert.title[0];
+            },
             getRSSAlerts: function() {
                 this.loading = true;
                 this.errorLoading = false;                
@@ -126,7 +127,6 @@
                         }
                         this.showList = true;
                         window.setTimeout(this.orderAlerts(), 3000);
-                        console.log(response.data);
                     })
                     .catch((error) => {
                         this.errorLoading = true;
@@ -149,7 +149,6 @@
                 } else {
                     axios.get("https://cors.now.sh/"+feed)
                         .then((response) => {
-                            //console.log(response.data);
                             var vm = this;
                             var parseString = require('xml2js').parseString;
                             parseString(response.data, function (err, result) {
@@ -233,4 +232,7 @@
     #tableAlerts>thead{
         display: none;
     }
+    .card a {
+        cursor: pointer;
+    } 
 </style>

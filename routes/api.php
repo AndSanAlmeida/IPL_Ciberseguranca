@@ -54,11 +54,11 @@ Route::get('documents', 'DocumentsControllerAPI@index'); // GET DOCUMENTS
 Route::get('documents/{id}', 'DocumentsControllerAPI@show'); //GET ITEM OF DOCUMENT BY ID
 
 // -------------------- NEWSLETTERS --------------------
-Route::get('newsletters', 'NewsletterControllerAPI@index'); // GET ALL NEWSLETTER
 Route::get('newsletters/{id}', 'NewsletterControllersAPI@show'); // GET NEWSLETTER
 Route::post('newsletter/subscribe', 'NewsletterControllerAPI@subscribe'); // SUBSCRIBE NEWSLETTER
 Route::delete('newsletter/{email}/unsubcribe', 'NewsletterControllerAPI@unsubscribe'); // DELETE SUBSCRIPTION OF NEWSLETTER
 Route::post('newsletter/subscribed', 'NewsletterControllerAPI@subscribed'); // CHECK IF USER IS IN NEWSLETTER SUBSCRIPTION
+Route::get('newsletter/getPublishedNewsletters', 'NewsletterControllerAPI@getPublishedNewsletters'); // CHECK IF USER IS IN NEWSLETTER SUBSCRIPTION
 
 // -------------------- FAQS --------------------
 Route::get('faqs', 'FAQControllerAPI@index'); // GET FAQS
@@ -140,6 +140,7 @@ Route::middleware('auth:api')->group(function () {
 		Route::delete('newsletters/{id}/delete', 'NewsletterControllerAPI@destroy'); // DELETE NEWSLETTER
 		Route::post('newsletters/{id}/update', 'NewsletterControllerAPI@update'); // EDIT NEWSLETTER
 		Route::post('newsletters/{id}/publish', 'NewsletterControllerAPI@publish'); // PUBLISH NEWSLETTER
+		Route::get('newsletters', 'NewsletterControllerAPI@index'); // GET ALL NEWSLETTER
 
 		// -------------------- USER QUESTIONS --------------------
 		Route::get('questions', 'UserQuestionControllerAPI@index'); // GET ALL USER QUESTIONS
@@ -157,8 +158,14 @@ Route::middleware('auth:api')->group(function () {
 		// -------------------- RSS NEWS --------------------
 		Route::post('rssNews/create', 'RSSNewsControllerAPI@store'); // ADD RSS NEWS
 		Route::delete('rssNews/{id}/delete', 'RSSNewsControllerAPI@destroy'); // DELETE RSS NEWS
-		Route::post('news/create', 'NewsControllerAPI@store'); // ADD RSS OF NEWS
 		Route::post('rssNews/{id}/update', 'RSSNewsControllerAPI@update'); // EDIT RSS NEWS
+
+		// -------------------- NEWS --------------------
+		Route::post('news/create', 'NewsControllerAPI@store'); // ADD RSS OF NEWS
+		Route::post('news/rss', 'NewsControllerAPI@createXML'); // EDIT RSS NEWS
+		Route::delete('news/{id}/delete', 'NewsControllerAPI@destroy'); // DELETE NEWS
+		Route::get('news/{id}', 'NewsControllerAPI@show'); // GET EVENT BY ID
+		Route::post('news/{id}/update', 'NewsControllerAPI@update'); // EDIT EVENT
 
 		// -------------------- RSS ALERTS --------------------
 		Route::post('rssAlerts/create', 'RSSAlertsControllerAPI@store'); // ADD RSS ALERTS

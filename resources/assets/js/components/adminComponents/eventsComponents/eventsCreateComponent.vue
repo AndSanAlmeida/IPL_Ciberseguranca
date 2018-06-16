@@ -12,19 +12,31 @@
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Nome do Evento</label>
             <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="name" required>
+              <input class="form-control" type="text" v-model="name">
+              <div class="clearfix mt-2">
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingName ">Preencher nome do evento</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeName ">Nome do evento demasiado longo (Max: 100)</b-alert>
+              </div>
             </div>
           </div>
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Organizador</label>
             <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="organizer" required>
+              <input class="form-control" type="text" v-model="organizer">
+              <div class="clearfix mt-2">
+                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingOrganizer ">Preencher organizador</b-alert>
+                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeOrganizer ">Organizador demasiado longo (Max: 100)</b-alert>
+              </div>
             </div>
           </div>
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Localização</label>
             <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="localization" required>
+              <input class="form-control" type="text" v-model="localization">
+              <div class="clearfix mt-2">
+                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingLocalization ">Preencher localização</b-alert>
+                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeLocalization ">Localização demasiado longa (Max: 100)</b-alert>
+              </div>
             </div>
           </div>
 
@@ -37,15 +49,25 @@
 
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Lotação</label>
-            <div class="col-lg-3">
-              <input class="form-control" type="number" v-model="max_inscritos" required>
+            <div class="col-lg-9">
+              <input class="form-control col-lg-12" type="number" v-model="max_inscritos">
+              <div class="clearfix mt-2">
+                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingMaxInscritos ">Preencher lotação</b-alert>
+                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeMaxInscritos ">Lotação com valor inválido</b-alert>
+              </div>
             </div>
           </div>
 
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Descrição</label>
             <div class="col-lg-9">
-             <textarea class="form-control" v-model="description" rows="7" required ></textarea>
+             <quill-editor v-model="description"
+                ref="myQuillEditor"
+                :options="editorOption">
+              </quill-editor>
+              <div class="clearfix mt-2">
+                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingDescription ">Preencher descrição</b-alert>
+              </div>
            </div>
          </div>
          <div class="form-group row">
@@ -82,6 +104,8 @@
 <script type="text/javascript">
 
 import Datepicker from 'vuejs-datepicker';
+import 'quill/dist/quill.snow.css';
+import { quillEditor } from 'vue-quill-editor';
 
 export default {
   data: function() {
@@ -95,32 +119,52 @@ export default {
       file: '',
       fileName: '',
       image: '',
+      editorOption: {
+          theme: 'snow',
+          modules: {
+              toolbar: this.toolbarSettings()
+          }
+      },
       attemptSubmit: false,
       serverError: false,
       serverErrorMessage: '',
     }
   },
   components: {
-    Datepicker
+    Datepicker,
+    quillEditor
   },
+
   computed: {
     missingName: function () {
       return this.name.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
+    invalidSizeName: function () {
+      return this.name.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+    },
     missingOrganizer: function() {
       return this.organizer.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
+    invalidSizeOrganizer: function () {
+      return this.organizer.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+    },
     missingLocalization: function () {
       return this.localization.trim() === '' && !this.hasServerError && this.attemptSubmit;
+    },
+    invalidSizeLocalization: function () {
+      return this.localization.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
     },
     missingDescription: function () {
       return this.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
     missingMaxInscritos: function () {
-      return this.max_inscritos.trim() === '' && !this.hasServerError && this.attemptSubmit;
+      return this.max_inscritos === '' && !this.hasServerError && this.attemptSubmit;
+    },
+    invalidSizeMaxInscritos: function () {
+      return this.max_inscritos < 1 && !this.hasServerError && this.attemptSubmit;
     },
     hasClientError: function () {
-      return (this.missingName || this.missingLocalization || this.missingDescription);
+      return (this.missingName || this.invalidSizeName || this.missingOrganizer || this.invalidSizeOrganizer || this.missingLocalization || this.invalidSizeLocalization || this.missingDescription || this.missingMaxInscritos || this.invalidSizeMaxInscritos);
     },
     hasServerError: function () {
       return this.serverError;
@@ -132,6 +176,18 @@ export default {
   },
 
   methods: {
+    toolbarSettings: function() {
+        return [
+          ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+          ['blockquote', 'code-block'],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+          [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+          [{ 'direction': 'rtl' }],                         // text direction
+          [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+          ['clean']                                         // remove formatting button
+        ];
+    },
     exit: function() {
         this.$emit('exit');
     },
@@ -234,7 +290,6 @@ export default {
             vm.file = e.target.result;
           };
           reader.readAsDataURL(file1);
-          console.log(this.file);
         },  
         createImage(file) {
           var image = new Image();
@@ -254,3 +309,8 @@ export default {
       }
     }
     </script>
+<style type="text/css" media="screen">
+    .ql-toolbar.ql-snow + .ql-container.ql-snow {
+        min-height: 200px;
+    }
+</style>

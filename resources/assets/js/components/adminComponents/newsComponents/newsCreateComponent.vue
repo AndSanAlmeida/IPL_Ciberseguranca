@@ -11,21 +11,20 @@
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Título</label>
             <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="title" required>
-            </div>
-          </div>
-          <div class="clearfix">
-              <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingTitle ">
-                  <p v-if="missingTitle">Preencher title</p>
+              <input class="form-control" type="text" v-model="title">
+              <div class="clearfix mt-2">
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingTitle ">Preencher título</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && hasInvalidCharsTitle ">Título contém símbolos inválidas</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeTitle ">Título demasiado longo (Max: 100)</b-alert>
               </div>
+            </div>
           </div>
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Data</label>
             <div class="col-lg-9">
-              <datepicker v-model="pubDate" input-class="form-control" required typeable></datepicker>
+              <datepicker v-model="pubDate" input-class="form-control" required></datepicker>
             </div>
           </div>
-
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Descrição</label>
             <div class="col-lg-9">
@@ -33,22 +32,19 @@
                 ref="myQuillEditor"
                 :options="editorOption">
               </quill-editor>
-            </div>
-          </div>
-          <div class="clearfix">
-            <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingDescription ">
-                <p v-if="missingDescription">Preencher descrição</p>
+              <div class="clearfix mt-2">
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingDescription ">Preencher descrição</b-alert>
+              </div>
             </div>
           </div>
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Fonte</label>
             <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="source" required>
-            </div>
-          </div>
-          <div class="clearfix">
-            <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingSource ">
-                <p v-if="missingSource">Preencher fonte</p>
+              <input class="form-control" type="text" v-model="source">
+              <div class="clearfix mt-2">
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingSource ">Preencher fonte</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeSource ">Fonte demasiado longa (Max: 200)</b-alert>
+              </div>
             </div>
           </div>
           <hr>
@@ -80,7 +76,11 @@ export default {
           modules: {
               toolbar: this.toolbarSettings()
           }
-      }
+      },
+      attemptSubmit: false,
+      errorLoading: false,
+      serverError: false,
+      serverErrorMessage: '',
     }
   },
   components: {
@@ -91,14 +91,47 @@ export default {
     missingTitle: function () {
       return this.title.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
+    hasInvalidCharsTitle: function() {
+      if (this.title.indexOf(';') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('/') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('?') > -1) {
+        return true;
+      }
+      if (this.title.indexOf(':') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('@') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('=') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('&') > -1) {
+        return true;
+      }
+      return false;
+    },
+    invalidSizeTitle: function () {
+      return this.title.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+    },
     missingDescription: function () {
       return this.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
     missingSource: function () {
       return this.source.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
+    missingSource: function () {
+      return this.source.trim() === '' && !this.hasServerError && this.attemptSubmit;
+    },
+    invalidSizeSource: function () {
+      return this.source.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+    },
     hasClientError: function () {
-      return (this.missingDescription || this.missingLink);
+      return (this.missingTitle || this.hasInvalidCharsTitle || this.invalidSizeTitle || this.missingDescription || this.missingSource || this.invalidSizeSource);
     },
     hasServerError: function () {
       return this.serverError;
@@ -111,21 +144,21 @@ export default {
 
   methods: {
     toolbarSettings: function() {
-        return [
-                  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                  ['blockquote', 'code-block'],
-                  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-                  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-                  [{ 'direction': 'rtl' }],                         // text direction
-                  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-                  ['clean']                                         // remove formatting button
-                ];
+      return [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        ['clean']                                         // remove formatting button
+      ];
     },
     submitForm: function (event) {
       this.serverError = false;
       this.attemptSubmit = true;
-      if (!this.isFormInvalid) {
+      if (this.isFormInvalid == false) {
         var newDate = this.getDate();
           
         const data = {
@@ -158,7 +191,6 @@ export default {
         });
       }
     },
-    
     getDate:function() {
       var month = this.pubDate.getUTCMonth() + 1; //months from 1-12
       var day = this.pubDate.getUTCDate();
@@ -169,7 +201,6 @@ export default {
 
       newdate = this.formatDate(newdate);
 
-      console.log(newdate);
       return newdate;
     },
 

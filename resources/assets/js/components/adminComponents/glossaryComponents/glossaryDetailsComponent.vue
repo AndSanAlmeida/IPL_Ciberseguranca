@@ -24,6 +24,7 @@
 </template>
 <script type="text/javascript">
     export default {
+        props: ['item'],
         data: function() {
             return {
                 name: '',

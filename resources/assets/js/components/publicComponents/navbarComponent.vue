@@ -66,7 +66,6 @@
             getUser: function () {
                 axios.get('/api/user')
                     .then((response) => {
-                        console.log('Admin Navbar: ' + response.data);
                         this.logged = true;
                         this.user.parse(response.data);
                     });

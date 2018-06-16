@@ -2,44 +2,21 @@
 	<section id="resources" class="section-padding">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-8 col-sm-12">
+				<div class="col-md-offset-1 col-md-10 col-sm-12">
                     <b-breadcrumb :items="items"/>
-                    <div class="left-highlight">
-                     	<h1>{{ title }}</h1>
-                 	</div>
-
-                    <br>
-
-                    <div v-if="!loading && !hasItems" class="alert alert-danger" role="alert" style="margin-top: 2em;">
-                        <h4><strong>Erro: </strong>Não existe newsletters disponíveis.</h4>
-                    </div>
-
-                    <div v-if="!loading && hasItems">
-                        <h3><b>IPL Cibersegurança newsletter:</b></h3>
-
-                        <div v-if="loading" class="loader"></div>
-
-                        <div id="linksAndDocuments">
-                            <ul class="linksAndDocumentsList">
-                                <li v-for="newsletter in newsletters" >
-                                    <a href="javascript:;" v-on:click="sendToNewsletter(newsletter)" :title="newsletter.tittle" target="_blank" class="text-justify">{{newsletter.title}}</a>
-                                    <small>| {{prepareDate(newsletter.date)}}</small>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
                     <div v-if="loading" class="loader"></div>
-                    
-                </div>
-                <div class="col-md-4 col-sm-12 container-nav">
-                    <div class="container-nav-title">
-                        <h3><strong>{{ title }}</strong></h3>
+                    <div  v-if="!loading && hasItems">
+                        <div class="left-highlight">
+                            <h1 v-html="newsletter.title"></h1>
+                        </div>
+                        <br>
+                        <p class="text-muted text-right">{{prepareDate(newsletter.date)}}</p>
+                        <br>
+                        <p class="text-justify" v-html="newsletter.description"></p>
                     </div>
-
-                    <resourcesNav></resourcesNav>
-                    
+                   
                 </div>
+                
 			</div>
 		</div>
 	</section>
@@ -48,8 +25,8 @@
 <script type="text/javascript">
     export default {
         data: function(){
-            return {
-                title: 'Newsletters',
+            return {                
+                title: '',
                 items: [{
                     text: 'Início',
                     href: '/#/home'
@@ -58,39 +35,40 @@
                     href: '/#/resources'
                 }, {
                     text: 'Newsletters',
+                    href: '/#/resources/newsletters'
+                }, {
+                    text: '',
                     active: true
                 }],
-                newsletters: [],
+                newsletter: [],
+                showNews: false,
                 loading: true,
                 errorLoading: false,
             }
         },
         computed: {
             hasItems: function () {
-                return this.newsletters.length > 0;
+                return this.newsletter != null;
             },
             canShowContent: function () {
                 return !this.errorLoading && !this.loading;
             },
         },
         methods: {
-            sendToNewsletter: function(newsletter) {
-                console.log(newsletter.title);
-                window.location.href = '/#/resources/newsletters/'+newsletter.title;
-            },
             getNewsletters: function () {
                 this.loading = true;
                 this.errorLoading = false;                
                 axios.get('/api/newsletter/getPublishedNewsletters')
                     .then(response => {
-                        this.newsletters = response.data.data;
-                        this.newsletters.sort(function(a,b){
-                          var c = new Date(a.date);
-                          var d = new Date(b.date);
-                          return d-c;
-                        });
-                        if (response.data.data.length > 0) {
-                            this.showList = true;
+                
+                        for (var j = 0; j < response.data.data.length; j++) {
+                            if(decodeURIComponent(this.title) === response.data.data[j].title) {
+                                var newsletterObject = {title: '', description: '', date: ''}
+                                newsletterObject.title = response.data.data[j].title;
+                                newsletterObject.description = response.data.data[j].description;
+                                newsletterObject.date = response.data.data[j].date;
+                                this.newsletter = Object.assign(newsletterObject);
+                            }
                         }
                         this.loading = false;
                         this.errorLoading = false;
@@ -134,9 +112,22 @@
                 }
                 return dd+month+yyyy;
             },
+            get_ents: function(str){
+                var temp=document.createElement("pre");
+                temp.innerHTML=str;
+                return decodeURIComponent(temp.firstChild.nodeValue);
+            }
         },
-        mounted() {
+        created: function() {
+            this.title = window.location.href.substr(window.location.href.lastIndexOf('/') + 1).replace(/%20/g, " ");
+            this.items[3].text = this.get_ents(this.title);
             this.getNewsletters();
         }
     }
 </script>
+
+<style type="text/css" media="screen">
+    #resources h1 {
+        text-transform: none;
+    }
+</style>

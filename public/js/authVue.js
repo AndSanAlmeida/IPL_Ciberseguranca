@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 568);
+/******/ 	return __webpack_require__(__webpack_require__.s = 595);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -400,7 +400,7 @@ module.exports = function spread(callback) {
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(20)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(21)))
 
 /***/ }),
 
@@ -3035,7 +3035,7 @@ if (inBrowser && window.Vue) {
 
 /***/ }),
 
-/***/ 17:
+/***/ 18:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5561,11 +5561,11 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(9)))
 
 /***/ }),
 
-/***/ 20:
+/***/ 21:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -5756,7 +5756,7 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 21:
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
@@ -5820,7 +5820,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
 
@@ -5847,10 +5847,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(52);
+    adapter = __webpack_require__(54);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(52);
+    adapter = __webpack_require__(54);
   }
   return adapter;
 }
@@ -5921,7 +5921,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ }),
 
@@ -5931,7 +5931,7 @@ module.exports = defaults;
 "use strict";
 
 
-var bind = __webpack_require__(51);
+var bind = __webpack_require__(53);
 var isBuffer = __webpack_require__(84);
 
 /*global toString:true*/
@@ -6236,7 +6236,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 50:
+/***/ 52:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -16608,7 +16608,7 @@ return jQuery;
 
 /***/ }),
 
-/***/ 51:
+/***/ 53:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16627,7 +16627,7 @@ module.exports = function bind(fn, thisArg) {
 
 /***/ }),
 
-/***/ 52:
+/***/ 54:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16638,7 +16638,7 @@ var settle = __webpack_require__(87);
 var buildURL = __webpack_require__(89);
 var parseHeaders = __webpack_require__(90);
 var isURLSameOrigin = __webpack_require__(91);
-var createError = __webpack_require__(53);
+var createError = __webpack_require__(55);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(92);
 
 module.exports = function xhrAdapter(config) {
@@ -16815,7 +16815,7 @@ module.exports = function xhrAdapter(config) {
 
 /***/ }),
 
-/***/ 53:
+/***/ 55:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16841,7 +16841,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 /***/ }),
 
-/***/ 54:
+/***/ 56:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16854,7 +16854,7 @@ module.exports = function isCancel(value) {
 
 /***/ }),
 
-/***/ 55:
+/***/ 57:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16881,7 +16881,7 @@ module.exports = Cancel;
 
 /***/ }),
 
-/***/ 56:
+/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27844,24 +27844,24 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(21).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(22).setImmediate))
 
 /***/ }),
 
-/***/ 568:
+/***/ 595:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(569);
+module.exports = __webpack_require__(596);
 
 
 /***/ }),
 
-/***/ 569:
+/***/ 596:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(102);
 __webpack_require__(78);
@@ -27871,13 +27871,13 @@ __webpack_require__(78);
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
 
-window.Vue = __webpack_require__(56);
+window.Vue = __webpack_require__(58);
 
-var login = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('login', __webpack_require__(570));
-var register = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('register', __webpack_require__(573));
+var login = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('login', __webpack_require__(597));
+var register = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('register', __webpack_require__(600));
 
 /*ROUTES*/
-var routes = [{ path: '/', redirect: '/login' }, { path: '/login', component: login }, { path: '/register', component: register }, { path: '/password/reset', component: __webpack_require__(576) }, { path: '/password/reset/:token', component: __webpack_require__(579), props: true }];
+var routes = [{ path: '/', redirect: '/login' }, { path: '/login', component: login }, { path: '/register', component: register }, { path: '/password/reset', component: __webpack_require__(603) }, { path: '/password/reset/:token', component: __webpack_require__(606), props: true }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
 				routes: routes
@@ -27889,15 +27889,15 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 
 /***/ }),
 
-/***/ 570:
+/***/ 597:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(571)
+var __vue_script__ = __webpack_require__(598)
 /* template */
-var __vue_template__ = __webpack_require__(572)
+var __vue_template__ = __webpack_require__(599)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -27937,11 +27937,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 571:
+/***/ 598:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -28000,6 +28002,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             username: '',
             password: '',
+            loading: false,
             attemptSubmit: false,
             serverError: false,
             serverErrorMessage: ''
@@ -28028,7 +28031,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.serverError = false;
             this.attemptSubmit = true;
-
+            this.loading = true;
             if (!this.isFormInvalid) {
                 var data = {
                     username: this.username,
@@ -28038,22 +28041,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     localStorage.setItem('access_token', 'Bearer ' + response.data.access_token);
 
                     axios.get('/api/user', { headers: { "Authorization": 'Bearer ' + response.data.access_token } }).then(function (response) {
-                        console.log(response.data);
                         if (response.data.type == 1) {
-                            // admin   
                             window.location.href = '/admin/#/home';
+                            _this.loading = false;
                         } else if (response.data.type == 0) {
                             window.location.href = '/';
+                            _this.loading = false;
                         }
                     }).catch(function (error) {
                         _this.serverError = true;
-                        console.log(error);
                         _this.serverErrorMessage = error.response.data.data;
+                        _this.loading = false;
                     });
                 }).catch(function (error) {
                     _this.serverError = true;
                     console.log(error);
                     _this.serverErrorMessage = error.response.data.data;
+                    _this.loading = false;
                 });
             }
         }
@@ -28062,7 +28066,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 572:
+/***/ 599:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -28076,6 +28080,8 @@ var render = function() {
     }),
     _vm._v(" "),
     _c("br"),
+    _vm._v(" "),
+    _vm.loading ? _c("div", { staticClass: "loader" }) : _vm._e(),
     _vm._v(" "),
     _c(
       "form",
@@ -28271,15 +28277,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 573:
+/***/ 600:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(574)
+var __vue_script__ = __webpack_require__(601)
 /* template */
-var __vue_template__ = __webpack_require__(575)
+var __vue_template__ = __webpack_require__(602)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -28319,7 +28325,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 574:
+/***/ 601:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28495,7 +28501,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 575:
+/***/ 602:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -28899,15 +28905,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 576:
+/***/ 603:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(577)
+var __vue_script__ = __webpack_require__(604)
 /* template */
-var __vue_template__ = __webpack_require__(578)
+var __vue_template__ = __webpack_require__(605)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -28947,7 +28953,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 577:
+/***/ 604:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29057,7 +29063,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 578:
+/***/ 605:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -29222,15 +29228,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 579:
+/***/ 606:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(580)
+var __vue_script__ = __webpack_require__(607)
 /* template */
-var __vue_template__ = __webpack_require__(581)
+var __vue_template__ = __webpack_require__(608)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -29270,7 +29276,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 580:
+/***/ 607:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29394,7 +29400,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     token: this.token,
                     password: this.password
                 };
-                console.log(data);
                 axios.post('/api/password/reset', data).then(function (response) {
 
                     _this.success = true;
@@ -29417,7 +29422,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 581:
+/***/ 608:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -29720,7 +29725,7 @@ if (false) {
 
 
 window._ = __webpack_require__(79);
-window.Popper = __webpack_require__(17).default;
+window.Popper = __webpack_require__(18).default;
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -29729,7 +29734,7 @@ window.Popper = __webpack_require__(17).default;
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(50);
+  window.$ = window.jQuery = __webpack_require__(52);
   __webpack_require__(81);
 } catch (e) {}
 
@@ -46885,35 +46890,7 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(80)(module)))
-
-/***/ }),
-
-/***/ 8:
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(80)(module)))
 
 /***/ }),
 
@@ -46955,7 +46932,7 @@ module.exports = function(module) {
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(50), __webpack_require__(17)) :
+   true ? factory(exports, __webpack_require__(52), __webpack_require__(18)) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
   (factory((global.bootstrap = {}),global.jQuery,global.Popper));
 }(this, (function (exports,$,Popper) { 'use strict';
@@ -50894,7 +50871,7 @@ module.exports = __webpack_require__(83);
 
 
 var utils = __webpack_require__(5);
-var bind = __webpack_require__(51);
+var bind = __webpack_require__(53);
 var Axios = __webpack_require__(85);
 var defaults = __webpack_require__(27);
 
@@ -50929,9 +50906,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(55);
+axios.Cancel = __webpack_require__(57);
 axios.CancelToken = __webpack_require__(99);
-axios.isCancel = __webpack_require__(54);
+axios.isCancel = __webpack_require__(56);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -51088,7 +51065,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(53);
+var createError = __webpack_require__(55);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -51217,6 +51194,34 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
   return url;
 };
+
+
+/***/ }),
+
+/***/ 9:
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
@@ -51531,7 +51536,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(5);
 var transformData = __webpack_require__(96);
-var isCancel = __webpack_require__(54);
+var isCancel = __webpack_require__(56);
 var defaults = __webpack_require__(27);
 var isAbsoluteURL = __webpack_require__(97);
 var combineURLs = __webpack_require__(98);
@@ -51695,7 +51700,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(55);
+var Cancel = __webpack_require__(57);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.

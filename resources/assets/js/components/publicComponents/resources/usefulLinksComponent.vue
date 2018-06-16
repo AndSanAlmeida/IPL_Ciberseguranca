@@ -15,9 +15,7 @@
                         <h4><strong>Erro: </strong>Não existe links disponíveis.</h4>
                     </div>
 
-                    <div v-if="loading" class="align-loader">
-                        <div class="loader"></div>
-                    </div>
+                    <div v-if="loading" class="loader"></div>
 
                  	<div v-if="hasItems && canShowContent" id="linksAndDocuments">
                         <ul class="linksAndDocumentsList">

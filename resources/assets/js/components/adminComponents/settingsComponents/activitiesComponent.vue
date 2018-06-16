@@ -4,9 +4,12 @@
 			<label for="inputEmail3" class="col-sm-2 col-form-label">Atividades</label>
 			<div class="col-sm-10">
                   <quill-editor v-model="activities.description"
-                                ref="myQuillEditor"
-                                :options="editorOption">
+                    ref="myQuillEditor"
+                    :options="editorOption">
                   </quill-editor>
+                  <div class="clearfix mt-2">
+                    <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingAtivities ">Preencher atividades</b-alert>
+                </div>
 			</div>
 		</div>
 		<div class="form-group row">
@@ -30,7 +33,6 @@
                 attemptSubmit: false,
                 serverError: false,
                 serverErrorMessage: '',
-                success: false,
                 editorOption: {
                     theme: 'snow',
                     modules: {
@@ -40,8 +42,11 @@
             }
         },
         computed: {
+            editor() {
+                return this.$refs.myQuillEditor.quill
+            },
             missingAtivities: function () {
-                return this.activities.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
+                return this.activities.description === '' && !this.hasServerError && this.attemptSubmit;
             },
             hasClientError: function () {
                 return this.missingAtivities;
@@ -122,16 +127,11 @@
                 this.getActivities();
             }
         },
-        computed: {
-            editor() {
-                return this.$refs.myQuillEditor.quill
-            }
-        },
+        
         created: function () {
             this.getActivities();
         },
         mounted() {
-            console.log('this is current quill instance object', this.editor)
         }
     }
 </script>

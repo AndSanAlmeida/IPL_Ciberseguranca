@@ -7,14 +7,13 @@
                     <div v-if="loading" class="loader"></div>
                     <div  v-if="!loading">
                         <div class="left-highlight">
-                            <h1 v-html="singleNews.title[0]"></h1>
+                            <h1 v-html="alert.title[0]"></h1>
                         </div>
                         <br>
-                        <p class="text-muted text-right">{{prepareDate(singleNews.pubDate[0])}}</p>
+                        <p class="text-muted text-right">{{prepareDate(alert.pubDate[0])}}</p>
                         <br>
-                        <p class="text-justify" v-html="singleNews.description[0]"></p>
-                        <p><b>Fonte: </b>{{singleNews.link[0]}}</p>
-
+                        <p class="text-justify" v-html="alert.description[0]"></p>
+                        <p><b>Fonte: </b><a target="_blank" :href="alert.link[0]">Link</a></p>
                     </div>
                    
                 </div>
@@ -36,54 +35,50 @@
                     text: 'Recursos',
                     href: '/#/resources'
                 }, {
-                    text: 'Notícias',
-                    href: '/#/resources/news'
+                    text: 'Alertas',
+                    href: '/#/resources/alerts'
                 }, {
                     text: '',
                     active: true
                 }],
-                singleNews: [],
-                showNews: false,
+                alert: [],
+                showAlerts: false,
                 loading: true,
                 errorLoading: false,
             }
         },
         computed: {
             hasItems: function () {
-                return this.singleNews != null;
+                return this.alert != null;
             },
             canShowContent: function () {
                 return !this.errorLoading && !this.loading;
             },
         },
         methods: {
-            getRSSNews: function() {
+            getRSSAlerts: function() {
                 this.loading = true;
                 this.errorLoading = false;                
-                axios.get('/api/rssNews')
+                axios.get('/api/rssAlerts')
                     .then(response => {
                         var rsss = response.data.data;
                         for (var i = 0; i < rsss.length; i++) { 
                             this.getRSSByFeed(rsss[i].url);
                         }
-                        this.getDBNews();
+                        this.getDBAlerts();
                     }).catch((error) => {
                         this.loading = false;
                         this.errorLoading = true;
                     });
             },
-            getDBNews: function() {
-                axios.get('/api/news')
+            getDBAlerts: function() {
+                axios.get('/api/alerts')
                     .then((response) => {
-                        
                         for (var j = 0; j < response.data.data.length; j++) {
-                            if(decodeURIComponent(this.title) === response.data.data[j].title) {
-                                var newsObject = {title: {}, description: {}, pubDate: {}, link: {}}
-                                newsObject.title[0] = response.data.data[j].title;
-                                newsObject.description[0] = response.data.data[j].description;
-                                newsObject.pubDate[0] = response.data.data[j].pub_date;
-                                newsObject.link[0] = response.data.data[j].source;
-                                this.singleNews = Object.assign(newsObject);
+                            if (response.data.data[j] != null ) {
+                                if(this.title == response.data.data[j].title) {
+                                    this.alert = response.data.data[j];
+                                }
                             }
                         }
                         this.loading = false;
@@ -93,6 +88,7 @@
                         this.errorLoading = true;
                     });
             },
+            
             getRSSByFeed: function(feed) {
                 this.xhr = this.createCORSRequest('GET', feed);
                 if (!this.xhr) {
@@ -105,10 +101,9 @@
                             parseString(response.data, function (err, result) {
                                 for (var i = 0; i < Object.assign(result.rss.channel[0].item).length; i++) { 
                                     if (Object.assign(result.rss.channel[0].item)[i].title[0] == vm.title) {
-                                        vm.singleNews = Object.assign(result.rss.channel[0].item)[i];
+                                        vm.alert = Object.assign(result.rss.channel[0].item)[i];
                                     }
                                 }
-                                
                             });
 
                         })
@@ -174,13 +169,13 @@
             get_ents: function(str){
                 var temp=document.createElement("pre");
                 temp.innerHTML=str;
-                return decodeURIComponent(temp.firstChild.nodeValue);
+                return temp.firstChild.nodeValue;
             }
         },
         created: function() {
             this.title = window.location.href.substr(window.location.href.lastIndexOf('/') + 1).replace(/%20/g, " ");
             this.items[3].text = this.get_ents(this.title);
-            this.getRSSNews();
+            this.getRSSAlerts();
         }
     }
 </script>

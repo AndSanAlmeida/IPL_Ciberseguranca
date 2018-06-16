@@ -9,7 +9,7 @@
         <!-- ERRORS -->
         <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent">
             <h2 class="alert-heading">Opss!</h2>
-            <p>Não foram encontrados {{title}}.</p>
+            <p>Não foram encontrados {{title}} por responder.</p>
         </div>
 
         <div class="alert alert-danger" role="alert" v-if="errorLoading">
@@ -17,14 +17,13 @@
         </div>
 
         <!-- LOADING -->
-        <div v-if="loading" class="align-loader mt-4">
-            <div class="loader"></div>
-        </div>
+        <div v-if="loading || answering" class="loader mt-3"></div>
+        
         
         <!-- ============ -->
 
         <div class="text-center">
-            <router-link v-if="hasQuestions" to="/userQuestions/all" class="mt-5 btn btn-primary btn-lg">Ver histórico de questões</router-link>
+            <router-link v-if="hasQuestions" to="/userQuestions/all" class="mt-3 btn btn-primary">Ver histórico de questões</router-link>
         </div>
 
         <userNotAnsweredQuestionsListComponent 
@@ -61,6 +60,7 @@
                 showDetails: false,
                 loading: true,
                 errorLoading: false,
+                answering: false,
             }
         },
         computed: {
@@ -99,6 +99,7 @@
                 axios.get('/api/questions/notAnswered')
                     .then(response => {
                         this.notAnswered = response.data.data;
+                        this.$root.numberOfQuestions = response.data.data.length;
                         this.loading = false;
                     }).catch((error) => {
                     this.loading = false;
@@ -110,6 +111,7 @@
                     content: "input",
                   })
                   .then((value) => {
+                    this.answering = true;
                     if (value != '') {
                         const data = {
                             id: question.id,
@@ -126,6 +128,7 @@
                                     .then((value) => {
                                         switch (value) {
                                             case "ok":
+                                                this.answering = false;
                                                 this.getNotAnsweredQuestions();
                                                 this.getAllQuestions();
                                                 break;
@@ -133,7 +136,8 @@
                                     });
                             })
                             .catch((error) => {
-
+                                this.loading = false;
+                                this.errorLoading = true;
                             });    
                     } else {
                         swal("Preencher resposta.", {

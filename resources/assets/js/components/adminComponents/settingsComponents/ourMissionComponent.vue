@@ -4,9 +4,12 @@
 			<label for="inputEmail3" class="col-sm-2 col-form-label">Nossa Missão</label>
 			<div class="col-sm-10">
                   <quill-editor v-model="ourMission.description"
-                                ref="myQuillEditor"
-                                :options="editorOption">
+                    ref="myQuillEditor"
+                    :options="editorOption">
                   </quill-editor>
+                  <div class="clearfix mt-2">
+                    <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingOurMission ">Preencher a nossa missão</b-alert>
+                </div>
 			</div>
 		</div>
 		<div class="form-group row">
@@ -30,7 +33,6 @@
                 attemptSubmit: false,
                 serverError: false,
                 serverErrorMessage: '',
-                success: false,
                 editorOption: {
                     theme: 'snow',
                     modules: {
@@ -40,8 +42,11 @@
             }
         },
         computed: {
+            editor() {
+                return this.$refs.myQuillEditor.quill
+            },
             missingOurMission: function () {
-                return this.ourMission.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
+                return this.ourMission.description === '' && !this.hasServerError && this.attemptSubmit;
             },
             hasClientError: function () {
                 return this.missingOurMission;
@@ -122,11 +127,7 @@
                 this.getOurMission();
             }
         },
-        computed: {
-            editor() {
-                return this.$refs.myQuillEditor.quill
-            }
-        },
+        
         created: function () {
             this.getOurMission();
         }

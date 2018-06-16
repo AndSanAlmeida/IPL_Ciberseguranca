@@ -17,9 +17,7 @@
         </div>
 
         <!-- LOADING -->
-        <div v-if="loading" class="align-loader mt-4">
-            <div class="loader"></div>
-        </div>
+        <div v-if="loading" class="loader mt-3"></div>
         
         <!-- ============ -->
 

@@ -144,9 +144,9 @@ class DbStructure extends Migration
 
         Schema::create('newsletters', function(Blueprint $table){
             $table->increments('id');
-            $table->string('description');
+            $table->string('title');
+            $table->longtext('description');
             $table->date('date');
-            $table->longText('path');
             $table->integer('isPublished')->default(0);
             $table->timestamps();
         });

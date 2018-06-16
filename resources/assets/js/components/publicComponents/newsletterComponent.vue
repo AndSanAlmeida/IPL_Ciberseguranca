@@ -144,7 +144,6 @@
                 
                 axios.get('/api/user')
                     .then((response) => {
-                        console.log('Newsletter: ' + response.data);
                         this.logged = true;
                         this.checkIfUserIsSubscribed(response.data.email);
                         this.user.parse(response.data);

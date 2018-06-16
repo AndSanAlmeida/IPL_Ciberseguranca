@@ -13,6 +13,17 @@
               <h3 class="h4">Lista de Alertas</h3>
             </div>
             <div class="card-body">
+              <!-- SEARCH -->
+              <div class="col-lg-6 offset-lg-3">
+                <b-form-group horizontal label="Pesquisar">
+                  <b-input-group>
+                    <b-form-input v-model="filter" placeholder="Escreva para Procurar" />
+                    <b-input-group-append>
+                      <b-btn :disabled="!filter" @click="filter = ''">Limpar</b-btn>
+                    </b-input-group-append>
+                  </b-input-group>
+                </b-form-group>
+              </div>
               <div class="table-responsive">                       
                 <div class="card">
                   <b-table responsive 
@@ -20,7 +31,8 @@
                     :items="alerts" 
                     :fields="fields"
                     :current-page="currentPage"
-                    :per-page="perPage"> 
+                    :per-page="perPage"
+                    :filter="filter"> 
                     <template slot="title" slot-scope="row">
                       <span v-html="row.item.title[0]">
                     </span>
@@ -65,6 +77,7 @@ module.exports={
       perPage: 30,
       sortBy: 'pubDate',
       sortDesc: true,
+      filter: null,
     }
   },
   methods: {

@@ -12,23 +12,20 @@
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">Descrição</label>
                         <div class="col-lg-9">
-                            <input class="form-control" type="text" v-model="website" required>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingDescription ">
-                            <p v-if="missingDescription">Preencher descrição</p>
+                            <input class="form-control" type="text" v-model="website">
+                            <div class="clearfix mt-2">
+                                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingDescription ">Preencher descrição</b-alert>
+                                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeDescription ">Descrição demasiado longa (Max: 100)</b-alert>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">URL</label>
                         <div class="col-lg-9">
-                            <input class="form-control" type="url" v-model="url" required>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingLink ">
-                            <p v-if="missingLink">Preencher Link</p>
+                            <input class="form-control" type="url" v-model="url">
+                            <div class="clearfix mt-2">
+                                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingLink ">Preencher url</b-alert>
+                            </div>
                         </div>
                     </div>
                     <hr>
@@ -51,7 +48,6 @@
         props: ['rss'],
         data: function() {
             return {
-                id: this.$route.params.id,
                 website: '',
                 url: '',
                 attemptSubmit: false,
@@ -65,14 +61,14 @@
             missingDescription: function () {
               return this.website.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
+            invalidSizeDescription: function () {
+              return this.website.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+            },
             missingLink: function () {
               return this.url.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
             hasClientError: function () {
               return (this.missingDescription || this.missingLink);
-            },
-            hasClientError: function () {
-                return (this.missingName || this.missingDefinition || this.missingSource || this.invalidSizeName || this.invalidSizeDefinition || this.invalidSizeSource);
             },
             hasServerError: function () {
                 return this.serverError;

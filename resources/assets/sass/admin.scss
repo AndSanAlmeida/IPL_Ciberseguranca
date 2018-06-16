@@ -326,10 +326,6 @@ button, input {
 /*****************************************************
   Loader
 *****************************************************/
-.align-loader {
-  width: 0%;
-  margin: 0 auto;
-}
 
 .loader {
   border: 16px solid #c1b3b3;
@@ -339,6 +335,7 @@ button, input {
   height: 50px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
+  margin: 0 auto;
 }
 
 /* Safari */
@@ -3364,3 +3361,7 @@ a > code {
   }
 }
 
+#criar {
+  cursor: pointer;
+  
+}

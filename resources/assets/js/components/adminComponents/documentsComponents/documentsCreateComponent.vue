@@ -12,7 +12,11 @@
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Descrição</label>
             <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="description" required>
+              <input class="form-control" type="text" v-model="description">
+              <div class="clearfix mt-2">
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingDescription ">Preencher descrição</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeDescription ">Descrição demasiado longa (Max: 100)</b-alert>
+              </div>
             </div>
           </div>
          <div class="form-group row">
@@ -53,8 +57,11 @@ export default {
     missingDescription: function () {
       return this.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
+    invalidSizeDescription: function () {
+      return this.description.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+    },
     hasClientError: function () {
-      return (this.missingDescription);
+      return (this.missingDescription || this.invalidSizeDescription);
     },
     hasServerError: function () {
       return this.serverError;
@@ -78,10 +85,8 @@ export default {
           file: this.file,
         };
 
-          console.log(data.file);
         axios.post('/api/documents/create', data)
         .then((response) => {
-          console.log(response);
           swal("Documento adicionado com sucesso.", {
             icon: 'success',
             buttons: {
@@ -127,7 +132,6 @@ export default {
         vm.file = e.target.result;
       };
       reader.readAsDataURL(file1);
-      console.log(this.file);
 
     },
   }

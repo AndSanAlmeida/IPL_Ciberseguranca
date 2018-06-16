@@ -12,49 +12,31 @@
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">Nome</label>
                         <div class="col-lg-9">
-                            <input class="form-control" type="text" v-model="name" required>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingName ">
-                            <p v-if="missingName">Preencher nome</p>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && invalidSizeName ">
-                            <p v-if="invalidSizeName">Tamanho do nome excedido (Max: 100)</p>
+                            <input class="form-control" type="text" v-model="name">
+                            <div class="clearfix mt-2">
+                                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingName ">Preencher nome da entrada</b-alert>
+                                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeName ">Nome demasiado longa (Max: 100)</b-alert>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">Definição</label>
                         <div class="col-lg-9">
-                            <textarea class="form-control" v-model="definition" rows="7" required ></textarea>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingDefinition ">
-                            <p v-if="missingDefinition">Preencher definição</p>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && invalidSizeDefinition ">
-                            <p v-if="invalidSizeDefinition">Tamanho do definição excedido (Max: 100)</p>
+                            <textarea class="form-control" v-model="definition" rows="7" ></textarea>
+                            <div class="clearfix mt-2">
+                                  <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missiingDefinition ">Preencher definição</b-alert>
+
+                              </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">Fonte</label>
                         <div class="col-lg-9">
-                            <textarea class="form-control" v-model="source" rows="7" required ></textarea>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingSource ">
-                            <p v-if="missingSource">Preencher fonte</p>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && invalidSizeSource ">
-                            <p v-if="invalidSizeSource">Tamanho da fonte excedido (Max: 100)</p>
+                            <textarea class="form-control" v-model="source" rows="7" ></textarea>
+                            <div class="clearfix mt-2">
+                              <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingName ">Preencher fonte</b-alert>
+                              <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeName ">Fonte demasiado longa (Max: 100)</b-alert>
+                            </div>
                         </div>
                     </div>
                     <hr>
@@ -92,31 +74,28 @@
         },
         computed: {
             missingName: function () {
-                return this.name.trim() === '' && !this.hasServerError && this.attemptSubmit;
+              return this.name.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
             invalidSizeName: function() {
-                return this.name.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+              return this.name.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
             },
-            missingDefinition: function() {
-                return this.definition.trim() === '' && !this.hasServerError && this.attemptSubmit;
-            },
-            invalidSizeDefinition: function() {
-                return this.definition.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+            missiingDefinition: function() {
+              return this.definition.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
             missingSource: function () {
-                return this.source.trim() === '' && !this.hasServerError && this.attemptSubmit;
+              return this.source.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
             invalidSizeSource: function() {
-                return this.source.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+              return this.source.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
             },
             hasClientError: function () {
-                return (this.missingName || this.missingDefinition || this.missingSource || this.invalidSizeName || this.invalidSizeDefinition || this.invalidSizeSource);
+              return (this.missingName || this.invalidSizeName || this.missiingDefinition || this.missingSource || this.invalidSizeSource);
             },
             hasServerError: function () {
-                return this.serverError;
+              return this.serverError;
             },
             isFormInvalid: function () {
-                return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
+              return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
             },
         },
         methods: {

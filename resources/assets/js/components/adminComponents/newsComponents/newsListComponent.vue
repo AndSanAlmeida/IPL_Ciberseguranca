@@ -6,6 +6,7 @@
         <div class="col-lg-12">
           <div class="row ml-1">
             <button type="button" class="btn btn-primary mr-2" v-on:click="createNews()">Adicionar Notícia</button>
+            <button type="button" class="btn btn-info mr-2" v-on:click="updateXML()">Atualizar XML</button>
             <router-link to="/rssNews" class="btn btn-success">Gerir RSS</router-link>
           </div>
           <div class="card mt-2">
@@ -13,6 +14,18 @@
               <h3 class="h4">Lista de Notícias</h3>
             </div>
             <div class="card-body">
+              <!-- SEARCH -->
+              <div class="col-lg-6 offset-lg-3">
+                <b-form-group horizontal label="Pesquisar">
+                  <b-input-group>
+                    <b-form-input v-model="filter" placeholder="Escreva para Procurar" />
+                    <b-input-group-append>
+                      <b-btn :disabled="!filter" @click="filter = ''">Limpar</b-btn>
+                    </b-input-group-append>
+                  </b-input-group>
+                </b-form-group>
+              </div>
+
               <div class="table-responsive">                       
                 <div class="card">
                   <b-table responsive 
@@ -20,7 +33,8 @@
                     :items="news" 
                     :fields="fields"
                     :current-page="currentPage"
-                    :per-page="perPage"> 
+                    :per-page="perPage"
+                    :filter= "filter"> 
                     <template slot="title" slot-scope="row">
                       <span v-html="row.item.title[0]">
                     </span>
@@ -30,13 +44,19 @@
                     </template>
                     <template slot="actions" slot-scope="row">
                       <button type="button" class="btn btn-sm btn-primary" v-on:click="viewNews(row.item)">Ver Detalhes</button>
+                      <button type="button" class="btn btn-sm btn-warning" v-if="row.item.hasOwnProperty('isFromIPLeiria')" v-on:click="editNews(row.item)">Editar</button>
+                      <button type="button" class="btn btn-sm btn-danger" v-if="row.item.hasOwnProperty('isFromIPLeiria')" v-on:click="deleteNews(row.item)">Eliminar</button>
+                      
                     </template>
                   </b-table>
-                  <hr>
-                  <b-pagination :total-rows="news.length" 
-                      :per-page="perPage" 
-                      v-model="currentPage"
-                      align="center"/> 
+                  <div v-if="!filter">
+                    <hr>
+                    <b-pagination :total-rows="news.length" 
+                        :per-page="perPage" 
+                        v-model="currentPage"
+                        align="center"/> 
+                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -60,6 +80,7 @@ module.exports={
       perPage: 30,
       sortBy: 'pubDate',
       sortDesc: true,
+      filter: null
     }
   },
   methods: {
@@ -68,6 +89,15 @@ module.exports={
     },
     createNews: function() {
       this.$emit('createNews');
+    },
+    updateXML: function(item) {
+      this.$emit('updateXML');
+    },
+    editNews: function(item) {
+      this.$emit('editNews', item);
+    },
+    deleteNews: function(item) {
+      this.$emit('deleteNews', item);
     },
     prepareDate: function(item) {
       var today = new Date(item);

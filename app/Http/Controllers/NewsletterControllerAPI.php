@@ -31,9 +31,9 @@ class NewsletterControllerAPI extends Controller
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
-            $documents = Newsletter::all();
+            $newsletters = Newsletter::all();
 
-            return NewsletterResource::collection($documents);
+            return NewsletterResource::collection($newsletters);
         } else {
             return response()->json(['message' => 'Request inválido.'], 400);
         }
@@ -58,8 +58,8 @@ class NewsletterControllerAPI extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'description' => 'required|string|max:200',
-            'file' => 'required',
+            'title' => 'required|string|max:100',
+            'description' => 'required|string',
             'date' => 'required',
         ]);
 
@@ -67,9 +67,20 @@ class NewsletterControllerAPI extends Controller
             return response()->json(['msg' => $validator->errors()]);
         } else {
             $newsletter = new Newsletter;
-            $newsletter->description = $request->get('description');
-            $newsletter->path = $request->get('file');
+            $newsletter->title = $request->get('title');
             $newsletter->date = $request->get('date');
+            $message = $request->get('description');
+            if (count($request->get('news')) != 0) {
+                $message = $message."<br><p>Notícias em destaque: </p>";
+                $message = $message."<ul>";
+
+                foreach ($request->get('news') as $singleNews) {
+                    $message = $message."<li><a href=\"http://ipl.test/#/resources/news/".$singleNews[0]."\">".htmlspecialchars($singleNews[0], 0, 'UTF-8')."</a></li>";
+                }
+                $message = $message."</ul>";
+            }
+            $newsletter->description = $message;
+            
             $newsletter->save();
             return response()->json(['msg' => 'Newsletter criada com sucesso', 'error' => false]);
         }
@@ -218,5 +229,12 @@ class NewsletterControllerAPI extends Controller
         } catch (\Exception $e) {
             return response()->json(['errorCode' => -1, 'msg' => 'Problema a enviar o email. Tente mais tarde novamente.', 'exc' => $e->getMessage()], 400);
         }
+    }
+
+    public function getPublishedNewsletters()
+    {
+        $newsletters = Newsletter::where('isPublished', 1)->get();
+        return NewsletterResource::collection($newsletters);
+        
     }
 }

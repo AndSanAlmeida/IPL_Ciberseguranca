@@ -355,11 +355,6 @@ input {
   Loader
 *****************************************************/
 
-.align-loader {
-  width: 0%;
-  margin: 0 auto;
-}
-
 .loader {
   border: 16px solid #c1b3b3;
   border-radius: 50%;
@@ -369,6 +364,7 @@ input {
   -webkit-animation: spin 2s linear infinite;
   /* Safari */
   animation: spin 2s linear infinite;
+  margin: 0 auto;
 }
 
 /* Safari */
@@ -3706,5 +3702,9 @@ a > code {
     margin-right: 15px;
     margin-left: 15px;
   }
+}
+
+#criar {
+  cursor: pointer;
 }
 

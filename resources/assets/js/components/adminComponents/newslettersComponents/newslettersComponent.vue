@@ -7,11 +7,11 @@
         </header>
         
         <!-- ERRORS -->
-        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent">
+        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent && !showCreate">
 		  	<h2 class="alert-heading">Opss!</h2>
 		  	<p>Não foram encontrados {{title}}.</p>
 		  	<hr>
-		  	<p class="mb-0"><a href="#" class="alert-link" title="Criar Newsletters" v-on:click="createNewsletter()">Criar {{title}}</a></p>
+		  	<p class="mb-0"><a href="javascript:;" class="alert-link" title="Criar Newsletters" v-on:click="createNewsletter()">Criar {{title}}</a></p>
 		</div>
 
         <div class="alert alert-danger" role="alert" v-if="errorLoading">
@@ -19,17 +19,15 @@
         </div>
 
         <!-- LOADING -->
-        <div v-if="loading" class="align-loader mt-4">
-            <div class="loader"></div>
-        </div>
+        <div v-if="loading" class="loader mt-3"></div>
         
         <!-- ============ -->
 
 		<newslettersList 
 			v-show="hasItems && canShowContent"
 			:newsletters="newsletters" 
+			@showNewsletter="showNewsletter"
 			@createNewsletter="createNewsletter"
-			@editNewsletter="editNewsletter"
 			@deleteNewsletter="deleteNewsletter"
 			@publishNewsletter="publishNewsletter"
 			v-if="showList">	
@@ -40,11 +38,11 @@
 			@exit="exit">
 		</newslettersCreate> 
 
-		<newslettersEdit
+		<newslettersDetails
 			:newsletter="newsletter"
-			v-if="showEdit"
+			v-if="showDetails"
 			@exit="exit">
-		</newslettersEdit>
+		</newslettersDetails> 
 
 	</div>
 </template>
@@ -52,8 +50,7 @@
 <script type="text/javascript">
     import NewslettersList from './newslettersListComponent.vue';
     import NewslettersCreate from './newslettersCreateComponent.vue';
-    import NewslettersEdit from './newslettersEditComponent.vue';
-    
+    import NewslettersDetails from './newslettersDetailsComponent.vue';
 
     import swal from 'sweetalert';
 
@@ -63,7 +60,8 @@
             	title: 'Newsletters',
             	newsletter: '',
                 newsletters: [],
-                showList: true,
+                showList: false,
+                showDetails: false,
                 showCreate: false,
                 showEdit: false,
                 loading: true,
@@ -79,8 +77,14 @@
             },
         },
         methods: {
+        	showNewsletter: function(newsletter) {
+        		this.newsletter = newsletter;
+        		this.showList = false;
+                this.showCreate = false;
+                this.showDetails = true;
+        	},
         	publishNewsletter: function(newsletter) {
-        		swal("Pertende realmente publicar esta newsletter?","A newsletter será enviada para todos os utilizadores subscritos à newsletter.", {
+        		swal("Pretende realmente publicar esta newsletter?","A newsletter será enviada para todos os utilizadores subscritos à newsletter.", {
 		          icon: "info",
 		          buttons: {
 		              no: {
@@ -125,19 +129,13 @@
         	exit: function(){
         		this.showList = true;
                 this.showCreate = false;
-                this.showEdit = false;
+                this.showDetails = false;
                 this.getNewsletters();
         	},
         	createNewsletter: function() {
         		this.showList = false;
                 this.showCreate = true;
-                this.showEdit = false;
-        	},
-        	editNewsletter: function(newsletter) {
-        		this.newsletter = newsletter;
-        		this.showList = false;
-                this.showCreate = false;
-                this.showEdit = true;
+                this.showDetails = false;
         	},
             getNewsletters: function () {
                 this.loading = true;
@@ -145,14 +143,23 @@
                 axios.get('/api/newsletters')
                     .then(response => {
                         this.newsletters = response.data.data;
+                        this.newsletters.sort(function(a,b){
+		                  var c = new Date(a.date);
+		                  var d = new Date(b.date);
+		                  return d-c;
+		                });
+                        if (response.data.data.length > 0) {
+                        	this.showList = true;
+                        }
                         this.loading = false;
+						this.errorLoading = false;
                     }).catch((error) => {
                     this.loading = false;
                     this.errorLoading = true;
                 });
             },
             deleteNewsletter : function(newsletter){
-		      swal("Pertende realmente apagar esta newsletter?", {
+		      swal("Pretende realmente apagar esta newsletter?", {
 		          icon: "warning",
 		          buttons: {
 		              no: {
@@ -173,7 +180,7 @@
 		              case "yes":
 		                axios.delete('/api/newsletters/'+newsletter.id+'/delete')
 		                  .then((response) => {
-		                    swal("Newsletter apagado com sucesso.", {
+		                    swal("Newsletter apagada com sucesso.", {
 		                    	icon: "success",
 		                            buttons: {
 		                                ok: "Ok"
@@ -198,10 +205,12 @@
         components: {
             'newslettersList': NewslettersList,
             'newslettersCreate': NewslettersCreate,
-            'newslettersEdit': NewslettersEdit,
+            'newslettersDetails': NewslettersDetails,
         },
         mounted() {
             this.getNewsletters();
+            if (this.newsletters.length > 0)
+            	this.showList = true;
         }
     }
 </script>

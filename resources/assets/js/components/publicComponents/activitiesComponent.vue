@@ -12,9 +12,7 @@
                         <h4><strong>Erro: </strong>Não existe conteúdo disponível.</h4>
                     </div>
 
-                    <div v-if="loading" class="text-center" style="margin-top: 2em;">
-                        <h3>A carregar...</h3>
-                    </div>
+                    <div v-if="loading" class="loader"></div>
 
                     <div v-if="hasItems && canShowContent" class="text">
                  		<p class="text-justify">

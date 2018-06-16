@@ -2,6 +2,8 @@
     <div class="card card-container">
         <img class="profile-img-card" v-bind:src="'/img/logo_ipl_header.png'" alt="Logotipo IPL">
         <br>
+       <div v-if="loading" class="loader"></div>
+        
         <form class="form-signin" method="post" v-on:submit.prevent="submitForm">
 
             <div class="alert alert-danger" role="alert" v-cloak v-show="serverError">
@@ -56,6 +58,7 @@ export default {
 
             username: '',
             password: '',
+            loading: false,
             attemptSubmit: false,
             serverError: false,
             serverErrorMessage: '',
@@ -82,7 +85,7 @@ export default {
         submitForm: function (event) {
             this.serverError = false;
             this.attemptSubmit = true;
-
+            this.loading = true;
             if (!this.isFormInvalid) {
                 const data = {
                     username: this.username,
@@ -94,24 +97,25 @@ export default {
 
                     axios.get('/api/user', { headers: {"Authorization" : 'Bearer ' + response.data.access_token}})
                     .then((response) => {
-                        console.log(response.data);
                         if(response.data.type == 1){
-                            // admin   
                             window.location.href = '/admin/#/home'
+                            this.loading = false;
                         } else if (response.data.type == 0) {
                             window.location.href = '/'
+                            this.loading = false;
                         }
                     })
                     .catch((error) => {
                         this.serverError = true;
-                        console.log(error);
                         this.serverErrorMessage = error.response.data.data;
+                        this.loading = false;
                     });
                 })
                 .catch((error) => {
                     this.serverError = true;
                     console.log(error);
                     this.serverErrorMessage = error.response.data.data;
+                    this.loading = false;
                 });
             }
         },

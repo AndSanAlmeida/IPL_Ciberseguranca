@@ -12,9 +12,7 @@
                         <h4><strong>Erro: </strong>Não existe FAQ's disponíveis.</h4>
                     </div>
 
-                    <div v-if="loading" class="align-loader">
-                        <div class="loader"></div>
-                    </div>
+                    <div v-if="loading" class="loader"></div>
 
                     <div v-if="hasItems && canShowContent" id="faq">
                         <div v-for="faq in faqs" class="faqContent">
@@ -140,7 +138,6 @@
                     };
                     axios.post('/api/questions/create', data)
                         .then((response) => {
-                            console.log(response);
                             swal("Questão enviada com sucesso.", {
                                 icon: 'success',
                                 buttons: {
@@ -164,7 +161,6 @@
             getUser: function () {
                 axios.get('/api/user')
                     .then((response) => {
-                        console.log(response.data);
                         this.logged = true;
                         this.user_id = response.data.id;
                     })

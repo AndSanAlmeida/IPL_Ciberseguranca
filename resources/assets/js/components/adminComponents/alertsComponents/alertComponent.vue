@@ -7,11 +7,11 @@
         </header>
         
         <!-- ERRORS -->
-        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent">
+        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent && !showCreate">
             <h2 class="alert-heading">Opss!</h2>
             <p>Não foram encontrados {{title}}.</p>
             <hr>
-            <p class="mb-0"><a href="#" class="alert-link" title="Criar Alerta" v-on:click="createAlerts()">Criar {{title}}</a></p>
+            <p class="mb-0"><a href="javascript:;" id="criar" class="alert-link" title="Criar Alerta" v-on:click="createAlerts()">Criar {{title}}</a></p>
             <hr>
             <p class="mb-0"><a href="/admin/#/rssAlerts" class="alert-link" title="Adicionar RSS">Adicionar RSS</a></p>
         </div>
@@ -21,9 +21,8 @@
         </div>
 
         <!-- LOADING -->
-        <div v-if="loading" class="align-loader mt-4">
-            <div class="loader"></div>
-        </div>
+        <div v-if="loading" class="loader mt-3"></div>
+        
         
         <!-- ============ -->
 
@@ -117,7 +116,6 @@
                         }
                         this.showList = true;
                         window.setTimeout(this.orderAlerts(), 3000);
-                        console.log(response.data);
                     })
                     .catch((error) => {
                         this.errorLoading = true;
@@ -138,7 +136,6 @@
 				} else {
 					axios.get("https://cors.now.sh/"+feed)
 				        .then((response) => {
-				            //console.log(response.data);
 				      		var vm = this;
 				            var parseString = require('xml2js').parseString;
 							parseString(response.data, function (err, result) {
@@ -174,6 +171,7 @@
         		this.showList = true;
                 this.showCreate = false;
                 this.showView = false;
+                this.alerts = [];
                 this.getRSSAlerts();
         	},
         	viewAlerts: function(item) {

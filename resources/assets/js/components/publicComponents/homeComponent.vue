@@ -20,7 +20,7 @@
                     <div class="col-md-8 col-md-offset-2">
                         <div class="borderB">
                             <h1>Notícias <small>
-                            <a  v-if="hasNews && canShowContent" href="#" title="RSS Notícias" target="_blank" class="rss_color">
+                            <a  v-if="hasNews && canShowContent" href="/feedNews.xml" title="RSS Notícias" target="_blank" class="rss_color">
                                 <i class="fas fa-rss"></i>
                             </a></small></h1>
                         </div>
@@ -35,12 +35,11 @@
                             <h4><strong>Erro: </strong>Não existe notícias disponíveis.</h4>
                         </div>
 
-                        <div v-if="loading" class="align-loader">
-                            <div class="loader"></div>
-                        </div>
+                        <div v-if="loading" class="loader"></div>
+                        
                         <div v-if="hasNews && canShowContent && showNews">
                             <div v-for="item in mostRecentNews">
-                                <a href="#" title="">
+                                <a v-on:click="sendToNews(item)" title="" id="homeNews">
                                     <article class="newsContent">
                                         <div class="row">
                                             <div class="">
@@ -129,6 +128,10 @@
             },
         },
         methods: {
+            sendToNews: function(news) {
+                window.location.href = '/#/resources/news/'+news.title[0];
+
+            },
             getOurMission() {
                 axios.get('/api/settings/ourMission')
                     .then(response=>{
@@ -142,9 +145,13 @@
                 });
             },
             prepareDesc: function(desc) {
-                var cutString = desc.substring(0, 150);
-                var lastSpace = cutString.lastIndexOf(" ");
-                return desc.substring(0, lastSpace)+" ...";
+                if (desc.length > 120) {
+                    var cutString = desc.substring(0, 150);
+                    var lastSpace = cutString.lastIndexOf(" ");
+                    return desc.substring(0, lastSpace)+" ...";
+                } else {
+                    return desc;
+                }
                 
             },
             getRSSNews: function() {
@@ -187,9 +194,12 @@
                     return d-c;
                 });
 
-                
-                this.mostRecentNews.push(this.news[0]);
-                this.mostRecentNews.push(this.news[1]);
+                if (this.news[0] != null) {
+                    this.mostRecentNews.push(this.news[0]);
+                }
+                if (this.news[1] != null) {
+                    this.mostRecentNews.push(this.news[1]);
+                }
                 this.loading = false;
                 this.showNews = true;
             },
@@ -200,7 +210,6 @@
                 } else {
                     axios.get("https://cors.now.sh/"+feed)
                         .then((response) => {
-                            //console.log(response.data);
                             var vm = this;
                             var parseString = require('xml2js').parseString;
                             parseString(response.data, function (err, result) {
@@ -277,3 +286,9 @@
         }
     }
 </script>
+
+<style type="text/css" media="screen">
+    #homeNews {
+        cursor: pointer;
+    } 
+</style>

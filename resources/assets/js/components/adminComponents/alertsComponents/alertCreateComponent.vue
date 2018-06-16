@@ -11,13 +11,13 @@
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Título</label>
             <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="title" required>
-            </div>
-          </div>
-          <div class="clearfix">
-              <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingTitle ">
-                  <p v-if="missingTitle">Preencher title</p>
+              <input class="form-control" type="text" v-model="title">
+              <div class="clearfix mt-2">
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingTitle ">Preencher título</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && hasInvalidCharsTitle ">Título contém símbolos inválidas</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeTitle ">Título demasiado longo (Max: 100)</b-alert>
               </div>
+            </div>
           </div>
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Data</label>
@@ -28,15 +28,13 @@
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Categoria</label>
             <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="category" required>
+              <input class="form-control" type="text" v-model="category">
+              <div class="clearfix mt-2">
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingCategory ">Preencher fonte</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeCategory ">Fonte demasiado longa (Max: 100)</b-alert>
+              </div>
             </div>
           </div>
-          <div class="clearfix">
-              <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingCategory ">
-                  <p v-if="missingTitle">Preencher categoria</p>
-              </div>
-          </div>
-
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Descrição</label>
             <div class="col-lg-9">
@@ -44,22 +42,19 @@
                 ref="myQuillEditor"
                 :options="editorOption">
               </quill-editor>
-            </div>
-          </div>
-          <div class="clearfix">
-            <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingDescription ">
-                <p v-if="missingDescription">Preencher descrição</p>
+              <div class="clearfix mt-2">
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingDescription ">Preencher descrição</b-alert>
+              </div>
             </div>
           </div>
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Fonte</label>
             <div class="col-lg-9">
-              <input class="form-control" type="text" v-model="source" required>
-            </div>
-          </div>
-          <div class="clearfix">
-            <div class="alert alert-danger" role="alert" v-cloak v-show="isFormInvalid && missingSource ">
-                <p v-if="missingSource">Preencher fonte</p>
+              <input class="form-control" type="text" v-model="source">
+              <div class="clearfix mt-2">
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingSource ">Preencher fonte</b-alert>
+                <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidSizeSource ">Fonte demasiado longa (Max: 200)</b-alert>
+              </div>
             </div>
           </div>
           <hr>
@@ -92,7 +87,11 @@ export default {
           modules: {
               toolbar: this.toolbarSettings()
           }
-      }
+      },
+      attemptSubmit: false,
+      errorLoading: false,
+      serverError: false,
+      serverErrorMessage: '',
     }
   },
   components: {
@@ -103,8 +102,38 @@ export default {
     missingTitle: function () {
       return this.title.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
-    missingCategory: function () {
+    hasInvalidCharsTitle: function() {
+      if (this.title.indexOf(';') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('/') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('?') > -1) {
+        return true;
+      }
+      if (this.title.indexOf(':') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('@') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('=') > -1) {
+        return true;
+      }
+      if (this.title.indexOf('&') > -1) {
+        return true;
+      }
+      return false;
+    },
+    invalidSizeTitle: function () {
+      return this.title.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+    },
+    missingCategory: function() {
       return this.category.trim() === '' && !this.hasServerError && this.attemptSubmit;
+    },
+    invalidSizeCategory: function () {
+      return this.category.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
     },
     missingDescription: function () {
       return this.description.trim() === '' && !this.hasServerError && this.attemptSubmit;
@@ -112,8 +141,14 @@ export default {
     missingSource: function () {
       return this.source.trim() === '' && !this.hasServerError && this.attemptSubmit;
     },
+    missingSource: function () {
+      return this.source.trim() === '' && !this.hasServerError && this.attemptSubmit;
+    },
+    invalidSizeSource: function () {
+      return this.source.trim().length > 100 && !this.hasServerError && this.attemptSubmit;
+    },
     hasClientError: function () {
-      return (this.missingDescription || this.missingLink);
+      return (this.missingTitle || this.hasInvalidCharsTitle || this.invalidSizeTitle || this.missingDescription || this.missingSource || this.invalidSizeSource || this.missingCategory || this.invalidSizeCategory);
     },
     hasServerError: function () {
       return this.serverError;
@@ -121,7 +156,6 @@ export default {
     isFormInvalid: function () {
       return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
     },
-
   },
 
   methods: {
@@ -184,8 +218,6 @@ export default {
       newdate = newdate.toISOString().slice(0, 19).replace('T', ' ');
 
       newdate = this.formatDate(newdate);
-
-      console.log(newdate);
       return newdate;
     },
 

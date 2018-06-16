@@ -7,11 +7,11 @@
         </header>
         
         <!-- ERRORS -->
-        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent">
+        <div class="alert alert-warning" role="alert" v-if="!hasItems && canShowContent && !showCreate">
             <h2 class="alert-heading">Opss!</h2>
             <p>Não foram encontrados {{title}}.</p>
             <hr>
-            <p class="mb-0"><a href="#" class="alert-link" title="Criar Notícias" v-on:click="createNews()">Criar {{title}}</a></p>
+            <p class="mb-0"><a href="javascript:;" class="alert-link" title="Criar Notícias" v-on:click="createNews()">Criar {{title}}</a></p>
             <hr>
             <p class="mb-0"><a href="/admin/#/rssNews" class="alert-link" title="Adicionar RSS">Adicionar RSS</a></p>
         </div>
@@ -21,9 +21,7 @@
         </div>
 
         <!-- LOADING -->
-        <div v-if="loading" class="align-loader mt-4">
-            <div class="loader"></div>
-        </div>
+        <div v-if="loading" class="loader mt-3"></div>
         
         <!-- ============ -->
 
@@ -31,9 +29,12 @@
             v-show="hasItems && canShowContent" 
 			:news="news" 
 			v-if="showList"
+            @updateXML="updateXML"
 			@createNews="createNews"
 			@getRSS="getRSSNews"
-			@viewNews="viewNews">
+			@viewNews="viewNews"
+            @editNews="editNews"
+            @deleteNews="deleteNews">
 		</newsList>
 
 		<newsCreate
@@ -47,6 +48,12 @@
 			@exit="exit">
 		</newsView>
 
+        <newsEdit
+            :item="item"
+            v-if="showEdit"
+            @exit="exit">
+        </newsEdit>
+
 	</div>
 </template>
 
@@ -54,7 +61,7 @@
     import NewsList from './newsListComponent.vue';
     import NewsCreate from './newsCreateComponent.vue';
     import NewsView from './newsDetailsComponent.vue';
-    
+    import NewsEdit from './newsEditComponent.vue';
     import swal from 'sweetalert';
 
     export default {
@@ -62,10 +69,12 @@
             return {
                 title: 'Notícias',
                 news: [],
+                newsFromIPLeiria: [],
                 rssNews: [],
                 showList: false,
                 showCreate: false,
                 showView:false,
+                showEdit: false,
                 xhr:'',
                 xml:'',
                 loading: true,
@@ -81,14 +90,84 @@
             },
         },
         methods: {
+            editNews: function(item) {
+                this.item = item;
+                this.showList = false;
+                this.showCreate = false;
+                this.showView = false;
+                this.showEdit = true;
+            },
+            deleteNews: function(news) {
+                console.log(news);
+                swal("Pretende realmente apagar a notícia?", {
+                    icon: "warning",
+                    buttons: {
+                        no: {
+                            text: "Não",
+                            className: "btn-light",
+                        },
+                        yes: {
+                            text: "Sim",
+                            className: "btn-info",
+                        },
+                    },
+                })
+                .then((value) => {
+                  switch (value) {
+                      case "no":
+                        break;
+                   
+                      case "yes":
+                        axios.delete('/api/news/'+news.id+'/delete')
+                          .then((response) => {
+                            swal("Notícia apagada com sucesso.", {
+                                icon: "success",
+                                    buttons: {
+                                        ok: "Ok"
+                                    },
+                                })
+                                .then((value) => {
+                                    switch (value) {
+                                        case "ok":
+                                            this.getRSSNews();
+                                            break;
+                                    }
+                                });
+                          })
+                          .catch((error) => {
+
+                          });                  
+                          break;
+                    }
+                });
+            },
+            updateXML: function() {
+                this.loading = true;
+                this.errorLoading = false; 
+                const data = {
+                    news: this.newsFromIPLeiria
+                }
+                axios.post('/api/news/rss', data)
+                    .then(response => {
+                        this.loading = false;
+                        this.errorLoading = false;  
+                    }).catch((error) => {
+                        this.loading = false;
+                        this.errorLoading = true;
+                    });
+                
+            },
         	createNews: function() {
         		this.showList = false;
                 this.showCreate = true;
                 this.showView = false;
+                this.showEdit = false;
         	},
         	getRSSNews: function() {
         		this.loading = true;
-                this.errorLoading = false;                
+                this.errorLoading = false;   
+                this.news = [];
+                this.newsFromIPLeiria = [];             
                 axios.get('/api/rssNews')
                     .then(response => {
                     	this.rssNews = response.data.data;
@@ -103,16 +182,19 @@
                 	});
         	},
             getDBNews: function() {
+                this.newsFromIPLeiria = [];
                 axios.get('/api/news')
                     .then((response) => {
                         for (var j = 0; j < response.data.data.length; j++) {
                             var singleNews = response.data.data[j];
-                            var newsObject = {title: {}, description: {}, pubDate: {}, link: {}}
+                            var newsObject = {title: {}, description: {}, pubDate: {}, link: {}, isFromIPLeiria: true, id: 0}
                             newsObject.title[0] = singleNews.title;
                             newsObject.description[0] = singleNews.description;
                             newsObject.pubDate[0] = singleNews.pub_date;
                             newsObject.link[0] = singleNews.source;
+                            newsObject.id = singleNews.id;
                             this.news = this.news.concat(newsObject);
+                            this.newsFromIPLeiria = this.newsFromIPLeiria.concat(newsObject);
                         }
                         window.setTimeout(this.orderNews(), 3000);
                         
@@ -127,6 +209,11 @@
                     var d = new Date(b.pubDate[0]);
                     return d-c;
                 });
+                this.newsFromIPLeiria.sort(function(a,b){
+                    var c = new Date(a.pubDate[0]);
+                    var d = new Date(b.pubDate[0]);
+                    return d-c;
+                });
                 this.showList = true;
             },
         	getRSSByFeed: function(feed) {
@@ -136,10 +223,10 @@
 				} else {
 					axios.get("https://cors.now.sh/"+feed)
 				        .then((response) => {
-				            //console.log(response.data);
 				      		var vm = this;
 				            var parseString = require('xml2js').parseString;
 							parseString(response.data, function (err, result) {
+                                result.rss.channel[0].item.isFromIPLeiria = false;
 							    vm.news = vm.news.concat(Object.assign(result.rss.channel[0].item));
 							});
 
@@ -172,6 +259,8 @@
         		this.showList = true;
                 this.showCreate = false;
                 this.showView = false;
+                this.showEdit = false;
+                this.news = [];
                 this.getRSSNews();
         	},
         	viewNews: function(item) {
@@ -179,14 +268,18 @@
         		this.showList = false;
                 this.showCreate = false;
                 this.showView = true;
+                this.showEdit = false;
         	},
         },
         components: {
             'newsList': NewsList,
             'newsCreate': NewsCreate,
             'newsView': NewsView,
+            'newsEdit': NewsEdit,
         },
-        created: function() {
+        mounted: function() {
+            this.news = [];
+            this.newsFromIPLeiria = [];
         	this.getRSSNews();
         }
     }

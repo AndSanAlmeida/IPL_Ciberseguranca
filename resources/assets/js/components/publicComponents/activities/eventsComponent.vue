@@ -12,9 +12,7 @@
                         <h4><strong>Erro: </strong>Não existe Eventos disponíveis.</h4>
                     </div>
 
-                    <div v-if="loading" class="text-center" style="margin-top: 2em;">
-                        <h3>A carregar...</h3>
-                    </div>
+                    <div v-if="loading" class="loader"></div>
 
                     <div v-if="hasItems && canShowContent" id="events">
 
@@ -39,7 +37,7 @@
                                     </div>
                                     <div class="infoEvent">
                                         <p><strong>Localização: </strong>{{row.item.localization}}</p>
-                                        <p class="text-justify"><strong>Descrição: </strong>{{row.item.description}}</p>
+                                        <p class="text-justify"><strong>Descrição: </strong><spam v-html="row.item.description"></spam></p>
                                         <p v-if="row.item.path"><strong>Documento: </strong><a href="#" target="_blank">{{row.item.name}}</a></p>
                                         <div class="text-center">
                                             <div v-if="logged">
