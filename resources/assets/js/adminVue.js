@@ -107,7 +107,7 @@ new Vue({
     	
     },
     created: function() {
-    	
+
     },
     
 }).$mount('#admin');

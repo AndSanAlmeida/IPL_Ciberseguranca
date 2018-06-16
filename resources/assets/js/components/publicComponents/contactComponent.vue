@@ -1,13 +1,11 @@
 <template>
 	<section id="contact" class="section-padding">
         <div class="container">
-            <div class="row footer-sec">
-                <div class="col-sm-12 col-md-4">
-                    <div class="text-center">
-                        <p>© {{ new Date().getFullYear() }} IPL | Cibersegurança</p>
-                    </div>
+            <div class="row footer-sec text-center">
+                <div class="col-sm-12 col-md-6">
+                    <p>© {{ new Date().getFullYear() }} IPLeiria | Cibersegurança</p>
                 </div>
-                <div class="col-xs-12 col-md-8 text-right">
+                <div class="col-xs-12 col-md-6">
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="footer-nav-list">

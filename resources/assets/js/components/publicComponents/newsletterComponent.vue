@@ -2,14 +2,20 @@
 	<section v-if="!showNewsletter" id="newsletter" class="section-padding">
         <div class="container">
             <div v-if="!logged" class="row">
-                <div class="col-md-12">
+                <div class="col-xs-12">
                     <div class="newsletterContentNotLogged text-center">
                         <span>Subscreva-se à nossa newsletter e seja o primeiro a receber as nossas notificações.</span>
                         <br><br>
-                        <form class="form" role="form" autocomplete="off" v-on:submit.prevent="submitNewsletterWhenNotLogged">
-                            <input type="text" placeholder="Nome" v-model="name" class="newsletter-input" />
-                            <input type="email" placeholder="Email" v-model="email" class="newsletter-input" />
-                            <input class="newsletter-send" type="submit" value="Subscrever">
+                        <form class="form-inline" role="form" autocomplete="off" v-on:submit.prevent="submitNewsletterWhenNotLogged">
+                            <div class="form-group">
+                                <input type="text" placeholder="Nome" v-model="name" class="newsletter-input" />
+                            </div>
+                            <div class="form-group">
+                                <input type="email" placeholder="Email" v-model="email" class="newsletter-input" />
+                            </div>
+                            <div class="form-group">
+                                <input class="newsletter-send" type="submit" value="Subscrever">
+                            </div>
                         </form>
                     </div>
                 </div>

@@ -9,13 +9,12 @@
                  	</div>
 
                     <br>
-
                     <div v-if="!loading && !hasItems" class="alert alert-danger" role="alert" style="margin-top: 2em;">
                         <h4><strong>Erro: </strong>Não existe newsletters disponíveis.</h4>
                     </div>
 
                     <div v-if="!loading && hasItems">
-                        <h3><b>IPL Cibersegurança newsletter:</b></h3>
+                        <h3><b>IPLeiria Cibersegurança newsletter:</b></h3>
 
                         <div v-if="loading" class="loader"></div>
 

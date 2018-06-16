@@ -1,6 +1,6 @@
 @extends('layouts.public.publicMaster')
 
-@section('title', 'IPL-Cibersegurança | Página Oficial')
+@section('title', 'IPLeiria Cibersegurança | Página Oficial')
 
 @section('content')
 	<navbar></navbar>

@@ -2,7 +2,7 @@
     <div id="nav" class="navbar navbar-default navbar-fixed-top menu-top">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-lg-12">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                             <span class="sr-only">Toggle navigation</span>
@@ -10,7 +10,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <router-link to="/" class="navbar-brand" style="font-weight: normal;">IPL | Cibersegurança</router-link>
+                        <router-link to="/" class="navbar-brand" style="font-weight: normal;">IPLeiria | Cibersegurança</router-link>
                     </div>
                     <div class="navbar-collapse collapse">
                         <nav>
@@ -24,13 +24,33 @@
                                 <li v-if="!logged"><a href="/auth/" class="login">Entrar</a></li>
                                 <li v-if="!logged"><a href="/auth/#/register" class="signup">Registar</a></li>
 
+                                <!-- VISIBLE | HIDDEN -->
+                                <li v-if="logged" class="visible-sm visible-xs">
+                                    <router-link to="/userSettings" title="Ver Perfil">Ver Perfil</router-link>
+                                </li>
+                                <li v-if="logged && user.type == 1" class="visible-sm visible-xs">
+                                    <a href="/admin/#/" title="Administração">Administração</a>
+                                </li>
+                                <li v-if="logged" class="visible-sm visible-xs">
+                                    <a href="#" title="Logout" v-on:click="logout">
+                                        <strong>Logout</strong> 
+                                        <i class="fas fa-sign-out-alt"></i>
+                                    </a>
+                                </li>
+
                                 <!-- DROPDOWN -->
-                                <li v-if="logged"> 
+                                <li v-if="logged" class="hidden-sm hidden-xs"> 
                                     <div class="dropdown">
                                         <span class="authDropdown dropdown-toggle" id="authDropdown" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
-                                            Bem-vindo, {{user.name}}
-                                            <span class="caret"></span>
-                                        </span>
+                                            <ul class="navbar-welcome">
+                                                <li>Bem-vindo, </li>
+                                                <li> {{user.name.split(/(\s).+\s/).join("")}}</li>
+                                                <li>
+                                                    <img class="img-responsive img-circle" :src="`/img/avatars/${user.avatar}`" alt="Imagem de Perfil" title="Imagem de Perfil" width="30px" height="30px">
+                                                </li>
+                                                <li><span class="caret"></span></li>
+                                            </ul>                                         
+                                        </span>                                        
                                         <ul class="dropdown-menu" aria-labelledby="authDropdown">
                                             <li><router-link to="/userSettings" title="Ver Perfil">Ver Perfil</router-link></li>
                                             <li role="separator" class="divider"></li>
@@ -59,7 +79,7 @@
         data: function(){
             return {
                 user: new User(),
-                logged: false,
+                logged: false
             }
         },
         methods: {

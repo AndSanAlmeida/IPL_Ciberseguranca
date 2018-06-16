@@ -9,7 +9,7 @@
                  	</div>
 
                     <br>
-                    <h3 v-if="hasItems && canShowContent"><b>IPL Cibersegurança documentos:</b></h3>
+                    <h3 v-if="hasItems && canShowContent"><b>IPLeiria Cibersegurança documentos:</b></h3>
 
                     <div v-if="!hasItems && canShowContent" class="alert alert-danger" role="alert" style="margin-top: 2em;">
                         <h4><strong>Erro: </strong>Não existe documentos disponíveis.</h4>
