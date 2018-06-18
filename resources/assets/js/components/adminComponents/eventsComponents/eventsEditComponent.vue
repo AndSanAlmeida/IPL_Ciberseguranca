@@ -70,7 +70,7 @@
                     <div class="form-group row">
                         <label for="fileInput" class="col-lg-3 col-form-label form-control-label">Documento</label>
                         <div class="col-lg-9" v-if="path == null">
-                            <input id="fileInput" type="file" accept=".pdf" class="form-control-file" v-on:change="onFileChange" required>
+                            <input id="fileInput" type="file" accept=".pdf" class="form-control-file" v-on:change="onFileChange">
                         </div>
                         <div class="col-lg-9" v-if="path != null">
                             <a class="btn btn-success" :href="path" :download=description>Ver documento</a>

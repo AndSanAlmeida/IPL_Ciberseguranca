@@ -24,9 +24,9 @@
                                   :per-page="perPage"> 
                         
                             <template slot="actions" slot-scope="row">
-                                <button type="button" class="btn btn-red" @click.stop="row.toggleDetails">
-                                  {{ row.detailsShowing ? 'Esconder' : 'Mostrar' }} Detalhes
-                                </button>
+                                <i v-if="!row.detailsShowing" class="fas fa-arrow-circle-down fa-2x" id="hide" @click.stop="row.toggleDetails"></i>
+                                <i v-if="row.detailsShowing" class="fas fa-arrow-circle-up fa-2x" id="show" @click.stop="row.toggleDetails"></i>
+                                
                             </template> 
 
                             <template slot="row-details" slot-scope="row">
@@ -274,3 +274,13 @@
 
     }
 </script>
+
+<style type="text/css" media="screen">
+    #hide {
+        cursor: pointer;
+    }
+
+    #show {
+        cursor: pointer;
+    }
+</style>

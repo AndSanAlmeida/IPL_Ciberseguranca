@@ -89,7 +89,7 @@ class DbStructure extends Migration
             $table->string('localization');
             $table->string('name');
             $table->string('organizer');
-            $table->string('description');
+            $table->longText('description');
             $table->date('date');
             $table->string('image_path')->nullable();
             // 0 - por realizar
@@ -116,7 +116,7 @@ class DbStructure extends Migration
             $table->increments('id');
             $table->string('key');
             $table->string('name');
-            $table->string('definition');
+            $table->longtext('definition');
             $table->string('source');
             $table->timestamps();
         });
@@ -171,7 +171,7 @@ class DbStructure extends Migration
         Schema::create('faqs', function(Blueprint $table){
             $table->increments('id');
             $table->string('question');
-            $table->string('answer');
+            $table->longtext('answer');
             $table->timestamps();
         });
     }

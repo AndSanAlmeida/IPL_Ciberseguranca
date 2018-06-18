@@ -96854,12 +96854,7 @@ var render = function() {
                 ? _c("div", { staticClass: "col-lg-9" }, [
                     _c("input", {
                       staticClass: "form-control-file",
-                      attrs: {
-                        id: "fileInput",
-                        type: "file",
-                        accept: ".pdf",
-                        required: ""
-                      },
+                      attrs: { id: "fileInput", type: "file", accept: ".pdf" },
                       on: { change: _vm.onFileChange }
                     })
                   ])

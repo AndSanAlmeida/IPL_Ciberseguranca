@@ -15,7 +15,7 @@ class ConfigTableSeeder extends Seeder
         $driver = 'smtp';
         $host = 'smtp.gmail.com';
         $port = 587;
-        $password = 'projetofinal';
+        $password =  bcrypt('projetofinal');
         $encryption = 'tls';
         $filesPath = 'tiles';
         $createdAt = Carbon\Carbon::now()->subMonths(2);
