@@ -37,8 +37,9 @@
                                     </div>
                                     <div class="infoEvent">
                                         <p><strong>Localização: </strong>{{row.item.localization}}</p>
-                                        <p class="text-justify"><strong>Descrição: </strong><spam v-html="row.item.description"></spam></p>
-                                        <p v-if="row.item.path"><strong>Documento: </strong><a href="#" target="_blank">{{row.item.name}}</a></p>
+                                        <p class="text-justify"><strong>Descrição: </strong><p v-html="row.item.description"></p></p>
+                                        <p v-if="row.item.path"><strong>Documento: </strong><a :href="row.item.path" :download ="row.item.name" role="button">Ver documento</a></p>
+                                        
                                         <div class="text-center">
                                             <div v-if="logged">
                                                 <div v-if="!subscribed(row.item.id)">

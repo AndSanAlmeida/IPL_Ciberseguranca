@@ -19,12 +19,17 @@
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="footer-social-list">
-                                <li><a href="#" title="Facebook"><i class="fab fa-facebook-square"></i></a></li>
-                                <li><a href="#" title="Instagram"><i class="fab fa-instagram"></i></a></li>
-                                <li><a href="#" title="Flickr"><i class="fab fa-flickr"></i></a></li>
-                                <li><a href="#" title="Youtube"><i class="fab fa-youtube"></i></a></li>
-                                <li><a href="#" title="RSS"><i class="fas fa-rss"></i></a></li>
+                                <li><a href="https://www.facebook.com/IPLeiria/" target="_blank" title="Facebook"><i class="fab fa-facebook-square"></i></a></li>
+                                <li><a href="https://www.instagram.com/ipleiria/" target="_blank"  title="Instagram"><i class="fab fa-instagram"></i></a></li>
+                                <li><a href="https://www.flickr.com/photos/ipleiria/sets/" target="_blank"  title="Flickr"><i class="fab fa-flickr"></i></a></li>
+                                <li><a href="https://www.youtube.com/user/IPLeiriaOficial" target="_blank" title="Youtube"><i class="fab fa-youtube"></i></a></li>
+                                <li><a href="/feedNews.xml" target="_blank" title="RSS - Notícias"><i class="fas fa-rss"></i></a></li>
+                                <li><a href="/feedAlerts.xml" target="_blank" title="RSS - Alertas"><i class="fas fa-rss"></i></a></li>
                             </ul>
+                            <!--<div class="text-center">
+                                <p><a href="#" title="RSS - Notícias"><i class="fas fa-rss"></i></a></p>
+                                <p><a href="#" title="RSS - Alertas"><i class="fas fa-rss"></i></a></p>
+                            </div>-->
                         </div>
                     </div>
                 </div>

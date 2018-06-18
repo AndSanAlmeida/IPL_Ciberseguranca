@@ -21,7 +21,7 @@
                         <div id="linksAndDocuments">
                             <ul class="linksAndDocumentsList">
                                 <li v-for="newsletter in newsletters" >
-                                    <a href="javascript:;" v-on:click="sendToNewsletter(newsletter)" :title="newsletter.tittle" target="_blank" class="text-justify">{{newsletter.title}}</a>
+                                    <a href="javascript:;" v-on:click="sendToNewsletter(newsletter)" :title="newsletter.tittle" class="text-justify">{{newsletter.title}}</a>
                                     <small>| {{prepareDate(newsletter.date)}}</small>
                                 </li>
                             </ul>
