@@ -21,6 +21,7 @@ const resources = Vue.component('resources', require('./components/adminComponen
 const activities = Vue.component('activities', require('./components/adminComponents/settingsComponents/activitiesComponent.vue'));
 const aboutUs = Vue.component('aboutUs', require('./components/adminComponents/settingsComponents/aboutUsComponent.vue'));
 const ourMission = Vue.component('ourMission', require('./components/adminComponents/settingsComponents/ourMissionComponent.vue'));
+const imageHome = Vue.component('imageHome', require('./components/adminComponents/settingsComponents/imageHomeComponent.vue'));
 
 Vue.component('admin-layout', require('./components/adminComponents/layoutComponent.vue'));
 const home = Vue.component('home', require('./components/adminComponents/homeComponent.vue'));

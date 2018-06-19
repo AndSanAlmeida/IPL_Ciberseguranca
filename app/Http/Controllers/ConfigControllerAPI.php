@@ -12,6 +12,8 @@ use Illuminate\Mail\TransportManager;
 use App\Http\Resources\ConfigurationResource;
 use App\Http\Resources\TextResource;
 use App\Text;
+use Intervention\Image\Facades\Image;
+
 class ConfigControllerAPI extends Controller
 {
     //Get Platform data
@@ -138,5 +140,39 @@ class ConfigControllerAPI extends Controller
         } else {
             return response()->json(['msg' => 'Request inválido.'], 400);
         }
+    }
+
+    public function HomeImageUpdate(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'img' => 'required|image64:jpeg,jpg,png'
+        ]);
+
+        if ($request->wantsJson() && !$validator->fails()) {
+
+            $img = Image::make($request->get('img'));
+            $img->save("img/cybersecuriy.png");
+
+        } else {
+            return response()->json(['msg' => 'Request inválido.'], 400);
+        }
+
+        return response()->json(200);
+    }
+
+    public function MissionImageUpdate(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'img' => 'required|image64:jpeg,jpg,png'
+        ]);
+
+        if ($request->wantsJson() && !$validator->fails()) {
+
+            $img = Image::make($request->get('img'));
+            $img->save("img/mission.png");
+
+        } else {
+            return response()->json(['msg' => 'Request inválido.'], 400);
+        }
+
+        return response()->json(200);
     }
 }

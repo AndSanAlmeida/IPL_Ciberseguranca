@@ -37,6 +37,6 @@ class ActivateAccount extends Mailable
 
         $subject = 'Ativação de conta';
 
-        return $this->markdown('email.activateaccount');
+        return $this->subject('Ativação de Conta')->markdown('email.activateaccount');
     }
 }

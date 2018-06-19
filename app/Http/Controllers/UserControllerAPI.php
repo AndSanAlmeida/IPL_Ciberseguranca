@@ -52,7 +52,7 @@ class UserControllerAPI extends Controller
 	public function getUsersForStatus(Request $request)
 	{
 		if ($request->wantsJson()) {
-			$users = User::where('type', 0)->get();
+			$users = User::all();
 			return UserResource::collection($users);
 		} else {
 			return response()->json(['message' => 'Request inválido.'], 400);

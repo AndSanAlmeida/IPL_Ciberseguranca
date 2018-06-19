@@ -125,6 +125,8 @@ Route::middleware('auth:api')->group(function () {
 		Route::post('settings/aboutUs/update', 'ConfigControllerAPI@aboutUsUpdate'); // UPDATE ABOUT US
 		Route::post('settings/activities/update', 'ConfigControllerAPI@ActivitiesUpdate'); // UPDATE ACTIVITIES
 		Route::post('settings/resources/update', 'ConfigControllerAPI@ResourcesUpdate'); // UPDATE RESOURCES
+		Route::post('settings/home/image', 'ConfigControllerAPI@HomeImageUpdate'); // UPDATE HOME IMAGE
+		Route::post('settings/mission/image', 'ConfigControllerAPI@MissionImageUpdate'); // UPDATE HOME IMAGE
 
 		// -------------------- USEFUL LINKS --------------------
 		Route::post('usefulLinks/create', 'UsefulLinksControllerAPI@store'); // CREATE ITEM OF USEFULL LINK

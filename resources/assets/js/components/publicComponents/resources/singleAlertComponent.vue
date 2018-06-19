@@ -5,7 +5,7 @@
 				<div class="col-md-offset-1 col-md-10 col-sm-12">
                     <b-breadcrumb :items="items"/>
                     <div v-if="loading" class="loader"></div>
-                    <div  v-if="!loading">
+                    <div v-if="!loading">
                         <div class="left-highlight">
                             <h1 v-html="alert.title[0]"></h1>
                         </div>

@@ -16,8 +16,8 @@
                               <b-table v-if="showTable"
                                 responsive
                                 id = "tableAlerts" 
-                                stacked="sm"
-                                :items="alerts" 
+                                stacked="xs"
+                                :items="orderedAlerts" 
                                 :fields="fields"
                                 :current-page="currentPage"
                                 :per-page="perPage"> 
@@ -94,6 +94,13 @@
             canShowContent: function () {
                 return !this.errorLoading && !this.loading;
             },
+            orderedAlerts: function () {
+                return (this.alerts.sort(function(a,b){
+                    var c = new Date(a.pubDate[0]);
+                    var d = new Date(b.pubDate[0]);
+                    return d-c;
+                }));
+            }
         },
         methods: {
             sendToAlert: function(alert) {

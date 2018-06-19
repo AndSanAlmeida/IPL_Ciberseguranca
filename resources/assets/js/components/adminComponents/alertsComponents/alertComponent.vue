@@ -28,7 +28,7 @@
 
 		<alertsList
             v-show="hasItems && canShowContent" 
-			:alerts="alerts" 
+			:alerts="orderedAlerts" 
 			v-if="showList"
             @updateXML="updateXML"
 			@createAlerts="createAlerts"
@@ -91,6 +91,13 @@
             canShowContent: function () {
                 return !this.errorLoading && !this.loading;
             },
+            orderedAlerts: function () {
+                return (this.alerts.sort(function(a,b){
+                    var c = new Date(a.pubDate[0]);
+                    var d = new Date(b.pubDate[0]);
+                    return d-c;
+                }));
+            }
         },
         methods: {
             updateXML: function() {

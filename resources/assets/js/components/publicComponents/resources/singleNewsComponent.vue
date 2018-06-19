@@ -90,6 +90,7 @@
                         this.errorLoading = false;
                     })
                     .catch((error) => {
+                        this.loading = false;
                         this.errorLoading = true;
                     });
             },
@@ -104,7 +105,9 @@
                             var parseString = require('xml2js').parseString;
                             parseString(response.data, function (err, result) {
                                 for (var i = 0; i < Object.assign(result.rss.channel[0].item).length; i++) { 
-                                    if (Object.assign(result.rss.channel[0].item)[i].title[0] == vm.title) {
+                                    Object.assign(result.rss.channel[0].item)[i].title[0] = Object.assign(result.rss.channel[0].item)[i].title[0].replace("?","");
+                                    if (Object.assign(result.rss.channel[0].item)[i].title[0] == vm.title || 
+                                        Object.assign(result.rss.channel[0].item)[i].title == vm.title ) {
                                         vm.singleNews = Object.assign(result.rss.channel[0].item)[i];
                                     }
                                 }
@@ -113,6 +116,7 @@
 
                         })
                         .catch((error) => {
+                            this.loading = false;
                             this.errorLoading = true;
                         });
                 }

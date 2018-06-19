@@ -22,12 +22,11 @@
 
         <!-- LOADING -->
         <div v-if="loading" class="loader mt-3"></div>
-        
         <!-- ============ -->
 
 		<newsList
             v-show="hasItems && canShowContent" 
-			:news="news" 
+			:news="orderedNews" 
 			v-if="showList"
             @updateXML="updateXML"
 			@createNews="createNews"
@@ -68,6 +67,7 @@
         data: function () {
             return {
                 title: 'Notícias',
+                newsToShow: [],
                 news: [],
                 newsFromIPLeiria: [],
                 rssNews: [],
@@ -88,7 +88,15 @@
             canShowContent: function () {
                 return !this.errorLoading && !this.loading;
             },
+            orderedNews: function () {
+                return (this.news.sort(function(a,b){
+                    var c = new Date(a.pubDate[0]);
+                    var d = new Date(b.pubDate[0]);
+                    return d-c;
+                }));
+            }
         },
+        
         methods: {
             editNews: function(item) {
                 this.item = item;
@@ -187,7 +195,6 @@
 						    this.getRSSByFeed(this.rssNews[i].url);
 						}
                         this.getDBNews();
-                        this.loading = false;
                     }).catch((error) => {
                     	this.loading = false;
                     	this.errorLoading = true;
@@ -213,19 +220,16 @@
                     })
                     .catch((error) => {
                         this.errorLoading = true;
+                        this.loading = false;
                     });
             },
             orderNews: function() {
-                this.news.sort(function(a,b){
-                    var c = new Date(a.pubDate[0]);
-                    var d = new Date(b.pubDate[0]);
-                    return d-c;
-                });
                 this.newsFromIPLeiria.sort(function(a,b){
                     var c = new Date(a.pubDate[0]);
                     var d = new Date(b.pubDate[0]);
                     return d-c;
                 });
+                this.loading = false;
                 this.showList = true;
             },
         	getRSSByFeed: function(feed) {

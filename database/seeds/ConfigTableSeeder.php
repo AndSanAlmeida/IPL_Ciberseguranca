@@ -15,7 +15,8 @@ class ConfigTableSeeder extends Seeder
         $driver = 'smtp';
         $host = 'smtp.gmail.com';
         $port = 587;
-        $password =  bcrypt('projetofinal');
+        // está em plain text, porque depois precisso da password para criar as configuracoes do mail e não dá para decriptar a password para ser usada na criação do mail
+        $password =  'projetofinal';
         $encryption = 'tls';
         $filesPath = 'tiles';
         $createdAt = Carbon\Carbon::now()->subMonths(2);

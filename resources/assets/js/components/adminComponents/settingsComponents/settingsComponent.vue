@@ -27,6 +27,9 @@
               <li class="nav-item col-lg-2 text-center">
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#aboutUs" role="tab" aria-controls="aboutUs" aria-selected="false">Sobre Nós</a>
               </li>
+              <li class="nav-item col-lg-2 text-center">
+                <a class="nav-link" id="image-tab" data-toggle="tab" href="#image" role="tab" aria-controls="image" aria-selected="false">Imagens</a>
+              </li>
             </ul>
             <div class="tab-content ml-2 mt-2 mr-2" id="myTabContent">
               <div class="tab-pane fade show active" id="platformEmail" role="tabpanel" aria-labelledby="platform-email-tab">
@@ -43,6 +46,9 @@
               </div>
               <div class="tab-pane fade" id="aboutUs" role="tabpanel" aria-labelledby="about-us-tab">
                 <aboutUs></aboutUs>
+              </div>
+              <div class="tab-pane fade" id="image" role="tabpanel" aria-labelledby="image-tab">
+                <imageHome></imageHome>
               </div>
             </div>
           </div>

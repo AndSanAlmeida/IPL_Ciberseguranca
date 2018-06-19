@@ -20,6 +20,7 @@ class SmallerUserResource extends JsonResource
             'email' => $this->email,
             'username' => $this->username,
             'reason' => $this->blocked ? $this->reason_blocked : $this->reason_reactivated,
+            'type' => $this->type,
         ];
     }
 }

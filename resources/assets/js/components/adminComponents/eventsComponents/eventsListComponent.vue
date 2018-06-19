@@ -19,7 +19,9 @@
                     :current-page="currentPage"
                     :per-page="perPage"> 
                     <template slot="status" slot-scope="row">
-                      {{row.item.status == 0 ? 'Por Realizar' : row.item.status == 0 ? 'A Decorrer' : 'Concluido'}}
+                      <div v-if="row.item.status == 0">Por Realizar</div>
+                      <div v-if="row.item.status == 1">A Decorrer</div>
+                      <div v-if="row.item.status == 2">Concluido</div>
                     </template>
                     <template slot="actions" slot-scope="row">
                       <button type="button" class="btn btn-primary" v-on:click="viewEvent(row.item)">Ver detalhes</button>

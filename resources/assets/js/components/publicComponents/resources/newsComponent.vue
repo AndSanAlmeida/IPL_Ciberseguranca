@@ -21,8 +21,8 @@
                               <b-table v-if="showTable"
                                 responsive
                                 id = "tableNews" 
-                                stacked="sm"
-                                :items="news" 
+                                stacked="xs"
+                                :items="orderedNews" 
                                 :fields="fields"
                                 :current-page="currentPage"
                                 :per-page="perPage"> 
@@ -108,6 +108,13 @@
             canShowContent: function () {
                 return !this.errorLoading && !this.loading;
             },
+            orderedNews: function () {
+                return (this.news.sort(function(a,b){
+                    var c = new Date(a.pubDate[0]);
+                    var d = new Date(b.pubDate[0]);
+                    return d-c;
+                }));
+            }
         },
         methods: {
             sendToNews: function(news) {

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 605);
+/******/ 	return __webpack_require__(__webpack_require__.s = 607);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -27848,15 +27848,15 @@ module.exports = Vue;
 
 /***/ }),
 
-/***/ 605:
+/***/ 607:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(606);
+module.exports = __webpack_require__(608);
 
 
 /***/ }),
 
-/***/ 606:
+/***/ 608:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27873,11 +27873,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 window.Vue = __webpack_require__(58);
 
-var login = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('login', __webpack_require__(607));
-var register = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('register', __webpack_require__(610));
+var login = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('login', __webpack_require__(609));
+var register = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('register', __webpack_require__(612));
 
 /*ROUTES*/
-var routes = [{ path: '/', redirect: '/login' }, { path: '/login', component: login }, { path: '/register', component: register }, { path: '/password/reset', component: __webpack_require__(613) }, { path: '/password/reset/:token', component: __webpack_require__(616), props: true }];
+var routes = [{ path: '/', redirect: '/login' }, { path: '/login', component: login }, { path: '/register', component: register }, { path: '/password/reset', component: __webpack_require__(615) }, { path: '/password/reset/:token', component: __webpack_require__(618), props: true }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
 				routes: routes
@@ -27889,15 +27889,15 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 
 /***/ }),
 
-/***/ 607:
+/***/ 609:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(608)
+var __vue_script__ = __webpack_require__(610)
 /* template */
-var __vue_template__ = __webpack_require__(609)
+var __vue_template__ = __webpack_require__(611)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -27937,7 +27937,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 608:
+/***/ 610:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28059,7 +28059,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 609:
+/***/ 611:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -28270,15 +28270,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 610:
+/***/ 612:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(611)
+var __vue_script__ = __webpack_require__(613)
 /* template */
-var __vue_template__ = __webpack_require__(612)
+var __vue_template__ = __webpack_require__(614)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -28318,11 +28318,12 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 611:
+/***/ 613:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -28390,6 +28391,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             username: '',
             email: '',
             password: '',
+            loading: false,
             passwordConfirmation: '',
             attemptSubmit: false,
             serverErrorCode: 0,
@@ -28471,6 +28473,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
             if (!this.isFormInvalid) {
+                this.loading = true;
                 var data = {
                     name: this.name,
                     username: this.username,
@@ -28480,10 +28483,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 axios.post('/api/register', data).then(function (response) {
                     _this.success = true;
                     _this.clear();
+                    _this.loading = false;
                     setTimeout(function () {
                         return _this.$router.push({ path: '/login' });
                     }, 5000);
                 }).catch(function (error) {
+                    _this.loading = false;
                     _this.serverErrorCode = error.response.data.errorCode;
                     _this.serverErrorMessage = error.response.data.msg;
                 });
@@ -28494,7 +28499,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 612:
+/***/ 614:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -28508,6 +28513,8 @@ var render = function() {
     }),
     _vm._v(" "),
     _c("br"),
+    _vm._v(" "),
+    _vm.loading ? _c("div", { staticClass: "loader" }) : _vm._e(),
     _vm._v(" "),
     _c(
       "form",
@@ -28898,15 +28905,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 613:
+/***/ 615:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(614)
+var __vue_script__ = __webpack_require__(616)
 /* template */
-var __vue_template__ = __webpack_require__(615)
+var __vue_template__ = __webpack_require__(617)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -28946,7 +28953,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 614:
+/***/ 616:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29056,7 +29063,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 615:
+/***/ 617:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -29221,15 +29228,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 616:
+/***/ 618:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(617)
+var __vue_script__ = __webpack_require__(619)
 /* template */
-var __vue_template__ = __webpack_require__(618)
+var __vue_template__ = __webpack_require__(620)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -29269,7 +29276,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 617:
+/***/ 619:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29415,7 +29422,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 618:
+/***/ 620:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {

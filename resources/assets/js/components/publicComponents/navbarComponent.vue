@@ -43,7 +43,6 @@
                                     <div class="dropdown">
                                         <span class="authDropdown dropdown-toggle" id="authDropdown" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
                                             <ul class="navbar-welcome">
-                                                <li>Bem-vindo, </li>
                                                 <li> {{user.name.split(/(\s).+\s/).join("")}}</li>
                                                 <li>
                                                     <img class="img-responsive img-circle" :src="`/img/avatars/${user.avatar}`" alt="Imagem de Perfil" title="Imagem de Perfil" width="30px" height="30px">

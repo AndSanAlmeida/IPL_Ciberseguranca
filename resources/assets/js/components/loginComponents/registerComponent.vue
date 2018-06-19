@@ -3,6 +3,7 @@
     <div class="card card-container">
         <img class="profile-img-card" v-bind:src="'/img/logo_ipl_header.png'" alt="Logotipo IPL">
         <br>
+        <div v-if="loading" class="loader"></div>
         <form class="form-signin" method="post" v-on:submit.prevent="validateForm">
 
             <div class="alert alert-success" role="alert" v-cloak v-show="success">
@@ -65,6 +66,7 @@ export default {
             username: '',
             email: '',
             password: '',
+            loading: false,
             passwordConfirmation: '',
             attemptSubmit: false,
             serverErrorCode: 0,
@@ -132,6 +134,7 @@ export default {
             this.serverErrorCode = 0;
         },
         validateForm: function () {
+                
                 //CLEARS SERVER ERROR'S
                 this.serverErrorCode = 0;
                 this.success = false;
@@ -144,6 +147,7 @@ export default {
 
                 //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
                 if (!this.isFormInvalid) {
+                    this.loading = true;
                     const data = {
                         name: this.name,
                         username: this.username,
@@ -154,9 +158,11 @@ export default {
                     .then((response) => {
                         this.success = true;
                         this.clear();
+                        this.loading = false;
                         setTimeout( () => this.$router.push({ path: '/login'}), 5000);
                     })
                     .catch((error) => {
+                        this.loading = false;
                         this.serverErrorCode = error.response.data.errorCode;
                         this.serverErrorMessage = error.response.data.msg;
                     });

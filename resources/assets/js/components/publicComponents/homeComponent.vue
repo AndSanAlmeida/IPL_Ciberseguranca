@@ -37,8 +37,8 @@
 
                         <div v-if="loading" class="loader"></div>
                         
-                        <div v-if="hasNews && canShowContent && showNews">
-                            <div v-for="item in mostRecentNews">
+                        <div v-if="hasNews && canShowContent">
+                            <div v-for="item in orderedNews">
                                 <a v-on:click="sendToNews(item)" title="" id="homeNews">
                                     <article class="newsContent">
                                         <div class="row">
@@ -106,7 +106,6 @@
             return {
                 ourMission: [],
                 eventos: [],
-                showNews: false,
                 news: [],
                 mostRecentNews: [],
                 loading: true,
@@ -126,11 +125,25 @@
             canShowContent: function () {
                 return !this.errorLoading && !this.loading;
             },
+            orderedNews: function () {
+                this.news.sort(function(a,b){
+                    var c = new Date(a.pubDate[0]);
+                    var d = new Date(b.pubDate[0]);
+                    return d-c;
+                });
+                if (this.news[0] != null) {
+                    this.mostRecentNews[0] = this.news[0];
+                }
+                if (this.news[1] != null) {
+                    this.mostRecentNews[1] = this.news[1];
+                }
+                return this.mostRecentNews;
+            },
+            
         },
         methods: {
             sendToNews: function(news) {
                 window.location.href = '/#/resources/news/'+news.title[0];
-
             },
             getOurMission() {
                 axios.get('/api/settings/ourMission')
@@ -141,8 +154,8 @@
             getEvents() {
                 axios.get('/api/events')
                     .then(response => {
-                        this.eventos = response.data.data;
-                });
+                        this.eventos = response.data.data;        
+                    });
             },
             prepareDesc: function(desc) {
                 if (desc.length > 120) {
@@ -181,28 +194,14 @@
                             newsObject.link[0] = singleNews.source;
                             this.news = this.news.concat(newsObject);
                         }
-                        window.setTimeout(this.orderNews(), 3000);
+                        window.setTimeout(this.loading = false, 2000);
                     })
                     .catch((error) => {
+                        this.loading = false;
                         this.errorLoading = true;
                     });
             },
-            orderNews: function() {
-                this.news.sort(function(a,b){
-                    var c = new Date(a.pubDate[0]);
-                    var d = new Date(b.pubDate[0]);
-                    return d-c;
-                });
-
-                if (this.news[0] != null) {
-                    this.mostRecentNews.push(this.news[0]);
-                }
-                if (this.news[1] != null) {
-                    this.mostRecentNews.push(this.news[1]);
-                }
-                this.loading = false;
-                this.showNews = true;
-            },
+            
             getRSSByFeed: function(feed) {
                 this.xhr = this.createCORSRequest('GET', feed);
                 if (!this.xhr) {
@@ -218,6 +217,7 @@
 
                         })
                         .catch((error) => {
+                            this.loading = false;
                             this.errorLoading = true;
                         });
                 }
@@ -282,6 +282,7 @@
             this.getEvents();
         },
         created: function() {
+            this.loading= true;
             this.getRSSNews();
         }
     }

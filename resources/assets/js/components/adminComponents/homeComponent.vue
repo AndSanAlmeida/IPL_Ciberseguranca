@@ -41,9 +41,9 @@
           <div class="col-xl-3 col-sm-6">
             <div class="item d-flex align-items-center">
               <div class="icon bg-red"><i class="icon-user"></i></div>
-              <div class="title"><span>Utilizadores<br>Ativos no Forum</span>
+              <div class="title"><span>Utilizadores<br>Administradores</span>
               </div>
-              <div class="number"><strong>{{activeUsers}}</strong></div>
+              <div class="number"><strong>{{adminUsers}}</strong></div>
             </div>
           </div>
         </div>
@@ -60,7 +60,7 @@
                 numUsers: 0,
                 blockedUsers: 0,
                 newUsers: 0,
-                activeUsers: 0,
+                adminUsers: 0,
             }
         },
         methods: {
@@ -71,7 +71,7 @@
                         this.numUsers = this.users.length;
                         this.getBlockedUsers();
                         this.getNewUsers();
-                        this.getActiveUsers();
+                        this.getAdminUsers();
                     })
                     .catch(error => {
                         console.log(error.response)
@@ -99,15 +99,15 @@
 
                 this.newUsers = newp;
             },
-            getActiveUsers: function () {
-              let active = 0;
+            getAdminUsers: function () {
+              let admin = 0;
                 this.users.forEach(function (user, key) {
-                    if (user.total_forum_posts != 0 || user.total_forum_comments != 0 ) {
-                        active++;
+                    if (user.type == 1) {
+                        admin++;
                     }
                 });
 
-                this.activeUsers = active;
+                this.adminUsers = admin;
             }
         },
         computed: {},

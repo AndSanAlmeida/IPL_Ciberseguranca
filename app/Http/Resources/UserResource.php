@@ -24,8 +24,7 @@ class UserResource extends JsonResource
             'activated' => $this->activated,
             'reason_blocked' => $this->reason_blocked,
             'reason_reactivated' => $this->reason_reactivated,
-            'total_forum_posts' => $this->total_forum_posts,
-            'total_forum_comments' => $this->total_forum_comments,
+            'type' => $this->type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

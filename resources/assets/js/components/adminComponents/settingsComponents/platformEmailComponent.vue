@@ -4,39 +4,69 @@
 			<label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
 			<div class="col-sm-10">
 				<input type="email" class="form-control" id="inputEmail" placeholder="Email" v-model="settings.email" autocomplete="off">
+                <div class="clearfix mt-2">
+                    <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingEmail ">Preencher email</b-alert>
+                </div>
+                <div class="clearfix mt-2">
+                    <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidEmail ">Email inválido</b-alert>
+                </div>
 			</div>
 		</div>
+        
 		<div class="form-group row">
 			<label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
 			<div class="col-sm-10">
 				<input type="password" class="form-control" id="inputPassword" v-model="settings.password" placeholder="Password">
+                <div class="clearfix mt-2">
+                    <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingPassword ">Preencher password</b-alert>
+                </div>
 			</div>
 		</div>
+        
 		<hr>
 		<div class="form-group row">
 			<label for="inputDriver" class="col-sm-2 col-form-label">Driver</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" id="inputDriver" v-model="settings.driver" placeholder="Driver">
+                <div class="clearfix mt-2">
+                    <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingDriver ">Preencher driver</b-alert>
+                </div>
 			</div>
 		</div>
+        
 		<div class="form-group row">
 			<label for="inputHost" class="col-sm-2 col-form-label">Host</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" id="inputHost" v-model="settings.host" placeholder="Host">
+                <div class="clearfix mt-2">
+                    <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingHost ">Preencher host</b-alert>
+                </div>
 			</div>
 		</div>
+        
 		<div class="form-group row">
 			<label for="inputPort" class="col-sm-2 col-form-label">Port</label>
 			<div class="col-sm-10">
 				<input type="number" class="form-control" id="inputPort" v-model="settings.port" placeholder="Port">
+                <div class="clearfix mt-2">
+                    <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingPort ">Preencher port</b-alert>
+                </div>
+                <div class="clearfix mt-2">
+                    <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && invalidPort ">Port invalido</b-alert>
+                </div>
 			</div>
 		</div>
+        
 		<div class="form-group row">
 			<label for="inputEncryption" class="col-sm-2 col-form-label">Encryption</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" id="inputEncryption" v-model="settings.encryption" placeholder="Encryption">
+                <div class="clearfix mt-2">
+                    <b-alert class="col-md-12" show variant="danger" v-cloak v-show="isFormInvalid && missingEncryption ">Preencher encryption</b-alert>
+                </div>
 			</div>
 		</div>
+        
 		<div class="form-group row">
 			<div class="col-sm-12">
 				<button type="submit" class="btn btn-primary ml-2 float-right">Confirmar</button>
@@ -45,7 +75,6 @@
 		</div>
 	</form>
 </template>
-
 <script type="text/javascript">
 	export default {
         data: function(){
@@ -76,14 +105,20 @@
             missingHost: function () {
                 return this.settings.host.trim() === '' && !this.hasServerError && this.attemptSubmit;
             },
+            missingDriver: function () {
+                return this.settings.driver.trim() === '' && !this.hasServerError && this.attemptSubmit;
+            },
             missingPort: function () {
                 return this.settings.port === '' && !this.hasServerError && this.attemptSubmit;
             },
             invalidPort: function () {
                 return !this.missingPort && !this.validateIntegerBiggerThan0(this.settings.port) && !this.hasServerError && this.attemptSubmit;
             },
+            missingEncryption: function () {
+                return this.settings.encryption.trim() === '' && !this.hasServerError && this.attemptSubmit;
+            },
             hasClientError: function () {
-                return (this.missingEmail || this.invalidEmail || this.missingPassword || this.missingHost || this.missingPort || this.invalidPort);
+                return (this.missingEmail || this.invalidEmail || this.missingPassword || this.missingHost || this.missingDriver || this.missingPort || this.invalidPort || this.missingEncryption);
             },
             hasServerError: function () {
                 return this.serverError;
@@ -152,6 +187,7 @@
                 axios.get('/api/settings')
                     .then(response=>{
                         this.settings = response.data.data;
+                        this.settings.password = '';
                     });
             },
             cancel: function () {
