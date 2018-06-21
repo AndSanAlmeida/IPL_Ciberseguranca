@@ -1,12 +1,32 @@
-@component('mail::message')
-# Bem-vindo ao IPL-Cibersegurança, {{$user->name}} !!
+@component('mail::layout')
+{{-- Header --}}
+@slot('header')
+@component('mail::header', ['url' => 'http://ipl-cybersecurity.tk/'])
+IPLeiria | Cibersegurança
+@endcomponent
+@endslot
+    
+# Bem-vindo ao IPLeiria | Cibersegurança, {{$user->name}} !!
 
 Ative a sua conta no seguinte botão.
 
-@component('mail::button', ['url' => $url])
+@component('mail::button', ['url' => 'http://ipl-cybersecurity.tk/'])
 Ativar conta
 @endcomponent
 
+{{-- Subcopy --}}
+@slot('subcopy')
+@component('mail::subcopy')
 Obrigado,<br>
-IPL-Cibersegurança
+Administração do IPLeiria | Cibersegurança
+@endcomponent
+@endslot
+
+
+{{-- Footer --}}
+@slot('footer')
+@component('mail::footer')
+{{date("Y")}} IPLeiria | Cibersegurança
+@endcomponent
+@endslot
 @endcomponent

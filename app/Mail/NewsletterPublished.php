@@ -2,18 +2,16 @@
 
 namespace App\Mail;
 
-use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ActivateAccount extends Mailable
+class NewsletterPublished extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
-    public $url;
+    public $message;
     public $sendBy;
 
     /**
@@ -21,11 +19,10 @@ class ActivateAccount extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $sendBy)
+    public function __construct($message, $sendBy)
     {
-        $this->user = $user;
+        $this->message = $message;
         $this->sendBy = $sendBy;
-        $this->url = url('/user/'.$user->id.'/confirmation/'.$user->email_token);
     }
 
     /**
@@ -36,9 +33,9 @@ class ActivateAccount extends Mailable
     public function build()
     {
         $name = 'IPLeiria | Cibersegurança';
-        $subject = 'Ativação de conta';
+        $subject = 'Nova Newsletter';
         $sendBy = $this->sendBy;
 
-        return $this->from($sendBy, $name)->subject($subject)->markdown('email.activateaccount');
+        return $this->from($sendBy, $name)->subject($subject)->markdown('email.newsletterPublished');
     }
 }

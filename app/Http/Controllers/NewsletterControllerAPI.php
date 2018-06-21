@@ -8,18 +8,17 @@ use App\NewsletterSubscription;
 use App\Http\Resources\NewsletterResource;
 use App\Notifications\newNewsletter;
 
-use Illuminate\Support\Facades\App;
-
+use App\Mail\NewsletterPublished;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Mail\TransportManager;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\Notifiable;
-
-use Notification;
-use Validator;
+use Illuminate\Support\Facades\App;
 use Swift_Mailer;
+use Carbon\Carbon;
+use Validator;
 
 class NewsletterControllerAPI extends Controller
 {
@@ -199,10 +198,12 @@ class NewsletterControllerAPI extends Controller
             $newsletter = Newsletter::findOrFail($id);
             $newsletter->isPublished = 1;
 
-            $subscriptions = NewsletterSubscription::all();
+            $emails = NewsletterSubscription::groupBy('email')->pluck('email')->toArray();
+
 
             $config = DB::table('config')->first();
             $mailConfigs = json_decode($config->platform_email_properties);
+
             config([
                 'mail.host' => $mailConfigs->host,
                 'mail.port' => $mailConfigs->port,
@@ -216,18 +217,17 @@ class NewsletterControllerAPI extends Controller
                 return new TransportManager($app);
             });
             $mailer = new Swift_Mailer($app['swift.transport']->driver());
+
             Mail::setSwiftMailer($mailer);
 
-            foreach ($subscriptions as $subscription) {
-                Notification::route('mail', $subscription->email)->notify(new newNewsletter($newsletter));
-            } 
+            Mail::to($emails)->queue(new NewsletterPublished($newsletter->description, $config->platform_email));
 
             $newsletter->update();  
 
             return response()->json(['msg' => 'Newsletter publica e enviada para os subscritores'], 200);
 
         } catch (\Exception $e) {
-            return response()->json(['errorCode' => -1, 'msg' => 'Problema a enviar o email. Tente mais tarde novamente.', 'exc' => $e->getMessage()], 400);
+            return response()->json(['errorCode' => -1, 'msg' => 'Problema a publicar a newsletter. Tente mais tarde novamente.', 'exc' => $e->getMessage()], 400);
         }
     }
 

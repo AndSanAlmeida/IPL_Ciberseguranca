@@ -12,6 +12,8 @@
                 <p>Password Alterada</p>
             </div>
 
+            <div v-if="loading" class="loader"></div>
+
             <!-- EMAIL -->
             <input type="text" name="email" v-model="email"
             v-bind:class="{ 'is-invalid': missingEmail || invalidEmail }" class="form-control" placeholder="Email"/>
@@ -56,7 +58,8 @@ export default {
             attemptSubmit: false,
             serverError: false,
             serverErrorMessage: '',
-            success: false
+            success: false,
+            loading: false,
         }
     },
     computed: {
@@ -110,6 +113,7 @@ export default {
 
                 //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
                 if (!this.isFormInvalid) {
+                    this.loading = true;
                     const data = {
                         email: this.email,
                         token: this.token,
@@ -120,6 +124,7 @@ export default {
 
                         this.success = true;
                         this.attemptSubmit = false;
+                        this.loading = false;
                         this.email = '';
                         this.password = '';
                         this.passwordConfirmation = '';

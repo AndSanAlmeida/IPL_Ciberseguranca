@@ -26,7 +26,6 @@
                             <template slot="actions" slot-scope="row">
                                 <i v-if="!row.detailsShowing" class="fas fa-arrow-circle-down fa-2x" id="hide" @click.stop="row.toggleDetails"></i>
                                 <i v-if="row.detailsShowing" class="fas fa-arrow-circle-up fa-2x" id="show" @click.stop="row.toggleDetails"></i>
-                                
                             </template> 
 
                             <template slot="row-details" slot-scope="row">
@@ -41,7 +40,7 @@
                                         <p v-if="row.item.path"><strong>Documento: </strong><a :href="row.item.path" :download ="row.item.name" role="button">Ver documento</a></p>
                                         
                                         <div class="text-center">
-                                            <div v-if="logged">
+                                            <div v-if="logged && row.item.status != 2">
                                                 <div v-if="!subscribed(row.item.id)">
                                                     <div v-if="!isMaxCapacity(row.item)">
                                                         <p class="text-center">Se pertende inscrever no evento pressione o botao seguinte</p>
@@ -103,7 +102,6 @@
                 eventos: [],
                 fields: [
                   { key: 'date', label: 'Data'},
-                  { key: 'localization', label: 'Localização'},
                   { key: 'name', label: 'Título'},                  
                   { key: 'actions', label: ''}
                 ],

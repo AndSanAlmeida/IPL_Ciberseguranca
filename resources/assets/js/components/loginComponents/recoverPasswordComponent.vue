@@ -11,6 +11,8 @@
             <div class="alert alert-success" role="alert" v-cloak v-show="success">
                 <p class="text-center">Email com a informação para recuperar a password foi enviado. Verifique o seu email.</p>
             </div>
+
+            <div v-if="loading" class="loader"></div>
             
             <!-- USERNAME | EMAIL -->
             <input type="email" id="inputAuth" class="form-control" name="email" v-model="email" v-bind:class="{ 'is-invalid': missingEmail  }" placeholder="Email" required autofocus />
@@ -42,7 +44,8 @@
                 attemptSubmit: false,
                 serverError: false,
                 serverErrorMessage: '',
-                success: false
+                success: false,
+                loading: false,
             }
         },
         computed: {
@@ -81,6 +84,7 @@
 
                 //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
                 if (!this.isFormInvalid) {
+                    this.loading = true;
                     const data = {
                         email: this.email
                     };
@@ -88,9 +92,11 @@
                         .then((response) => {
                             this.success = true;
                             this.attemptSubmit = false;
+                            this.loading = false;
                             setTimeout( () => this.$router.push({ path: '/login'}), 5000);
                         })
                         .catch((error) => {
+                            this.loading = false;
                             this.serverError = true;
                             this.serverErrorMessage = error.response.data.msg ;
                         });

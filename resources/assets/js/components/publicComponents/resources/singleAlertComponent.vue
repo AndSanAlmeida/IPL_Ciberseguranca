@@ -5,7 +5,7 @@
 				<div class="col-md-offset-1 col-md-10 col-sm-12">
                     <b-breadcrumb :items="items"/>
                     <div v-if="loading" class="loader"></div>
-                    <div v-if="!loading">
+                    <div v-if="!loading && hasItems">
                         <div class="left-highlight">
                             <h1 v-html="alert.title[0]"></h1>
                         </div>
@@ -16,6 +16,9 @@
                         <p class="text-justify" v-html="alert.description[0]"></p>
                         <p v-if="!alert.hasOwnProperty('source')"><b>Fonte: </b><a target="_blank" :href="alert.link[0]">Link</a></p>
                         <p v-if="alert.hasOwnProperty('source')"><b>Fonte: </b>{{alert.source[0]}}</p>
+                    </div>
+                    <div  v-if="!loading && !hasItems" class="alert alert-danger" role="alert" style="margin-top: 2em;">
+                        <h4><strong>Erro: </strong>Alerta não existe.</h4>
                     </div>
                    
                 </div>
@@ -45,13 +48,13 @@
                 }],
                 alert: [],
                 showAlerts: false,
-                loading: true,
+                loading: false,
                 errorLoading: false,
             }
         },
         computed: {
             hasItems: function () {
-                return this.alert != null;
+                return this.alert.length != 0;
             },
             canShowContent: function () {
                 return !this.errorLoading && !this.loading;
@@ -110,6 +113,7 @@
                             var parseString = require('xml2js').parseString;
                             parseString(response.data, function (err, result) {
                                 for (var i = 0; i < Object.assign(result.rss.channel[0].item).length; i++) { 
+                                    
                                     if (Object.assign(result.rss.channel[0].item)[i].title[0] == vm.title) {
                                         vm.alert = Object.assign(result.rss.channel[0].item)[i];
                                     }

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 607);
+/******/ 	return __webpack_require__(__webpack_require__.s = 612);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -27848,15 +27848,15 @@ module.exports = Vue;
 
 /***/ }),
 
-/***/ 607:
+/***/ 612:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(608);
+module.exports = __webpack_require__(613);
 
 
 /***/ }),
 
-/***/ 608:
+/***/ 613:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27873,11 +27873,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 window.Vue = __webpack_require__(58);
 
-var login = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('login', __webpack_require__(609));
-var register = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('register', __webpack_require__(612));
+var login = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('login', __webpack_require__(614));
+var register = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('register', __webpack_require__(617));
 
 /*ROUTES*/
-var routes = [{ path: '/', redirect: '/login' }, { path: '/login', component: login }, { path: '/register', component: register }, { path: '/password/reset', component: __webpack_require__(615) }, { path: '/password/reset/:token', component: __webpack_require__(618), props: true }];
+var routes = [{ path: '/', redirect: '/login' }, { path: '/login', component: login }, { path: '/register', component: register }, { path: '/password/reset', component: __webpack_require__(620) }, { path: '/password/reset/:token', component: __webpack_require__(623), props: true }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
 				routes: routes
@@ -27889,15 +27889,15 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 
 /***/ }),
 
-/***/ 609:
+/***/ 614:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(610)
+var __vue_script__ = __webpack_require__(615)
 /* template */
-var __vue_template__ = __webpack_require__(611)
+var __vue_template__ = __webpack_require__(616)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -27937,7 +27937,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 610:
+/***/ 615:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28059,7 +28059,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 611:
+/***/ 616:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -28270,15 +28270,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 612:
+/***/ 617:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(613)
+var __vue_script__ = __webpack_require__(618)
 /* template */
-var __vue_template__ = __webpack_require__(614)
+var __vue_template__ = __webpack_require__(619)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -28318,7 +28318,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 613:
+/***/ 618:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28499,7 +28499,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 614:
+/***/ 619:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -28905,15 +28905,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 615:
+/***/ 620:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(616)
+var __vue_script__ = __webpack_require__(621)
 /* template */
-var __vue_template__ = __webpack_require__(617)
+var __vue_template__ = __webpack_require__(622)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -28953,11 +28953,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 616:
+/***/ 621:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -29002,7 +29004,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             attemptSubmit: false,
             serverError: false,
             serverErrorMessage: '',
-            success: false
+            success: false,
+            loading: false
         };
     },
     computed: {
@@ -29043,16 +29046,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
             if (!this.isFormInvalid) {
+                this.loading = true;
                 var data = {
                     email: this.email
                 };
                 axios.post('/api/password/email', data).then(function (response) {
                     _this.success = true;
                     _this.attemptSubmit = false;
+                    _this.loading = false;
                     setTimeout(function () {
                         return _this.$router.push({ path: '/login' });
                     }, 5000);
                 }).catch(function (error) {
+                    _this.loading = false;
                     _this.serverError = true;
                     _this.serverErrorMessage = error.response.data.msg;
                 });
@@ -29063,7 +29069,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 617:
+/***/ 622:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -29130,6 +29136,8 @@ var render = function() {
             ])
           ]
         ),
+        _vm._v(" "),
+        _vm.loading ? _c("div", { staticClass: "loader" }) : _vm._e(),
         _vm._v(" "),
         _c("input", {
           directives: [
@@ -29228,15 +29236,15 @@ if (false) {
 
 /***/ }),
 
-/***/ 618:
+/***/ 623:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(619)
+var __vue_script__ = __webpack_require__(624)
 /* template */
-var __vue_template__ = __webpack_require__(620)
+var __vue_template__ = __webpack_require__(625)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -29276,11 +29284,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 619:
+/***/ 624:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -29339,7 +29349,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             attemptSubmit: false,
             serverError: false,
             serverErrorMessage: '',
-            success: false
+            success: false,
+            loading: false
         };
     },
     computed: {
@@ -29395,6 +29406,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
             if (!this.isFormInvalid) {
+                this.loading = true;
                 var data = {
                     email: this.email,
                     token: this.token,
@@ -29404,6 +29416,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                     _this.success = true;
                     _this.attemptSubmit = false;
+                    _this.loading = false;
                     _this.email = '';
                     _this.password = '';
                     _this.passwordConfirmation = '';
@@ -29422,7 +29435,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 620:
+/***/ 625:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -29483,6 +29496,8 @@ var render = function() {
           },
           [_c("p", [_vm._v("Password Alterada")])]
         ),
+        _vm._v(" "),
+        _vm.loading ? _c("div", { staticClass: "loader" }) : _vm._e(),
         _vm._v(" "),
         _c("input", {
           directives: [

@@ -185,7 +185,7 @@ class UserControllerAPI extends Controller
 				});
 				$mailer = new Swift_Mailer($app['swift.transport']->driver());
 				Mail::setSwiftMailer($mailer);
-				Mail::to($user)->send(new ActivateAccount($user));
+				Mail::to($user)->queue(new ActivateAccount($user, $config->platform_email));
 
 				return response()->json(['msg' => 'Utilizador criado.']);
 

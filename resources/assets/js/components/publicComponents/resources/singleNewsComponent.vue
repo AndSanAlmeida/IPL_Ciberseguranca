@@ -5,7 +5,7 @@
 				<div class="col-md-offset-1 col-md-10 col-sm-12">
                     <b-breadcrumb :items="items"/>
                     <div v-if="loading" class="loader"></div>
-                    <div  v-if="!loading">
+                    <div  v-if="!loading && hasItems">
                         <div class="left-highlight">
                             <h1 v-html="singleNews.title[0]"></h1>
                         </div>
@@ -14,6 +14,10 @@
                         <br>
                         <p class="text-justify" v-html="singleNews.description[0]"></p>
                         <p><b>Fonte: </b>{{singleNews.link[0]}}</p>
+                    </div>
+                    <div  v-if="!loading && !hasItems" class="alert alert-danger" role="alert" style="margin-top: 2em;">
+                        <h4><strong>Erro: </strong>Notícia não existe.</h4>
+                    </div>
 
                     </div>
                    
@@ -43,14 +47,13 @@
                     active: true
                 }],
                 singleNews: [],
-                showNews: false,
                 loading: true,
                 errorLoading: false,
             }
         },
         computed: {
             hasItems: function () {
-                return this.singleNews != null;
+                return this.singleNews.length != 0;
             },
             canShowContent: function () {
                 return !this.errorLoading && !this.loading;
@@ -64,6 +67,7 @@
                     .then(response => {
                         var rsss = response.data.data;
                         for (var i = 0; i < rsss.length; i++) { 
+
                             this.getRSSByFeed(rsss[i].url);
                         }
                         this.getDBNews();
@@ -75,15 +79,19 @@
             getDBNews: function() {
                 axios.get('/api/news')
                     .then((response) => {
-                        
-                        for (var j = 0; j < response.data.data.length; j++) {
-                            if(decodeURIComponent(this.title) === response.data.data[j].title) {
-                                var newsObject = {title: {}, description: {}, pubDate: {}, link: {}}
-                                newsObject.title[0] = response.data.data[j].title;
-                                newsObject.description[0] = response.data.data[j].description;
-                                newsObject.pubDate[0] = response.data.data[j].pub_date;
-                                newsObject.link[0] = response.data.data[j].source;
-                                this.singleNews = Object.assign(newsObject);
+                        if (response.data.data.length != 0) {
+                            for (var j = 0; j < response.data.data.length; j++) {
+                                console.log((decodeURIComponent(this.title)));
+                                console.log(response.data.data[j].title);
+                                if(decodeURIComponent(this.title) === response.data.data[j].title) {
+                                    console.log("hey");
+                                    var newsObject = {title: {}, description: {}, pubDate: {}, link: {}}
+                                    newsObject.title[0] = response.data.data[j].title;
+                                    newsObject.description[0] = response.data.data[j].description;
+                                    newsObject.pubDate[0] = response.data.data[j].pub_date;
+                                    newsObject.link[0] = response.data.data[j].source;
+                                    this.singleNews = Object.assign(newsObject);
+                                }
                             }
                         }
                         this.loading = false;

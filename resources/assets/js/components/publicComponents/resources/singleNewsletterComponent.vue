@@ -14,7 +14,9 @@
                         <br>
                         <p class="text-justify" v-html="newsletter.description"></p>
                     </div>
-                   
+                    <div  v-if="!loading && !hasItems" class="alert alert-danger" role="alert" style="margin-top: 2em;">
+                        <h4><strong>Erro: </strong>Newsletter não existe.</h4>
+                    </div>
                 </div>
                 
 			</div>
@@ -48,7 +50,7 @@
         },
         computed: {
             hasItems: function () {
-                return this.newsletter != null;
+                return this.newsletter.length != 0;
             },
             canShowContent: function () {
                 return !this.errorLoading && !this.loading;

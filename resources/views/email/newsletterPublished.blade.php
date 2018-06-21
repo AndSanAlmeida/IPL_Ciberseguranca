@@ -5,13 +5,8 @@
             IPLeiria | Cibersegurança
         @endcomponent
     @endslot
-
-    {{-- Body --}}
-    Olá, {{ $user->name }}.
-
-	{{ $mensagem }}
-	{{ $questionText}}
-	{{ $answerText}}
+    
+    <b>{!! $message !!}</b>
 
     {{-- Subcopy --}}
     @slot('subcopy')

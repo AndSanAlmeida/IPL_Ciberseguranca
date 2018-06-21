@@ -36,10 +36,10 @@ class RecoverPassword extends Mailable
      */
     public function build()
     {
-        $name = 'Oficina de Cibersegurança';
+        $name = 'IPLeiria | Cibersegurança';
         $subject = 'Recuperar Password';
 
-        return $this->view('email.resetpassword')
+        return $this->markdown('email.resetpassword')
             ->with([
                 'token' => $this->token,
                 'user' => $this->user,
