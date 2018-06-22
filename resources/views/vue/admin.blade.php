@@ -1,6 +1,6 @@
 @extends('layouts.admin.adminMaster')
 
-@section('title', 'IPL-Cibersegurança | Administração')
+@section('title', 'IPLeiria Cibersegurança | Administração')
 
 @section('content')
 <admin-layout></admin-layout>

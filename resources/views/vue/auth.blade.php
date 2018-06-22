@@ -1,6 +1,6 @@
 @extends('layouts.auth.authMaster')
 
-@section('title', 'IPL-Cibersegurança | Autenticação')
+@section('title', 'IPLeiria Cibersegurança | Autenticação')
 
 @section('content')
     <router-view></router-view>

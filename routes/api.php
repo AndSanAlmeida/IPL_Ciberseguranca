@@ -54,7 +54,7 @@ Route::get('documents', 'DocumentsControllerAPI@index'); // GET DOCUMENTS
 Route::get('documents/{id}', 'DocumentsControllerAPI@show'); //GET ITEM OF DOCUMENT BY ID
 
 // -------------------- NEWSLETTERS --------------------
-Route::get('newsletters/{id}', 'NewsletterControllersAPI@show'); // GET NEWSLETTER
+Route::get('newsletters/{id}', 'NewsletterControllerAPI@show'); // GET NEWSLETTER
 Route::post('newsletter/subscribe', 'NewsletterControllerAPI@subscribe'); // SUBSCRIBE NEWSLETTER
 Route::delete('newsletter/{email}/unsubcribe', 'NewsletterControllerAPI@unsubscribe'); // DELETE SUBSCRIPTION OF NEWSLETTER
 Route::post('newsletter/subscribed', 'NewsletterControllerAPI@subscribed'); // CHECK IF USER IS IN NEWSLETTER SUBSCRIPTION
@@ -144,6 +144,8 @@ Route::middleware('auth:api')->group(function () {
 		Route::post('newsletters/{id}/update', 'NewsletterControllerAPI@update'); // EDIT NEWSLETTER
 		Route::post('newsletters/{id}/publish', 'NewsletterControllerAPI@publish'); // PUBLISH NEWSLETTER
 		Route::get('newsletters', 'NewsletterControllerAPI@index'); // GET ALL NEWSLETTER
+		Route::post('newsletters/getSubscribers', 'NewsletterControllerAPI@getSubscribers'); // GET NUMBER OF SUBSCRIBED
+		
 
 		// -------------------- USER QUESTIONS --------------------
 		Route::get('questions', 'UserQuestionControllerAPI@index'); // GET ALL USER QUESTIONS

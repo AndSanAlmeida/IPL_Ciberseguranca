@@ -6,6 +6,7 @@ use App\User;
 use App\Newsletter;
 use App\NewsletterSubscription;
 use App\Http\Resources\NewsletterResource;
+use App\Http\Resources\NewsletterSubscriptionResource;
 use App\Notifications\newNewsletter;
 
 use App\Mail\NewsletterPublished;
@@ -234,7 +235,13 @@ class NewsletterControllerAPI extends Controller
     public function getPublishedNewsletters()
     {
         $newsletters = Newsletter::where('isPublished', 1)->get();
-        return NewsletterResource::collection($newsletters);
+        return NewsletterResource::collection($newsletters); 
+    }
+
+    public function getSubscribers() {
+        $subscriptions = NewsletterSubscription::all();
+
+        return NewsletterSubscriptionResource::collection($subscriptions);
         
     }
 }

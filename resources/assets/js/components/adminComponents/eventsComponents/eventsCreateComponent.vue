@@ -73,7 +73,7 @@
          <div class="form-group row">
             <label for="fileInput" class="col-sm-3 form-control-label">Documento</label>
             <div class="col-sm-9">
-              <input id="fileInput" type="file" accept=".pdf" class="form-control-file" v-on:change="onFileChange" required>
+              <input id="fileInput" type="file" accept=".pdf" class="form-control-file" v-on:change="onFileChange">
             </div>
           </div>
          <div class="form-group row">
