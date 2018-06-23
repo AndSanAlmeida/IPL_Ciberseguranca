@@ -81,10 +81,7 @@
                     .then((response) => {
                         if (response.data.data.length != 0) {
                             for (var j = 0; j < response.data.data.length; j++) {
-                                console.log((decodeURIComponent(this.title)));
-                                console.log(response.data.data[j].title);
                                 if(decodeURIComponent(this.title) === response.data.data[j].title) {
-                                    console.log("hey");
                                     var newsObject = {title: {}, description: {}, pubDate: {}, link: {}}
                                     newsObject.title[0] = response.data.data[j].title;
                                     newsObject.description[0] = response.data.data[j].description;

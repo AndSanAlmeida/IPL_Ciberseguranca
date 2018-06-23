@@ -85,7 +85,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="homeEventsContainer">                    
+                <div class="homeEventsContainer">          
                     <div class="thumbnail" v-for="evento in eventos" :key="evento.id">                      
                         <img class="img-responsive" :src="evento.image_path" alt="evento.name">
                         <div class="caption">

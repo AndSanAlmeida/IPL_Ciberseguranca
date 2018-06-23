@@ -37,16 +37,23 @@
                     <div v-if="logged" id="faqSend" class="row">
                         <div class="col-md-12">
                             <h2>Envie-nos a sua Questão</h2>
-                            <form class="form" role="form" method="post" autocomplete="off" v-on:submit.prevent="submitForm">
-                            <b-form-textarea id="faq"
-                                             v-model="faqTextarea"
-                                             placeholder="Coloque aqui a sua Questão!"
-                                             :rows="3"
-                                             :max-rows="3"                                             
-                                             :no-resize="true"
-                                             required>
-                            </b-form-textarea>
-                            <input class="faqSendBtn" type="submit" value="Enviar">
+                            <form class="form" role="form" method="post" autocomplete="off" v-on:submit.prevent="isShowedRecaptcha = true">
+                                <b-form-textarea id="faq"
+                                     v-model="faqTextarea"
+                                     placeholder="Coloque aqui a sua Questão!"
+                                     :rows="3"
+                                     :max-rows="3"                                             
+                                     :no-resize="true"
+                                     required>
+                                </b-form-textarea>
+                                <input class="faqSendBtn" type="submit" value="Enviar">
+                                <br>
+                                <vue-recaptcha v-if="isShowedRecaptcha"
+                                    @verify="submitForm()"
+                                    @expired="isShowedRecaptcha = false"
+                                    align="center"
+                                    sitekey="6LdxSGAUAAAAAArJ_prh93hEVYhyLQ13Xt2Ik4_b">
+                                </vue-recaptcha>
                             </form>
                         </div>
                     </div>                    
@@ -66,6 +73,7 @@
 </template>
 
 <script type="text/javascript">
+    import VueRecaptcha from 'vue-recaptcha';
     export default {
         data: function(){
             return {
@@ -80,6 +88,7 @@
                     text: 'FAQ',
                     active: true
                 }],
+                isShowedRecaptcha: false,
                 logged: false,
                 faqTextarea: '',
                 user_id: 0,
@@ -172,6 +181,9 @@
         created: function () {
             this.getUser();
             this.getFaqs();
-        }
+        },
+        components: { 
+            VueRecaptcha 
+        },
     }
 </script>

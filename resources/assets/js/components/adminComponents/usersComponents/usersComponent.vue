@@ -191,31 +191,36 @@
                         text: newStateString + "!"
                     },
                 }).then((result) => {
-                    if (result != '') {
-                        const data = {
-                            newState: newState,
-                            reason: result,
-                        };
-                        axios.put('/api/users/' + user.id, data)
-                            .then(response => {
-                                swal({
-                                    title: "Operação completa!",
-                                    text: "Utilizador bloqueado com sucesso!",
-                                    icon: "success",
+                    switch(result) {
+                        case "no": break;
+                        case "yes": 
+                            if (result != '') {
+                                const data = {
+                                    newState: newState,
+                                    reason: result,
+                                };
+                                axios.put('/api/users/' + user.id, data)
+                                    .then(response => {
+                                        swal({
+                                            title: "Operação completa!",
+                                            text: "Utilizador bloqueado com sucesso!",
+                                            icon: "success",
+                                        });
+                                        this.getUsers();
+                                    });
+                            } else {
+                                swal("Preencher mensagem.", {
+                                    icon: "warning",
+                                    buttons: {
+                                        ok: "Ok"
+                                    },
+                                }).then((result) => {
+                                    switch (result) {
+                                        case "ok": break;
+                                    }
                                 });
-                                this.getUsers();
-                            });
-                    } else {
-                        swal("Preencher mensagem.", {
-                            icon: "warning",
-                            buttons: {
-                                ok: "Ok"
-                            },
-                        }).then((result) => {
-                            switch (result) {
-                                case "ok": break;
                             }
-                        });
+                            break;
                     }
                 })
             }

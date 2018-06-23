@@ -42,7 +42,13 @@
             class="form-control" placeholder="Confirm Password"/>
             <div class=" alert-danger" role="alert" v-cloak v-show="isFormInvalid"><p v-if="missingPasswordConfirmation">Confirma a Password</p></div>
             <div class=" alert-danger" role="alert" v-cloak v-show="isFormInvalid"> <p v-if="wrongPasswordConfirmation">Password não são iguais</p></div>
-
+            
+            <vue-recaptcha
+                align="center"
+                @verify="onCaptchaVerified"
+                sitekey="6LdxSGAUAAAAAArJ_prh93hEVYhyLQ13Xt2Ik4_b">
+            </vue-recaptcha>
+            <br>
             <!-- LINKS -->
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Registar</button>
             <p class="text-center">
@@ -59,82 +65,86 @@
 
 
 <script type="text/javascript">
-export default {
-    data: function () {
-        return {
-            name: '',
-            username: '',
-            email: '',
-            password: '',
-            loading: false,
-            passwordConfirmation: '',
-            attemptSubmit: false,
-            serverErrorCode: 0,
-            serverErrorMessage: '',
-            success: false
-        }
-    },
-    computed: {
-        missingName: function () {
-            return this.name.trim() === '' && !this.hasServerError && this.attemptSubmit;
+    import VueRecaptcha from 'vue-recaptcha';
+    export default {
+        data: function () {
+            return {
+                name: '',
+                username: '',
+                email: '',
+                password: '',
+                loading: false,
+                isVerifiedWithRecaptcha: false,
+                passwordConfirmation: '',
+                attemptSubmit: false,
+                serverErrorCode: 0,
+                serverErrorMessage: '',
+                success: false
+            }
         },
-        missingEmail: function () {
-            return this.email.trim() === '' && !this.hasServerError && this.attemptSubmit;
+        computed: {
+            missingName: function () {
+                return this.name.trim() === '' && !this.hasServerError && this.attemptSubmit;
+            },
+            missingEmail: function () {
+                return this.email.trim() === '' && !this.hasServerError && this.attemptSubmit;
+            },
+            invalidEmail: function () {
+                return !this.missingEmail && !this.validateEmail(this.email.trim()) && !this.hasServerError && this.attemptSubmit;
+            },
+            emailAlreadyUsed: function () {
+                return this.serverErrorCode == 1;
+            },
+            missingUsername: function () {
+                return this.username.trim() === '' && !this.hasServerError && this.attemptSubmit;
+            },
+            usernameAlreadyUsed: function () {
+                return this.serverErrorCode == 2;
+            },
+            missingPassword: function () {
+                return this.password.trim() === '' && !this.hasServerError && this.attemptSubmit;
+            },
+            invalidPassword: function () {
+                return !this.missingPassword && !this.validatePasswordStructure(this.password.trim()) && !this.hasServerError && this.attemptSubmit;
+            },
+            missingPasswordConfirmation: function () {
+                return !this.missingPassword && !this.invalidPassword && this.passwordConfirmation.trim() === '' && !this.hasServerError && this.attemptSubmit;
+            },
+            wrongPasswordConfirmation: function () {
+                return !this.missingPassword && !this.invalidPassword && !this.missingPasswordConfirmation && (this.passwordConfirmation.trim() != this.password.trim()) && !this.hasServerError && this.attemptSubmit;
+            },
+            hasClientError: function () {
+                return (this.missingName || this.missingEmail || this.missingUsername || this.missingPassword || this.invalidPassword || this.wrongPasswordConfirmation || this.missingPasswordConfirmation || this.invalidEmail);
+            },
+            hasServerError: function () {
+                return this.serverErrorCode == -1 || this.emailAlreadyUsed || this.usernameAlreadyUsed;
+            },
+            isFormInvalid: function () {
+                return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
+            },
         },
-        invalidEmail: function () {
-            return !this.missingEmail && !this.validateEmail(this.email.trim()) && !this.hasServerError && this.attemptSubmit;
-        },
-        emailAlreadyUsed: function () {
-            return this.serverErrorCode == 1;
-        },
-        missingUsername: function () {
-            return this.username.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        usernameAlreadyUsed: function () {
-            return this.serverErrorCode == 2;
-        },
-        missingPassword: function () {
-            return this.password.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        invalidPassword: function () {
-            return !this.missingPassword && !this.validatePasswordStructure(this.password.trim()) && !this.hasServerError && this.attemptSubmit;
-        },
-        missingPasswordConfirmation: function () {
-            return !this.missingPassword && !this.invalidPassword && this.passwordConfirmation.trim() === '' && !this.hasServerError && this.attemptSubmit;
-        },
-        wrongPasswordConfirmation: function () {
-            return !this.missingPassword && !this.invalidPassword && !this.missingPasswordConfirmation && (this.passwordConfirmation.trim() != this.password.trim()) && !this.hasServerError && this.attemptSubmit;
-        },
-        hasClientError: function () {
-            return (this.missingName || this.missingEmail || this.missingUsername || this.missingPassword || this.invalidPassword || this.wrongPasswordConfirmation || this.missingPasswordConfirmation || this.invalidEmail);
-        },
-        hasServerError: function () {
-            return this.serverErrorCode == -1 || this.emailAlreadyUsed || this.usernameAlreadyUsed;
-        },
-        isFormInvalid: function () {
-            return (this.hasClientError || this.hasServerError) && this.attemptSubmit;
-        },
-    },
-    methods: {
-        validateEmail: function (email) {
-            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
-        },
-        validatePasswordStructure: function (password) {
-            var re = /^[a-zA-Z0-9]{6,}$/;
-            return re.test(password);
-        },
-        clear: function () {
-            this.name = '';
-            this.username = '';
-            this.email = '';
-            this.password = '';
-            this.passwordConfirmation = '';
-            this.attemptSubmit = false;
-            this.serverErrorCode = 0;
-        },
-        validateForm: function () {
-                
+        methods: {
+            onCaptchaVerified: function() {
+                this.isVerifiedWithRecaptcha = true;
+            },
+            validateEmail: function (email) {
+                var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
+            },
+            validatePasswordStructure: function (password) {
+                var re = /^[a-zA-Z0-9]{6,}$/;
+                return re.test(password);
+            },
+            clear: function () {
+                this.name = '';
+                this.username = '';
+                this.email = '';
+                this.password = '';
+                this.passwordConfirmation = '';
+                this.attemptSubmit = false;
+                this.serverErrorCode = 0;
+            },
+            validateForm: function () { 
                 //CLEARS SERVER ERROR'S
                 this.serverErrorCode = 0;
                 this.success = false;
@@ -146,7 +156,7 @@ export default {
                 this.attemptSubmit = true;
 
                 //IF FORM IS VALID MAKE API REQUEST FOR LOGIN
-                if (!this.isFormInvalid) {
+                if (!this.isFormInvalid && this.isVerifiedWithRecaptcha == true) {
                     this.loading = true;
                     const data = {
                         name: this.name,
@@ -159,7 +169,6 @@ export default {
                         this.success = true;
                         this.clear();
                         this.loading = false;
-                        setTimeout( () => this.$router.push({ path: '/login'}), 5000);
                     })
                     .catch((error) => {
                         this.loading = false;
@@ -168,6 +177,9 @@ export default {
                     });
                 }
             },
-        }
+        },
+        components: { 
+            VueRecaptcha 
+        },
     }
-    </script>
+</script>

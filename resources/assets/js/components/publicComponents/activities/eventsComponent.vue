@@ -44,7 +44,13 @@
                                                 <div v-if="!subscribed(row.item.id)">
                                                     <div v-if="!isMaxCapacity(row.item)">
                                                         <p class="text-center">Se pertende inscrever no evento pressione o botao seguinte</p>
-                                                    <button type="button" class="btn btn-contrast" v-on:click="subscribeToEvent(row.item)">Inscrever</button>
+                                                        <button type="button" class="btn btn-contrast" v-on:click="isShowedRecaptchaToSub = true">Inscrever</button>
+                                                        <vue-recaptcha v-if="isShowedRecaptchaToSub"
+                                                            @verify="onCaptchaVerifiedToSub(row.item)"
+                                                            @expired="isShowedRecaptchaToSub = false"
+                                                            align="center"
+                                                            sitekey="6LdxSGAUAAAAAArJ_prh93hEVYhyLQ13Xt2Ik4_b">
+                                                        </vue-recaptcha>
                                                     </div>
                                                     <div v-if="isMaxCapacity(row.item)">
                                                         <p class="text-center">Evento encontra-se com lotação esgotada</p>
@@ -52,7 +58,13 @@
                                                 </div>
                                                 <div v-if="subscribed(row.item.id)">
                                                     <p class="text-center">Já se encontra inscrito a este evento.</p>
-                                                    <button type="button" class="btn btn-contrast" v-on:click="unsubscribeToEvent(row.item)">Anular Inscrição</button>
+                                                    <button type="button" class="btn btn-contrast" v-on:click="isShowedRecaptchaToUnsub = true">Anular Inscrição</button>
+                                                    <vue-recaptcha v-if="isShowedRecaptchaToUnsub"
+                                                        @verify="onCaptchaVerifiedToUnsub(row.item)"
+                                                        @expired="isShowedRecaptchaToUnsub = false"
+                                                        align="center"
+                                                        sitekey="6LdxSGAUAAAAAArJ_prh93hEVYhyLQ13Xt2Ik4_b">
+                                                    </vue-recaptcha>
                                                 </div>
                                             </div>
                                             <a v-if="!logged" href="/auth/#/" class="btn btn-red">Inscrever</a>
@@ -65,8 +77,8 @@
                         
                         <div class="text-center">
                             <b-pagination :total-rows="totalRows" 
-                                          :per-page="perPage" 
-                                          v-model="currentPage"/> 
+                              :per-page="perPage" 
+                              v-model="currentPage"/> 
                         </div>
                     </div>
                 </div>
@@ -84,6 +96,7 @@
 </template>
 
 <script type="text/javascript">
+    import VueRecaptcha from 'vue-recaptcha';
 
     export default {
         data: function(){
@@ -108,6 +121,8 @@
                 currentPage: 1,
                 perPage: 5,
                 totalRows: '',
+                isShowedRecaptchaToSub: false,
+                isShowedRecaptchaToUnsub: false,
                 logged: false,
                 loading: true,
                 errorLoading: false,
@@ -124,6 +139,12 @@
             },
         },
         methods: {
+            onCaptchaVerifiedToSub: function (evento) {
+                this.subscribeToEvent(evento);
+            },
+            onCaptchaVerifiedToUnsub: function (evento) {
+                this.unsubscribeToEvent(evento);
+            },
             subscribed: function(id) {
                 return this.arrayOfIds.includes(id);
             },
@@ -262,6 +283,9 @@
                     }
                 });
             },
+        },
+        components: { 
+            VueRecaptcha 
         },
         created() {
             this.getEvents();

@@ -6,15 +6,25 @@
                     <div class="newsletterContentNotLogged text-center">
                         <span>Subscreva-se à nossa newsletter e seja o primeiro a receber as nossas notificações.</span>
                         <br><br>
-                        <form class="form-inline" role="form" autocomplete="off" v-on:submit.prevent="submitNewsletterWhenNotLogged">
+                        <form class="form-inline" role="form" autocomplete="off" v-on:submit.prevent="isShowedRecaptcha = true">
                             <div class="form-group">
-                                <input type="text" placeholder="Nome" v-model="name" class="newsletter-input" />
+                                <input type="text" placeholder="Nome" v-model="name" class="newsletter-input" required/>
                             </div>
                             <div class="form-group">
-                                <input type="email" placeholder="Email" v-model="email" class="newsletter-input" />
+                                <input type="email" placeholder="Email" v-model="email" class="newsletter-input" required/>
                             </div>
                             <div class="form-group">
                                 <input class="newsletter-send" type="submit" value="Subscrever">
+                            </div>
+
+                            <div class="form-group">
+                                <br>
+                                <vue-recaptcha v-if="isShowedRecaptcha"
+                                    @verify="submitNewsletterWhenNotLogged"
+                                    @expired="isShowedRecaptcha = false"
+                                    align="center"
+                                    sitekey="6LdxSGAUAAAAAArJ_prh93hEVYhyLQ13Xt2Ik4_b">
+                                </vue-recaptcha>
                             </div>
                         </form>
                     </div>
@@ -25,7 +35,15 @@
                     <div class="newsletterContentLogged text-center">
                         <span>Subscreva-se à nossa newsletter e seja o primeiro a receber as nossas notificações.</span> 
                         <br>
-                        <button class="newsletter-sendLogged" v-on:click="submitNewsletterWhenLogged()">Subscrever</button>  
+                        <button class="newsletter-sendLogged" v-on:click="isShowedRecaptchaLogged = true">Subscrever</button> 
+            
+                        <vue-recaptcha v-if="isShowedRecaptchaLogged"
+                            @verify="submitNewsletterWhenLogged"
+                            @expired="isShowedRecaptchaLogged = false"
+                            align="center"
+                            sitekey="6LdxSGAUAAAAAArJ_prh93hEVYhyLQ13Xt2Ik4_b">
+                        </vue-recaptcha>
+
                     </div>
                 </div>
             </div>
@@ -35,6 +53,7 @@
 <script type="text/javascript">
     import User from '../../classes/user.js';
     import swal from 'sweetalert';
+    import VueRecaptcha from 'vue-recaptcha';
 
     export default {
         data: function(){
@@ -43,6 +62,8 @@
                 name: '',
                 email: '',
                 user: new User(),
+                isShowedRecaptcha: false,
+                isShowedRecaptchaLogged: false,
                 showNewsletter: false,
             }
         },
@@ -65,7 +86,10 @@
 
         },
         methods: {
-            submitNewsletterWhenLogged: function (event) {
+            onCaptchaVerified: function () {
+                this.submitNewsletterWhenLogged();
+            },
+            submitNewsletterWhenLogged: function () {
                 this.serverError = false;
                 this.attemptSubmit = true;
 
@@ -88,6 +112,7 @@
                                 this.showNewsletter = true;
                                 break;
                             }
+                            this.showHideRecaptchaLogged();
                         });
                     })
                     .catch((error) => {
@@ -96,6 +121,9 @@
                     });
                     
                 
+            },
+            onCaptchaVerified: function () {
+                this.submitNewsletterWhenNotLogged();
             },
             submitNewsletterWhenNotLogged: function (event) {
                 this.serverError = false;
@@ -122,6 +150,7 @@
                                         this.email = '';
                                     break;
                                 }
+                                this.showHideRecaptcha();
                             });
                         })
                         .catch((error) => {
@@ -159,6 +188,7 @@
                     });
 
             }
-        }
+        },
+        components: { VueRecaptcha }
     }
 </script>

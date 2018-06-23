@@ -47,8 +47,7 @@ class EventControllerAPI extends Controller
             'localization' => 'required|string|max:100',
             'description' => 'required|string',
             'date' => 'required',
-            'max_inscritos' => 'required|integer',
-            'file' => 'string',
+            'max_inscritos' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
@@ -129,7 +128,6 @@ class EventControllerAPI extends Controller
             'max_inscritos' => 'required|integer',
             'date' => 'required',
             'status' => 'required',
-            'file' => 'string',
         ]);
 
         if ($request->wantsJson() && !$validator->fails()) {
@@ -281,7 +279,7 @@ class EventControllerAPI extends Controller
             $event->total_interested = $event->subscribers->count('user_id');
             $event->save();
 
-            return response()->json(['msg' => 'Inscrição realizada com sucesso.', ]);
+            return response()->json(['msg' => 'Anulação da inscrição realizada com sucesso.', ]);
         }
     }
 

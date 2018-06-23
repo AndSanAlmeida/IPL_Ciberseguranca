@@ -25,6 +25,7 @@
     "hchs-vue-charts": "^1.2.8",
     "sweetalert": "^2.1.0",
     "vue-quill-editor": "^3.0.6",
+    "vue-recaptcha": "^1.1.1",
     "vue-router": "^3.0.1",
     "vuejs-datepicker": "^1.2.0",
     "xml2js": "^0.4.19"

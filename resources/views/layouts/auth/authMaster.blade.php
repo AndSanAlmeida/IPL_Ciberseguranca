@@ -21,6 +21,8 @@
         <!-- Favicon-->
         <link rel="shortcut icon" href="{{ URL::asset('img/favicon.png') }}">
 
+        <script src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit" async defer>
+</script>
     </head>
     <body>
         
