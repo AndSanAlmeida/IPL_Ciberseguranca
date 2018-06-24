@@ -29,6 +29,7 @@ const aboutUs = Vue.component('aboutUs', require('./components/publicComponents/
 const resources = Vue.component('resources', require('./components/publicComponents/resourcesComponent.vue'));
 const activities = Vue.component('activities', require('./components/publicComponents/activitiesComponent.vue'));
 const userSettings = Vue.component('userSettings', require('./components/publicComponents/userSettingsComponent.vue'));
+const newsletterUnsubscribe = Vue.component('newsletterUnsubscribe', require('./components/publicComponents/newsletterUnsubscribeComponent.vue'))
 
 // RESOURCES
 const alerts = Vue.component('alerts', require('./components/publicComponents/resources/alertsComponent.vue'));
@@ -67,6 +68,7 @@ const routes = [
 	{ path: '/resources/faq', component: faq },
 	{ path: '/resources/newsletters', component: newsletters },
 	{ path: '/resources/newsletters/:title', component: singleNewsletter },
+	{ path: '/resources/newsletter/unsubscribe', component: newsletterUnsubscribe},
 
 	//ACTIVITIES
 	{ path: '/activities/events', component: events },

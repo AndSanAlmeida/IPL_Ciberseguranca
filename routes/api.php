@@ -56,7 +56,7 @@ Route::get('documents/{id}', 'DocumentsControllerAPI@show'); //GET ITEM OF DOCUM
 // -------------------- NEWSLETTERS --------------------
 Route::get('newsletters/{id}', 'NewsletterControllerAPI@show'); // GET NEWSLETTER
 Route::post('newsletter/subscribe', 'NewsletterControllerAPI@subscribe'); // SUBSCRIBE NEWSLETTER
-Route::delete('newsletter/{email}/unsubcribe', 'NewsletterControllerAPI@unsubscribe'); // DELETE SUBSCRIPTION OF NEWSLETTER
+Route::delete('newsletter/unsubcribe/{email}', 'NewsletterControllerAPI@unsubscribe'); // DELETE SUBSCRIPTION OF NEWSLETTER
 Route::post('newsletter/subscribed', 'NewsletterControllerAPI@subscribed'); // CHECK IF USER IS IN NEWSLETTER SUBSCRIPTION
 Route::get('newsletter/getPublishedNewsletters', 'NewsletterControllerAPI@getPublishedNewsletters'); // CHECK IF USER IS IN NEWSLETTER SUBSCRIPTION
 

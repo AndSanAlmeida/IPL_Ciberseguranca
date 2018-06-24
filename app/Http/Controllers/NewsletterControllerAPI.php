@@ -175,6 +175,12 @@ class NewsletterControllerAPI extends Controller
 
     // unsubscribe to newsletter
     public function unsubscribe($email) {
+        $subscription = NewsletterSubscription::where('email', $email)->first();
+        if (is_null($subscription)) {
+            return response()->json(['msg' => 'Email não encontrado', 'error' => true]);
+        }
+        $subscription->delete();
+        return response()->json(['msg' => 'Anulação da subscrição realizada com sucesso', 'error' => false]);
 
     }
 
@@ -198,9 +204,10 @@ class NewsletterControllerAPI extends Controller
         try {
             $newsletter = Newsletter::findOrFail($id);
             $newsletter->isPublished = 1;
+             
 
+            $mailText = $newsletter->description."<br><hr><br>Se pretende anular a subscrição a newsletter, clique <a href=\"http://ipl.test/#/resources/newsletter/unsubscribe\">aqui</a>";
             $emails = NewsletterSubscription::groupBy('email')->pluck('email')->toArray();
-
 
             $config = DB::table('config')->first();
             $mailConfigs = json_decode($config->platform_email_properties);
@@ -221,9 +228,9 @@ class NewsletterControllerAPI extends Controller
 
             Mail::setSwiftMailer($mailer);
 
-            Mail::to($emails)->queue(new NewsletterPublished($newsletter->description, $config->platform_email));
+            Mail::to($emails)->queue(new NewsletterPublished($mailText, $config->platform_email));
 
-            $newsletter->update();  
+            $newsletter->update(); 
 
             return response()->json(['msg' => 'Newsletter publica e enviada para os subscritores'], 200);
 
