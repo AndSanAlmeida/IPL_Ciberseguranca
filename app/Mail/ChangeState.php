@@ -13,16 +13,18 @@ class ChangeState extends Mailable
 
     public $mensagem;
     public $user;
+    public $sendBy;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($mensagem, $user)
+    public function __construct($mensagem, $user, $sendBy)
     {
         $this->mensagem = $mensagem;
         $this->user = $user;
+        $this->sendBy = $sendBy;
     }
 
     /**
@@ -32,10 +34,10 @@ class ChangeState extends Mailable
      */
     public function build()
     {
-        $name = 'Administração';
-
+        $name = 'IPLeiria | Cibersegurança';
         $subject = 'Alteração no estado da sua conta';
+        $sendBy = $this->sendBy;
 
-        return $this->markdown('email.changestate');
+        return $this->from($sendBy, $name)->subject($subject)->markdown('email.changestate');
     }
 }

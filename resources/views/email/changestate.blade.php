@@ -1,11 +1,31 @@
-@component('mail::message')
-Olá, {{ $user->name }}.
+@component('mail::layout')
+    {{-- Header --}}
+    @slot('header')
+        @component('mail::header', ['url' => config('app.url')])
+            IPLeiria | Cibersegurança
+        @endcomponent
+    @endslot
+    
+    Olá, {{ $user->name }}.
 
-Desde já pedimos desculpa pelo incómudo.
-Informamos que o estado da sua conta foi alterado.
+	Desde já pedimos desculpa pelo incómudo.
+	Informamos que o estado da sua conta foi alterado.
 
-<b>{{ $mensagem }}</b>
+	{{ $mensagem }}
 
-Obrigado,<br>
-IPL-Cibersegurança
+    {{-- Subcopy --}}
+    @slot('subcopy')
+        @component('mail::subcopy')
+		Obrigado,<br>
+		Administração do IPLeiria | Cibersegurança
+        @endcomponent
+    @endslot
+
+
+    {{-- Footer --}}
+    @slot('footer')
+        @component('mail::footer')
+            {{date("Y")}} IPLeiria | Cibersegurança
+        @endcomponent
+    @endslot
 @endcomponent

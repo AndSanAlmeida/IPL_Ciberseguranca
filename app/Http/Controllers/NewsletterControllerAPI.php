@@ -177,10 +177,10 @@ class NewsletterControllerAPI extends Controller
     public function unsubscribe($email) {
         $subscription = NewsletterSubscription::where('email', $email)->first();
         if (is_null($subscription)) {
-            return response()->json(['msg' => 'Email não encontrado', 'error' => true]);
+            return response()->json(['msg' => 'Email não encontrado.', 'error' => true]);
         }
-        $subscription->delete();
-        return response()->json(['msg' => 'Anulação da subscrição realizada com sucesso', 'error' => false]);
+        //$subscription->delete();
+        return response()->json(['msg' => 'Anulação da subscrição realizada com sucesso.', 'error' => false]);
 
     }
 
@@ -206,7 +206,7 @@ class NewsletterControllerAPI extends Controller
             $newsletter->isPublished = 1;
              
 
-            $mailText = $newsletter->description."<br><hr><br>Se pretende anular a subscrição a newsletter, clique <a href=\"http://ipl.test/#/resources/newsletter/unsubscribe\">aqui</a>";
+            
             $emails = NewsletterSubscription::groupBy('email')->pluck('email')->toArray();
 
             $config = DB::table('config')->first();
@@ -228,7 +228,12 @@ class NewsletterControllerAPI extends Controller
 
             Mail::setSwiftMailer($mailer);
 
-            Mail::to($emails)->queue(new NewsletterPublished($mailText, $config->platform_email));
+            foreach ($emails as $email) {
+                $mailText = '';
+                $mailText = $newsletter->description."<br><hr><br>Se pretende anular a subscrição a newsletter, clique <a href=\"http://ipl.test/#/resources/newsletter/unsubscribe/".$email."\">aqui</a>";
+                
+                Mail::to($email)->queue(new NewsletterPublished($mailText, $config->platform_email));
+            }
 
             $newsletter->update(); 
 

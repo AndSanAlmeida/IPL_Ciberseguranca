@@ -15,6 +15,7 @@ class QuestionAnswered extends Mailable
     public $user;
     public $questionText;
     public $answerText;
+    public $sendBy;
 
 
     /**
@@ -22,12 +23,13 @@ class QuestionAnswered extends Mailable
      *
      * @return void
      */
-    public function __construct($mensagem, $questionText, $answerText, $user)
+    public function __construct($mensagem, $questionText, $answerText, $user, $sendBy)
     {
         $this->mensagem = $mensagem;
         $this->questionText = $questionText;
         $this->answerText = $answerText;
         $this->user = $user;
+        $this->sendBy = $sendBy;
     }
 
 
@@ -38,10 +40,10 @@ class QuestionAnswered extends Mailable
      */
     public function build()
     {
-        $name = 'Oficina de Cibersegurança';
-
+        $name = 'IPLeiria | Cibersegurança';
         $subject = 'Questão Respondida';
+        $sendBy = $this->sendBy;
 
-        return $this->markdown('email.questionAnswered');
+        return $this->from($sendBy, $name)->subject($subject)->markdown('email.questionAnswered');
     }
 }

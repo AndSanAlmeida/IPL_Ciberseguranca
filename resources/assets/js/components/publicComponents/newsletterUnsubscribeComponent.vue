@@ -9,14 +9,10 @@
                     </div>
                     <br>
                     <b-alert show variant="danger" v-if="showError">{{msgError}}</b-alert>
-					<form method="post" v-on:submit.prevent="unsubscribe" v-if="showForm">
-				      <div class="form-group">
-					    <label for="email">Email</label>
-					    <input type="email" class="form-control" id="email" v-model="email" required aria-describedby="emailHelp" placeholder="Inserir Email">
-					  </div>
-				      <button type="submit" class="btn btn-primary">Anular Subscrição</button>
-				      <button type="reset" class="btn btn-danger">Reset</button>
-				    </form>
+					<div v-if="showButton">
+					     <button type="button" v-on:click="pressedUnsubscribe" class="btn btn-primary">Anular Subscrição</button>
+					     <button type="button" v-on:click="cancel" class="btn btn-danger">Cancelar</button>
+				    </div>
 				    <br><br>
                     <b-alert show variant="success" v-if="pressedNo">
 					  <h4 class="alert-heading">IPLeiria | Cibersegurança - Newsletter </h4>
@@ -66,7 +62,7 @@
                 }],
                 pressedNo: false,
                 pressedYes: false,
-                showForm: true,
+                showButton: true,
                 showError: false,
                 msgError: '',
                 loading: false,
@@ -76,7 +72,12 @@
         	
         },
         methods: {
-            unsubscribe: function() {
+        	cancel: function() {
+        		this.pressedYes = false;
+              	this.pressedNo = true;
+              	this.showButton = false;
+        	},
+            pressedUnsubscribe: function() {
             	this.loading=true;
                 
 				swal("Pertende realmente anular a subscrição da newsletter?", {
@@ -97,8 +98,7 @@
                   		case "no":
                   			this.pressedYes = false;
                   			this.pressedNo = true;
-                  			this.showForm = false;
-                  			this.reset();
+                  			this.showButton = false;
                     		break;
                   		case "yes":
                   			axios.delete('/api/newsletter/unsubcribe/'+this.email)
@@ -109,26 +109,22 @@
 			                    	} else {
 			                    		this.pressedYes = true;
 				                      	this.pressedNo = false;
-				                      	this.showForm = false;
-				                      	this.reset();
+				                      	this.showButton = false;
 				                    }
 			                        this.loading = false;
 			                    }).catch((error) => {
 			                    	console.log(error);
 			                        this.loading = false;
 			                        this.errorLoading = true;
-			                        this.reset();
 			                });
 
 	                     	break;
 	                }
           		});
            	},
-           	reset: function() {
-           		this.email='';
-           	}
         },
         created: function() {
+        	this.email = this.$route.params.email;
         },
     }
 </script>

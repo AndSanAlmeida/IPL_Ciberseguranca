@@ -102,7 +102,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::middleware('isAdmin')->group(function () {
 		// -------------------- USER --------------------
 		Route::post('users', 'UserControllerAPI@getUsers'); //GET LIST OF USERS TO MANAGE
-		Route::put('users/{id}', 'UserControllerAPI@updateState'); //CHANGE STATE USER
+		Route::post('users/{id}/state', 'UserControllerAPI@updateState'); //CHANGE STATE USER
 		Route::delete('users/{id}', 'UserControllerAPI@delete'); //DELETE USER
 		Route::get('user/{id}', 'UserControllerAPI@getUserById'); // GET USER BY ID
 		Route::post('usersForStatus', 'UserControllerAPI@getUsersForStatus'); //GET LIST OF USERS FOR STATUS TO MANAGE

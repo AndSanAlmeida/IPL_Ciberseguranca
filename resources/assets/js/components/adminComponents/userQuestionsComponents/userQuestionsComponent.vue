@@ -109,38 +109,43 @@
             answerQuestion: function(question) {
                 swal("Pergunta: " +question.question, {
                     content: "input",
+                    buttons: {
+                        ok: "Ok"
+                    },
                   })
                   .then((value) => {
-                    this.answering = true;
-                    if (value != '') {
-                        const data = {
-                            id: question.id,
-                            answer: value,
-                        }
-                        axios.post('/api/questions/answer', data)
-                            .then((response) => {
-                                swal("Pergunta respondida com sucesso.", {
-                                    icon: "success",
-                                        buttons: {
-                                            ok: "Ok"
-                                        },
+                    switch (value) {
+                        case "ok":
+                            this.answering = true;
+                            if (value != '') {
+                                const data = {
+                                    id: question.id,
+                                    answer: value,
+                                }
+                                axios.post('/api/questions/answer', data)
+                                    .then((response) => {
+                                        swal("Pergunta respondida com sucesso.", {
+                                            icon: "success",
+                                                buttons: {
+                                                    ok: "Ok"
+                                                },
+                                            })
+                                            .then((value) => {
+                                                switch (value) {
+                                                    case "ok":
+                                                        this.answering = false;
+                                                        this.getNotAnsweredQuestions();
+                                                        this.getAllQuestions();
+                                                        break;
+                                                }
+                                            });
                                     })
-                                    .then((value) => {
-                                        switch (value) {
-                                            case "ok":
-                                                this.answering = false;
-                                                this.getNotAnsweredQuestions();
-                                                this.getAllQuestions();
-                                                break;
-                                        }
-                                    });
-                            })
-                            .catch((error) => {
-                                this.loading = false;
-                                this.errorLoading = true;
-                            });    
-                    } else {
-                        swal("Preencher resposta.", {
+                                    .catch((error) => {
+                                        this.loading = false;
+                                        this.errorLoading = true;
+                                    });    
+                            } else {
+                                swal("Preencher resposta.", {
                                     icon: "warning",
                                         buttons: {
                                             ok: "Ok"
@@ -153,21 +158,23 @@
                                                 break;
                                         }
                                     });
-                    }   
+                            }
+                            break;   
+                    }
                 });
             },
             deleteNotAnswered: function(question) {
                 swal("Pertende realmente apagar esta pergunta?", {
-                  icon: "warning",
-                  buttons: {
-                      no: {
-                        text: "Não",
-                        className: "btn-light",
-                      },
-                      yes: {
-                        text: "Sim",
-                        className: "btn-info",
-                      },
+                    icon: "warning",
+                    buttons: {
+                        no: {
+                            text: "Não",
+                            className: "btn-light",
+                        },
+                        yes: {
+                            text: "Sim",
+                            className: "btn-info",
+                        },
                   },
                 })
                 .then((value) => {

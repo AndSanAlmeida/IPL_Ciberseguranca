@@ -187,40 +187,33 @@
                             placeholder: "Mensagem"
                         },
                     },
-                    button: {
-                        text: newStateString + "!"
-                    },
                 }).then((result) => {
-                    switch(result) {
-                        case "no": break;
-                        case "yes": 
-                            if (result != '') {
-                                const data = {
-                                    newState: newState,
-                                    reason: result,
-                                };
-                                axios.put('/api/users/' + user.id, data)
-                                    .then(response => {
-                                        swal({
-                                            title: "Operação completa!",
-                                            text: "Utilizador bloqueado com sucesso!",
-                                            icon: "success",
-                                        });
-                                        this.getUsers();
-                                    });
-                            } else {
-                                swal("Preencher mensagem.", {
-                                    icon: "warning",
-                                    buttons: {
-                                        ok: "Ok"
-                                    },
-                                }).then((result) => {
-                                    switch (result) {
-                                        case "ok": break;
-                                    }
+                    console.log(result);
+                    if (result != '' && result != null) {
+                        const data = {
+                            newState: newState,
+                            reason: result,
+                        };
+                        axios.post('/api/users/' + user.id+'/state', data)
+                            .then(response => {
+                                swal({
+                                    title: "Operação completa!",
+                                    text: "Utilizador bloqueado com sucesso!",
+                                    icon: "success",
                                 });
+                                this.getUsers();
+                            });
+                    } else {
+                        swal("Preencher mensagem.", {
+                            icon: "warning",
+                            buttons: {
+                                ok: "Ok"
+                            },
+                        }).then((result) => {
+                            switch (result) {
+                                case "ok": break;
                             }
-                            break;
+                        });
                     }
                 })
             }

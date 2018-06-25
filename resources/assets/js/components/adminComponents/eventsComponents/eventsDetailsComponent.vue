@@ -20,7 +20,7 @@
 
                 <p><b>Data do Evento: </b>{{shortDate}}</p>
 
-                <p><b>Descrição: </b>{{description}}</p>
+                <p><b>Descrição: </b><spam v-html="description"></spam></p>
 
                 <p><b>Estado: </b>{{status == 0 ? 'Por Realizar' : status == 0 ? 'A Decorrer' : 'Concluido'}}</p>
                  

@@ -442,10 +442,11 @@ p {
     align-items: baseline;
   }  
   .thumbnail {
-    max-width: 50%;
+    max-width: 45%;
     margin: 20px;
     border: none;
     img {
+      //max-width: 500px;
       opacity: 1;
       @include border-radius(5px);
       @include transition(opacity, 0.3s, ease-in-out);

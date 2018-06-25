@@ -68,7 +68,7 @@ const routes = [
 	{ path: '/resources/faq', component: faq },
 	{ path: '/resources/newsletters', component: newsletters },
 	{ path: '/resources/newsletters/:title', component: singleNewsletter },
-	{ path: '/resources/newsletter/unsubscribe', component: newsletterUnsubscribe},
+	{ path: '/resources/newsletter/unsubscribe/:email', component: newsletterUnsubscribe},
 
 	//ACTIVITIES
 	{ path: '/activities/events', component: events },

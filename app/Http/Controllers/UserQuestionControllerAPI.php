@@ -81,7 +81,7 @@ class UserQuestionControllerAPI extends Controller
 				});
 				$mailer = new Swift_Mailer($app['swift.transport']->driver());
 				Mail::setSwiftMailer($mailer);
-				Mail::to($user)->send(new QuestionAnswered($mensagem, $questionText, $answerText, $user));
+				Mail::to($user)->send(new QuestionAnswered($mensagem, $questionText, $answerText, $user, $config->platform_email));
 
 				$question->save();
                 return response()->json(['msg' => 'Questão respondida.']);

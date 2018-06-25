@@ -96,7 +96,7 @@ class UserControllerAPI extends Controller
                 }
 
                 if ($reason != null) {
-                    $mensagem .= '<br/><br/>Razão: <br/>' . $reason;
+                    $mensagem .= ' Razão: '.$reason;
                 }				
 
 				$config = DB::table('config')->first();
@@ -115,7 +115,7 @@ class UserControllerAPI extends Controller
 				});
 				$mailer = new Swift_Mailer($app['swift.transport']->driver());
 				Mail::setSwiftMailer($mailer);
-				Mail::to($user)->send(new ChangeState($mensagem, $user));
+				Mail::to($user)->send(new ChangeState($mensagem, $user, $config->platform_email));
 
 				$user->save();
                 return response()->json(['msg' => 'Estado do utilizador alterado.']);

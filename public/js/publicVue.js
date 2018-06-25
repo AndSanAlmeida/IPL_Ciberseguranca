@@ -77975,7 +77975,7 @@ var contacts = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('contacts',
 var routes = [{ path: '/', redirect: '/home' }, { path: '/home', component: home }, { path: '/aboutUs', component: aboutUs }, { path: '/resources', component: resources }, { path: '/activities', component: activities }, { path: '/userSettings', component: userSettings },
 
 // RESOURCES
-{ path: '/resources/alerts', component: alerts }, { path: '/resources/alerts/:title', component: alert }, { path: '/resources/glossary', component: glossary }, { path: '/resources/news', component: news }, { path: '/resources/news/:title', component: singleNews }, { path: '/resources/usefulLinks', component: usefulLinks }, { path: '/resources/documents', component: documents }, { path: '/resources/faq', component: faq }, { path: '/resources/newsletters', component: newsletters }, { path: '/resources/newsletters/:title', component: singleNewsletter }, { path: '/resources/newsletter/unsubscribe', component: newsletterUnsubscribe },
+{ path: '/resources/alerts', component: alerts }, { path: '/resources/alerts/:title', component: alert }, { path: '/resources/glossary', component: glossary }, { path: '/resources/news', component: news }, { path: '/resources/news/:title', component: singleNews }, { path: '/resources/usefulLinks', component: usefulLinks }, { path: '/resources/documents', component: documents }, { path: '/resources/faq', component: faq }, { path: '/resources/newsletters', component: newsletters }, { path: '/resources/newsletters/:title', component: singleNewsletter }, { path: '/resources/newsletter/unsubscribe/:email', component: newsletterUnsubscribe },
 
 //ACTIVITIES
 { path: '/activities/events', component: events },
@@ -82923,10 +82923,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -82949,7 +82945,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }],
             pressedNo: false,
             pressedYes: false,
-            showForm: true,
+            showButton: true,
             showError: false,
             msgError: '',
             loading: false
@@ -82957,7 +82953,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {},
     methods: {
-        unsubscribe: function unsubscribe() {
+        cancel: function cancel() {
+            this.pressedYes = false;
+            this.pressedNo = true;
+            this.showButton = false;
+        },
+        pressedUnsubscribe: function pressedUnsubscribe() {
             var _this = this;
 
             this.loading = true;
@@ -82979,8 +82980,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     case "no":
                         _this.pressedYes = false;
                         _this.pressedNo = true;
-                        _this.showForm = false;
-                        _this.reset();
+                        _this.showButton = false;
                         break;
                     case "yes":
                         axios.delete('/api/newsletter/unsubcribe/' + _this.email).then(function (response) {
@@ -82990,26 +82990,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             } else {
                                 _this.pressedYes = true;
                                 _this.pressedNo = false;
-                                _this.showForm = false;
-                                _this.reset();
+                                _this.showButton = false;
                             }
                             _this.loading = false;
                         }).catch(function (error) {
                             console.log(error);
                             _this.loading = false;
                             _this.errorLoading = true;
-                            _this.reset();
                         });
 
                         break;
                 }
             });
-        },
-        reset: function reset() {
-            this.email = '';
         }
     },
-    created: function created() {}
+    created: function created() {
+        this.email = this.$route.params.email;
+    }
 });
 
 /***/ }),
@@ -83044,72 +83041,28 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              _vm.showForm
-                ? _c(
-                    "form",
-                    {
-                      attrs: { method: "post" },
-                      on: {
-                        submit: function($event) {
-                          $event.preventDefault()
-                          return _vm.unsubscribe($event)
-                        }
-                      }
-                    },
-                    [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "email" } }, [
-                          _vm._v("Email")
-                        ]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.email,
-                              expression: "email"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            type: "email",
-                            id: "email",
-                            required: "",
-                            "aria-describedby": "emailHelp",
-                            placeholder: "Inserir Email"
-                          },
-                          domProps: { value: _vm.email },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.email = $event.target.value
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { type: "submit" }
-                        },
-                        [_vm._v("Anular Subscrição")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger",
-                          attrs: { type: "reset" }
-                        },
-                        [_vm._v("Reset")]
-                      )
-                    ]
-                  )
+              _vm.showButton
+                ? _c("div", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "button" },
+                        on: { click: _vm.pressedUnsubscribe }
+                      },
+                      [_vm._v("Anular Subscrição")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button" },
+                        on: { click: _vm.cancel }
+                      },
+                      [_vm._v("Cancelar")]
+                    )
+                  ])
                 : _vm._e(),
               _vm._v(" "),
               _c("br"),
