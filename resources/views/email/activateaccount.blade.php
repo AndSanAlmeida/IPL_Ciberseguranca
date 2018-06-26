@@ -1,7 +1,7 @@
 @component('mail::layout')
 {{-- Header --}}
 @slot('header')
-@component('mail::header', ['url' => 'http://ipl-cybersecurity.tk/'])
+@component('mail::header', ['url' => config('app.url')])
 IPLeiria | Cibersegurança
 @endcomponent
 @endslot
@@ -10,7 +10,7 @@ IPLeiria | Cibersegurança
 
 Ative a sua conta no seguinte botão.
 
-@component('mail::button', ['url' => 'http://ipl-cybersecurity.tk/'])
+@component('mail::button', ['url' => $url])
 Ativar conta
 @endcomponent
 

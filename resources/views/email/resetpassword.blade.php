@@ -1,7 +1,7 @@
 @component('mail::layout')
 {{-- Header --}}
 @slot('header')
-@component('mail::header', ['url' => 'http://ipl-cybersecurity.tk/'])
+@component('mail::header', ['url' => config('app.url')])
 IPLeiria | Cibersegurança
 @endcomponent
 @endslot
