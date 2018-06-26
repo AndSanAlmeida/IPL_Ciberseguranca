@@ -611,6 +611,7 @@ p {
 }
 
 #homeEvents .thumbnail img {
+  max-width: 500px;
   opacity: 1;
   border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -1341,6 +1342,16 @@ p {
 
   .container-nav {
     margin: 40px;
+  }
+
+  #homeEvents .thumbnail {
+    max-width: initial;
+    margin: 20px;
+    border: none;
+  }
+
+  #homeEvents .thumbnail img {
+    max-width: initial;
   }
 }
 

@@ -43,7 +43,7 @@
                                             <div v-if="logged && row.item.status != 2">
                                                 <div v-if="!subscribed(row.item.id)">
                                                     <div v-if="!isMaxCapacity(row.item)">
-                                                        <p class="text-center">Se pertende inscrever no evento pressione o botao seguinte</p>
+                                                        <p class="text-center">Se pertende inscrever no evento pressione o botão seguinte</p>
                                                         <button type="button" class="btn btn-contrast" v-on:click="isShowedRecaptchaToSub = true">Inscrever</button>
                                                         <vue-recaptcha v-if="isShowedRecaptchaToSub"
                                                             @verify="onCaptchaVerifiedToSub(row.item)"

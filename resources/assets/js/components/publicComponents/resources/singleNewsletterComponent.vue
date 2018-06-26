@@ -121,7 +121,7 @@
             }
         },
         created: function() {
-            this.title = window.location.href.substr(window.location.href.lastIndexOf('/') + 1).replace(/%20/g, " ");
+            this.title = decodeURIComponent(window.location.href.substr(window.location.href.lastIndexOf('/') + 1).replace(/%20/g, " "));
             this.items[3].text = this.get_ents(this.title);
             this.getNewsletters();
         }

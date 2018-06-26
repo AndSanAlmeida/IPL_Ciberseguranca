@@ -446,7 +446,7 @@ p {
     margin: 20px;
     border: none;
     img {
-      //max-width: 500px;
+      max-width: 500px;
       opacity: 1;
       @include border-radius(5px);
       @include transition(opacity, 0.3s, ease-in-out);
@@ -1079,5 +1079,15 @@ p {
   }
   .container-nav {
     margin: 40px;
+  }
+  #homeEvents {
+    .thumbnail {
+      max-width: initial;
+      margin: 20px;
+      border: none;
+      img {
+        max-width: initial;
+      }
+    }
   }
 }

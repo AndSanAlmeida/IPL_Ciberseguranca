@@ -79962,7 +79962,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (!this.xhr) {
                 throw new Error('CORS not supported');
             } else {
-                axios.get("https://cors.now.sh/" + feed).then(function (response) {
+                axios.get("https://cors-anywhere.herokuapp.com/" + feed).then(function (response) {
                     var vm = _this5;
                     var parseString = __webpack_require__(37).parseString;
                     parseString(response.data, function (err, result) {
@@ -83394,7 +83394,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (!this.xhr) {
                 throw new Error('CORS not supported');
             } else {
-                axios.get("https://cors.now.sh/" + feed).then(function (response) {
+                axios.get("https://cors-anywhere.herokuapp.com/" + feed).then(function (response) {
                     var vm = _this3;
                     var parseString = __webpack_require__(37).parseString;
                     parseString(response.data, function (err, result) {
@@ -83911,7 +83911,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (!this.xhr) {
                 throw new Error('CORS not supported');
             } else {
-                axios.get("https://cors.now.sh/" + feed).then(function (response) {
+                axios.get("https://cors-anywhere.herokuapp.com/" + feed).then(function (response) {
                     var vm = _this3;
                     var parseString = __webpack_require__(37).parseString;
                     parseString(response.data, function (err, result) {
@@ -84000,7 +84000,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     created: function created() {
-        this.title = window.location.href.substr(window.location.href.lastIndexOf('/') + 1).replace(/%20/g, " ");
+        this.title = decodeURIComponent(window.location.href.substr(window.location.href.lastIndexOf('/') + 1).replace(/%20/g, " "));
         this.items[3].text = this.get_ents(this.title);
         this.getRSSAlerts();
     }
@@ -84701,7 +84701,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (!this.xhr) {
                 throw new Error('CORS not supported');
             } else {
-                axios.get("https://cors.now.sh/" + feed).then(function (response) {
+                axios.get("https://cors-anywhere.herokuapp.com/" + feed).then(function (response) {
                     var vm = _this3;
                     var parseString = __webpack_require__(37).parseString;
                     parseString(response.data, function (err, result) {
@@ -85248,7 +85248,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (!this.xhr) {
                 throw new Error('CORS not supported');
             } else {
-                axios.get("https://cors.now.sh/" + feed).then(function (response) {
+                axios.get("https://cors-anywhere.herokuapp.com/" + feed).then(function (response) {
                     var vm = _this3;
                     var parseString = __webpack_require__(37).parseString;
                     parseString(response.data, function (err, result) {
@@ -85338,7 +85338,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     created: function created() {
-        this.title = window.location.href.substr(window.location.href.lastIndexOf('/') + 1).replace(/%20/g, " ");
+        this.title = decodeURIComponent(window.location.href.substr(window.location.href.lastIndexOf('/') + 1).replace(/%20/g, " "));
         this.items[3].text = this.get_ents(this.title);
         this.getRSSNews();
     }
@@ -86946,7 +86946,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     created: function created() {
-        this.title = window.location.href.substr(window.location.href.lastIndexOf('/') + 1).replace(/%20/g, " ");
+        this.title = decodeURIComponent(window.location.href.substr(window.location.href.lastIndexOf('/') + 1).replace(/%20/g, " "));
         this.items[3].text = this.get_ents(this.title);
         this.getNewsletters();
     }
@@ -87593,7 +87593,7 @@ var render = function() {
                                                             },
                                                             [
                                                               _vm._v(
-                                                                "Se pertende inscrever no evento pressione o botao seguinte"
+                                                                "Se pertende inscrever no evento pressione o botão seguinte"
                                                               )
                                                             ]
                                                           ),

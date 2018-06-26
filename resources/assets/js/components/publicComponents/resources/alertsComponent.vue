@@ -155,7 +155,7 @@
                 if (!this.xhr) {
                   throw new Error('CORS not supported');
                 } else {
-                    axios.get("https://cors.now.sh/"+feed)
+                    axios.get("https://cors-anywhere.herokuapp.com/"+feed)
                         .then((response) => {
                             var vm = this;
                             var parseString = require('xml2js').parseString;
