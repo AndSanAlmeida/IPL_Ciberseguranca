@@ -58,7 +58,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'isAdmin' => \App\Http\Middleware\isAdmin::class,
+        'IsAdmin' => \App\Http\Middleware\IsAdmin::class,
         'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
         
         'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,

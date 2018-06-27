@@ -99,7 +99,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('questions/create', 'UserQuestionControllerAPI@store'); // CREATE QUESTION
 
 	// ADMIN USER
-	Route::middleware('isAdmin')->group(function () {
+	Route::middleware('IsAdmin')->group(function () {
 		// -------------------- USER --------------------
 		Route::post('users', 'UserControllerAPI@getUsers'); //GET LIST OF USERS TO MANAGE
 		Route::post('users/{id}/state', 'UserControllerAPI@updateState'); //CHANGE STATE USER
