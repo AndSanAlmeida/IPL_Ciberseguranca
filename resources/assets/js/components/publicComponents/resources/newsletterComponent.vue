@@ -74,7 +74,6 @@
         },
         methods: {
             sendToNewsletter: function(newsletter) {
-                console.log(newsletter.title);
                 window.location.href = '/#/resources/newsletters/'+newsletter.title;
             },
             getNewsletters: function () {

@@ -79956,22 +79956,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         getRSSByFeed: function getRSSByFeed(feed) {
-            var _this5 = this;
-
             this.xhr = this.createCORSRequest('GET', feed);
             if (!this.xhr) {
                 throw new Error('CORS not supported');
             } else {
-                axios.get("https://cors-anywhere.herokuapp.com/" + feed).then(function (response) {
-                    var vm = _this5;
+                var vm = this;
+                $.getJSON('http://anyorigin.com/go?url=' + feed + '&callback=?', function (data) {
                     var parseString = __webpack_require__(37).parseString;
-                    parseString(response.data, function (err, result) {
+                    parseString(data.contents, function (err, result) {
                         vm.news = vm.news.concat(Object.assign(result.rss.channel[0].item));
                     });
-                }).catch(function (error) {
-                    _this5.loading = false;
-                    _this5.errorLoading = true;
                 });
+                /*
+                axios.get("http://anyorigin.com/go?url="+feed)
+                    .then((response) => {
+                        var vm = this;
+                        var parseString = require('xml2js').parseString;
+                        parseString(response.data, function (err, result) {
+                            vm.news = vm.news.concat(Object.assign(result.rss.channel[0].item));
+                        });
+                     })
+                    .catch((error) => {
+                        this.loading = false;
+                        this.errorLoading = true;
+                    });*/
             }
         },
         createCORSRequest: function createCORSRequest(method, url) {
@@ -83388,20 +83396,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.showTable = true;
         },
         getRSSByFeed: function getRSSByFeed(feed) {
-            var _this3 = this;
-
             this.xhr = this.createCORSRequest('GET', feed);
             if (!this.xhr) {
                 throw new Error('CORS not supported');
             } else {
-                axios.get("https://cors-anywhere.herokuapp.com/" + feed).then(function (response) {
-                    var vm = _this3;
-                    var parseString = __webpack_require__(37).parseString;
+                /*
+                axios.get("https://cors-anywhere.herokuapp.com/"+feed)
+                .then((response) => {
+                    var vm = this;
+                    var parseString = require('xml2js').parseString;
                     parseString(response.data, function (err, result) {
                         vm.alerts = vm.alerts.concat(Object.assign(result.rss.channel[0].item));
                     });
-                }).catch(function (error) {
-                    _this3.errorLoading = true;
+                 })
+                .catch((error) => {
+                    this.errorLoading = true;
+                });*/
+
+                var vm = this;
+                $.getJSON('http://anyorigin.com/go?url=' + feed + '&callback=?', function (data) {
+                    var parseString = __webpack_require__(37).parseString;
+                    parseString(data.contents, function (err, result) {
+                        vm.alerts = vm.alerts.concat(Object.assign(result.rss.channel[0].item));
+                    });
                 });
             }
         },
@@ -83905,25 +83922,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         getRSSByFeed: function getRSSByFeed(feed) {
-            var _this3 = this;
-
             this.xhr = this.createCORSRequest('GET', feed);
             if (!this.xhr) {
                 throw new Error('CORS not supported');
             } else {
-                axios.get("https://cors-anywhere.herokuapp.com/" + feed).then(function (response) {
-                    var vm = _this3;
-                    var parseString = __webpack_require__(37).parseString;
+                /*
+                axios.get("https://cors-anywhere.herokuapp.com/"+feed)
+                .then((response) => {
+                    var vm = this;
+                    var parseString = require('xml2js').parseString;
                     parseString(response.data, function (err, result) {
-                        for (var i = 0; i < Object.assign(result.rss.channel[0].item).length; i++) {
-
+                        for (var i = 0; i < Object.assign(result.rss.channel[0].item).length; i++) { 
+                            
                             if (Object.assign(result.rss.channel[0].item)[i].title[0] == vm.title) {
                                 vm.alert = Object.assign(result.rss.channel[0].item)[i];
                             }
                         }
                     });
-                }).catch(function (error) {
-                    _this3.errorLoading = true;
+                 })
+                .catch((error) => {
+                    this.errorLoading = true;
+                });*/
+                var vm = this;
+                $.getJSON('http://anyorigin.com/go?url=' + feed + '&callback=?', function (data) {
+                    var parseString = __webpack_require__(37).parseString;
+                    parseString(data.contents, function (err, result) {
+                        for (var i = 0; i < Object.assign(result.rss.channel[0].item).length; i++) {
+                            Object.assign(result.rss.channel[0].item)[i].title[0] = Object.assign(result.rss.channel[0].item)[i].title[0].replace("?", "");
+                            if (Object.assign(result.rss.channel[0].item)[i].title[0] == vm.title || Object.assign(result.rss.channel[0].item)[i].title == vm.title) {
+                                vm.alert = Object.assign(result.rss.channel[0].item)[i];
+                            }
+                        }
+                    });
                 });
             }
         },
@@ -84695,21 +84725,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.showTable = true;
         },
         getRSSByFeed: function getRSSByFeed(feed) {
-            var _this3 = this;
-
             this.xhr = this.createCORSRequest('GET', feed);
             if (!this.xhr) {
                 throw new Error('CORS not supported');
             } else {
-                axios.get("https://cors-anywhere.herokuapp.com/" + feed).then(function (response) {
-                    var vm = _this3;
+                /*axios.get("https://cors-anywhere.herokuapp.com/"+feed)
+                    .then((response) => {
+                        var vm = this;
+                        var parseString = require('xml2js').parseString;
+                        parseString(response.data, function (err, result) {
+                            vm.news = vm.news.concat(Object.assign(result.rss.channel[0].item));
+                        });
+                     })
+                    .catch((error) => {
+                        this.errorLoading = true;
+                        this.loading = false;
+                    });*/
+                var vm = this;
+                $.getJSON('http://anyorigin.com/go?url=' + feed + '&callback=?', function (data) {
                     var parseString = __webpack_require__(37).parseString;
-                    parseString(response.data, function (err, result) {
+                    parseString(data.contents, function (err, result) {
                         vm.news = vm.news.concat(Object.assign(result.rss.channel[0].item));
                     });
-                }).catch(function (error) {
-                    _this3.errorLoading = true;
-                    _this3.loading = false;
                 });
             }
         },
@@ -85242,16 +85279,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         getRSSByFeed: function getRSSByFeed(feed) {
-            var _this3 = this;
-
             this.xhr = this.createCORSRequest('GET', feed);
             if (!this.xhr) {
                 throw new Error('CORS not supported');
             } else {
-                axios.get("https://cors-anywhere.herokuapp.com/" + feed).then(function (response) {
-                    var vm = _this3;
+                var vm = this;
+                $.getJSON('http://anyorigin.com/go?url=' + feed + '&callback=?', function (data) {
                     var parseString = __webpack_require__(37).parseString;
-                    parseString(response.data, function (err, result) {
+                    parseString(data.contents, function (err, result) {
                         for (var i = 0; i < Object.assign(result.rss.channel[0].item).length; i++) {
                             Object.assign(result.rss.channel[0].item)[i].title[0] = Object.assign(result.rss.channel[0].item)[i].title[0].replace("?", "");
                             if (Object.assign(result.rss.channel[0].item)[i].title[0] == vm.title || Object.assign(result.rss.channel[0].item)[i].title == vm.title) {
@@ -85259,10 +85294,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             }
                         }
                     });
-                }).catch(function (error) {
-                    _this3.loading = false;
-                    _this3.errorLoading = true;
                 });
+                /*
+                axios.get("https://cors-anywhere.herokuapp.com/"+feed)
+                    .then((response) => {
+                        var vm = this;
+                        var parseString = require('xml2js').parseString;
+                        parseString(response.data, function (err, result) {
+                            for (var i = 0; i < Object.assign(result.rss.channel[0].item).length; i++) { 
+                                Object.assign(result.rss.channel[0].item)[i].title[0] = Object.assign(result.rss.channel[0].item)[i].title[0].replace("?","");
+                                if (Object.assign(result.rss.channel[0].item)[i].title[0] == vm.title || 
+                                    Object.assign(result.rss.channel[0].item)[i].title == vm.title ) {
+                                    vm.singleNews = Object.assign(result.rss.channel[0].item)[i];
+                                }
+                            }
+                            
+                        });
+                     })
+                    .catch((error) => {
+                        this.loading = false;
+                        this.errorLoading = true;
+                    });
+                    */
             }
         },
         createCORSRequest: function createCORSRequest(method, url) {
@@ -86506,7 +86559,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         sendToNewsletter: function sendToNewsletter(newsletter) {
-            console.log(newsletter.title);
             window.location.href = '/#/resources/newsletters/' + newsletter.title;
         },
         getNewsletters: function getNewsletters() {

@@ -48,7 +48,7 @@ class GlossaryControllerAPI extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:100',
-            'definition' => 'required|string|max:100',
+            'definition' => 'required|string',
             'source' => 'required|string|max:100',
         ]);
 
@@ -100,7 +100,7 @@ class GlossaryControllerAPI extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:100',
-            'definition' => 'required|string|max:100',
+            'definition' => 'required|string',
             'source' => 'required|string|max:100',
         ]);
 

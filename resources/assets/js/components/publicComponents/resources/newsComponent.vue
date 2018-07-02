@@ -179,7 +179,7 @@
                 if (!this.xhr) {
                   throw new Error('CORS not supported');
                 } else {
-                    axios.get("https://cors-anywhere.herokuapp.com/"+feed)
+                    /*axios.get("https://cors-anywhere.herokuapp.com/"+feed)
                         .then((response) => {
                             var vm = this;
                             var parseString = require('xml2js').parseString;
@@ -191,7 +191,14 @@
                         .catch((error) => {
                             this.errorLoading = true;
                             this.loading = false;
+                        });*/
+                    var vm = this;
+                    $.getJSON('http://anyorigin.com/go?url='+feed+'&callback=?', function(data){
+                        var parseString = require('xml2js').parseString;
+                        parseString(data.contents, function (err, result) {
+                            vm.news = vm.news.concat(Object.assign(result.rss.channel[0].item));
                         });
+                    });
                 }
             },
             createCORSRequest(method, url) {

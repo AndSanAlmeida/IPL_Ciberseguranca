@@ -244,7 +244,14 @@
 				if (!this.xhr) {
 				  throw new Error('CORS not supported');
 				} else {
-					axios.get("https://cors-anywhere.herokuapp.com/"+feed)
+                    var vm = this;
+                    $.getJSON('http://anyorigin.com/go?url='+feed+'&callback=?', function(data){
+                        var parseString = require('xml2js').parseString;
+                        parseString(data.contents, function (err, result) {
+                            vm.alerts = vm.alerts.concat(Object.assign(result.rss.channel[0].item));
+                        });
+                    });
+					/*axios.get("https://cors-anywhere.herokuapp.com/"+feed)
 				        .then((response) => {
 				      		var vm = this;
 				            var parseString = require('xml2js').parseString;
@@ -256,7 +263,7 @@
 				        .catch((error) => {
                             this.loading = false;
 				            this.errorLoading = true;
-				        });
+				        });*/
 				}
         	},
         	createCORSRequest(method, url) {

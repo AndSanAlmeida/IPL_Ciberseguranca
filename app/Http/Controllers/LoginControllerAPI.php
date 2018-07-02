@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-define('YOUR_SERVER_URL', 'http://ipl.test');
+define('YOUR_SERVER_URL', env('APP_URL'));
 //define('YOUR_SERVER_URL', 'http://ipl_ciberseguranca.test');
 define('CLIENT_ID', '2');
 define('CLIENT_SECRET', 'ozS5vpC5IAltONJja2g7FimFuSGOlbr5A5KnwMxJ');

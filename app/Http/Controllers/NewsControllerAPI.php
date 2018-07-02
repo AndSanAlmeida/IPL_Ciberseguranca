@@ -144,7 +144,7 @@ class NewsControllerAPI extends Controller
         <rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
             <channel>
                 <title>IPLeiria - Cibersegurança</title>
-                <link>https://www.ipl.test</link>
+                <link>'.env('APP_URL').'</link>
                 <description>Notícias</description>
                 <language>pt-PT</language>
                 <copyright>@2018 IPLeiria - Cibersegurança</copyright>';
@@ -158,7 +158,7 @@ class NewsControllerAPI extends Controller
                         <title><![CDATA['.$singleNews->title[0].']]></title>
                         <description><![CDATA['.$singleNews->description[0].']]></description>
                         <pubDate>'.$date.'</pubDate>
-                        <link>http://ipl.test/#/resources/news/'.html_entity_decode($singleNews->title[0]).'</link>
+                        <link>'.env('APP_URL').'/#/resources/news/'.html_entity_decode($singleNews->title[0]).'</link>
                     </item>';
                 }
 
