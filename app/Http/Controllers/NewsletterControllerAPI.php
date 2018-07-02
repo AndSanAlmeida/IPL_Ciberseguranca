@@ -75,7 +75,7 @@ class NewsletterControllerAPI extends Controller
                 $message = $message."<ul>";
 
                 foreach ($request->get('news') as $singleNews) {
-                    $message = $message."<li><a href=\"http://ipl.test/#/resources/news/".$singleNews[0]."\">".htmlspecialchars($singleNews[0], 0, 'UTF-8')."</a></li>";
+                    $message = $message."<li><a href=\"".env('APP_URL')."/#/resources/news/".$singleNews[0]."\">".htmlspecialchars($singleNews[0], 0, 'UTF-8')."</a></li>";
                 }
                 $message = $message."</ul>";
             }
@@ -179,7 +179,7 @@ class NewsletterControllerAPI extends Controller
         if (is_null($subscription)) {
             return response()->json(['msg' => 'Email não encontrado.', 'error' => true]);
         }
-        //$subscription->delete();
+        $subscription->delete();
         return response()->json(['msg' => 'Anulação da subscrição realizada com sucesso.', 'error' => false]);
 
     }
@@ -230,7 +230,7 @@ class NewsletterControllerAPI extends Controller
 
             foreach ($emails as $email) {
                 $mailText = '';
-                $mailText = $newsletter->description."<br><hr><br>Se pretende anular a subscrição a newsletter, clique <a href=\"http://ipl.test/#/resources/newsletter/unsubscribe/".$email."\">aqui</a>";
+                $mailText = $newsletter->description."<br><hr><br>Se pretende anular a subscrição a newsletter, clique <a href=\"".env('APP_URL')."/#/resources/newsletter/unsubscribe/".$email."\">aqui</a>";
                 
                 Mail::to($email)->queue(new NewsletterPublished($mailText, $config->platform_email));
             }
