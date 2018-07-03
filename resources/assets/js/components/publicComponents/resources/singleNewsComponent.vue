@@ -12,7 +12,7 @@
                         <br>
                         <p class="text-muted text-right">{{prepareDate(singleNews.pubDate[0])}}</p>
                         <br>
-                        <p class="text-justify" v-html="singleNews.description[0]"></p>
+                        <p class="text-justify" v-if="singleNews.description != null" v-html="singleNews.description[0]"></p>
                         <p><b>Fonte: </b>{{singleNews.link[0]}}</p>
                     </div>
                     <div  v-if="!loading && !hasItems" class="alert alert-danger" role="alert" style="margin-top: 2em;">

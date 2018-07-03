@@ -13,7 +13,7 @@
                         <p class="text-muted text-right">{{prepareDate(alert.pubDate[0])}}</p>
                         <p class="text-muted text-left"><b>Categoria: </b>{{alert.category[0]}}</p>
                         <br>
-                        <p class="text-justify" v-html="alert.description[0]"></p>
+                        <p class="text-justify" v-if="alert.description != null"  v-html="alert.description[0]"></p>
                         <p v-if="!alert.hasOwnProperty('source')"><b>Fonte: </b><a target="_blank" :href="alert.link[0]">Link</a></p>
                         <p v-if="alert.hasOwnProperty('source')"><b>Fonte: </b>{{alert.source[0]}}</p>
                     </div>

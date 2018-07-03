@@ -80158,15 +80158,17 @@ var render = function() {
                                       ]),
                                       _vm._v(" "),
                                       _c("p", { staticClass: "text-justify" }, [
-                                        _c("span", {
-                                          domProps: {
-                                            innerHTML: _vm._s(
-                                              _vm.prepareDesc(
-                                                item.description[0]
-                                              )
-                                            )
-                                          }
-                                        })
+                                        item.description != null
+                                          ? _c("span", {
+                                              domProps: {
+                                                innerHTML: _vm._s(
+                                                  _vm.prepareDesc(
+                                                    item.description[0]
+                                                  )
+                                                )
+                                              }
+                                            })
+                                          : _vm._e()
                                       ])
                                     ]
                                   )
@@ -84079,10 +84081,14 @@ var render = function() {
                     _vm._v(" "),
                     _c("br"),
                     _vm._v(" "),
-                    _c("p", {
-                      staticClass: "text-justify",
-                      domProps: { innerHTML: _vm._s(_vm.alert.description[0]) }
-                    }),
+                    _vm.alert.description != null
+                      ? _c("p", {
+                          staticClass: "text-justify",
+                          domProps: {
+                            innerHTML: _vm._s(_vm.alert.description[0])
+                          }
+                        })
+                      : _vm._e(),
                     _vm._v(" "),
                     !_vm.alert.hasOwnProperty("source")
                       ? _c("p", [
@@ -84948,16 +84954,21 @@ var render = function() {
                                                                 "text-justify"
                                                             },
                                                             [
-                                                              _c("span", {
-                                                                domProps: {
-                                                                  innerHTML: _vm._s(
-                                                                    _vm.prepareDesc(
-                                                                      row.item
-                                                                        .description[0]
-                                                                    )
-                                                                  )
-                                                                }
-                                                              })
+                                                              row.item
+                                                                .description !=
+                                                              null
+                                                                ? _c("span", {
+                                                                    domProps: {
+                                                                      innerHTML: _vm._s(
+                                                                        _vm.prepareDesc(
+                                                                          row
+                                                                            .item
+                                                                            .description[0]
+                                                                        )
+                                                                      )
+                                                                    }
+                                                                  })
+                                                                : _vm._e()
                                                             ]
                                                           )
                                                         ]
@@ -85435,12 +85446,14 @@ var render = function() {
                     _vm._v(" "),
                     _c("br"),
                     _vm._v(" "),
-                    _c("p", {
-                      staticClass: "text-justify",
-                      domProps: {
-                        innerHTML: _vm._s(_vm.singleNews.description[0])
-                      }
-                    }),
+                    _vm.singleNews.description != null
+                      ? _c("p", {
+                          staticClass: "text-justify",
+                          domProps: {
+                            innerHTML: _vm._s(_vm.singleNews.description[0])
+                          }
+                        })
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("p", [
                       _c("b", [_vm._v("Fonte: ")]),

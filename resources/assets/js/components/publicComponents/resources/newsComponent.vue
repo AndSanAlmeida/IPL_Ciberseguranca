@@ -36,7 +36,7 @@
                                                         </div>
                                                         <div class="col-md-9 newsBorderB">
                                                             <h3><span v-html="row.item.title[0]"/></h3>
-                                                            <p class="text-justify"><span v-html="prepareDesc(row.item.description[0])"/></p>
+                                                            <p class="text-justify"><span v-if="row.item.description != null" v-html="prepareDesc(row.item.description[0])"/></p>
                                                         </div>
                                                     </div>
                                                 </div>

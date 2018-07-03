@@ -98,6 +98,9 @@
         },
         
         methods: {
+            decode_utf8: function(s) {
+              return decodeURIComponent(escape(s));
+            },
             editNews: function(item) {
                 this.item = item;
                 this.showList = false;

@@ -11,7 +11,7 @@
                 <div class="col-sm-12">
                   <p><b>Data: </b>{{prepareDate(item.pubDate[0])}}</span></p>
 
-                  <p style="overflow: hidden;" v-html="item.description[0]"></p>
+                  <p v-if="item.description != null" style="overflow: hidden;" v-html="item.description[0]"></p>
 
                   <p><b>Fonte: </b></p><a :href="item.link[0]"><span v-html="item.link[0]"></span></a>
 
